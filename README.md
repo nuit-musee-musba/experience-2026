@@ -1,11 +1,10 @@
 
 
-# Nuit des Musées au MusBA
+# Dupas & Co.Le grand Art Déco
 
 ## C'est quoi ?
 
-Une expérience interactive sur l'écran tactile du MusBA qui a eu lieu lors de la **Nuit Européenne des Musées le samedi 17 mai 2025.**
-Réalisé par la promotion 2025 du MMI Bordeaux.
+Une expérience interactive sur l'écran tactile du MusBA qui a eu lieu lors de l' **Exposition Dupas & Co.Le grand Art Déco.** du 26 juin au 29 novembre 2026. Ell est réalisé par la promotion 2026 du BUT MMI Bordeaux.
 
 ## Accéder à l'expérience
 > [!NOTE] Le site est fait pour un écran 4k de 1m50 x 1m, lisez #Simulation de l'écran tactile du MusBA ci-dessous
@@ -142,7 +141,7 @@ Les fichiers de config
 
 ### Sur le build en production
 
-- hébergement distant : aller sur https://nuit-du-musba-2025.netlify.app/
+- hébergement distant : aller sur [ A COMPLETER ]
 - hébergement local : récupérer le Aller sur [ A COMPLETER ]
 
 ### Sur votre propre build
