@@ -1,12 +1,9 @@
 <script setup>
-import { onMounted, onBeforeUnmount, ref, render } from 'vue';
+import { onMounted, onBeforeUnmount, ref } from 'vue';
 import * as THREE from 'three';
-import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
-import fr from '@/assets/world/fr.svg';
+import { MapPlane } from '@/webgl/components/MapPlane.js';
 import all from '@/assets/world/all.svg';
-import us from '@/assets/world/us.svg';
-import ro from '@/assets/world/ro.svg';
 
 const containerRef = ref(null);
 let scene, camera, renderer, plane, controls;
@@ -29,59 +26,8 @@ const initThree = () => {
   renderer.setPixelRatio(1);
   containerRef.value.appendChild(renderer.domElement);
 
-  plane = new THREE.Group();
-  const mapGroup = new THREE.Group();
-  plane.add(mapGroup);
 
-  const loader = new SVGLoader();
-
-  const loadMap = (url, zOffset = 0) => {
-    loader.load(url, function (data) {
-      const paths = data.paths;
-      const group = new THREE.Group();
-      group.scale.y = - 1;
-      group.position.z = zOffset;
-
-      for (let i = 0; i < paths.length; i++) {
-        const path = paths[i];
-        const material = new THREE.MeshBasicMaterial({
-          color: i == 239 || i == 73 || i == 190 ? 0xa9a9a9 : path.color,
-          side: THREE.DoubleSide
-        });
-
-        const shapes = SVGLoader.createShapes(path);
-
-        for (let j = 0; j < shapes.length; j++) {
-          const shape = shapes[j];
-          const geometry = new THREE.ShapeGeometry(shape);
-          const mesh = new THREE.Mesh(geometry, material);
-          group.add(mesh);
-        }
-      }
-
-      mapGroup.add(group);
-
-      if (url === all) {
-        const box = new THREE.Box3().setFromObject(group);
-        const center = new THREE.Vector3();
-        box.getCenter(center);
-
-        mapGroup.position.x = -center.x;
-        mapGroup.position.y = -center.y;
-      }
-    });
-  };
-
-  loadMap(all, 0);
-  // [fr, us, ro].forEach(url => loadMap(url, 1));
-
-  const bgGeometry = new THREE.PlaneGeometry(1000, 700);
-  const bgMaterial = new THREE.MeshBasicMaterial({ color: 0xf0f0f0 });
-  const bgPlane = new THREE.Mesh(bgGeometry, bgMaterial);
-  bgPlane.position.z = -10;
-  plane.add(bgPlane);
-
-  scene.add(plane);
+  const mapPlane = new MapPlane(scene, all, 1000, 700);
 
   const ambientLight = new THREE.AmbientLight(0xf0f0f0, 0.5);
   scene.add(ambientLight);
