@@ -39,7 +39,7 @@ export class MapPlane {
       for (let i = 0; i < paths.length; i++) {
         const path = paths[i];
         const material = new THREE.MeshBasicMaterial({
-          color: i == 239 || i == 73 || i == 190 ? 0xa9a9a9 : path.color,
+          color: i === 239 || i === 73 || i === 190 ? 0xa9a9a9 : path.color,
           side: THREE.DoubleSide,
         });
 
