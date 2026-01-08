@@ -1,6 +1,5 @@
 <script setup>
 import {ref} from 'vue'
-import ClickImg from "@/components/ClickImg.vue";
 
 defineProps({
   msg: String,
@@ -36,7 +35,6 @@ const count = ref(0)
   </p>
   <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
 
-  <click-img path="nom-de-l-image1.jpg" />
 
 </template>
 
