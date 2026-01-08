@@ -31,11 +31,10 @@ function goToMonument(monument) {
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Segoe UI', sans-serif;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-}
+<template>
+  <router-view />
+</template>
+
+<style scoped>
+
 </style>
