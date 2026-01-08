@@ -1,32 +1,37 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div id="app">
+    <MapScreen 
+      :country="currentCountry"
+      @go-to-country="goToCountry"
+      @go-to-monument="goToMonument"
+      @show-credits="showCredits = true"
+    />
+    <Credits v-if="showCredits" @close="showCredits = false" />
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  transition: filter 300ms;
-  will-change: filter;
+<script setup>
+import { ref } from 'vue'
+import MapScreen from './components/MapScreen.vue'
+import Credits from './components/Credits.vue'
+
+const currentCountry = ref('France')
+const showCredits = ref(false)
+
+function goToCountry(country) {
+  currentCountry.value = country
 }
 
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+function goToMonument(monument) {
+  alert(`Redirection vers le monument: ${monument}`)
 }
+</script>
 
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+<style>
+#app {
+  font-family: 'Segoe UI', sans-serif;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 </style>
