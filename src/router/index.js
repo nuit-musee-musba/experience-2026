@@ -3,6 +3,7 @@ import Credits from "@/components/Credits.vue";
 import Map from "@/components/Map.vue";
 import ClickImg from "@/components/ClickImg.vue";
 import Carousel from "@/components/Carousel.vue";
+import IdleView from "@/components/IdleView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -30,6 +31,10 @@ const router = createRouter({
       component: Carousel,
       props: { images: ['/images/basilique.jpg', '/images/basilique2.jpg'] }
     },
+    {
+      path: "/idle",
+      component: IdleView,
+    }
   ],
 });
 
