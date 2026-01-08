@@ -1,37 +1,23 @@
-<template>
-  <div id="app">
-    <MapScreen 
-      :country="currentCountry"
-      @go-to-country="goToCountry"
-      @go-to-monument="goToMonument"
-      @show-credits="showCredits = true"
-    />
-    <Credits v-if="showCredits" @close="showCredits = false" />
-  </div>
-</template>
-
 <script setup>
-import { ref } from 'vue'
-import MapScreen from './components/MapScreen.vue'
-import Credits from './components/Credits.vue'
-
-const currentCountry = ref('France')
-const showCredits = ref(false)
-
-function goToCountry(country) {
-  currentCountry.value = country
-}
-
-function goToMonument(monument) {
-  alert(`Redirection vers le monument: ${monument}`)
-}
 </script>
 
-<style>
-#app {
-  font-family: 'Segoe UI', sans-serif;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
+<template>
+  <router-view />
+</template>
+
+<style scoped>
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.logo.vue:hover {
+  filter: drop-shadow(0 0 2em #42b883aa);
 }
 </style>
