@@ -22,20 +22,10 @@ import IdleScreen from "@/components/IdleScreen.vue";
 const currentCountry = ref('France')
 const showCredits = ref(false)
 
-function goToCountry(country) {
-  currentCountry.value = country
-}
+<template>
+  <router-view />
+</template>
 
-function goToMonument(monument) {
-  alert(`Redirection vers le monument: ${monument}`)
-}
-</script>
+<style scoped>
 
-<style>
-#app {
-  font-family: 'Segoe UI', sans-serif;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-}
 </style>

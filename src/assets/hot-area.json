@@ -1,0 +1,28 @@
+[
+  {
+    "image": "basilique.jpg",
+    "areas": {
+      "square1": {
+        "x": 20,
+        "y": 30,
+        "w": 15,
+        "h": 10,
+        "log": "area 1"
+      },
+      "square2": {
+        "x": 55,
+        "y": 40,
+        "w": 20,
+        "h": 15,
+        "log": "area 2"
+      },
+      "square3": {
+        "x": 50,
+        "y": 40,
+        "w": 30,
+        "h": 30,
+        "log": "area 3"
+      }
+    }
+  }
+]
