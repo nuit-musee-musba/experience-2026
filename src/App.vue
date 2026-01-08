@@ -7,6 +7,9 @@
       @show-credits="showCredits = true"
     />
     <Credits v-if="showCredits" @close="showCredits = false" />
+      <IdleScreen>
+        <h1>Contenu de l’expérience</h1>
+      </IdleScreen>
   </div>
 </template>
 
@@ -14,6 +17,7 @@
 import { ref } from 'vue'
 import MapScreen from './components/MapScreen.vue'
 import Credits from './components/Credits.vue'
+import IdleScreen from "@/components/IdleScreen.vue";
 
 const currentCountry = ref('France')
 const showCredits = ref(false)
