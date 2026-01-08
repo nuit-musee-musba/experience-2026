@@ -1,7 +1,6 @@
 <script setup>
-import { ref, watchEffect } from 'vue';
-import { useRouter } from 'vue-router';
-import hotAreaData from '../assets/HotArea.json';
+import { computed } from 'vue';
+import hotAreaData from '@/assets/hot-area.json';
 
 const props = defineProps({
   path: {
@@ -10,69 +9,29 @@ const props = defineProps({
   }
 });
 
-const router = useRouter();
-const myData = ref(null);
-const imageSrc = ref('');
-
-const handleClick = (zone) => {
-  if (zone.log) console.log(zone.log);
-  
-  if (zone.url) {
-    if (zone.url.startsWith('http')) {
-      window.open(zone.url, '_blank');
-    } else {
-      router.push(zone.url);
-    }
-  }
-};
-
-watchEffect(async () => {
-  if (props.path) {
-    // Search for the image in the central JSON file
-    const imageData = hotAreaData.find(item => item.image === props.path);
-    
-    if (imageData) {
-      myData.value = imageData;
-    } else {
-      console.warn(`No data found for image: ${props.path} in HotArea.json`);
-      myData.value = null;
-    }
-    
-    try {
-      // Dynamic import of the image
-      const img = await import(`../assets/${props.path}`);
-      imageSrc.value = img.default;
-    } catch (e) {
-      console.error(`Error loading image ${props.path}:`, e);
-      imageSrc.value = '';
-    }
-  }
+const myData = computed(() => {
+  return hotAreaData.find(item => item.image === props.path);
 });
+
+const imageSrc = computed(() => {
+  return `/images/${props.path}`;
+});
+
+const handleClick = (area) => {
+  if (area.log) console.log(area.log);
+};
 </script>
 
 <template>
 
   <div v-if="myData" class="img-container">
-    <img
-        :src="imageSrc"
-        :alt="props.path"
-        draggable="false"
-        @dragstart.prevent
-        class="base-image"
-    />
-
-    <div
-        v-for="(zone, name) in myData.zones"
-        :key="name"
-        class="clickable-area"
-        :style="{
-          top: zone.y + '%',
-          left: zone.x + '%',
-          width: zone.w + '%',
-          height: zone.h + '%'
-        }"
-        @click="handleClick(zone)"
-    ></div>
+    <img :src="imageSrc" :alt="props.path" draggable="false" @dragstart.prevent class="base-image" />
+    <div v-for="(area, name) in myData.areas" :key="name" class="clickable-area" :style="{
+      top: area.y + '%',
+      left: area.x + '%',
+      width: area.w + '%',
+      height: area.h + '%'
+    }" @click="handleClick(area)"></div>
   </div>
 
 </template>
@@ -94,5 +53,4 @@ watchEffect(async () => {
   background-color: rgba(255, 0, 0, 0.4);
   cursor: pointer;
 }
-
 </style>

@@ -1,27 +1,27 @@
 [
   {
-    "image": "nom-de-l-image1.jpg",
-    "zones": {
-      "carre1": {
+    "image": "basilique.jpg",
+    "areas": {
+      "square1": {
         "x": 20,
         "y": 30,
         "w": 15,
         "h": 10,
-        "log": "Zone 1"
+        "log": "area 1"
       },
-      "carre2": {
+      "square2": {
         "x": 55,
         "y": 40,
         "w": 20,
         "h": 15,
-        "log": "Zone 2"
+        "log": "area 2"
       },
-      "carre3": {
+      "square3": {
         "x": 50,
         "y": 40,
         "w": 30,
         "h": 30,
-        "log": "Zone 3"
+        "log": "area 3"
       }
     }
   }

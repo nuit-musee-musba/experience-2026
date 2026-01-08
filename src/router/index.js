@@ -22,7 +22,7 @@ const router = createRouter({
     {
       path: "/img",
       component: ClickImg,
-      props: { path: "shrek-5-5-te-250227-71e9d1.webp" }
+      props: { path: "basilique.jpg" }
     },
   ],
 });
