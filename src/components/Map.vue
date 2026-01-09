@@ -8,15 +8,19 @@ import all from '@/assets/world/all.svg';
 const containerRef = ref(null);
 let scene, camera, renderer, controls, animationId;
 let isZooming = false;
+let lastCityMuseums = null;
 const destinationCoordonates = new THREE.Vector3();
+const targetDestination = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
+let isTraveling = false;
+let currentStep = 0;
 
 const pinsGroup = new THREE.Group();
 
 const allPins = [
-  { name: 'Bordeaux', x: -30, y: 9, museums: [{ name: 'Musba', x: -30, y: 5, artworks: [{ name: 'oeuvre_1' }] }, { name: 'CAPC', x: -30, y: 6 }] },
-  { name: 'Paris', x: -20, y: 15, museums: [{ name: 'Orsay', x: -30, y: 5, artworks: [{ name: 'oeuvre_2' }] }, { name: 'Louvre', x: -30, y: 6 }] }
+  { name: 'Bordeaux', x: -30, y: 9, museums: [{ name: 'Musba', x: -30, y: 5, artworks: [{ name: 'oeuvre_1' }] }, { name: 'CAPC', x: -33, y: 8, artworks: [{ name: 'Fille a la perle' }] }] },
+  { name: 'Paris', x: -20, y: 15, museums: [{ name: 'Orsay', x: -20, y: 12, artworks: [{ name: 'oeuvre_2' }] }, { name: 'Louvre', x: -23, y: 9, artworks: [{ name: 'Joconde' }] }] }
 ];
 
 const createCircleTexture = () => {
@@ -34,18 +38,27 @@ const createCircleTexture = () => {
 const circleTexture = createCircleTexture();
 
 const addPin = (item) => {
-  const material = new THREE.SpriteMaterial({ map: circleTexture, color: 0xff0000 });
-  const pin = new THREE.Sprite(material);
-  pin.scale.set(2, 2, 1);
+
+  let geometry = null;
+  let material = null;
+
+  if(item.artworks) {
+    geometry = new THREE.BoxGeometry( 1, 1, 1 );
+    material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+
+  } else {
+    geometry = new THREE.SphereGeometry( 1, 32, 16 );
+    material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+  }
+
+  const pin = new THREE.Mesh( geometry, material );
   pin.userData = item;
-  pin.position.set(item.x, item.y, -9);
+  pin.position.set(item.x, item.y, -9.5);
   pin.name = 'marker';
   pinsGroup.add(pin);
-};
 
-const renderLevel = (dataList) => {
-  while (pinsGroup.children.length > 0) pinsGroup.remove(pinsGroup.children[0]);
-  dataList.forEach(addPin);
+
+
 };
 
 const initThree = () => {
@@ -62,7 +75,6 @@ const initThree = () => {
   renderer.setPixelRatio(1);
   containerRef.value.appendChild(renderer.domElement);
 
-  // Montage de la hiérarchie
   const mapPlane = new MapPlane(scene, all, 1000, 700);
   mapPlane.plane.position.z = -10;
 
@@ -80,11 +92,11 @@ const initThree = () => {
   controls.dampingFactor = 0.05;
   controls.screenSpacePanning = false;
 
-  controls.minDistance = 20;
+  controls.minDistance = 0;
   controls.maxDistance = 130;
 
-  controls.maxPolarAngle = Math.PI / 2 + 0.05;
-  controls.minPolarAngle = Math.PI / 2 - 0.05;
+  //controls.maxPolarAngle = Math.PI / 2 + 0.05;
+  //controls.minPolarAngle = Math.PI / 2 - 0.05;
 
   controls.maxAzimuthAngle = 0.05;
   controls.minAzimuthAngle = -0.05;
@@ -98,6 +110,11 @@ const initThree = () => {
   animate();
 };
 
+const renderLevel = (dataList) => {
+  while (pinsGroup.children.length > 0) pinsGroup.remove(pinsGroup.children[0]);
+  dataList.forEach(addPin);
+};
+
 const onMapClick = (event) => {
   pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
   pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -108,18 +125,47 @@ const onMapClick = (event) => {
     const clickedObject = intersects[0].object;
     const vector = new THREE.Vector3();
     clickedObject.getWorldPosition(vector);
-    destinationCoordonates.set(vector.x, vector.y, 15);
+    if (clickedObject.userData.museums) {
+      currentStep = 1;
+      destinationCoordonates.set(vector.x, vector.y, 6);
+      lastCityMuseums = clickedObject.userData.museums;
+    }
+    if (clickedObject.userData.artworks) {
+      currentStep = 2;
+      destinationCoordonates.set(vector.x, vector.y - 5, -4);
+      targetDestination.set(vector.x, vector.y, -6.5);
+      isTraveling = true;
+    }
     isZooming = true;
     if (clickedObject.userData.museums) renderLevel(clickedObject.userData.museums);
   }
 };
 
+const goBack = () => {
+  if(currentStep === 1) {
+    renderLevel(lastCityMuseums);
+    isZooming = true;
+    isTraveling = false;
+  }
+
+  if(currentStep === 2) {
+    renderLevel(allPins);
+    isZooming = true;
+    destinationCoordonates.set(-5, 5, 50);
+  }
+
+}
+
 const animate = () => {
   animationId = requestAnimationFrame(animate);
   if (isZooming) {
     camera.position.lerp(destinationCoordonates, 0.05);
-    controls.target.lerp(new THREE.Vector3(destinationCoordonates.x, destinationCoordonates.y, 0), 0.05);
-    if (camera.position.distanceTo(destinationCoordonates) < 0.5) isZooming = false;
+    if (isTraveling) {
+      controls.target.lerp(new THREE.Vector3(targetDestination.x, targetDestination.y, targetDestination.z), 0.05);
+    } else {
+      controls.target.lerp(new THREE.Vector3(destinationCoordonates.x, destinationCoordonates.y, 0), 0.05);
+    }
+
   }
   controls.update();
   renderer.render(scene, camera);
@@ -149,6 +195,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div ref="containerRef" class="scene-container"></div>
+  <button @click="goBack" class="back-button">Retour</button>
 </template>
 
 <style scoped>
@@ -156,5 +203,14 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100vh;
   outline: none;
+}
+
+.back-button {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  z-index: 999;
+  background: white;
+  padding: 12px 24px;
 }
 </style>
