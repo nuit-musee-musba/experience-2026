@@ -4,6 +4,8 @@ import Map from "@/components/Map.vue";
 import ClickImg from "@/components/ClickImg.vue";
 import Carousel from "@/components/Carousel.vue";
 import IdleView from "@/components/IdleView.vue";
+import Boutons from "@/components/BoutonsTest.vue";
+
 
 const router = createRouter({
   history: createWebHistory(),
@@ -11,7 +13,7 @@ const router = createRouter({
     {
       path: "/",
       component: ClickImg,
-      props: { path: "basilique.jpg" }
+      props: { path: "basilique.jpg" },
     },
     {
       path: "/credits",
@@ -24,17 +26,21 @@ const router = createRouter({
     {
       path: "/img",
       component: ClickImg,
-      props: { path: "basilique.jpg" }
+      props: { path: "basilique.jpg" },
     },
     {
       path: "/carousel",
       component: Carousel,
-      props: { images: ['/images/basilique.jpg', '/images/basilique2.jpg'] }
+      props: { images: ["/images/basilique.jpg", "/images/basilique2.jpg"] },
     },
     {
       path: "/idle",
       component: IdleView,
-    }
+    },
+    {
+      path: "/boutons",
+      component: Boutons,
+    },
   ],
 });
 
