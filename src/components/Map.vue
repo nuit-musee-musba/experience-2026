@@ -14,7 +14,8 @@ const targetDestination = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 let isTraveling = false;
-let currentStep = 0;
+const currentStep = ref(0);
+let previousDestination = new THREE.Vector3();
 
 const pinsGroup = new THREE.Group();
 
@@ -43,7 +44,7 @@ const addPin = (item) => {
   let material = null;
 
   if(item.artworks) {
-    geometry = new THREE.BoxGeometry( 1, 1, 1 );
+    geometry = new THREE.BoxGeometry( 0.5, 0.5, 0.5 );
     material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 
   } else {
@@ -126,14 +127,16 @@ const onMapClick = (event) => {
     const vector = new THREE.Vector3();
     clickedObject.getWorldPosition(vector);
     if (clickedObject.userData.museums) {
-      currentStep = 1;
+      previousDestination.copy(destinationCoordonates)
+      currentStep.value = 1;
       destinationCoordonates.set(vector.x, vector.y, 6);
       lastCityMuseums = clickedObject.userData.museums;
     }
     if (clickedObject.userData.artworks) {
-      currentStep = 2;
-      destinationCoordonates.set(vector.x, vector.y - 5, -4);
-      targetDestination.set(vector.x, vector.y, -6.5);
+      previousDestination.copy(destinationCoordonates)
+      currentStep.value = 2;
+      destinationCoordonates.set(vector.x, vector.y - 2, -9);
+      targetDestination.set(vector.x, vector.y, -9.5);
       isTraveling = true;
     }
     isZooming = true;
@@ -142,16 +145,19 @@ const onMapClick = (event) => {
 };
 
 const goBack = () => {
-  if(currentStep === 1) {
-    renderLevel(lastCityMuseums);
-    isZooming = true;
-    isTraveling = false;
-  }
-
-  if(currentStep === 2) {
+  if(currentStep.value === 1) {
     renderLevel(allPins);
     isZooming = true;
     destinationCoordonates.set(-5, 5, 50);
+    currentStep.value = 0
+  }
+
+  if(currentStep.value === 2) {
+    renderLevel(lastCityMuseums);
+    isZooming = true;
+    isTraveling = false;
+    currentStep.value = 1;
+    destinationCoordonates.set(previousDestination.x, previousDestination.y, previousDestination.z)
   }
 
 }
@@ -163,7 +169,7 @@ const animate = () => {
     if (isTraveling) {
       controls.target.lerp(new THREE.Vector3(targetDestination.x, targetDestination.y, targetDestination.z), 0.05);
     } else {
-      controls.target.lerp(new THREE.Vector3(destinationCoordonates.x, destinationCoordonates.y, 0), 0.05);
+      controls.target.lerp(new THREE.Vector3(destinationCoordonates.x, destinationCoordonates.y, -9.5), 0.05);
     }
 
   }
@@ -195,7 +201,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div ref="containerRef" class="scene-container"></div>
-  <button @click="goBack" class="back-button">Retour</button>
+  <button v-show="currentStep > 0"  @click="goBack" class="back-button">Retour</button>
 </template>
 
 <style scoped>
