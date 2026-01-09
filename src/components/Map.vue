@@ -15,7 +15,8 @@ const targetDestination = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 let isTraveling = false;
-let currentStep = 0;
+const currentStep = ref(0);
+let previousDestination = new THREE.Vector3();
 
 let mapPins;
 
@@ -23,6 +24,44 @@ const allPins = [
   { name: 'Bordeaux', x: -30, y: 9, museums: [{ name: 'Musba', x: -30, y: 5, model3d: 'church.glb', artworks: [{ name: 'oeuvre_1' }] }, { name: 'CAPC', x: -33, y: 8, artworks: [{ name: 'Fille a la perle' }] }] },
   { name: 'Paris', x: -20, y: 15, museums: [{ name: 'Orsay', x: -20, y: 12, artworks: [{ name: 'oeuvre_2' }] }, { name: 'Louvre', x: -23, y: 9, artworks: [{ name: 'Joconde' }] }] }
 ];
+
+const createCircleTexture = () => {
+  const canvas = document.createElement('canvas');
+  canvas.width = 64;
+  canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  ctx.beginPath();
+  ctx.arc(32, 32, 28, 0, 2 * Math.PI);
+  ctx.fillStyle = '#ffffff';
+  ctx.fill();
+  return new THREE.CanvasTexture(canvas);
+};
+
+const circleTexture = createCircleTexture();
+
+const addPin = (item) => {
+
+  let geometry = null;
+  let material = null;
+
+  if(item.artworks) {
+    geometry = new THREE.BoxGeometry( 0.5, 0.5, 0.5 );
+    material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+
+  } else {
+    geometry = new THREE.SphereGeometry( 1, 32, 16 );
+    material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+  }
+
+  const pin = new THREE.Mesh( geometry, material );
+  pin.userData = item;
+  pin.position.set(item.x, item.y, -9.5);
+  pin.name = 'marker';
+  pinsGroup.add(pin);
+
+
+
+};
 
 const initThree = () => {
   if (!containerRef.value) return;
@@ -85,14 +124,16 @@ const onMapClick = (event) => {
     const vector = new THREE.Vector3();
     clickedObject.getWorldPosition(vector);
     if (clickedObject.userData.museums) {
-      currentStep = 1;
+      previousDestination.copy(destinationCoordonates)
+      currentStep.value = 1;
       destinationCoordonates.set(vector.x, vector.y, 6);
       lastCityMuseums = clickedObject.userData.museums;
     }
     if (clickedObject.userData.artworks) {
-      currentStep = 2;
-      destinationCoordonates.set(vector.x, vector.y - 5, -4);
-      targetDestination.set(vector.x, vector.y, -6.5);
+      previousDestination.copy(destinationCoordonates)
+      currentStep.value = 2;
+      destinationCoordonates.set(vector.x, vector.y - 2, -9);
+      targetDestination.set(vector.x, vector.y, -9.5);
       isTraveling = true;
     }
     isZooming = true;
@@ -101,16 +142,19 @@ const onMapClick = (event) => {
 };
 
 const goBack = () => {
-  if (currentStep === 1) {
-    renderLevel(lastCityMuseums);
-    isZooming = true;
-    isTraveling = false;
-  }
-
-  if (currentStep === 2) {
+  if(currentStep.value === 1) {
     renderLevel(allPins);
     isZooming = true;
     destinationCoordonates.set(-5, 5, 50);
+    currentStep.value = 0
+  }
+
+  if(currentStep.value === 2) {
+    renderLevel(lastCityMuseums);
+    isZooming = true;
+    isTraveling = false;
+    currentStep.value = 1;
+    destinationCoordonates.set(previousDestination.x, previousDestination.y, previousDestination.z)
   }
 
 }
@@ -122,7 +166,7 @@ const animate = () => {
     if (isTraveling) {
       controls.target.lerp(new THREE.Vector3(targetDestination.x, targetDestination.y, targetDestination.z), 0.05);
     } else {
-      controls.target.lerp(new THREE.Vector3(destinationCoordonates.x, destinationCoordonates.y, 0), 0.05);
+      controls.target.lerp(new THREE.Vector3(destinationCoordonates.x, destinationCoordonates.y, -9.5), 0.05);
     }
 
   }
@@ -154,7 +198,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div ref="containerRef" class="scene-container"></div>
-  <button @click="goBack" class="back-button">Retour</button>
+  <button v-show="currentStep > 0"  @click="goBack" class="back-button">Retour</button>
 </template>
 
 <style scoped>
