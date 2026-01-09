@@ -31,8 +31,7 @@ export class MapPins {
       this.loader.load(`/models/${item.model3d}`, (gltf) => {
         const model = gltf.scene;
         model.position.set(item.x, item.y, -10);
-        model.scale.set(0.3, 0.3, 0.3);
-        // model.rotation.set(Math.PI / 3.0, Math.PI / 1.9, 0);
+        model.scale.set(0.1, 0.1, 0.1);
         model.rotation.set(Math.PI / 2, Math.PI / 2, 0);
         
         model.traverse((child) => {
@@ -45,12 +44,18 @@ export class MapPins {
         this.group.add(model);
       });
     } else {
-      const material = new THREE.SpriteMaterial({ map: this.circleTexture, color: 0xff0000 });
-      const pin = new THREE.Sprite(material);
-      pin.scale.set(2, 2, 1);
+      const geometry = new THREE.SphereGeometry(1, 32, 16);
+      const material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+      const pin = new THREE.Mesh(geometry, material);
+      
+      if (item.artworks) {
+         pin.geometry = new THREE.BoxGeometry(1, 1, 1);
+         pin.material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      }
+
       pin.userData = item;
-      pin.position.set(item.x, item.y, -9);
-      pin.name = 'marker';
+      pin.position.set(item.x, item.y, -9.5);
+      pin.name = 'pin';
       this.group.add(pin);
     }
   }

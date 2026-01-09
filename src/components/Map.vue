@@ -20,47 +20,9 @@ let currentStep = 0;
 let mapPins;
 
 const allPins = [
-  { name: 'Bordeaux', x: -30, y: 9, museums: [{ name: 'Musba', x: -30, y: 5, artworks: [{ name: 'oeuvre_1' }] }, { name: 'CAPC', x: -33, y: 8, artworks: [{ name: 'Fille a la perle' }] }] },
+  { name: 'Bordeaux', x: -30, y: 9, museums: [{ name: 'Musba', x: -30, y: 5, model3d: 'church.glb', artworks: [{ name: 'oeuvre_1' }] }, { name: 'CAPC', x: -33, y: 8, artworks: [{ name: 'Fille a la perle' }] }] },
   { name: 'Paris', x: -20, y: 15, museums: [{ name: 'Orsay', x: -20, y: 12, artworks: [{ name: 'oeuvre_2' }] }, { name: 'Louvre', x: -23, y: 9, artworks: [{ name: 'Joconde' }] }] }
 ];
-
-const createCircleTexture = () => {
-  const canvas = document.createElement('canvas');
-  canvas.width = 64;
-  canvas.height = 64;
-  const ctx = canvas.getContext('2d');
-  ctx.beginPath();
-  ctx.arc(32, 32, 28, 0, 2 * Math.PI);
-  ctx.fillStyle = '#ffffff';
-  ctx.fill();
-  return new THREE.CanvasTexture(canvas);
-};
-
-const circleTexture = createCircleTexture();
-
-const addPin = (item) => {
-
-  let geometry = null;
-  let material = null;
-
-  if(item.artworks) {
-    geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-
-  } else {
-    geometry = new THREE.SphereGeometry( 1, 32, 16 );
-    material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
-  }
-
-  const pin = new THREE.Mesh( geometry, material );
-  pin.userData = item;
-  pin.position.set(item.x, item.y, -9.5);
-  pin.name = 'marker';
-  pinsGroup.add(pin);
-
-
-
-};
 
 const initThree = () => {
   if (!containerRef.value) return;
@@ -79,7 +41,7 @@ const initThree = () => {
   const mapPlane = new MapPlane(scene, all, 1000, 700);
   mapPlane.plane.position.z = -10;
 
-  scene.add(pinsGroup);
+  mapPins = new MapPins(scene);
 
   const ambientLight = new THREE.AmbientLight(0xf0f0f0, 0.5);
   scene.add(ambientLight);
@@ -96,9 +58,6 @@ const initThree = () => {
   controls.minDistance = 0;
   controls.maxDistance = 130;
 
-  //controls.maxPolarAngle = Math.PI / 2 + 0.05;
-  //controls.minPolarAngle = Math.PI / 2 - 0.05;
-
   controls.maxAzimuthAngle = 0.05;
   controls.minAzimuthAngle = -0.05;
 
@@ -112,8 +71,7 @@ const initThree = () => {
 };
 
 const renderLevel = (dataList) => {
-  while (pinsGroup.children.length > 0) pinsGroup.remove(pinsGroup.children[0]);
-  dataList.forEach(addPin);
+  mapPins.renderLevel(dataList);
 };
 
 const onMapClick = (event) => {
@@ -138,18 +96,18 @@ const onMapClick = (event) => {
       isTraveling = true;
     }
     isZooming = true;
-    if (clickedObject.userData.museums) mapPins.renderLevel(clickedObject.userData.museums);
+    if (clickedObject.userData.museums) renderLevel(clickedObject.userData.museums);
   }
 };
 
 const goBack = () => {
-  if(currentStep === 1) {
+  if (currentStep === 1) {
     renderLevel(lastCityMuseums);
     isZooming = true;
     isTraveling = false;
   }
 
-  if(currentStep === 2) {
+  if (currentStep === 2) {
     renderLevel(allPins);
     isZooming = true;
     destinationCoordonates.set(-5, 5, 50);
