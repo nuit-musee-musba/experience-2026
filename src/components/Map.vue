@@ -3,6 +3,7 @@ import { onMounted, onBeforeUnmount, ref } from 'vue';
 import * as THREE from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { MapPlane } from '@/webgl/components/MapPlane.js';
+import { MapPins } from '@/webgl/components/MapPins.js';
 import all from '@/assets/world/all.svg';
 
 const containerRef = ref(null);
@@ -12,41 +13,12 @@ const destinationCoordonates = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 
-const pinsGroup = new THREE.Group();
+let mapPins;
 
 const allPins = [
-  { name: 'Bordeaux', x: -30, y: 9, museums: [{ name: 'Musba', x: -30, y: 5, artworks: [{ name: 'oeuvre_1' }] }, { name: 'CAPC', x: -30, y: 6 }] },
+  { name: 'Bordeaux', x: -30, y: 9, museums: [{ name: 'Musba', x: -30, y: 5, model3d: 'church.glb', artworks: [{ name: 'oeuvre_1' }] }, { name: 'CAPC', x: -30, y: 6 }] },
   { name: 'Paris', x: -20, y: 15, museums: [{ name: 'Orsay', x: -30, y: 5, artworks: [{ name: 'oeuvre_2' }] }, { name: 'Louvre', x: -30, y: 6 }] }
 ];
-
-const createCircleTexture = () => {
-  const canvas = document.createElement('canvas');
-  canvas.width = 64;
-  canvas.height = 64;
-  const ctx = canvas.getContext('2d');
-  ctx.beginPath();
-  ctx.arc(32, 32, 28, 0, 2 * Math.PI);
-  ctx.fillStyle = '#ffffff';
-  ctx.fill();
-  return new THREE.CanvasTexture(canvas);
-};
-
-const circleTexture = createCircleTexture();
-
-const addPin = (item) => {
-  const material = new THREE.SpriteMaterial({ map: circleTexture, color: 0xff0000 });
-  const pin = new THREE.Sprite(material);
-  pin.scale.set(2, 2, 1);
-  pin.userData = item;
-  pin.position.set(item.x, item.y, -9);
-  pin.name = 'marker';
-  pinsGroup.add(pin);
-};
-
-const renderLevel = (dataList) => {
-  while (pinsGroup.children.length > 0) pinsGroup.remove(pinsGroup.children[0]);
-  dataList.forEach(addPin);
-};
 
 const initThree = () => {
   if (!containerRef.value) return;
@@ -62,11 +34,16 @@ const initThree = () => {
   renderer.setPixelRatio(1);
   containerRef.value.appendChild(renderer.domElement);
 
-  // Montage de la hiérarchie
-  const mapPlane = new MapPlane(scene, all, 1000, 700);
-  mapPlane.plane.position.z = -10;
+  const mapGroup = new THREE.Group();
+  scene.add(mapGroup);
+  mapGroup.position.z = -10;
+  mapGroup.rotation.x = -0.05;
 
-  scene.add(pinsGroup);
+  const mapPlane = new MapPlane(mapGroup, all, 1000, 700);
+  mapPlane.plane.position.z = 0;
+
+  mapPins = new MapPins(mapGroup);
+  mapPins.group.position.z = 10;
 
   const ambientLight = new THREE.AmbientLight(0xf0f0f0, 0.5);
   scene.add(ambientLight);
@@ -102,7 +79,7 @@ const onMapClick = (event) => {
   pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
   pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
   raycaster.setFromCamera(pointer, camera);
-  const intersects = raycaster.intersectObjects(pinsGroup.children, true);
+  const intersects = raycaster.intersectObjects(mapPins.getPins(), true);
 
   if (intersects.length > 0) {
     const clickedObject = intersects[0].object;
@@ -110,7 +87,7 @@ const onMapClick = (event) => {
     clickedObject.getWorldPosition(vector);
     destinationCoordonates.set(vector.x, vector.y, 15);
     isZooming = true;
-    if (clickedObject.userData.museums) renderLevel(clickedObject.userData.museums);
+    if (clickedObject.userData.museums) mapPins.renderLevel(clickedObject.userData.museums);
   }
 };
 
@@ -134,7 +111,7 @@ const handleResize = () => {
 
 onMounted(() => {
   initThree();
-  allPins.forEach(addPin);
+  mapPins.renderLevel(allPins);
   window.addEventListener('click', onMapClick);
   window.addEventListener('resize', handleResize);
 });
