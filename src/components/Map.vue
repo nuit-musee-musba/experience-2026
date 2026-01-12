@@ -89,10 +89,6 @@ const initThree = () => {
   const ambientLight = new THREE.AmbientLight(0xf0f0f0, 0.5);
   scene.add(ambientLight);
 
-  const directionalLight = new THREE.DirectionalLight(0xf0f0f0, 1);
-  directionalLight.position.set(5, 5, 5);
-  scene.add(directionalLight);
-
   controls = new MapControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.05;
