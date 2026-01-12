@@ -1,5 +1,6 @@
-h1,
-.h1 {
+@use "variables" as *;
+
+@mixin title-h1 {
   font-family: var(--font-familly-headings), sans-serif;
   font-size: 128px;
   font-style: normal;
@@ -8,8 +9,7 @@ h1,
   margin-bottom: unset;
 }
 
-h2,
-.h2 {
+@mixin title-h2 {
   font-family: var(--font-familly-headings), sans-serif;
   font-size: 100px;
   font-style: normal;
@@ -18,7 +18,7 @@ h2,
   margin-bottom: unset;
 }
 
-p {
+@mixin text-body {
   font-family: var(--font-familly-sans-serif), sans-serif;
   font-size: 32px;
   font-style: normal;
@@ -27,7 +27,7 @@ p {
   margin-bottom: unset;
 }
 
-a {
+@mixin text-link {
   font-family: var(--font-familly-sans-serif), sans-serif;
   font-size: 32px;
   font-style: normal;
@@ -40,74 +40,4 @@ a {
   text-underline-offset: auto;
   text-underline-position: from-font;
   margin-bottom: unset;
-}
-
-@use "variables" as *;
-
-/* MusBA */
-@font-face {
-  font-family: 'MusBA';
-  src: url('/fonts/musba/MusBA-Regular.woff2') format('woff2'),
-       url('/fonts/musba/MusBA-Regular.woff') format('woff'),
-       url('/fonts/musba/MusBA-Regular.ttf') format('truetype'),
-       url('/fonts/musba/MusBA-Regular.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* SuisseIntl */
-@font-face {
-  font-family: 'SuisseIntl';
-  src: url('/fonts/suiss-intl/SuisseIntl-Book.woff2') format('woff2'),
-       url('/fonts/suiss-intl/SuisseIntl-Book.woff') format('woff'),
-       url('/fonts/suiss-intl/SuisseIntl-Book.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'SuisseIntl';
-  src: url('/fonts/suiss-intl/SuisseIntl-Regular.woff2') format('woff2'),
-       url('/fonts/suiss-intl/SuisseIntl-Regular.woff') format('woff'),
-       url('/fonts/suiss-intl/SuisseIntl-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'SuisseIntl';
-  src: url('/fonts/suiss-intl/SuisseIntl-Medium.woff2') format('woff2'),
-       url('/fonts/suiss-intl/SuisseIntl-Medium.woff') format('woff'),
-       url('/fonts/suiss-intl/SuisseIntl-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@mixin title-h1 {
-  font-family: $font-family-title;
-  font-size: 80px;
-  font-weight: 400;
-}
-
-@mixin title-h2 {
-  font-family: $font-family-title;
-  font-size: 100px;
-  font-weight: 400;
-}
-
-@mixin text-body {
-  font-family: $font-family-text;
-  font-size: 100px; 
-  font-weight: 400;
-}
-
-@mixin text-link {
-  font-family: $font-family-text;
-  font-size: 100px;
-  text-decoration: underline;
-  cursor: pointer;
 }
