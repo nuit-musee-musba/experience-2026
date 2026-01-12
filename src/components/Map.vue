@@ -213,7 +213,6 @@ onBeforeUnmount(() => {
   <BaseButton v-show="currentStep > 0"  @click="goBack" variant="black" class="back-button">
     Retour
   </BaseButton>
-  <button v-show="currentStep > 0" @click="goBack" class="back-button">Retour</button>
 </template>
 
 <style scoped>
