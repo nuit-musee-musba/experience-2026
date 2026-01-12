@@ -1,10 +1,13 @@
+@use "colors" as *;
+@use "variables" as *;
+
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
 
-  font-family: var(--font-familly-sans-serif), sans-serif;
+  font-family: $font-family-sans-serif, sans-serif;
   font-size: 16px;
   font-weight: 400;
 
@@ -17,25 +20,25 @@
   }
 
   &--pink {
-    background-color: var(--pink-100);
-    color: var(--black);
-    border-color: var(--pink-100);
+    background-color: $pink-100;
+    color: $black;
+    border-color: $pink-100;
   }
 
   &--blue {
-    background-color: var(--blue-100);
-    color: var(--black);
-    border-color: var(--blue-100);
+    background-color: $blue-100;
+    color: $black;
+    border-color: $blue-100;
   }
 
   &--black {
-    background-color: var(--black);
-    color: var(--white);
-    border-color: var(--black);
+    background-color: $black;
+    color: $white;
+    border-color: $black;
   }
 
   &--transparent {
     background-color: transparent;
-    color: var(--black);
+    color: $black;
   }
 }
