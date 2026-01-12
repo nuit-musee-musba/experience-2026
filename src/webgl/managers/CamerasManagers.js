@@ -1,5 +1,6 @@
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { MapControls } from "three/examples/jsm/Addons.js";
+import { CONFIG } from "@/config/webgl.js";
 
 export class CamerasManager {
   constructor(camera, rendererDomElement, cameraType = "orbit", target = null) {
@@ -41,9 +42,9 @@ export class CamerasManager {
   orbitControls() {
     this.controls = new OrbitControls(this.camera, this.rendererDomElement);
     this.controls.enableDamping = true;
-    this.controls.dampingFactor = 0.05;
+    this.controls.dampingFactor = CONFIG.controls.dampingFactor;
     this.controls.screenSpacePanning = false;
-    this.controls.minDistance = 10;
+    this.controls.minDistance = CONFIG.controls.minDistance;
 
     this.controls.target.set(this.target?.x || 0, this.target?.y || 0, this.target?.z || 0);
 
@@ -53,12 +54,12 @@ export class CamerasManager {
   mapControls() {
     this.controls = new MapControls(this.camera, this.rendererDomElement);
     this.controls.enableDamping = true;
-    this.controls.dampingFactor = 0.05;
+    this.controls.dampingFactor = CONFIG.controls.dampingFactor;
     this.controls.screenSpacePanning = true;
-    this.controls.minDistance = 10;
-    this.controls.maxDistance = 200;
-    this.controls.maxPolarAngle = Math.PI / 2;
-    this.controls.minAzimuthAngle = -0.05;
+    this.controls.minDistance = CONFIG.controls.minDistance;
+    this.controls.maxDistance = CONFIG.controls.map.maxDistance;
+    this.controls.maxPolarAngle = CONFIG.controls.map.maxPolarAngle;
+    this.controls.minAzimuthAngle = CONFIG.controls.map.minAzimuthAngle;
     this.controls.zoomToCursor = false;
   }
 

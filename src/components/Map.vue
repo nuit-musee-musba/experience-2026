@@ -1,13 +1,14 @@
 <script setup>
-import { onMounted, onBeforeUnmount, ref } from 'vue';
+import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import * as THREE from 'three';
-import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { MapPlane } from '@/webgl/components/MapPlane.js';
 import { MapPins } from '@/webgl/components/MapPins.js';
+import { CamerasManager } from '@/webgl/managers/CamerasManagers.js';
+import { CONFIG } from '@/config/webgl.js';
 import all from '@/assets/world/all.svg?url';
 
 const containerRef = ref(null);
-let scene, camera, renderer, controls, animationId;
+let scene, camera, renderer, camerasManager, animationId;
 let isZooming = false;
 let lastCityMuseums = null;
 const destinationCoordonates = new THREE.Vector3();
@@ -18,6 +19,8 @@ let isTraveling = false;
 const currentStep = ref(0);
 const previousDestination = new THREE.Vector3();
 
+const axesHelper = new THREE.AxesHelper(CONFIG.axesHelperSize);
+
 let mapPins;
 
 const allPins = [
@@ -27,11 +30,11 @@ const allPins = [
 
 const createCircleTexture = () => {
   const canvas = document.createElement('canvas');
-  canvas.width = 64;
-  canvas.height = 64;
+  canvas.width = CONFIG.pins.circleTextureSize;
+  canvas.height = CONFIG.pins.circleTextureSize;
   const ctx = canvas.getContext('2d');
   ctx.beginPath();
-  ctx.arc(32, 32, 28, 0, 2 * Math.PI);
+  ctx.arc(32, 32, CONFIG.pins.circleRadius, 0, 2 * Math.PI);
   ctx.fillStyle = '#ffffff';
   ctx.fill();
   return new THREE.CanvasTexture(canvas);
@@ -45,21 +48,19 @@ const addPin = (item) => {
   let material = null;
 
   if (item.artworks) {
-    geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-    material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    geometry = new THREE.BoxGeometry(...CONFIG.pins.artworks.geometrySizes);
+    material = new THREE.MeshBasicMaterial({ color: CONFIG.colors.pinGreen });
 
   } else {
-    geometry = new THREE.SphereGeometry(1, 32, 16);
-    material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+    geometry = new THREE.SphereGeometry(CONFIG.pins.museums.sphereRadius, CONFIG.pins.museums.sphereWidthSegments, CONFIG.pins.museums.sphereHeightSegments);
+    material = new THREE.MeshBasicMaterial({ color: CONFIG.colors.pinYellow });
   }
 
   const pin = new THREE.Mesh(geometry, material);
   pin.userData = item;
-  pin.position.set(item.x, item.y, -9.5);
+  pin.position.set(item.x, item.y, CONFIG.pins.defaultZ);
   pin.name = 'marker';
   pinsGroup.add(pin);
-
-
 
 };
 
@@ -67,46 +68,41 @@ const initThree = () => {
   if (!containerRef.value) return;
 
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+  scene.background = new THREE.Color(CONFIG.colors.background);
+  scene.add(axesHelper);
 
-  camera = new THREE.PerspectiveCamera(75, containerRef.value.clientWidth / containerRef.value.clientHeight, 0.1, 10000);
-  camera.position.set(-5, 5, 50);
+
+  camera = new THREE.PerspectiveCamera(CONFIG.camera.fov, containerRef.value.clientWidth / containerRef.value.clientHeight, CONFIG.camera.near, CONFIG.camera.far);
+  // camera.position.set(-5, 5, 50);
+  // camera.position.set(0, 50, 50);
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight);
   renderer.setPixelRatio(1);
   containerRef.value.appendChild(renderer.domElement);
 
-  const mapPlane = new MapPlane(scene, all, 1000, 700);
-  mapPlane.plane.position.z = -10;
+  const mapPlane = new MapPlane(scene, all, CONFIG.mapPlane.width, CONFIG.mapPlane.height);
+  mapPlane.plane.rotation.x = CONFIG.mapPlane.planeRotationX;
+  mapPlane.plane.position.z = CONFIG.mapPlane.planePositionZ;
 
   mapPins = new MapPins(scene);
 
-  const ambientLight = new THREE.AmbientLight(0xf0f0f0, 0.5);
+  const ambientLight = new THREE.AmbientLight(CONFIG.colors.ambientLight, CONFIG.lights.ambientIntensity);
   scene.add(ambientLight);
 
-  const directionalLight = new THREE.DirectionalLight(0xf0f0f0, 1);
-  directionalLight.position.set(5, 5, 5);
+  const directionalLight = new THREE.DirectionalLight(CONFIG.colors.directionalLight, CONFIG.lights.directionalIntensity);
+  directionalLight.position.copy(CONFIG.lights.directionalPosition);
   scene.add(directionalLight);
 
-  controls = new MapControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.05;
-  controls.screenSpacePanning = false;
+  camerasManager = new CamerasManager(camera, renderer.domElement, 'map');
+  camerasManager.controls.target.set(0, 0, 0);
 
-  controls.minDistance = 0;
-  controls.maxDistance = 130;
-
-  controls.maxAzimuthAngle = 0.05;
-  controls.minAzimuthAngle = -0.05;
-
-  controls.zoomToCursor = false;
-  controls.screenSpacePanning = true;
-
-  camera.position.set(-5, 5, 50);
-  controls.update();
-
+  // camera.position.set(-5, 5, 50);
+  // camera.position.set(0, 50, 50);
+  camera.position.copy(CONFIG.camera.initialPosition);
+  camerasManager.update();
   animate();
+  window['__CAMERA_POS__'] = camera.position;
 };
 
 const renderLevel = (dataList) => {
@@ -126,14 +122,14 @@ const onMapClick = (event) => {
     if (clickedObject.userData.museums) {
       previousDestination.copy(destinationCoordonates)
       currentStep.value = 1;
-      destinationCoordonates.set(vector.x, vector.y, 6);
+      destinationCoordonates.set(vector.x, vector.y, CONFIG.pins.hoverDestinationZ);
       lastCityMuseums = clickedObject.userData.museums;
     }
     if (clickedObject.userData.artworks) {
       previousDestination.copy(destinationCoordonates)
+      destinationCoordonates.set(vector.x, vector.y + CONFIG.pins.artworks.travelOffsetY, CONFIG.pins.travelDestinationZ);
+      targetDestination.set(vector.x, vector.y, CONFIG.pins.defaultZ);
       currentStep.value = 2;
-      destinationCoordonates.set(vector.x, vector.y - 2, -9);
-      targetDestination.set(vector.x, vector.y, -9.5);
       isTraveling = true;
     }
     isZooming = true;
@@ -145,7 +141,7 @@ const goBack = () => {
   if (currentStep.value === 1) {
     renderLevel(allPins);
     isZooming = true;
-    destinationCoordonates.set(-5, 5, 50);
+    destinationCoordonates.copy(CONFIG.camera.homePosition);
     currentStep.value = 0
   }
 
@@ -162,15 +158,24 @@ const goBack = () => {
 const animate = () => {
   animationId = requestAnimationFrame(animate);
   if (isZooming) {
-    camera.position.lerp(destinationCoordonates, 0.05);
-    if (isTraveling) {
-      controls.target.lerp(new THREE.Vector3(targetDestination.x, targetDestination.y, targetDestination.z), 0.05);
-    } else {
-      controls.target.lerp(new THREE.Vector3(destinationCoordonates.x, destinationCoordonates.y, -9.5), 0.05);
-    }
 
+    // enlever
+    camera.position.lerp(destinationCoordonates, CONFIG.camera.zoomLerpFactor);
+    // if (camera.position.multiplyScalar(10).floor().equals(destinationCoordonates.multiplyScalar(10).floor())) {
+    //   console.log('arrived');
+    //   camera.position.copy(destinationCoordonates);
+    //   isZooming = false;
+    // }
+    if (camera.position.x === destinationCoordonates.x) {
+      console.log('arrived');
+    }
+    if (isTraveling) {
+      camerasManager.controls.target.lerp(new THREE.Vector3(targetDestination.x, targetDestination.y, targetDestination.z), CONFIG.camera.zoomLerpFactor);
+    } else {
+      camerasManager.controls.target.lerp(new THREE.Vector3(destinationCoordonates.x, destinationCoordonates.y, CONFIG.pins.defaultZ), CONFIG.camera.zoomLerpFactor);
+    }
   }
-  controls.update();
+  camerasManager.update();
   renderer.render(scene, camera);
 };
 
@@ -181,13 +186,21 @@ const handleResize = () => {
   renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight);
 };
 
+watch(currentStep, (val) => {
+  if (!camerasManager) return;
+  if (val === 2) {
+    camerasManager.setCameraType('orbit', targetDestination);
+  } else {
+    camerasManager.setCameraType('map');
+  }
+});
+
+
 onMounted(() => {
   initThree();
   mapPins.renderLevel(allPins);
   window.addEventListener('click', onMapClick);
   window.addEventListener('resize', handleResize);
-
-  console.log(all);
 });
 
 onBeforeUnmount(() => {

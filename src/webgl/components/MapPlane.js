@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
+import { CONFIG } from "@/config/webgl.js";
 
 export class MapPlane {
   constructor(scene, url, width, height) {
@@ -22,10 +23,10 @@ export class MapPlane {
 
   initBackground() {
     const bgGeometry = new THREE.PlaneGeometry(this.width, this.height);
-    const bgMaterial = new THREE.MeshBasicMaterial({ color: 0xf0f0f0 });
+    const bgMaterial = new THREE.MeshBasicMaterial({ color: CONFIG.colors.mapPlaneBackground });
     const bgPlane = new THREE.Mesh(bgGeometry, bgMaterial);
 
-    bgPlane.position.z = -10;
+    bgPlane.position.z = CONFIG.mapPlane.backgroundZ;
     this.plane.add(bgPlane);
   }
 
@@ -33,13 +34,13 @@ export class MapPlane {
     this.loader.load(url, (data) => {
       const paths = data.paths;
       const group = new THREE.Group();
-      group.scale.y = -1;
-      group.position.z = 0;
+      group.scale.y = CONFIG.mapPlane.scaleY;
+      group.position.z = CONFIG.mapPlane.positionZ;
 
       for (let i = 0; i < paths.length; i++) {
         const path = paths[i];
         const material = new THREE.MeshBasicMaterial({
-          color: i === 239 || i === 73 || i === 190 ? 0xa9a9a9 : path.color,
+          color: i === 239 || i === 73 || i === 190 ? CONFIG.colors.grey : path.color,
           side: THREE.DoubleSide,
         });
 
@@ -58,10 +59,16 @@ export class MapPlane {
       // Center the map
       const box = new THREE.Box3().setFromObject(group);
       const center = new THREE.Vector3();
+      const boxHelper = new THREE.Box3Helper(box, CONFIG.colors.boxHelper);
       box.getCenter(center);
-
+      
       this.mapGroup.position.x = -center.x;
       this.mapGroup.position.y = -center.y;
+      
+      this.scene.add(boxHelper);
+      this.mapGroup.position.y += CONFIG.mapPlane.correction.y;
+      this.mapGroup.position.x += CONFIG.mapPlane.correction.x;
+      this.mapGroup.position.z += CONFIG.mapPlane.correction.z;
     });
   }
 }
