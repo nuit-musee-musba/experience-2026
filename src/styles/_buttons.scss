@@ -1,0 +1,41 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  font-family: var(--font-familly-sans-serif), sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+
+  padding: 16px 32px;
+  border: 1px solid transparent;
+  cursor: pointer;
+
+  &--icon {
+    padding: 16px;
+  }
+
+  &--pink {
+    background-color: var(--pink-100);
+    color: var(--black);
+    border-color: var(--pink-100);
+  }
+
+  &--blue {
+    background-color: var(--blue-100);
+    color: var(--black);
+    border-color: var(--blue-100);
+  }
+
+  &--black {
+    background-color: var(--black);
+    color: var(--white);
+    border-color: var(--black);
+  }
+
+  &--transparent {
+    background-color: transparent;
+    color: var(--black);
+  }
+}

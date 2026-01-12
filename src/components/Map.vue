@@ -4,6 +4,8 @@ import * as THREE from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { MapPlane } from '@/webgl/components/MapPlane.js';
 import { MapPins } from '@/webgl/components/MapPins.js';
+import all from '@/assets/world/all.svg';
+import BaseButton from '@/components/buttons/Button.vue';
 import all from '@/assets/world/all.svg?url';
 
 const containerRef = ref(null);
@@ -20,10 +22,13 @@ const previousDestination = new THREE.Vector3();
 
 let mapPins;
 
-const allPins = [
-  { name: 'Bordeaux', x: -30, y: 9, museums: [{ name: 'Musba', x: -30, y: 5, model3d: 'church.glb', artworks: [{ name: 'oeuvre_1' }] }, { name: 'CAPC', x: -33, y: 8, artworks: [{ name: 'Fille a la perle' }] }] },
-  { name: 'Paris', x: -20, y: 15, museums: [{ name: 'Orsay', x: -20, y: 12, artworks: [{ name: 'oeuvre_2' }] }, { name: 'Louvre', x: -23, y: 9, artworks: [{ name: 'Joconde' }] }] }
-];
+async function ShowInfo(){
+  const response = await fetch("/public/content/content.json");
+  const content = await response.json();
+  return content;
+}
+
+let allPins = ShowInfo();
 
 const createCircleTexture = () => {
   const canvas = document.createElement('canvas');
@@ -135,6 +140,7 @@ const onMapClick = (event) => {
       destinationCoordonates.set(vector.x, vector.y - 2, -9);
       targetDestination.set(vector.x, vector.y, -9.5);
       isTraveling = true;
+
     }
     isZooming = true;
     if (clickedObject.userData.museums) renderLevel(clickedObject.userData.museums);
@@ -168,7 +174,11 @@ const animate = () => {
     } else {
       controls.target.lerp(new THREE.Vector3(destinationCoordonates.x, destinationCoordonates.y, -9.5), 0.05);
     }
+  }
 
+  if(camera.position.distanceTo(destinationCoordonates) < 0.1) {
+    isZooming = false;
+    controls.update();
   }
   controls.update();
   renderer.render(scene, camera);
@@ -181,8 +191,9 @@ const handleResize = () => {
   renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight);
 };
 
-onMounted(() => {
+onMounted(async () => {
   initThree();
+  allPins = await ShowInfo();
   mapPins.renderLevel(allPins);
   window.addEventListener('click', onMapClick);
   window.addEventListener('resize', handleResize);
@@ -200,6 +211,9 @@ onBeforeUnmount(() => {
 
 <template>
   <div ref="containerRef" class="scene-container"></div>
+  <BaseButton v-show="currentStep > 0"  @click="goBack" variant="black" class="back-button">
+    Retour
+  </BaseButton>
   <button v-show="currentStep > 0" @click="goBack" class="back-button">Retour</button>
 </template>
 
@@ -215,7 +229,5 @@ onBeforeUnmount(() => {
   right: 20px;
   top: 20px;
   z-index: 999;
-  background: white;
-  padding: 12px 24px;
 }
 </style>
