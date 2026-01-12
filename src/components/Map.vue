@@ -6,6 +6,7 @@ import { MapPlane } from '@/webgl/components/MapPlane.js';
 import { MapPins } from '@/webgl/components/MapPins.js';
 import all from '@/assets/world/all.svg';
 import BaseButton from '@/components/buttons/Button.vue';
+import all from '@/assets/world/all.svg?url';
 
 const containerRef = ref(null);
 let scene, camera, renderer, controls, animationId;
@@ -17,7 +18,7 @@ const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 let isTraveling = false;
 const currentStep = ref(0);
-let previousDestination = new THREE.Vector3();
+const previousDestination = new THREE.Vector3();
 
 let mapPins;
 
@@ -48,16 +49,16 @@ const addPin = (item) => {
   let geometry = null;
   let material = null;
 
-  if(item.artworks) {
-    geometry = new THREE.BoxGeometry( 0.5, 0.5, 0.5 );
-    material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+  if (item.artworks) {
+    geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+    material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 
   } else {
-    geometry = new THREE.SphereGeometry( 1, 32, 16 );
-    material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+    geometry = new THREE.SphereGeometry(1, 32, 16);
+    material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
   }
 
-  const pin = new THREE.Mesh( geometry, material );
+  const pin = new THREE.Mesh(geometry, material);
   pin.userData = item;
   pin.position.set(item.x, item.y, -9.5);
   pin.name = 'marker';
@@ -147,14 +148,14 @@ const onMapClick = (event) => {
 };
 
 const goBack = () => {
-  if(currentStep.value === 1) {
+  if (currentStep.value === 1) {
     renderLevel(allPins);
     isZooming = true;
     destinationCoordonates.set(-5, 5, 50);
     currentStep.value = 0
   }
 
-  if(currentStep.value === 2) {
+  if (currentStep.value === 2) {
     renderLevel(lastCityMuseums);
     isZooming = true;
     isTraveling = false;
@@ -196,6 +197,8 @@ onMounted(async () => {
   mapPins.renderLevel(allPins);
   window.addEventListener('click', onMapClick);
   window.addEventListener('resize', handleResize);
+
+  console.log(all);
 });
 
 onBeforeUnmount(() => {
@@ -211,6 +214,7 @@ onBeforeUnmount(() => {
   <BaseButton v-show="currentStep > 0"  @click="goBack" variant="black" class="back-button">
     Retour
   </BaseButton>
+  <button v-show="currentStep > 0" @click="goBack" class="back-button">Retour</button>
 </template>
 
 <style scoped>
