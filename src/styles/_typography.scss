@@ -1,3 +1,5 @@
+@use "variables" as *;
+
 h1,
 .h1 {
   font-family: var(--font-familly-headings), sans-serif;
@@ -41,8 +43,6 @@ a {
   text-underline-position: from-font;
   margin-bottom: unset;
 }
-
-@use "variables" as *;
 
 /* MusBA */
 @font-face {

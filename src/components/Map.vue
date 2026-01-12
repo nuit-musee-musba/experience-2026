@@ -6,7 +6,6 @@ import { MapPlane } from '@/webgl/components/MapPlane.js';
 import { MapPins } from '@/webgl/components/MapPins.js';
 import all from '@/assets/world/all.svg';
 import BaseButton from '@/components/buttons/Button.vue';
-import all from '@/assets/world/all.svg?url';
 
 const containerRef = ref(null);
 let scene, camera, renderer, controls, animationId;
