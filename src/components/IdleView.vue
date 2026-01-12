@@ -1,10 +1,12 @@
 <template>
   <div class="app-wrapper">
+    <!-- Contenu normal -->
     <slot />
 
+    <!-- Écran d’inactivité -->
     <div v-if="isIdle" class="idle-overlay">
       <img
-        src="/images/basilique.jpg"
+        src="@/assets/Page Accueil.png"
         alt="Écran d’attente"
         class="idle-image"
       />
@@ -23,7 +25,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 const isIdle = ref(false);
 let idleTimer = null;
 
-const IDLE_TIME = 3000;
+const IDLE_TIME = 120000; // 2 minutes
 
 const resetTimer = () => {
   clearTimeout(idleTimer);
@@ -61,6 +63,7 @@ onUnmounted(() => {
   min-height: 100vh;
 }
 
+/* Overlay plein écran */
 .idle-overlay {
   position: fixed;
   inset: 0;
@@ -73,12 +76,14 @@ onUnmounted(() => {
   justify-content: center;
 }
 
+/* Image */
 .idle-image {
   max-width: 80%;
   height: auto;
   margin-bottom: 2rem;
 }
 
+/* Actions */
 .idle-actions {
   text-align: center;
 }

@@ -1,9 +1,0 @@
-<template>
-  <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M11.2875 21.525L21.7582 31.9668L21 32.725L9.27502 21L21 9.27502L21.7582 10.0332L11.2875 20.475H32.725V21.525H11.2875Z" fill="currentColor"/>
-  </svg>
-</template>
-
-<script setup>
-defineOptions({ inheritAttrs: false })
-</script>
