@@ -4,8 +4,8 @@ import * as THREE from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { MapPlane } from '@/webgl/components/MapPlane.js';
 import { MapPins } from '@/webgl/components/MapPins.js';
-import BaseButton from '@/components/buttons/Button.vue';
 import all from '@/assets/world/all.svg?url';
+import BaseButton from '@/components/buttons/Button.vue';
 
 const containerRef = ref(null);
 let scene, camera, renderer, controls, animationId;
