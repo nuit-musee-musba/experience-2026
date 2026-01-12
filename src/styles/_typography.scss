@@ -1,0 +1,44 @@
+h1,
+.h1 {
+  font-family: var(--font-familly-headings), sans-serif;
+  font-size: 128px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: unset;
+}
+
+h2,
+.h2 {
+  font-family: var(--font-familly-headings), sans-serif;
+  font-size: 100px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: unset;
+}
+
+p {
+  font-family: var(--font-familly-sans-serif), sans-serif;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: unset;
+}
+
+a {
+  font-family: var(--font-familly-sans-serif), sans-serif;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+  margin-bottom: unset;
+}
+
