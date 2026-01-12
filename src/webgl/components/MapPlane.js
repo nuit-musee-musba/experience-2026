@@ -24,10 +24,23 @@ export class MapPlane {
   initBackground() {
     const bgGeometry = new THREE.PlaneGeometry(this.width, this.height);
     const bgMaterial = new THREE.MeshBasicMaterial({ color: CONFIG.colors.mapPlaneBackground });
-    const bgPlane = new THREE.Mesh(bgGeometry, bgMaterial);
+    this.bgPlane = new THREE.Mesh(bgGeometry, bgMaterial);
 
-    bgPlane.position.z = CONFIG.mapPlane.backgroundZ;
-    this.plane.add(bgPlane);
+    this.bgPlane.position.z = CONFIG.mapPlane.backgroundZ;
+    this.plane.add(this.bgPlane);
+  }
+
+  update() {
+    if (this.bgPlane) {
+      this.bgPlane.position.z = CONFIG.mapPlane.backgroundZ;
+    }
+    if (this.center) {
+      this.mapGroup.position.x = -this.center.x + CONFIG.mapPlane.correction.x;
+      this.mapGroup.position.y = -this.center.y + CONFIG.mapPlane.correction.y;
+      this.mapGroup.position.z = CONFIG.mapPlane.correction.z;
+    }
+    this.plane.position.z = CONFIG.mapPlane.planePositionZ;
+    this.plane.rotation.x = CONFIG.mapPlane.planeRotationX;
   }
 
   loadMap(url) {
@@ -58,17 +71,13 @@ export class MapPlane {
 
       // Center the map
       const box = new THREE.Box3().setFromObject(group);
-      const center = new THREE.Vector3();
+      this.center = new THREE.Vector3();
       const boxHelper = new THREE.Box3Helper(box, CONFIG.colors.boxHelper);
-      box.getCenter(center);
-      
-      this.mapGroup.position.x = -center.x;
-      this.mapGroup.position.y = -center.y;
+      box.getCenter(this.center);
       
       this.scene.add(boxHelper);
-      this.mapGroup.position.y += CONFIG.mapPlane.correction.y;
-      this.mapGroup.position.x += CONFIG.mapPlane.correction.x;
-      this.mapGroup.position.z += CONFIG.mapPlane.correction.z;
+      
+      this.update();
     });
   }
 }

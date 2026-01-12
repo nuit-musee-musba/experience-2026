@@ -2,13 +2,17 @@
 import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import * as THREE from 'three';
 import { MapPlane } from '@/webgl/components/MapPlane.js';
+import { GUI } from '@/webgl/utils/GUI.js';
+import { Stats } from '@/webgl/utils/Stats.js';
 import { MapPins } from '@/webgl/components/MapPins.js';
+
 import { CamerasManager } from '@/webgl/managers/CamerasManagers.js';
 import { CONFIG } from '@/config/webgl.js';
 import all from '@/assets/world/all.svg?url';
 
 const containerRef = ref(null);
-let scene, camera, renderer, camerasManager, animationId;
+let scene, camera, renderer, camerasManager, animationId, stats;
+let mapPlane, ambientLight, directionalLight;
 let isZooming = false;
 let lastCityMuseums = null;
 const destinationCoordonates = new THREE.Vector3();
@@ -81,16 +85,18 @@ const initThree = () => {
   renderer.setPixelRatio(1);
   containerRef.value.appendChild(renderer.domElement);
 
-  const mapPlane = new MapPlane(scene, all, CONFIG.mapPlane.width, CONFIG.mapPlane.height);
+  stats = new Stats(containerRef.value);
+
+  mapPlane = new MapPlane(scene, all, CONFIG.mapPlane.width, CONFIG.mapPlane.height);
   mapPlane.plane.rotation.x = CONFIG.mapPlane.planeRotationX;
   mapPlane.plane.position.z = CONFIG.mapPlane.planePositionZ;
 
   mapPins = new MapPins(scene);
 
-  const ambientLight = new THREE.AmbientLight(CONFIG.colors.ambientLight, CONFIG.lights.ambientIntensity);
+  ambientLight = new THREE.AmbientLight(CONFIG.colors.ambientLight, CONFIG.lights.ambientIntensity);
   scene.add(ambientLight);
 
-  const directionalLight = new THREE.DirectionalLight(CONFIG.colors.directionalLight, CONFIG.lights.directionalIntensity);
+  directionalLight = new THREE.DirectionalLight(CONFIG.colors.directionalLight, CONFIG.lights.directionalIntensity);
   directionalLight.position.copy(CONFIG.lights.directionalPosition);
   scene.add(directionalLight);
 
@@ -156,6 +162,7 @@ const goBack = () => {
 }
 
 const animate = () => {
+  stats.begin();
   animationId = requestAnimationFrame(animate);
   if (isZooming) {
 
@@ -177,6 +184,8 @@ const animate = () => {
   }
   camerasManager.update();
   renderer.render(scene, camera);
+
+  stats.end();
 };
 
 const handleResize = () => {
@@ -184,6 +193,15 @@ const handleResize = () => {
   camera.aspect = containerRef.value.clientWidth / containerRef.value.clientHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight);
+};
+
+const initDebug = () => {
+  const gui = new GUI();
+  gui.addMap(mapPlane);
+  gui.addLights(ambientLight, directionalLight);
+  gui.addCamera(camera);
+  gui.addPins();
+  gui.addExport();
 };
 
 watch(currentStep, (val) => {
@@ -201,6 +219,7 @@ onMounted(() => {
   mapPins.renderLevel(allPins);
   window.addEventListener('click', onMapClick);
   window.addEventListener('resize', handleResize);
+  initDebug();
 });
 
 onBeforeUnmount(() => {
