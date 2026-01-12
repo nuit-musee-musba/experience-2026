@@ -1,0 +1,44 @@
+@use "variables" as *;
+@use "colors" as *;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  font-family: $font-familly-sans-serif, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+
+  padding: 16px 32px;
+  border: 1px solid transparent;
+  cursor: pointer;
+
+  &--icon {
+    padding: 16px;
+  }
+
+  &--pink {
+    background-color: $pink-100;
+    color: $black;
+    border-color: $pink-100;
+  }
+
+  &--blue {
+    background-color: $blue-100;
+    color: $black;
+    border-color: $blue-100;
+  }
+
+  &--black {
+    background-color: $black;
+    color: $white;
+    border-color: $black;
+  }
+
+  &--transparent {
+    background-color: transparent;
+    color: $black;
+  }
+}

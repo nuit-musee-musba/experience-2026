@@ -2,38 +2,69 @@
 import { onMounted, onBeforeUnmount, ref } from 'vue';
 import * as THREE from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
-import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
+import { MapPlane } from '@/webgl/components/MapPlane.js';
+import { MapPins } from '@/webgl/components/MapPins.js';
+import BaseButton from '@/components/buttons/Button.vue';
+import all from '@/assets/world/all.svg?url';
 
 const containerRef = ref(null);
 let scene, camera, renderer, controls, animationId;
 let isZooming = false;
+let lastCityMuseums = null;
 const destinationCoordonates = new THREE.Vector3();
+const targetDestination = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
+let isTraveling = false;
+const currentStep = ref(0);
+const previousDestination = new THREE.Vector3();
 
-// INITIALISATION IMMÉDIATE pour éviter le "undefined"
-const pinsGroup = new THREE.Group();
-const mapGroup = new THREE.Group();
-const plane = new THREE.Group();
+let mapPins;
 
-const allPins = [
-  { name: 'Bordeaux', x: -30, y: 9, museums: [{ name: 'Musba', x: -30, y: 5, artworks: [{name: 'oeuvre_1'}] }, { name: 'CAPC', x: -30, y: 6 }] },
-  { name: 'Paris', x: -20, y: 15, museums: [{ name: 'Orsay', x: -30, y: 5, artworks: [{name: 'oeuvre_2'}] }, { name: 'Louvre', x: -30, y: 6 }] }
-];
+async function ShowInfo(){
+  const response = await fetch("/public/content/content.json");
+  const content = await response.json();
+  return content;
+}
 
-const addPin = (item) => {
-  const geometry = new THREE.SphereGeometry(1, 32, 16);
-  const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-  const pin = new THREE.Mesh(geometry, material);
-  pin.userData = item;
-  pin.position.set(item.x, item.y, 2);
-  pin.name = 'marker';
-  pinsGroup.add(pin);
+let allPins = ShowInfo();
+
+const createCircleTexture = () => {
+  const canvas = document.createElement('canvas');
+  canvas.width = 64;
+  canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  ctx.beginPath();
+  ctx.arc(32, 32, 28, 0, 2 * Math.PI);
+  ctx.fillStyle = '#ffffff';
+  ctx.fill();
+  return new THREE.CanvasTexture(canvas);
 };
 
-const renderLevel = (dataList) => {
-  while(pinsGroup.children.length > 0) pinsGroup.remove(pinsGroup.children[0]);
-  dataList.forEach(addPin);
+const circleTexture = createCircleTexture();
+
+const addPin = (item) => {
+
+  let geometry = null;
+  let material = null;
+
+  if (item.artworks) {
+    geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+    material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+
+  } else {
+    geometry = new THREE.SphereGeometry(1, 32, 16);
+    material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+  }
+
+  const pin = new THREE.Mesh(geometry, material);
+  pin.userData = item;
+  pin.position.set(item.x, item.y, -9.5);
+  pin.name = 'marker';
+  pinsGroup.add(pin);
+
+
+
 };
 
 const initThree = () => {
@@ -47,63 +78,102 @@ const initThree = () => {
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setPixelRatio(1);
   containerRef.value.appendChild(renderer.domElement);
 
-  // Montage de la hiérarchie
-  scene.add(pinsGroup);
-  scene.add(plane);
-  plane.add(mapGroup);
+  const mapPlane = new MapPlane(scene, all, 1000, 700);
+  mapPlane.plane.position.z = -10;
 
-  const loader = new SVGLoader();
-  loader.load('/src/assets/world/all.svg', (data) => {
-    const paths = data.paths;
-    const group = new THREE.Group();
-    group.scale.y = -1;
+  mapPins = new MapPins(scene);
 
-    paths.forEach((path, i) => {
-      const material = new THREE.MeshBasicMaterial({
-        color: [239, 73, 190].includes(i) ? 0xa9a9a9 : path.color,
-        side: THREE.DoubleSide
-      });
-      const shapes = SVGLoader.createShapes(path);
-      shapes.forEach(shape => {
-        const geometry = new THREE.ShapeGeometry(shape);
-        group.add(new THREE.Mesh(geometry, material));
-      });
-    });
-    mapGroup.add(group);
-  });
-
-  const ambientLight = new THREE.AmbientLight(0xf0f0f0, 0.8);
+  const ambientLight = new THREE.AmbientLight(0xf0f0f0, 0.5);
   scene.add(ambientLight);
 
   controls = new MapControls(camera, renderer.domElement);
   controls.enableDamping = true;
+  controls.dampingFactor = 0.05;
+  controls.screenSpacePanning = false;
+
+  controls.minDistance = 0;
+  controls.maxDistance = 130;
+
+  controls.maxAzimuthAngle = 0.05;
+  controls.minAzimuthAngle = -0.05;
+
+  controls.zoomToCursor = false;
+  controls.screenSpacePanning = true;
+
+  camera.position.set(-5, 5, 50);
+  controls.update();
 
   animate();
+};
+
+const renderLevel = (dataList) => {
+  mapPins.renderLevel(dataList);
 };
 
 const onMapClick = (event) => {
   pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
   pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
   raycaster.setFromCamera(pointer, camera);
-  const intersects = raycaster.intersectObjects(pinsGroup.children, true);
+  const intersects = raycaster.intersectObjects(mapPins.getPins(), true);
 
   if (intersects.length > 0) {
     const clickedObject = intersects[0].object;
-    destinationCoordonates.set(clickedObject.position.x, clickedObject.position.y, 15);
+    const vector = new THREE.Vector3();
+    clickedObject.getWorldPosition(vector);
+    if (clickedObject.userData.museums) {
+      previousDestination.copy(destinationCoordonates)
+      currentStep.value = 1;
+      destinationCoordonates.set(vector.x, vector.y, 6);
+      lastCityMuseums = clickedObject.userData.museums;
+    }
+    if (clickedObject.userData.artworks) {
+      previousDestination.copy(destinationCoordonates)
+      currentStep.value = 2;
+      destinationCoordonates.set(vector.x, vector.y - 2, -9);
+      targetDestination.set(vector.x, vector.y, -9.5);
+      isTraveling = true;
+
+    }
     isZooming = true;
     if (clickedObject.userData.museums) renderLevel(clickedObject.userData.museums);
   }
 };
 
+const goBack = () => {
+  if (currentStep.value === 1) {
+    renderLevel(allPins);
+    isZooming = true;
+    destinationCoordonates.set(-5, 5, 50);
+    currentStep.value = 0
+  }
+
+  if (currentStep.value === 2) {
+    renderLevel(lastCityMuseums);
+    isZooming = true;
+    isTraveling = false;
+    currentStep.value = 1;
+    destinationCoordonates.set(previousDestination.x, previousDestination.y, previousDestination.z)
+  }
+
+}
+
 const animate = () => {
   animationId = requestAnimationFrame(animate);
   if (isZooming) {
     camera.position.lerp(destinationCoordonates, 0.05);
-    controls.target.lerp(new THREE.Vector3(destinationCoordonates.x, destinationCoordonates.y, 0), 0.05);
-    if (camera.position.distanceTo(destinationCoordonates) < 0.5) isZooming = false;
+    if (isTraveling) {
+      controls.target.lerp(new THREE.Vector3(targetDestination.x, targetDestination.y, targetDestination.z), 0.05);
+    } else {
+      controls.target.lerp(new THREE.Vector3(destinationCoordonates.x, destinationCoordonates.y, -9.5), 0.05);
+    }
+  }
+
+  if(camera.position.distanceTo(destinationCoordonates) < 0.1) {
+    isZooming = false;
+    controls.update();
   }
   controls.update();
   renderer.render(scene, camera);
@@ -116,11 +186,14 @@ const handleResize = () => {
   renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight);
 };
 
-onMounted(() => {
+onMounted(async () => {
   initThree();
-  allPins.forEach(addPin);
+  allPins = await ShowInfo();
+  mapPins.renderLevel(allPins);
   window.addEventListener('click', onMapClick);
   window.addEventListener('resize', handleResize);
+
+  console.log(all);
 });
 
 onBeforeUnmount(() => {
@@ -133,6 +206,10 @@ onBeforeUnmount(() => {
 
 <template>
   <div ref="containerRef" class="scene-container"></div>
+  <BaseButton v-show="currentStep > 0"  @click="goBack" variant="black" class="back-button">
+    Retour
+  </BaseButton>
+  <button v-show="currentStep > 0" @click="goBack" class="back-button">Retour</button>
 </template>
 
 <style scoped>
@@ -140,5 +217,12 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100vh;
   outline: none;
+}
+
+.back-button {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  z-index: 999;
 }
 </style>
