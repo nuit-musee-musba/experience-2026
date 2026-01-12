@@ -4,7 +4,6 @@ import * as THREE from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { MapPlane } from '@/webgl/components/MapPlane.js';
 import { MapPins } from '@/webgl/components/MapPins.js';
-import all from '@/assets/world/all.svg';
 import BaseButton from '@/components/buttons/Button.vue';
 import all from '@/assets/world/all.svg?url';
 
