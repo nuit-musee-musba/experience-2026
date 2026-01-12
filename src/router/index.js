@@ -4,7 +4,6 @@ import Map from "@/components/Map.vue";
 import ClickImg from "@/components/ClickImg.vue";
 import Carousel from "@/components/Carousel.vue";
 import IdleView from "@/components/IdleView.vue";
-import Boutons from "@/components/BoutonsTest.vue";
 
 
 const router = createRouter({
@@ -36,10 +35,6 @@ const router = createRouter({
     {
       path: "/idle",
       component: IdleView,
-    },
-    {
-      path: "/boutons",
-      component: Boutons,
     },
   ],
 });

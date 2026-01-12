@@ -1,40 +1,10 @@
-:root {
-  --spacing-s: 8px;
-  --spacing: 16px;
-  --spacing-xl: 32px;
+$spacing-s: 8px;
+$spacing: 16px;
+$spacing-xl: 32px;
 
-  --font-familly-headings: "MusBA";
-  --font-familly-sans-serif: "Suisse Int'l";
-}
-// Colors - Musée Beaux Arts
-$color-mba-green-grey: #85A798;
-$color-mba-lime: #C0D242;
-$color-mba-yellow: #FFFF85;
-$color-mba-blue: #59C0EB;
-$color-mba-pink: #F5AEBC;
-$color-mba-teal: #63B9C0;
-$color-mba-grey-light: #DCDCDC;
-$color-mba-orange: #FF5000;
-$color-mba-green-dark: #00773B;
-$color-mba-blue-dark: #0067B1;
+$font-family-headings: "MusBA";
+$font-family-sans-serif: "Suisse Int'l";
 
-// Colors - Dispositif Interactif
-$color-interactive-blue: #59C0EB;
-$color-interactive-yellow: #FFFF85;
-$color-interactive-pink: #F5AEBC;
-
-// Neutrals
-$color-black: #000000;
-$color-grey-dark: #808080;
-$color-grey-medium: #CCCCCC;
-$color-grey-light: #E5E5E5;
-$color-white: #FFFFFF;
-
-// Fonts
-$font-family-title: 'MusBA', sans-serif;
-$font-family-text: 'SuisseIntl', sans-serif;
-
-// Grid
 $grid-width: 3840px;
 $grid-columns: 6;
 $grid-margin: 144px;
