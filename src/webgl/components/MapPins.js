@@ -33,21 +33,34 @@ export class MapPins {
         model.position.set(item.x, item.y, -10);
         model.scale.set(0.1, 0.1, 0.1);
         model.rotation.set(Math.PI / 2, Math.PI / 2, 0);
-        
+
         model.traverse((child) => {
           if (child.isMesh) {
             child.userData = item;
           }
         });
         model.userData = item;
-        
+
+        // Zone tactile très grande pour mobile
+        const touchZoneGeometry = new THREE.SphereGeometry(8, 16, 16);
+        const touchZoneMaterial = new THREE.MeshBasicMaterial({
+          transparent: true,
+          opacity: 0,
+          depthWrite: false
+        });
+        const touchZone = new THREE.Mesh(touchZoneGeometry, touchZoneMaterial);
+        touchZone.userData = item;
+        touchZone.position.copy(model.position);
+        touchZone.name = 'touchZone';
+
         this.group.add(model);
+        this.group.add(touchZone);
       });
     } else {
       const geometry = new THREE.SphereGeometry(1, 32, 16);
       const material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
       const pin = new THREE.Mesh(geometry, material);
-      
+
       if (item.artworks) {
          pin.geometry = new THREE.BoxGeometry(1, 1, 1);
          pin.material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
@@ -56,7 +69,23 @@ export class MapPins {
       pin.userData = item;
       pin.position.set(item.x, item.y, -9.5);
       pin.name = 'pin';
+
+      // Zone tactile TRÈS GRANDE pour mobile (8x la taille du pin pour les ronds jaunes)
+      const touchZoneGeometry = item.artworks
+        ? new THREE.BoxGeometry(10, 10, 10)
+        : new THREE.SphereGeometry(8, 16, 16);
+      const touchZoneMaterial = new THREE.MeshBasicMaterial({
+        transparent: true,
+        opacity: 0,
+        depthWrite: false
+      });
+      const touchZone = new THREE.Mesh(touchZoneGeometry, touchZoneMaterial);
+      touchZone.userData = item;
+      touchZone.position.set(item.x, item.y, -9.5);
+      touchZone.name = 'touchZone';
+
       this.group.add(pin);
+      this.group.add(touchZone);
     }
   }
 
