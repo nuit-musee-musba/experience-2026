@@ -13,8 +13,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      component: ClickImg,
-      props: { path: "basilique.jpg" },
+      component: Map,
     },
     {
       path: "/credits",

@@ -44,7 +44,7 @@
     "y": 15,
     "museums": [
       {
-        "name": "Orsay",
+        "name": "Orsay", 
         "slug": "orsay",
         "x": -20,
         "y": 12,
