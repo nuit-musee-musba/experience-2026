@@ -60,6 +60,9 @@ const credits = [
   text-align: left;
   max-width: 600px;
   margin: 0 auto;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 ul {

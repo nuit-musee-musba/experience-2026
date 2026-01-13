@@ -1,25 +1,63 @@
 <script setup>
-import { onMounted, onBeforeUnmount, ref } from 'vue';
+import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import * as THREE from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { MapPlane } from '@/webgl/components/MapPlane.js';
 import { MapPins } from '@/webgl/components/MapPins.js';
 import all from '@/assets/world/all.svg?url';
 import BaseButton from '@/components/buttons/Button.vue';
+import {useRouter} from "vue-router";
+import {useRoute} from "vue-router";
+import { allData } from '@/store.js';
 
+const route = useRoute()
+const router = useRouter();
 const containerRef = ref(null);
 let scene, camera, renderer, controls, animationId;
 let isZooming = false;
-let lastCityMuseums = null;
+let activeCitySlug = ref(null);
 const destinationCoordonates = new THREE.Vector3();
 const targetDestination = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 let isTraveling = false;
 const currentStep = ref(0);
-const previousDestination = new THREE.Vector3();
 
 let mapPins;
+
+watch([() => route.params, allData], ([params, data]) => {
+  if (!data) return;
+  if (params.citySlug && params.museumSlug) {
+    const city = data.find(v => v.slug === params.citySlug);
+    const museum = city?.museums.find(m => m.slug === params.museumSlug);
+
+    if (museum) {
+      destinationCoordonates.set(museum.x, museum.y - 2, -9);
+      targetDestination.set(museum.x, museum.y, -9.5);
+      isTraveling = true;
+      isZooming = true;
+      currentStep.value = 2;
+    }
+  }
+  else if (params.citySlug) {
+    const city = data.find(v => v.slug === params.citySlug);
+    if (city) {
+      destinationCoordonates.set(city.x, city.y, 6);
+      renderLevel(city.museums);
+      isTraveling = false;
+      isZooming = true;
+      currentStep.value = 1;
+      activeCitySlug.value = city.slug;
+    }
+  }
+  else {
+    destinationCoordonates.set(-5, 5, 50);
+    renderLevel(data);
+    isTraveling = false;
+    isZooming = true;
+    currentStep.value = 0;
+  }
+}, { immediate: true, deep: true });
 
 async function ShowInfo(){
   const response = await fetch("/public/content/content.json");
@@ -27,7 +65,7 @@ async function ShowInfo(){
   return content;
 }
 
-let allPins = ShowInfo();
+let allPins = null;
 
 const createCircleTexture = () => {
   const canvas = document.createElement('canvas');
@@ -128,40 +166,24 @@ const onMapClick = (event) => {
     const vector = new THREE.Vector3();
     clickedObject.getWorldPosition(vector);
     if (clickedObject.userData.museums) {
-      previousDestination.copy(destinationCoordonates)
-      currentStep.value = 1;
-      destinationCoordonates.set(vector.x, vector.y, 6);
-      lastCityMuseums = clickedObject.userData.museums;
+      router.push(`/map/${clickedObject.userData.slug}`);
     }
     if (clickedObject.userData.artworks) {
-      previousDestination.copy(destinationCoordonates)
-      currentStep.value = 2;
-      destinationCoordonates.set(vector.x, vector.y - 2, -9);
-      targetDestination.set(vector.x, vector.y, -9.5);
-      isTraveling = true;
-
+      router.push(`/map/${activeCitySlug.value}/${clickedObject.userData.slug}`);
     }
-    isZooming = true;
-    if (clickedObject.userData.museums) renderLevel(clickedObject.userData.museums);
   }
 };
 
 const goBack = () => {
   if (currentStep.value === 1) {
-    renderLevel(allPins);
-    isZooming = true;
-    destinationCoordonates.set(-5, 5, 50);
-    currentStep.value = 0
+    router.push(`/map`);
   }
-
   if (currentStep.value === 2) {
-    renderLevel(lastCityMuseums);
-    isZooming = true;
-    isTraveling = false;
-    currentStep.value = 1;
-    destinationCoordonates.set(previousDestination.x, previousDestination.y, previousDestination.z)
+    router.push(`/map/${activeCitySlug.value}`);
   }
-
+  if (currentStep.value === 0) {
+    router.push(`/`);
+  }
 }
 
 const animate = () => {
@@ -193,6 +215,7 @@ const handleResize = () => {
 onMounted(async () => {
   initThree();
   allPins = await ShowInfo();
+  allData.value = allPins;
   mapPins.renderLevel(allPins);
   window.addEventListener('click', onMapClick);
   window.addEventListener('resize', handleResize);
@@ -213,15 +236,19 @@ onBeforeUnmount(() => {
   <BaseButton v-show="currentStep > 0"  @click="goBack" variant="black" class="back-button">
     Retour
   </BaseButton>
-  <button v-show="currentStep > 0" @click="goBack" class="back-button">Retour</button>
+  <router-view></router-view>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "@/styles/colors.scss";
+
 .scene-container {
   width: 100%;
   height: 100vh;
   outline: none;
 }
+
+
 
 .back-button {
   position: fixed;

@@ -23,7 +23,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 const isIdle = ref(false);
 let idleTimer = null;
 
-const IDLE_TIME = 3000;
+const IDLE_TIME = 1000;
 
 const resetTimer = () => {
   clearTimeout(idleTimer);

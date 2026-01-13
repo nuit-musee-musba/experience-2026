@@ -1,11 +1,13 @@
 [
   {
     "name": "Bordeaux",
+    "slug": "bordeaux",
     "x": -30,
     "y": 9,
     "museums": [
       {
         "name": "Musba",
+        "slug": "musba",
         "x": -30,
         "y": 5,
         "model3d": "church.glb",
@@ -17,6 +19,7 @@
       },
       {
         "name": "CAPC",
+        "slug": "capc",
         "x": -33,
         "y": 8,
         "artworks": [
@@ -29,11 +32,13 @@
   },
   {
     "name": "Paris",
+    "slug": "paris",
     "x": -20,
     "y": 15,
     "museums": [
       {
         "name": "Orsay",
+        "slug": "orsay",
         "x": -20,
         "y": 12,
         "artworks": [
@@ -44,6 +49,7 @@
       },
       {
         "name": "Louvre",
+        "slug": "louvre",
         "x": -23,
         "y": 9,
         "artworks": [
