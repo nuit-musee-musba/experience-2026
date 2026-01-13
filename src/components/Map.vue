@@ -2,7 +2,7 @@
 import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import * as THREE from 'three';
 import { CamerasManager } from '@/webgl/managers/CamerasManagers.js';
-import { MapPlane } from '@/webgl/components/MapPlane.js';
+// import { MapPlane } from '@/webgl/components/MapPlane.js';
 import { MapPins } from '@/webgl/components/MapPins.js';
 import { CONFIG } from '@/config/webgl.js';
 import all from '@/assets/world/all.svg?url';
@@ -36,8 +36,8 @@ watch([() => route.params, allData], ([params, data]) => {
     const museum = city?.museums.find(m => m.slug === params.museumSlug);
 
     if (museum) {
-      destinationCoordonates.set(museum.x, museum.y - 2, -9);
-      targetDestination.set(museum.x, museum.y, -9.5);
+      destinationCoordonates.set(museum.x, CONFIG.pins.travelDestinationZ, -museum.y + 5);
+      targetDestination.set(museum.x, CONFIG.pins.defaultZ, -museum.y);
       isTraveling = true;
       isZooming = true;
       currentStep.value = 2;
@@ -47,7 +47,7 @@ watch([() => route.params, allData], ([params, data]) => {
   else if (params.citySlug) {
     const city = data.find(v => v.slug === params.citySlug);
     if (city) {
-      destinationCoordonates.set(city.x, city.y, 6);
+      destinationCoordonates.set(city.x, 50, -city.y);
       renderLevel(city.museums);
       isTraveling = false;
       isZooming = true;
@@ -57,7 +57,7 @@ watch([() => route.params, allData], ([params, data]) => {
     }
   }
   else {
-    destinationCoordonates.set(-5, 5, 50);
+    destinationCoordonates.copy(CONFIG.camera.homePosition);
     renderLevel(data);
     isTraveling = false;
     isZooming = true;
@@ -153,7 +153,9 @@ const animate = () => {
     if (isTraveling && camerasManager.controls) {
       camerasManager.controls.target.lerp(new THREE.Vector3(targetDestination.x, targetDestination.y, targetDestination.z), 0.05);
     } else if (camerasManager.controls) {
-      camerasManager.controls.target.lerp(new THREE.Vector3(destinationCoordonates.x, destinationCoordonates.y, -9.5), 0.05);
+      // In map mode (Step 1), target is the point below camera?
+      // destinationCoordonates is (x, 50, -y). Target should be (x, 0, -y).
+      camerasManager.controls.target.lerp(new THREE.Vector3(destinationCoordonates.x, 0, destinationCoordonates.z), 0.05);
     }
   }
 

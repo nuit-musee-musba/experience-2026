@@ -21,14 +21,14 @@ export const CONFIG = {
       y: 0,
       z: 0,
     },
-    planeRotationX: 0,
-    planePositionZ: -10,
+    planeRotationX: -Math.PI / 2,
+    planePositionZ: 0,
   },
   pins: {
     circleTextureSize: 64,
     circleRadius: 28,
-    defaultZ: -9.5,
-    onceClickedZ: -10,
+    defaultZ: 0.5,
+    onceClickedZ: 0.1,
     artworks: {
       geometrySizes: [1, 1, 1],
       travelOffsetY: -2,
@@ -40,27 +40,29 @@ export const CONFIG = {
       hoverOffsetY: 0,
       hoverZ: 6,
     },
-    travelDestinationZ: -9,
+    travelDestinationZ: 10,
   },
   camera: {
     fov: 75,
     near: 0.1,
     far: 10000,
     initialPosition: new THREE.Vector3(0, 0, 0),
-    homePosition: new THREE.Vector3(-5, 5, 50),
+    homePosition: new THREE.Vector3(0, 100, 50),
     zoomLerpFactor: 0.05,
   },
   controls: {
     dampingFactor: 0.05,
-    minDistance: 0,
+    minDistance: 10,
     map: {
-      maxDistance: 130,
+      maxDistance: 200,
       minPolarAngle: 0,
-      maxPolarAngle: Math.PI,
-      minAzimuthAngle: -0.05,
-      maxAzimuthAngle: 0.05,
+      maxPolarAngle: Math.PI / 2 - 0.1, // Don't go below ground
+      minAzimuthAngle: -Infinity,
+      maxAzimuthAngle: Infinity,
     },
-    orbit: {},
+    orbit: {
+      maxPolarAngle: Math.PI / 2 - 0.1, // Don't go below ground
+    },
   },
   lights: {
     ambientIntensity: 0.5,

@@ -3,7 +3,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { CONFIG } from "@/config/webgl.js";
 
-export class MapPins {
+export class Map3D {
   constructor(scene) {
     this.scene = scene;
     this.group = new THREE.Group();
@@ -22,31 +22,9 @@ export class MapPins {
     this.group.position.z = CONFIG.mapPlane.planePositionZ;
   }
 
-  createCircleTexture() {
-    const canvas = document.createElement("canvas");
-    canvas.width = CONFIG.pins.circleTextureSize;
-    canvas.height = CONFIG.pins.circleTextureSize;
-    const ctx = canvas.getContext("2d");
-    ctx.beginPath();
-    ctx.arc(
-      CONFIG.pins.circleTextureSize / 2,
-      CONFIG.pins.circleTextureSize / 2,
-      CONFIG.pins.circleRadius,
-      0,
-      2 * Math.PI
-    );
-    ctx.fillStyle = "#ffffff";
-    ctx.fill();
-    return new THREE.CanvasTexture(canvas);
-  }
-
-  addPin(item) {
-    if (item.model3d) {
-      this.loader.load(`/models/${item.model3d}`, (gltf) => {
+  addModel() {
+      this.loader.load(`/models/map.glb`, (gltf) => {
         const model = gltf.scene;
-        model.position.set(item.x, item.y, CONFIG.pins.onceClickedZ);
-        model.scale.set(0.1, 0.1, 0.1);
-        model.rotation.set(Math.PI / 2, Math.PI / 2, 0);
 
         model.traverse((child) => {
           if (child.isMesh) {
@@ -57,33 +35,6 @@ export class MapPins {
 
         this.group.add(model);
       });
-    } else {
-      const geometry = new THREE.SphereGeometry(
-        CONFIG.pins.museums.sphereRadius,
-        CONFIG.pins.museums.sphereWidthSegments,
-        CONFIG.pins.museums.sphereHeightSegments
-      );
-      const material = new THREE.MeshBasicMaterial({
-        color: CONFIG.colors.pinYellow,
-      });
-      const pin = new THREE.Mesh(geometry, material);
-
-      if (item.artworks) {
-        pin.geometry = new THREE.BoxGeometry(
-          CONFIG.pins.artworks.geometrySizes[0],
-          CONFIG.pins.artworks.geometrySizes[1],
-          CONFIG.pins.artworks.geometrySizes[2]
-        );
-        pin.material = new THREE.MeshBasicMaterial({
-          color: CONFIG.colors.pinGreen,
-        });
-      }
-
-      pin.userData = item;
-      pin.position.set(item.x, item.y, CONFIG.pins.defaultZ);
-      pin.name = "pin";
-      this.group.add(pin);
-    }
   }
 
   renderLevel(dataList) {

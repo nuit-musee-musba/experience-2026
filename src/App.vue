@@ -2,9 +2,9 @@
 </script>
 
 <template>
-  <Idle>
+  <!-- <Idle> -->
     <router-view />
-  </Idle>
+  <!-- </Idle> -->
 </template>
 
 <style scoped>
@@ -12,5 +12,5 @@
 </style>
 
 <script setup>
-  import Idle from "@/components/Idle.vue";
+  // import Idle from "@/components/Idle.vue";
 </script>

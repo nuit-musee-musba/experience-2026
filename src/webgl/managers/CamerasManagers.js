@@ -52,7 +52,7 @@ export class CamerasManager {
       this.target?.z || 0
     );
 
-    // this.controls.maxPolarAngle = Math.PI;
+    this.controls.maxPolarAngle = CONFIG.controls.orbit.maxPolarAngle;
   }
 
   // Dans CamerasManager.js
