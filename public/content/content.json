@@ -1,71 +1,141 @@
-[
-  {
-    "name": "Bordeaux",
-    "slug": "bordeaux",
-    "x": -30,
-    "y": 9,
-    "museums": [
-      {
-        "name": "Musba",
-        "slug": "musba",
-        "x": -30,
-        "y": 5,
-        "model3d": "church.glb",
-        "artworks": [
-          {
-            "name": "oeuvre_1",
-            "slug": "church"
-          }
-        ]
-      },
-      {
-        "name": "CAPC",
-        "slug": "capc",
-        "x": -33,
-        "y": 8,
-        "artworks": [
-          {
-            "name": "Fille a la perle",
-            "slug": "fille-a-la-perle"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "Paris",
-    "slug": "paris",
-    "x": -20,
-    "y": 15,
-    "museums": [
-      {
-        "name": "Orsay",
-        "slug": "orsay",
-        "x": -20,
-        "y": 12,
-        "artworks": [
-          {
-            "name": "oeuvre_2",
-            "slug": "oeuvre-2"
-          },
-          {
-            "name": "oeuvre_3",
-            "slug": "oeuvre-3"
-          }
-        ]
-      },
-      {
-        "name": "Louvre",
-        "slug": "louvre",
-        "x": -23,
-        "y": 9,
-        "artworks": [
-          {
-            "name": "Joconde",
-            "slug": "joconde"
-          }
-        ]
-      }
-    ]
+{
+  "data": [
+    {
+      "id": 7,
+      "documentId": "ki9jxbcw6ikygajozi92g08g",
+      "name": "bordeaux",
+      "x": -30,
+      "y": 9,
+      "createdAt": "2026-01-13T09:00:38.771Z",
+      "updatedAt": "2026-01-13T09:00:45.650Z",
+      "publishedAt": "2026-01-13T09:00:45.659Z",
+      "slug": "bordeaux",
+      "museums": [
+        {
+          "id": 5,
+          "documentId": "z7297zhhb1nvq2x97bs18tef",
+          "name": "MusBA",
+          "slug": "musba",
+          "x": -30,
+          "y": 5,
+          "model3d": "church.glb",
+          "description": "oui",
+          "adress": "3 rue du Musée",
+          "createdAt": "2026-01-13T08:58:34.205Z",
+          "updatedAt": "2026-01-13T09:18:01.407Z",
+          "publishedAt": "2026-01-13T09:18:01.429Z",
+          "artworks": [
+            {
+              "id": 3,
+              "documentId": "ic0a653ycr53hoenve80y7pc",
+              "name": "Tableau de Jean Dupas",
+              "slug": "tableau-de-jean-dupas",
+              "description": "Ce magnifique tableau nanananan",
+              "year": 2024,
+              "technique": "peinture ",
+              "createdAt": "2026-01-13T08:59:13.916Z",
+              "updatedAt": "2026-01-13T09:05:27.787Z",
+              "publishedAt": "2026-01-13T09:05:27.807Z",
+              "images": [
+                {
+                  "id": 3,
+                  "documentId": "h6gjf84pd4v567icwdtvnwvj",
+                  "file": "photo.png",
+                  "createdAt": "2026-01-13T09:00:11.645Z",
+                  "updatedAt": "2026-01-13T09:05:33.098Z",
+                  "publishedAt": "2026-01-13T09:05:33.113Z",
+                  "description": "Photo de la prise de vue",
+                  "copyright": "Copyright tout droit reservés",
+                  "conservation": "Bien conservé",
+                  "crops": [
+                    {
+                      "id": 2,
+                      "documentId": "v63xkc9fk853z5g6235ic1p9",
+                      "file": "image1_cropX",
+                      "description": "Sur cette partie de l'oeuvre....",
+                      "artwork_location_x": null,
+                      "artwork_location_y": null,
+                      "createdAt": "2026-01-13T09:00:34.198Z",
+                      "updatedAt": "2026-01-13T09:00:34.198Z",
+                      "publishedAt": "2026-01-13T09:00:34.213Z"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": 7,
+              "documentId": "pmygjgozhj4jkgefoh92xswo",
+              "name": "La Gloire de Bordeaux, La Gloire de Bordeaux La Gloire de Bordeaux",
+              "slug": "une-magnifique-oeuvre",
+              "description": " Cette fresque de 200 mètres carrés est réalisée par Dupas pour décorer la Salle des conférences de la Bourse du Travail de Bordeaux. Par le biais de différents allégories, elle rend hommage à la ville qui doit sa renommée à la richesse de son passé. Cette composition présente les âges successifs de l'histoire de la ville, dont le blason est placé au centre, selon leur déroulement chronologique de droite à gauche. Cette fresque de 200 mètres carrés est réalisée par Dupas pour décorer la Salle des conférences de la Bourse du Travail de Bordeaux. Par le biais de différents allégories, elle rend hommage à la ville qui doit sa renommée à la richesse de son passé. Cette composition présente les âges successifs de l'histoire de la ville, dont le blason est placé au centre, selon leur déroulement chronologique de droite à gauche. Cette fresque de 200 mètres carrés est réalisée par Dupas pour décorer la Salle des conférences de la Bourse du Travail de Bordeaux. Par le biais de différents allégories, elle rend hommage à la ville qui doit sa renommée à la richesse de son passé. Cette composition présente les âges successifs de l'histoire de la ville, dont le blason est placé au centre, selon leur déroulement chronologique de droite à gauche.",
+              "place": "Bordeaux, Bourse du Travail",
+              "year": 2005,
+              "technique": "photographie",
+              "createdAt": "2026-01-13T09:16:56.855Z",
+              "updatedAt": "2026-01-13T09:20:32.415Z",
+              "publishedAt": "2026-01-13T09:20:32.432Z",
+              "images": [
+                {
+                  "id": 6,
+                  "documentId": "pexdlia9kjqytlsxl0lwaf68",
+                  "file": "magnifiquephoto",
+                  "createdAt": "2026-01-13T09:17:16.977Z",
+                  "updatedAt": "2026-01-13T09:17:42.216Z",
+                  "publishedAt": "2026-01-13T09:17:42.222Z",
+                  "description": "oui",
+                  "copyright": "ça m'appartiens",
+                  "conservation": "en conserve",
+                  "crops": [
+                    {
+                      "id": 4,
+                      "documentId": "tl54zx7kjmxrw50ulgp8gpqt",
+                      "file": "crop2",
+                      "description": null,
+                      "artwork_location_x": null,
+                      "artwork_location_y": null,
+                      "createdAt": "2026-01-13T09:17:24.247Z",
+                      "updatedAt": "2026-01-13T09:17:24.247Z",
+                      "publishedAt": "2026-01-13T09:17:24.251Z"
+                    },
+                    {
+                      "id": 6,
+                      "documentId": "uow6bhzwzh8lq8hsc4ukhbl2",
+                      "file": "crop3",
+                      "description": null,
+                      "artwork_location_x": null,
+                      "artwork_location_y": null,
+                      "createdAt": "2026-01-13T09:17:33.524Z",
+                      "updatedAt": "2026-01-13T09:17:33.524Z",
+                      "publishedAt": "2026-01-13T09:17:33.540Z"
+                    }
+                  ]
+                },
+                {
+                  "id": 8,
+                  "documentId": "nnzaub0rrpdcj594uthyfxv2",
+                  "file": "deuxième magnifique photo",
+                  "createdAt": "2026-01-13T09:20:22.003Z",
+                  "updatedAt": "2026-01-13T09:20:22.003Z",
+                  "publishedAt": "2026-01-13T09:20:22.018Z",
+                  "description": "oui oui oui oui ",
+                  "copyright": "test",
+                  "conservation": null,
+                  "crops": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 25,
+      "pageCount": 1,
+      "total": 1
+    }
   }
-]
+}

@@ -4,7 +4,7 @@ import Map from "@/components/Map.vue";
 import Infos from "@/components/infos.vue";
 import ClickImg from "@/components/ClickImg.vue";
 import Carousel from "@/components/Carousel.vue";
-import artworkDetails from "@/components/artworkDetails.vue";
+import ArtworkDetails from "@/components/ArtworkDetails.vue";
 import ArtworkList from "@/components/ArtworkList.vue";
 
 
@@ -13,7 +13,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      component: ClickImg,
+      component: Map,
       props: { path: "basilique.jpg" },
     },
     {
@@ -27,7 +27,7 @@ const router = createRouter({
         {
           path: "",
           name: "world-map",
-          component: null
+          component: null,
         },
         {
           path: ":citySlug",
@@ -42,18 +42,18 @@ const router = createRouter({
                 {
                   path: ":artworkSlug",
                   name: "artwork-detail",
-                  component: artworkDetails,
+                  component: ArtworkDetails,
                 },
                 {
                   path: "list",
                   name: "artworks-lists",
                   component: ArtworkList,
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                },
+              ],
+            },
+          ],
+        },
+      ],
     },
     {
       path: "/img",
@@ -64,7 +64,7 @@ const router = createRouter({
       path: "/carousel",
       component: Carousel,
       props: { images: ["/images/basilique.jpg", "/images/basilique2.jpg"] },
-    }
+    },
   ],
 });
 

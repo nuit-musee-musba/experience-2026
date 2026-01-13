@@ -21,15 +21,6 @@ h2,
   margin-bottom: unset;
 }
 
-p {
-  font-family: var(--font-familly-sans-serif), sans-serif;
-  font-size: 32px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  margin-bottom: unset;
-}
-
 a {
   font-family: var(--font-familly-sans-serif), sans-serif;
   font-size: 32px;
@@ -57,14 +48,18 @@ a {
 
 @mixin title-h2 {
   font-family: $font-family-headings, sans-serif;
-  font-size: 100px;
+  font-size: 128px;
   font-weight: 400;
+  line-height: 100%;
+  letter-spacing: 0;
 }
 
 @mixin text-body {
-  font-family: $font-family-headings, sans-serif;
-  font-size: 100px; 
+  font-family: $font-family-sans-serif, sans-serif;
+  font-size: 48px; 
   font-weight: 400;
+  line-height: 140%;
+  letter-spacing: 0;
 }
 
 @mixin text-link {
