@@ -1,17 +1,16 @@
 <template>
-  <div class="app-wrapper">
     <slot />
-  </div>
 </template>
 
 <script setup>
 import { onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
+import { APP_CONFIG } from "@/config/appConfig.js";
 
 const router = useRouter();
 
 let idleTimer = null;
-const IDLE_TIME = 30000; // 30 secondes
+const IDLE_TIME = APP_CONFIG.idleTime;
 
 const resetTimer = () => {
   clearTimeout(idleTimer);
@@ -39,7 +38,5 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.app-wrapper {
-  min-height: 100vh;
-}
+  
 </style>
