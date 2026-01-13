@@ -48,7 +48,20 @@ export class MapPins {
         });
         model.userData = item;
 
+        // Zone tactile très grande pour mobile
+        const touchZoneGeometry = new THREE.SphereGeometry(8, 16, 16);
+        const touchZoneMaterial = new THREE.MeshBasicMaterial({
+          transparent: true,
+          opacity: 0,
+          depthWrite: false
+        });
+        const touchZone = new THREE.Mesh(touchZoneGeometry, touchZoneMaterial);
+        touchZone.userData = item;
+        touchZone.position.copy(model.position);
+        touchZone.name = 'touchZone';
+
         this.group.add(model);
+        this.group.add(touchZone);
       });
     } else {
       const geometry = new THREE.SphereGeometry(
@@ -73,9 +86,25 @@ export class MapPins {
       }
 
       pin.userData = item;
-      pin.position.set(item.x, item.y, CONFIG.pins.defaultZ);
-      pin.name = "pin";
+      pin.position.set(item.x, item.y, -9.5);
+      pin.name = 'pin';
+
+      // Zone tactile TRÈS GRANDE pour mobile (8x la taille du pin pour les ronds jaunes)
+      const touchZoneGeometry = item.artworks
+        ? new THREE.BoxGeometry(10, 10, 10)
+        : new THREE.SphereGeometry(8, 16, 16);
+      const touchZoneMaterial = new THREE.MeshBasicMaterial({
+        transparent: true,
+        opacity: 0,
+        depthWrite: false
+      });
+      const touchZone = new THREE.Mesh(touchZoneGeometry, touchZoneMaterial);
+      touchZone.userData = item;
+      touchZone.position.set(item.x, item.y, -9.5);
+      touchZone.name = 'touchZone';
+
       this.group.add(pin);
+      this.group.add(touchZone);
     }
   }
 
