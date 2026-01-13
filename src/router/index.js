@@ -1,11 +1,12 @@
 import {createRouter, createWebHistory} from "vue-router";
 import Credits from "@/components/Credits.vue";
 import Map from "@/components/Map.vue";
-import Infos from "@/components/Infos.vue";
+import Infos from "@/components/infos.vue";
 import ClickImg from "@/components/ClickImg.vue";
 import Carousel from "@/components/Carousel.vue";
 import IdleView from "@/components/IdleView.vue";
 import artworkDetails from "@/components/artworkDetails.vue";
+import ArtworkList from "@/components/ArtworkList.vue";
 
 
 const router = createRouter({
@@ -43,6 +44,11 @@ const router = createRouter({
                   path: ":artworkSlug",
                   name: "artwork-detail",
                   component: artworkDetails,
+                },
+                {
+                  path: "list",
+                  name: "artworks-lists",
+                  component: ArtworkList,
                 }
               ]
             }

@@ -248,8 +248,6 @@ onBeforeUnmount(() => {
   outline: none;
 }
 
-
-
 .back-button {
   position: fixed;
   right: 20px;

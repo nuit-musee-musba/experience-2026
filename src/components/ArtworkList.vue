@@ -4,26 +4,22 @@ import { allData } from '@/store.js';
 import { computed } from 'vue';
 const route = useRoute();
 
-const artwork = computed(() => {
+const museum = computed(() => {
   if (allData.value) {
     const laVille = allData.value.find( ville => ville.slug === route.params.citySlug );
     if (laVille) {
       const leMusee = laVille.museums.find( m => m.slug === route.params.museumSlug );
-      if (leMusee) {
-        const leArtwork = leMusee.artworks.find( a => a.slug === route.params.artworkSlug );
-        return leArtwork;
-      }
+      return leMusee;
     }
   }
-  return null;
 })
-
 
 </script>
 <template>
-  <div v-if="artwork" class="artwork-detail-box">
-    <h2>{{ artwork.name }}</h2>
-    <p>{{ artwork.description }}</p>
+  <div v-if="museum" class="artwork-detail-box">
+    <RouterLink  class="test" :to="`/map/${route.params.citySlug}/${museum.slug}/${artwork.slug}`" v-for="artwork in museum.artworks " :key="artwork.slug">
+      {{ artwork.name }}
+    </RouterLink>
   </div>
 </template>
 
@@ -32,8 +28,8 @@ const artwork = computed(() => {
   position: fixed;
   left: 0;
   top: 0;
-  height: 100%;
   width: 100%;
+  height: 100%;
   background: white;
 }
 </style>

@@ -13,7 +13,8 @@
         "model3d": "church.glb",
         "artworks": [
           {
-            "name": "oeuvre_1"
+            "name": "oeuvre_1",
+            "slug": "church"
           }
         ]
       },
@@ -24,7 +25,8 @@
         "y": 8,
         "artworks": [
           {
-            "name": "Fille a la perle"
+            "name": "Fille a la perle",
+            "slug": "fille-a-la-perle"
           }
         ]
       }
@@ -43,7 +45,12 @@
         "y": 12,
         "artworks": [
           {
-            "name": "oeuvre_2"
+            "name": "oeuvre_2",
+            "slug": "oeuvre-2"
+          },
+          {
+            "name": "oeuvre_3",
+            "slug": "oeuvre-3"
           }
         ]
       },
@@ -54,7 +61,8 @@
         "y": 9,
         "artworks": [
           {
-            "name": "Joconde"
+            "name": "Joconde",
+            "slug": "joconde"
           }
         ]
       }
