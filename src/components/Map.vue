@@ -3,6 +3,7 @@ import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import * as THREE from 'three';
 import { CamerasManager } from '@/webgl/managers/CamerasManagers.js';
 import { MapPlane } from '@/webgl/components/MapPlane.js';
+import { Map3D } from '@/webgl/components/Map3D.js';
 import { MapPins } from '@/webgl/components/MapPins.js';
 import { CONFIG } from '@/config/webgl.js';
 import all from '@/assets/world/all.svg?url';
@@ -82,6 +83,9 @@ const initThree = () => {
   scene = new THREE.Scene();
   scene.background = new THREE.Color(CONFIG.colors.background);
 
+  const axesHelper = new THREE.AxesHelper(5);
+  scene.add(axesHelper);
+
   camera = new THREE.PerspectiveCamera(CONFIG.camera.fov, containerRef.value.clientWidth / containerRef.value.clientHeight, CONFIG.camera.near, CONFIG.camera.far);
   camera.position.copy(CONFIG.camera.homePosition);
 
@@ -106,6 +110,9 @@ const initThree = () => {
 
   camerasManager = new CamerasManager(camera, renderer.domElement, 'map');
   camera.position.copy(CONFIG.camera.homePosition);
+
+  // eslint-disable-next-line no-unused-vars
+  const map3D = new Map3D(scene);
 
   animate();
 };
