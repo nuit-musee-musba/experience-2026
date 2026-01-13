@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory} from "vue-router";
 import Credits from "@/components/Credits.vue";
 import Map from "@/components/Map.vue";
-import Infos from "@/components/infos.vue";
+import Infos from "@/components/Infos.vue";
 import ClickImg from "@/components/ClickImg.vue";
 import Carousel from "@/components/Carousel.vue";
 import artworkDetails from "@/components/artworkDetails.vue";

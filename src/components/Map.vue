@@ -64,7 +64,7 @@ watch([() => route.params, allData], ([params, data]) => {
 }, { immediate: true, deep: true });
 
 async function ShowInfo() {
-  const response = await fetch("/public/content/content.json");
+  const response = await fetch("content/content.json");
   const content = await response.json();
   return content;
 }
@@ -221,7 +221,7 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/colors.scss";
+@use "@/styles/colors.scss";
 
 .scene-container {
   width: 100%;
