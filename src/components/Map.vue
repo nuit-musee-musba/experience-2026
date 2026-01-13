@@ -19,6 +19,7 @@ const router = useRouter();
 const containerRef = ref(null);
 let scene, camera, renderer, camerasManager, animationId, stats;
 let mapPlane, ambientLight, directionalLight;
+let map3D;
 let isZooming = false;
 const activeCitySlug = ref(null);
 const destinationCoordonates = new THREE.Vector3();
@@ -111,8 +112,7 @@ const initThree = () => {
   camerasManager = new CamerasManager(camera, renderer.domElement, 'map');
   camera.position.copy(CONFIG.camera.homePosition);
 
-  // eslint-disable-next-line no-unused-vars
-  const map3D = new Map3D(scene);
+  map3D = new Map3D(scene);
 
   animate();
 };
@@ -136,6 +136,20 @@ const onMapClick = (event) => {
     }
     if (clickedObject.userData.artworks) {
       router.push(`/map/${activeCitySlug.value}/${clickedObject.userData.slug}`);
+    }
+  } else {
+    // Check for 3D map interactables
+    if (!map3D) return;
+    const interactables = map3D.getInteractables();
+    if (interactables && interactables.length > 0) {
+      const intersects3D = raycaster.intersectObjects(interactables, true);
+      if (intersects3D.length > 0) {
+        const clicked3D = intersects3D[0].object;
+        if (clicked3D.userData.type === 'city') {
+          router.push(`/map/${clicked3D.userData.slug}`);
+
+        }
+      }
     }
   }
 };

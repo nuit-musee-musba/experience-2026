@@ -9,10 +9,6 @@ export class Map3D {
     this.url = "/models/models.glb";
 
     this.group = new THREE.Group();
-    // Use a nested group to match MapPlane structure if needed for internal offset corrections,
-    // although MapPlane has 'plane' (group) -> 'mapGroup' (group) -> 'group' (loaded svg).
-    // Here we can stick to a similar structure: this.group is the main container (like 'plane'),
-    // and we load the model into it (like 'mapGroup').
 
     this.loader = new GLTFLoader();
     this.dracoLoader = new DRACOLoader();
@@ -20,6 +16,10 @@ export class Map3D {
     this.loader.setDRACOLoader(this.dracoLoader);
 
     this.init();
+
+    this.material = new THREE.MeshMatcapMaterial({
+      matcap: new THREE.TextureLoader().load("/textures/matcap.png"),
+    });
   }
 
   init() {
@@ -29,15 +29,31 @@ export class Map3D {
   }
 
   loadModel() {
+    this.interactables = [];
+
     this.loader.load(this.url, (gltf) => {
       this.model = gltf.scene;
 
-      // Apply initial internal consistency corrections if any are specific to the model source
-      // For now, we assume the model itself is the "mapGroup" equivalent.
+      this.model.traverse((child) => {
+        child.material = this.material;
+        if (child.name === "new-york") {
+          this.interactables.push(child);
+          child.userData = {
+            slug: "new-york",
+            type: "city",
+          };
+        }
+      });
 
-      // MapPlane applies corrections to 'mapGroup'.
+      // const materials = {};
+      // this.model.traverse((object) => {
+      //   if (object.isMesh) {
+      //     materials[object.material.name] = this.material;
+      //   }
+      // });
+
       if (this.model) {
-        this.model.scale.y = CONFIG.mapPlane.scaleY;
+        this.model.scale.set(10, 10, 10);
         this.model.position.x = CONFIG.mapPlane.correction.x;
         this.model.position.y = CONFIG.mapPlane.correction.y;
         this.model.position.z = CONFIG.mapPlane.correction.z;
@@ -47,13 +63,14 @@ export class Map3D {
     });
   }
 
+  getInteractables() {
+    return this.interactables;
+  }
+
   update() {
-    // Apply corrections to the whole plane group (rotation/position)
-    // mirroring MapPlane.js update() logic
     this.group.rotation.x = CONFIG.mapPlane.planeRotationX;
     this.group.position.z = CONFIG.mapPlane.planePositionZ;
 
-    // If we want to support dynamic updates of internal corrections like MapPlane:
     if (this.model) {
       this.model.position.x = CONFIG.mapPlane.correction.x;
       this.model.position.y = CONFIG.mapPlane.correction.y;

@@ -1,5 +1,12 @@
 [
   {
+    "name": "New York",
+    "slug": "new-york",
+    "x": 10,
+    "y": 10,
+    "museums": []
+  },
+  {
     "name": "Bordeaux",
     "slug": "bordeaux",
     "x": -30,
