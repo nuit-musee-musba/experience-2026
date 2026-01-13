@@ -5,6 +5,7 @@ import Infos from "@/components/Infos.vue";
 import ClickImg from "@/components/ClickImg.vue";
 import Carousel from "@/components/Carousel.vue";
 import IdleView from "@/components/IdleView.vue";
+import Oeuvres from "@/components/Galerie.vue";
 import artworkDetails from "@/components/artworkDetails.vue";
 
 
@@ -19,6 +20,10 @@ const router = createRouter({
     {
       path: "/credits",
       component: Credits,
+    },
+    {
+      path: "/oeuvres",
+      component: Oeuvres,
     },
     {
       path: "/map",
