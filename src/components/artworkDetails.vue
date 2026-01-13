@@ -36,4 +36,6 @@ const artwork = computed(() => {
   width: 100%;
   background: white;
 }
+
+
 </style>
