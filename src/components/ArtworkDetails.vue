@@ -72,7 +72,7 @@ const goToPrev = () => {
   <div @click.stop v-if="artwork" class="artwork-detail-box">
     <h2>{{ artwork.name }}</h2>
 
-    <div v-if="artwork.length > 1">
+    <div v-if="museum.artworks.length > 1">
       <button @click="goToNext">test</button>
       <button @click="goToPrev">test</button>
     </div>
