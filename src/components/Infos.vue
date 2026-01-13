@@ -23,10 +23,17 @@ const museum = computed(() => {
   <Transition name="fade" mode="out-in" appear>
 
     <div v-if="museum">
+
       <p  :key="museum.slug">{{ museum.name }}</p>
-    <p v-for="artwork in museum.artworks " :key="artwork.slug">
-      {{ artwork.name }}
-    </p>
+
+      <RouterLink v-if="museum.artworks.length < 2" class="test" :to="`/map/${route.params.citySlug}/${museum.slug}/${artwork.slug}`" v-for="artwork in museum.artworks " :key="artwork.slug">
+        {{ artwork.name }}
+      </RouterLink>
+      <RouterLink v-if="museum.artworks.length > 1" class="test" :to="`/map/${route.params.citySlug}/${museum.slug}/list`">
+        Voir toutes les oeuvres du lieu
+      </RouterLink>
+      <router-view />
+
     </div>
 
   </Transition>
@@ -49,7 +56,11 @@ const museum = computed(() => {
   transform: translateY(-10px);
 }
 
-p {
+.test {
+  margin-top: 100px;
+}
+
+p, .test {
   position: fixed;
   left: 0;
   top: 0;
