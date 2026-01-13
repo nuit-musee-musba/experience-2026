@@ -26,10 +26,10 @@ const museum = computed(() => {
 
       <p  :key="museum.slug">{{ museum.name }}</p>
 
-      <RouterLink v-if="museum.artworks.length < 2" class="test" :to="`/map/${route.params.citySlug}/${museum.slug}/${artwork.slug}`" v-for="artwork in museum.artworks " :key="artwork.slug">
+      <RouterLink @click.stop  v-if="museum.artworks.length < 2" class="test" :to="`/${route.params.citySlug}/${museum.slug}/${artwork.slug}`" v-for="artwork in museum.artworks " :key="artwork.slug">
         {{ artwork.name }}
       </RouterLink>
-      <RouterLink v-if="museum.artworks.length > 1" class="test" :to="`/map/${route.params.citySlug}/${museum.slug}/list`">
+      <RouterLink @click.stop v-if="museum.artworks.length > 1" class="test" :to="`/${route.params.citySlug}/${museum.slug}/list`">
         Voir toutes les oeuvres du lieu
       </RouterLink>
       <router-view />

@@ -15,6 +15,7 @@ import { Stats } from '@/webgl/utils/Stats.js';
 const route = useRoute();
 const router = useRouter();
 const containerRef = ref(null);
+const props = defineProps(['path']);
 
 let scene, camera, renderer, controls, animationId, stats;
 let mapPlane, ambientLight, directionalLight, mapPins;
@@ -161,14 +162,14 @@ const onMapClick = (event) => {
   const intersects = raycaster.intersectObjects(mapPins.getPins(), true);
   if (intersects.length > 0) {
     const clickedObject = intersects[0].object;
-    if (clickedObject.userData.museums) router.push(`/map/${clickedObject.userData.slug}`);
-    else if (clickedObject.userData.artworks) router.push(`/map/${activeCitySlug.value}/${clickedObject.userData.slug}`);
+    if (clickedObject.userData.museums) router.push(`/${clickedObject.userData.slug}`);
+    else if (clickedObject.userData.artworks) router.push(`/${activeCitySlug.value}/${clickedObject.userData.slug}`);
   }
 };
 
 const goBack = () => {
-  if (currentStep.value === 1) router.push(`/map`);
-  else if (currentStep.value === 2) router.push(`/map/${activeCitySlug.value}`);
+  if (currentStep.value === 1) router.push(`/`);
+  else if (currentStep.value === 2) router.push(`/${activeCitySlug.value}`);
   else router.push(`/`);
 };
 

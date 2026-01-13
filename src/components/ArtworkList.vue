@@ -17,7 +17,7 @@ const museum = computed(() => {
 </script>
 <template>
   <div v-if="museum" class="artwork-detail-box">
-    <RouterLink  class="test" :to="`/map/${route.params.citySlug}/${museum.slug}/${artwork.slug}`" v-for="artwork in museum.artworks " :key="artwork.slug">
+    <RouterLink @click.stop class="test" :to="`/${route.params.citySlug}/${museum.slug}/${artwork.slug}`" v-for="artwork in museum.artworks " :key="artwork.slug">
       {{ artwork.name }}
     </RouterLink>
   </div>
