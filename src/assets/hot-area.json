@@ -2,21 +2,25 @@
   {
     "image": "basilique.jpg",
     "areas": {
-      "square1": {
+      "area1": {
+        "shape": "square",
         "x": 20,
         "y": 30,
         "w": 15,
         "h": 10,
-        "log": "area 1"
+        "log": "area 1",
+        "text": "lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+        "imageAlt": "lorem ipsum dolor sit amet, consectetur adipiscing elit..."
       },
-      "square2": {
+      "area2": {
+        "shape": "circle",
         "x": 55,
         "y": 40,
         "w": 20,
         "h": 15,
         "log": "area 2"
       },
-      "square3": {
+      "area3": {
         "x": 50,
         "y": 40,
         "w": 30,
