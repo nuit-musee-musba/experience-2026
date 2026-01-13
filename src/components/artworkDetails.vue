@@ -24,6 +24,7 @@ const artwork = computed(() => {
   <div v-if="artwork" class="artwork-detail-box">
     <h2>{{ artwork.name }}</h2>
     <p>{{ artwork.description }}</p>
+    test
   </div>
 </template>
 
