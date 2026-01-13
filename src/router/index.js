@@ -4,7 +4,6 @@ import Map from "@/components/Map.vue";
 import Infos from "@/components/Infos.vue";
 import ClickImg from "@/components/ClickImg.vue";
 import Carousel from "@/components/Carousel.vue";
-import IdleView from "@/components/IdleView.vue";
 import artworkDetails from "@/components/artworkDetails.vue";
 
 
@@ -59,11 +58,7 @@ const router = createRouter({
       path: "/carousel",
       component: Carousel,
       props: { images: ["/images/basilique.jpg", "/images/basilique2.jpg"] },
-    },
-    {
-      path: "/idle",
-      component: IdleView,
-    },
+    }
   ],
 });
 
