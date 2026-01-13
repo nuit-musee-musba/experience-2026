@@ -1,6 +1,7 @@
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import { CONFIG } from "@/config/webgl.js";
 
 export class MapPins {
   constructor(scene) {
@@ -10,18 +11,24 @@ export class MapPins {
     this.circleTexture = this.createCircleTexture();
     this.loader = new GLTFLoader();
     this.dracoLoader = new DRACOLoader();
-    this.dracoLoader.setDecoderPath('/draco/');
+    this.dracoLoader.setDecoderPath("/draco/");
     this.loader.setDRACOLoader(this.dracoLoader);
   }
 
   createCircleTexture() {
-    const canvas = document.createElement('canvas');
-    canvas.width = 64;
-    canvas.height = 64;
-    const ctx = canvas.getContext('2d');
+    const canvas = document.createElement("canvas");
+    canvas.width = CONFIG.pins.circleTextureSize;
+    canvas.height = CONFIG.pins.circleTextureSize;
+    const ctx = canvas.getContext("2d");
     ctx.beginPath();
-    ctx.arc(32, 32, 28, 0, 2 * Math.PI);
-    ctx.fillStyle = '#ffffff';
+    ctx.arc(
+      CONFIG.pins.circleTextureSize / 2,
+      CONFIG.pins.circleTextureSize / 2,
+      CONFIG.pins.circleRadius,
+      0,
+      2 * Math.PI
+    );
+    ctx.fillStyle = "#ffffff";
     ctx.fill();
     return new THREE.CanvasTexture(canvas);
   }
@@ -30,7 +37,7 @@ export class MapPins {
     if (item.model3d) {
       this.loader.load(`/models/${item.model3d}`, (gltf) => {
         const model = gltf.scene;
-        model.position.set(item.x, item.y, -10);
+        model.position.set(item.x, item.y, CONFIG.pins.onceClickedZ);
         model.scale.set(0.1, 0.1, 0.1);
         model.rotation.set(Math.PI / 2, Math.PI / 2, 0);
 
@@ -57,13 +64,25 @@ export class MapPins {
         this.group.add(touchZone);
       });
     } else {
-      const geometry = new THREE.SphereGeometry(1, 32, 16);
-      const material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+      const geometry = new THREE.SphereGeometry(
+        CONFIG.pins.museums.sphereRadius,
+        CONFIG.pins.museums.sphereWidthSegments,
+        CONFIG.pins.museums.sphereHeightSegments
+      );
+      const material = new THREE.MeshBasicMaterial({
+        color: CONFIG.colors.pinYellow,
+      });
       const pin = new THREE.Mesh(geometry, material);
 
       if (item.artworks) {
-         pin.geometry = new THREE.BoxGeometry(1, 1, 1);
-         pin.material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        pin.geometry = new THREE.BoxGeometry(
+          CONFIG.pins.artworks.geometrySizes[0],
+          CONFIG.pins.artworks.geometrySizes[1],
+          CONFIG.pins.artworks.geometrySizes[2]
+        );
+        pin.material = new THREE.MeshBasicMaterial({
+          color: CONFIG.colors.pinGreen,
+        });
       }
 
       pin.userData = item;
@@ -101,11 +120,11 @@ export class MapPins {
         object.traverse((child) => {
           if (child.geometry) child.geometry.dispose();
           if (child.material) {
-             if (child.material.length) {
-                 child.material.forEach(m => m.dispose());
-             } else {
-                 child.material.dispose();
-             }
+            if (child.material.length) {
+              child.material.forEach((m) => m.dispose());
+            } else {
+              child.material.dispose();
+            }
           }
         });
       }
