@@ -4,18 +4,22 @@ import * as THREE from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { MapPlane } from '@/webgl/components/MapPlane.js';
 import { MapPins } from '@/webgl/components/MapPins.js';
+import { CONFIG } from '@/config/webgl.js';
 import all from '@/assets/world/all.svg?url';
 import BaseButton from '@/components/buttons/Button.vue';
-import {useRouter} from "vue-router";
-import {useRoute} from "vue-router";
+import { useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { allData } from '@/store.js';
+import { GUI } from '@/webgl/utils/GUI.js';
+import { Stats } from '@/webgl/utils/Stats.js';
 
 const route = useRoute()
 const router = useRouter();
 const containerRef = ref(null);
-let scene, camera, renderer, controls, animationId;
+let scene, camera, renderer, controls, animationId, stats;
+let mapPlane, ambientLight, directionalLight;
 let isZooming = false;
-let activeCitySlug = ref(null);
+const activeCitySlug = ref(null);
 const destinationCoordonates = new THREE.Vector3();
 const targetDestination = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
@@ -59,7 +63,7 @@ watch([() => route.params, allData], ([params, data]) => {
   }
 }, { immediate: true, deep: true });
 
-async function ShowInfo(){
+async function ShowInfo() {
   const response = await fetch("/public/content/content.json");
   const content = await response.json();
   return content;
@@ -67,85 +71,51 @@ async function ShowInfo(){
 
 let allPins = null;
 
-const createCircleTexture = () => {
-  const canvas = document.createElement('canvas');
-  canvas.width = 64;
-  canvas.height = 64;
-  const ctx = canvas.getContext('2d');
-  ctx.beginPath();
-  ctx.arc(32, 32, 28, 0, 2 * Math.PI);
-  ctx.fillStyle = '#ffffff';
-  ctx.fill();
-  return new THREE.CanvasTexture(canvas);
-};
 
-const circleTexture = createCircleTexture();
-
-const addPin = (item) => {
-
-  let geometry = null;
-  let material = null;
-
-  if (item.artworks) {
-    geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-    material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-
-  } else {
-    geometry = new THREE.SphereGeometry(1, 32, 16);
-    material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-  }
-
-  const pin = new THREE.Mesh(geometry, material);
-  pin.userData = item;
-  pin.position.set(item.x, item.y, -9.5);
-  pin.name = 'marker';
-  pinsGroup.add(pin);
-
-
-
-};
 
 const initThree = () => {
   if (!containerRef.value) return;
 
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+  scene.background = new THREE.Color(CONFIG.colors.background);
 
-  camera = new THREE.PerspectiveCamera(75, containerRef.value.clientWidth / containerRef.value.clientHeight, 0.1, 10000);
-  camera.position.set(-5, 5, 50);
+  camera = new THREE.PerspectiveCamera(CONFIG.camera.fov, containerRef.value.clientWidth / containerRef.value.clientHeight, CONFIG.camera.near, CONFIG.camera.far);
+  camera.position.copy(CONFIG.camera.homePosition);
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight);
   renderer.setPixelRatio(1);
   containerRef.value.appendChild(renderer.domElement);
 
-  const mapPlane = new MapPlane(scene, all, 1000, 700);
-  mapPlane.plane.position.z = -10;
+  stats = new Stats(containerRef.value);
+
+
+  mapPlane = new MapPlane(scene, all, CONFIG.mapPlane.width, CONFIG.mapPlane.height);
 
   mapPins = new MapPins(scene);
 
-  const ambientLight = new THREE.AmbientLight(0xf0f0f0, 0.5);
+  ambientLight = new THREE.AmbientLight(CONFIG.colors.ambientLight, CONFIG.lights.ambientIntensity);
   scene.add(ambientLight);
 
-  const directionalLight = new THREE.DirectionalLight(0xf0f0f0, 1);
-  directionalLight.position.set(5, 5, 5);
+  directionalLight = new THREE.DirectionalLight(CONFIG.colors.directionalLight, CONFIG.lights.directionalIntensity);
+  directionalLight.position.copy(CONFIG.lights.directionalPosition);
   scene.add(directionalLight);
 
   controls = new MapControls(camera, renderer.domElement);
   controls.enableDamping = true;
-  controls.dampingFactor = 0.05;
+  controls.dampingFactor = CONFIG.controls.dampingFactor;
   controls.screenSpacePanning = false;
 
-  controls.minDistance = 0;
-  controls.maxDistance = 130;
+  controls.minDistance = CONFIG.controls.minDistance;
+  controls.maxDistance = CONFIG.controls.map.maxDistance;
 
-  controls.maxAzimuthAngle = 0.05;
-  controls.minAzimuthAngle = -0.05;
+  controls.maxAzimuthAngle = CONFIG.controls.map.maxAzimuthAngle;
+  controls.minAzimuthAngle = CONFIG.controls.map.minAzimuthAngle;
 
   controls.zoomToCursor = false;
   controls.screenSpacePanning = true;
 
-  camera.position.set(-5, 5, 50);
+  camera.position.copy(CONFIG.camera.homePosition);
   controls.update();
 
   animate();
@@ -187,6 +157,7 @@ const goBack = () => {
 }
 
 const animate = () => {
+  stats.begin();
   animationId = requestAnimationFrame(animate);
   if (isZooming) {
     camera.position.lerp(destinationCoordonates, 0.05);
@@ -197,12 +168,13 @@ const animate = () => {
     }
   }
 
-  if(camera.position.distanceTo(destinationCoordonates) < 0.1) {
+  if (camera.position.distanceTo(destinationCoordonates) < 0.1) {
     isZooming = false;
     controls.update();
   }
   controls.update();
   renderer.render(scene, camera);
+  stats.end();
 };
 
 const handleResize = () => {
@@ -212,6 +184,16 @@ const handleResize = () => {
   renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight);
 };
 
+const initDebug = () => {
+  const gui = new GUI();
+  gui.addMap(mapPlane);
+  gui.addLights(ambientLight, directionalLight);
+  gui.addCamera(camera);
+  gui.addPins();
+  gui.addExport();
+};
+
+
 onMounted(async () => {
   initThree();
   allPins = await ShowInfo();
@@ -219,8 +201,7 @@ onMounted(async () => {
   mapPins.renderLevel(allPins);
   window.addEventListener('click', onMapClick);
   window.addEventListener('resize', handleResize);
-
-  console.log(all);
+  initDebug();
 });
 
 onBeforeUnmount(() => {
@@ -233,7 +214,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div ref="containerRef" class="scene-container"></div>
-  <BaseButton v-show="currentStep > 0"  @click="goBack" variant="black" class="back-button">
+  <BaseButton v-show="currentStep > 0" @click="goBack" variant="black" class="back-button">
     Retour
   </BaseButton>
   <router-view></router-view>

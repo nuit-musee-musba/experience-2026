@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
+import { CONFIG } from "@/config/webgl.js";
 
 export class MapPlane {
   constructor(scene, url, width, height) {
@@ -18,15 +19,37 @@ export class MapPlane {
     this.loadMap(this.url);
 
     this.scene.add(this.plane);
+
+    this.update();
+  }
+
+  update() {
+    if (this.bgPlane) {
+      this.bgPlane.position.z = CONFIG.mapPlane.backgroundZ;
+    }
+
+    // Apply corrections to the whole plane group (rotation/position)
+    this.plane.rotation.x = CONFIG.mapPlane.planeRotationX;
+    this.plane.position.z = CONFIG.mapPlane.planePositionZ;
+
+    // Apply corrections to the map group inside
+    if (this.mapGroup && this.basePosition) {
+      this.mapGroup.position.x =
+        this.basePosition.x + CONFIG.mapPlane.correction.x;
+      this.mapGroup.position.y =
+        this.basePosition.y + CONFIG.mapPlane.correction.y;
+      this.mapGroup.position.z =
+        this.basePosition.z + CONFIG.mapPlane.correction.z;
+    }
   }
 
   initBackground() {
     const bgGeometry = new THREE.PlaneGeometry(this.width, this.height);
     const bgMaterial = new THREE.MeshBasicMaterial({ color: 0xf0f0f0 });
-    const bgPlane = new THREE.Mesh(bgGeometry, bgMaterial);
+    this.bgPlane = new THREE.Mesh(bgGeometry, bgMaterial);
 
-    bgPlane.position.z = -10;
-    this.plane.add(bgPlane);
+    this.bgPlane.position.z = CONFIG.mapPlane.backgroundZ;
+    this.plane.add(this.bgPlane);
   }
 
   loadMap(url) {
@@ -60,8 +83,10 @@ export class MapPlane {
       const center = new THREE.Vector3();
       box.getCenter(center);
 
-      this.mapGroup.position.x = -center.x;
-      this.mapGroup.position.y = -center.y;
+      this.basePosition = new THREE.Vector3(-center.x, -center.y, 0);
+
+      this.mapGroup.position.copy(this.basePosition);
+      this.update();
     });
   }
 }
