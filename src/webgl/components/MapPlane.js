@@ -72,11 +72,8 @@ export class MapPlane {
       // Center the map
       const box = new THREE.Box3().setFromObject(group);
       this.center = new THREE.Vector3();
-      const boxHelper = new THREE.Box3Helper(box, CONFIG.colors.boxHelper);
       box.getCenter(this.center);
-      
-      this.scene.add(boxHelper);
-      
+            
       this.update();
     });
   }

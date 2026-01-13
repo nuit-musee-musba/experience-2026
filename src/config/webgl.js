@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 
 export const CONFIG = {
   colors: {
@@ -6,7 +6,6 @@ export const CONFIG = {
     grey: 0xa9a9a9,
     pinGreen: 0x00ff00,
     pinYellow: 0xffff00,
-    boxHelper: 0xff0000,
     ambientLight: 0xf0f0f0,
     directionalLight: 0xf0f0f0,
     mapPlaneBackground: 0xf0f0f0,
@@ -20,7 +19,7 @@ export const CONFIG = {
     correction: {
       y: -180,
       x: 20,
-      z: -20,
+      z: 0,
     },
     planeRotationX: -Math.PI / 2,
     planePositionZ: -500,
@@ -28,7 +27,8 @@ export const CONFIG = {
   pins: {
     circleTextureSize: 64,
     circleRadius: 28,
-    defaultZ: -9.5,
+    defaultZ: -0.1,
+    onceClickedZ: -10,
     artworks: {
       geometrySizes: [0.5, 0.5, 0.5],
       travelOffsetY: -2,
@@ -37,8 +37,9 @@ export const CONFIG = {
       sphereRadius: 1,
       sphereWidthSegments: 32,
       sphereHeightSegments: 16,
+      hoverOffsetY: 0,
+      hoverZ: 6,
     },
-    hoverDestinationZ: 6,
     travelDestinationZ: -9,
   },
   camera: {
@@ -51,19 +52,21 @@ export const CONFIG = {
   },
   controls: {
     dampingFactor: 0.05,
-    minDistance: 10,
+    minDistance: 30, // Augmenté pour ne pas descendre trop bas
     map: {
       maxDistance: 200,
-      maxPolarAngle: Math.PI / 2,
+      // 0 = vue du dessus parfaite, Math.PI / 2 = vue de profil
+      minPolarAngle: 0, // Empêche d'être parfaitement à la verticale
+      maxPolarAngle: 0.3,
       minAzimuthAngle: -0.05,
+      maxAzimuthAngle: 0.05, // Optionnel : limiter aussi la rotation gauche/droite
     },
-    orbit: {
-    }
+    orbit: {},
   },
   lights: {
     ambientIntensity: 0.5,
     directionalIntensity: 1,
     directionalPosition: new THREE.Vector3(5, 5, 5),
   },
-  axesHelperSize: 5,
+  axesHelperSize: 500,
 };

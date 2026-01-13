@@ -65,7 +65,7 @@ export class GUI {
   addPins() {
     const pinsFolder = this.pane.addFolder({ title: 'Pins' });
     
-    pinsFolder.addBinding(CONFIG.pins, 'hoverDestinationZ', { min: 0, max: 50 });
+    // pinsFolder.addBinding(CONFIG.pins, 'hoverDestinationZ', { min: 0, max: 50 });
     pinsFolder.addBinding(CONFIG.pins, 'travelDestinationZ', { min: -50, max: 10 });
     pinsFolder.addBinding(CONFIG.pins.artworks, 'travelOffsetY', { min: -10, max: 10 });
   }

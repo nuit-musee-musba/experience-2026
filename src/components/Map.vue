@@ -21,7 +21,7 @@ const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 let isTraveling = false;
 const currentStep = ref(0);
-const previousDestination = new THREE.Vector3();
+const stepPositions = [];
 
 const axesHelper = new THREE.AxesHelper(CONFIG.axesHelperSize);
 
@@ -126,62 +126,63 @@ const onMapClick = (event) => {
     const vector = new THREE.Vector3();
     clickedObject.getWorldPosition(vector);
     if (clickedObject.userData.museums) {
-      previousDestination.copy(destinationCoordonates)
+      stepPositions.push(camera.position.clone()); // Save current position
       currentStep.value = 1;
-      destinationCoordonates.set(vector.x, vector.y, CONFIG.pins.hoverDestinationZ);
+      destinationCoordonates.set(vector.x, vector.y + CONFIG.pins.museums.hoverOffsetY, CONFIG.pins.museums.hoverZ);
       lastCityMuseums = clickedObject.userData.museums;
     }
     if (clickedObject.userData.artworks) {
-      previousDestination.copy(destinationCoordonates)
+      stepPositions.push(camera.position.clone()); // Save current position
       destinationCoordonates.set(vector.x, vector.y + CONFIG.pins.artworks.travelOffsetY, CONFIG.pins.travelDestinationZ);
       targetDestination.set(vector.x, vector.y, CONFIG.pins.defaultZ);
       currentStep.value = 2;
       isTraveling = true;
     }
     isZooming = true;
+    camerasManager.setEnabled(false);
     if (clickedObject.userData.museums) renderLevel(clickedObject.userData.museums);
   }
 };
 
 const goBack = () => {
-  if (currentStep.value === 1) {
-    renderLevel(allPins);
+  if (stepPositions.length > 0) {
+    const previousPos = stepPositions.pop();
+    destinationCoordonates.copy(previousPos);
     isZooming = true;
-    destinationCoordonates.copy(CONFIG.camera.homePosition);
-    currentStep.value = 0
-  }
+    camerasManager.setEnabled(false);
 
-  if (currentStep.value === 2) {
-    renderLevel(lastCityMuseums);
-    isZooming = true;
-    isTraveling = false;
-    currentStep.value = 1;
-    destinationCoordonates.set(previousDestination.x, previousDestination.y, previousDestination.z)
+    if (currentStep.value === 1) {
+      renderLevel(allPins);
+      currentStep.value = 0;
+    } else if (currentStep.value === 2) {
+      renderLevel(lastCityMuseums);
+      isTraveling = false;
+      currentStep.value = 1;
+    }
   }
-
 }
 
 const animate = () => {
   stats.begin();
   animationId = requestAnimationFrame(animate);
-  if (isZooming) {
 
-    // enlever
+  if (isZooming) {
+    // Interpolation de la position
     camera.position.lerp(destinationCoordonates, CONFIG.camera.zoomLerpFactor);
-    // if (camera.position.multiplyScalar(10).floor().equals(destinationCoordonates.multiplyScalar(10).floor())) {
-    //   console.log('arrived');
-    //   camera.position.copy(destinationCoordonates);
-    //   isZooming = false;
-    // }
-    if (camera.position.x === destinationCoordonates.x) {
-      console.log('arrived');
-    }
-    if (isTraveling) {
-      camerasManager.controls.target.lerp(new THREE.Vector3(targetDestination.x, targetDestination.y, targetDestination.z), CONFIG.camera.zoomLerpFactor);
-    } else {
-      camerasManager.controls.target.lerp(new THREE.Vector3(destinationCoordonates.x, destinationCoordonates.y, CONFIG.pins.defaultZ), CONFIG.camera.zoomLerpFactor);
+
+    // Interpolation de la cible (target)
+    const target = isTraveling ? targetDestination : new THREE.Vector3(destinationCoordonates.x, destinationCoordonates.y, CONFIG.pins.defaultZ);
+    camerasManager.controls.target.lerp(target, CONFIG.camera.zoomLerpFactor);
+
+    // CONDITION DE SORTIE : Si on est très proche de la destination
+    if (camera.position.distanceTo(destinationCoordonates) < 0.1) {
+      camera.position.copy(destinationCoordonates);
+      isZooming = false;
+      camerasManager.setEnabled(true);
+      console.log('Arrivé à destination');
     }
   }
+
   camerasManager.update();
   renderer.render(scene, camera);
 
@@ -205,10 +206,16 @@ const initDebug = () => {
 };
 
 watch(currentStep, (val) => {
-  if (!camerasManager) return;
+  console.log('Watcher triggered! New step:', val, 'CamerasManager:', !!camerasManager);
+  if (!camerasManager) {
+    console.error('CamerasManager is missing!');
+    return;
+  }
   if (val === 2) {
+    console.log('Switching to orbit controls');
     camerasManager.setCameraType('orbit', targetDestination);
   } else {
+    console.log('Switching to map controls');
     camerasManager.setCameraType('map');
   }
 });
@@ -232,7 +239,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div ref="containerRef" class="scene-container"></div>
-  <button v-show="currentStep > 0" @click="goBack" class="back-button">Retour</button>
+  <button @click="goBack" class="back-button">Retour</button>
 </template>
 
 <style scoped>
@@ -246,8 +253,13 @@ onBeforeUnmount(() => {
   position: fixed;
   right: 20px;
   top: 20px;
-  z-index: 999;
+  z-index: 10000;
   background: white;
+  color: black;
+  border: 1px solid #ccc;
   padding: 12px 24px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
 }
 </style>

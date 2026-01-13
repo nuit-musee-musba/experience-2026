@@ -9,6 +9,7 @@ export class CamerasManager {
     this.rendererDomElement = rendererDomElement;
     this.controls = null;
     this.target = target;
+    this.enabled = true;
     this.initControls();
   }
 
@@ -20,6 +21,9 @@ export class CamerasManager {
     } else if (this.cameraType === "map") {
       this.controls = null;
       this.mapControls();
+    }
+    if (this.controls) {
+      this.controls.enabled = this.enabled;
     }
   }
 
@@ -46,21 +50,41 @@ export class CamerasManager {
     this.controls.screenSpacePanning = false;
     this.controls.minDistance = CONFIG.controls.minDistance;
 
-    this.controls.target.set(this.target?.x || 0, this.target?.y || 0, this.target?.z || 0);
+    this.controls.target.set(
+      this.target?.x || 0,
+      this.target?.y || 0,
+      this.target?.z || 0
+    );
 
     // this.controls.maxPolarAngle = Math.PI;
   }
 
+  // Dans CamerasManager.js
   mapControls() {
     this.controls = new MapControls(this.camera, this.rendererDomElement);
     this.controls.enableDamping = true;
     this.controls.dampingFactor = CONFIG.controls.dampingFactor;
     this.controls.screenSpacePanning = true;
+
+    // Limites de distance (Zoom)
     this.controls.minDistance = CONFIG.controls.minDistance;
     this.controls.maxDistance = CONFIG.controls.map.maxDistance;
+
+    // Limites d'inclinaison (Vue plongée)
+    this.controls.minPolarAngle = CONFIG.controls.map.minPolarAngle || 0;
     this.controls.maxPolarAngle = CONFIG.controls.map.maxPolarAngle;
-    this.controls.minAzimuthAngle = CONFIG.controls.map.minAzimuthAngle;
+
+    // Optionnel : Bloquer la rotation horizontale pour garder la carte "droite"
+    this.controls.enableRotate = true; // Gardez à true si vous voulez une légère inclinaison manuelle
+
     this.controls.zoomToCursor = false;
+  }
+
+  setEnabled(enabled) {
+    this.enabled = enabled;
+    if (this.controls) {
+      this.controls.enabled = enabled;
+    }
   }
 
   update() {
