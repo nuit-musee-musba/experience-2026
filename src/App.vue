@@ -1,23 +1,16 @@
 <script setup>
+import ImmersiveGallery from './components/ImmersiveGallery.vue'
 </script>
 
 <template>
-  <router-view />
+  <ImmersiveGallery />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+<style>
+/* On s'assure que rien ne gêne l'affichage */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Important pour éviter les doubles barres de scroll */
 }
 </style>
