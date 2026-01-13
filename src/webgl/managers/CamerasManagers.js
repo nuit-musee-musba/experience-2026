@@ -70,6 +70,9 @@ export class CamerasManager {
     this.controls.minPolarAngle = CONFIG.controls.map.minPolarAngle || 0;
     this.controls.maxPolarAngle = CONFIG.controls.map.maxPolarAngle;
 
+    this.controls.minAzimuthAngle = CONFIG.controls.map.minAzimuthAngle;
+    this.controls.maxAzimuthAngle = CONFIG.controls.map.maxAzimuthAngle;
+
     // Optionnel : Bloquer la rotation horizontale pour garder la carte "droite"
     this.controls.enableRotate = true; // Gardez à true si vous voulez une légère inclinaison manuelle
 

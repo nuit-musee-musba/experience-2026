@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import * as THREE from 'three';
-import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
+import { CamerasManager } from '@/webgl/managers/CamerasManagers.js';
 import { MapPlane } from '@/webgl/components/MapPlane.js';
 import { MapPins } from '@/webgl/components/MapPins.js';
 import { CONFIG } from '@/config/webgl.js';
@@ -16,7 +16,7 @@ import { Stats } from '@/webgl/utils/Stats.js';
 const route = useRoute()
 const router = useRouter();
 const containerRef = ref(null);
-let scene, camera, renderer, controls, animationId, stats;
+let scene, camera, renderer, camerasManager, animationId, stats;
 let mapPlane, ambientLight, directionalLight;
 let isZooming = false;
 const activeCitySlug = ref(null);
@@ -41,6 +41,7 @@ watch([() => route.params, allData], ([params, data]) => {
       isTraveling = true;
       isZooming = true;
       currentStep.value = 2;
+      camerasManager?.setCameraType('orbit', targetDestination);
     }
   }
   else if (params.citySlug) {
@@ -52,6 +53,7 @@ watch([() => route.params, allData], ([params, data]) => {
       isZooming = true;
       currentStep.value = 1;
       activeCitySlug.value = city.slug;
+      camerasManager?.setCameraType('map');
     }
   }
   else {
@@ -60,6 +62,7 @@ watch([() => route.params, allData], ([params, data]) => {
     isTraveling = false;
     isZooming = true;
     currentStep.value = 0;
+    camerasManager?.setCameraType('map');
   }
 }, { immediate: true, deep: true });
 
@@ -101,22 +104,8 @@ const initThree = () => {
   directionalLight.position.copy(CONFIG.lights.directionalPosition);
   scene.add(directionalLight);
 
-  controls = new MapControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = CONFIG.controls.dampingFactor;
-  controls.screenSpacePanning = false;
-
-  controls.minDistance = CONFIG.controls.minDistance;
-  controls.maxDistance = CONFIG.controls.map.maxDistance;
-
-  controls.maxAzimuthAngle = CONFIG.controls.map.maxAzimuthAngle;
-  controls.minAzimuthAngle = CONFIG.controls.map.minAzimuthAngle;
-
-  controls.zoomToCursor = false;
-  controls.screenSpacePanning = true;
-
+  camerasManager = new CamerasManager(camera, renderer.domElement, 'map');
   camera.position.copy(CONFIG.camera.homePosition);
-  controls.update();
 
   animate();
 };
@@ -161,18 +150,18 @@ const animate = () => {
   animationId = requestAnimationFrame(animate);
   if (isZooming) {
     camera.position.lerp(destinationCoordonates, 0.05);
-    if (isTraveling) {
-      controls.target.lerp(new THREE.Vector3(targetDestination.x, targetDestination.y, targetDestination.z), 0.05);
-    } else {
-      controls.target.lerp(new THREE.Vector3(destinationCoordonates.x, destinationCoordonates.y, -9.5), 0.05);
+    if (isTraveling && camerasManager.controls) {
+      camerasManager.controls.target.lerp(new THREE.Vector3(targetDestination.x, targetDestination.y, targetDestination.z), 0.05);
+    } else if (camerasManager.controls) {
+      camerasManager.controls.target.lerp(new THREE.Vector3(destinationCoordonates.x, destinationCoordonates.y, -9.5), 0.05);
     }
   }
 
   if (camera.position.distanceTo(destinationCoordonates) < 0.1) {
     isZooming = false;
-    controls.update();
+    camerasManager.update();
   }
-  controls.update();
+  camerasManager.update();
   renderer.render(scene, camera);
   stats.end();
 };
@@ -221,7 +210,7 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/styles/colors.scss";
+@use "@/styles/colors.scss" as *;
 
 .scene-container {
   width: 100%;
