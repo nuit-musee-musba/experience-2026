@@ -4,6 +4,7 @@ import { allData } from '@/store.js';
 import { computed } from 'vue';
 import ArtworkVueFrame from "./layouts/ArtworkVueFrame.vue";
 
+
 import Button from "./buttons/Button.vue";
 
 import IconFullscreen from '@/components/icons/IconFullscreen.vue';

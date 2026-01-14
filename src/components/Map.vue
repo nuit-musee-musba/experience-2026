@@ -189,8 +189,8 @@ onMounted(async () => {
   initThree();
   const response = await fetch("/public/content/content.json");
   allPins = await response.json();
-  allData.value = allPins;
-  renderLevel(allPins);
+  allData.value = allPins.data;
+  renderLevel(allPins.data);
   window.addEventListener('click', onMapClick);
   window.addEventListener('resize', handleResize);
 });
