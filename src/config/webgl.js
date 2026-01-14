@@ -23,6 +23,7 @@ export const CONFIG = {
     },
     planeRotationX: 0,
     planePositionZ: -10,
+    scale: 10,
   },
   pins: {
     circleTextureSize: 64,

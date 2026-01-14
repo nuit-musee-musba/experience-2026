@@ -20,6 +20,9 @@ export class CamerasManager {
     } else if (this.cameraType === "map") {
       this.controls = null;
       this.mapControls();
+    } else if (this.cameraType === "debug") {
+      this.controls = null;
+      this.debugControls();
     }
   }
 
@@ -74,6 +77,15 @@ export class CamerasManager {
     this.controls.enableRotate = true; // Gardez à true si vous voulez une légère inclinaison manuelle
 
     this.controls.zoomToCursor = false;
+  }
+
+  debugControls() {
+    this.controls = new OrbitControls(this.camera, this.rendererDomElement);
+    this.controls.enableDamping = true;
+    this.controls.dampingFactor = CONFIG.controls.dampingFactor;
+    this.controls.screenSpacePanning = true;
+    this.controls.minDistance = 0.1;
+    this.controls.maxDistance = 1000;
   }
 
   update() {

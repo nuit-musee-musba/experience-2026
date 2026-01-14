@@ -2,16 +2,17 @@
 import { onMounted, onBeforeUnmount, ref, watch, computed } from 'vue';
 
 import * as THREE from 'three';
-import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
+import { CamerasManager } from '@/webgl/managers/CamerasManagers.js';
+import { Map3D } from '@/webgl/components/Map3D.js';
 import { MapPlane } from '@/webgl/components/MapPlane.js';
+import all from '@/assets/world/all.svg?url';
 import { MapPins } from '@/webgl/components/MapPins.js';
 import { CONFIG } from '@/config/webgl.js';
-import all from '@/assets/world/all.svg?url';
 import BaseButton from '@/components/buttons/Button.vue';
 import { useRouter, useRoute } from "vue-router";
 import { allData } from '@/store.js';
-import { GUI } from '@/webgl/utils/GUI.js';
 import { Stats } from '@/webgl/utils/Stats.js';
+import { GUI } from '@/webgl/utils/GUI.js';
 
 const route = useRoute();
 const router = useRouter();
@@ -22,8 +23,8 @@ const isArtworkActive = computed(() => {
 const containerRef = ref(null);
 const props = defineProps(['path']);
 
-let scene, camera, renderer, controls, animationId, stats;
-let mapPlane, ambientLight, directionalLight, mapPins;
+let scene, camera, renderer, animationId, stats;
+let map3D, mapPlane, ambientLight, directionalLight, mapPins, gui, camerasManager;
 let allPins = null;
 
 let isZooming = false;
@@ -37,7 +38,7 @@ const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 
 watch([() => route.params, allData], ([params, data]) => {
-  if (!data || !controls) return;
+  if (!data || !camerasManager) return;
 
   if (params.citySlug && params.museumSlug) {
     const city = data.find(v => v.slug === params.citySlug);
@@ -57,10 +58,10 @@ watch([() => route.params, allData], ([params, data]) => {
         -9.5 + offsetZ
       );
 
-      controls.minAzimuthAngle = -Infinity;
-      controls.maxAzimuthAngle = Infinity;
-      controls.minPolarAngle = 0;
-      controls.maxPolarAngle = Math.PI;
+      camerasManager.controls.minAzimuthAngle = -Infinity;
+      camerasManager.controls.maxAzimuthAngle = Infinity;
+      camerasManager.controls.minPolarAngle = 0;
+      camerasManager.controls.maxPolarAngle = Math.PI;
 
       isTraveling = true;
       isZooming = true;
@@ -92,11 +93,11 @@ watch([() => route.params, allData], ([params, data]) => {
 }, { immediate: true, deep: true });
 
 const resetMapControls = () => {
-  if (!controls) return;
-  controls.minAzimuthAngle = CONFIG.controls.map.minAzimuthAngle;
-  controls.maxAzimuthAngle = CONFIG.controls.map.maxAzimuthAngle;
-  controls.minPolarAngle = 0;
-  controls.maxPolarAngle = Math.PI / 2;
+  if (!camerasManager || !camerasManager.controls) return;
+  camerasManager.controls.minAzimuthAngle = CONFIG.controls.map.minAzimuthAngle;
+  camerasManager.controls.maxAzimuthAngle = CONFIG.controls.map.maxAzimuthAngle;
+  camerasManager.controls.minPolarAngle = 0;
+  camerasManager.controls.maxPolarAngle = Math.PI / 2;
 };
 
 const initThree = () => {
@@ -114,7 +115,10 @@ const initThree = () => {
   containerRef.value.appendChild(renderer.domElement);
 
   stats = new Stats(containerRef.value);
+  gui = new GUI(containerRef.value);
   mapPlane = new MapPlane(scene, all, CONFIG.mapPlane.width, CONFIG.mapPlane.height);
+  map3D = new Map3D(scene);
+  gui.addMap(map3D);
   mapPins = new MapPins(scene);
 
   scene.add(new THREE.AmbientLight(CONFIG.colors.ambientLight, CONFIG.lights.ambientIntensity));
@@ -122,10 +126,8 @@ const initThree = () => {
   dirLight.position.copy(CONFIG.lights.directionalPosition);
   scene.add(dirLight);
 
-  controls = new MapControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.05;
-  controls.screenSpacePanning = true;
+  camerasManager = new CamerasManager(camera, renderer.domElement, 'map');
+  gui.addCameraDebug(camerasManager);
 
   resetMapControls();
   camera.position.copy(CONFIG.camera.homePosition);
@@ -136,22 +138,22 @@ const animate = () => {
   stats.begin();
   animationId = requestAnimationFrame(animate);
 
-  if (isZooming) {
+  if (isZooming && camerasManager.controls) {
     camera.position.lerp(destinationCoordonates, 0.07);
-    controls.target.lerp(targetDestination, 0.07);
+    camerasManager.controls.target.lerp(targetDestination, 0.07);
     const dist = camera.position.distanceTo(destinationCoordonates);
     if (dist < 0.01) {
       isZooming = false;
 
       if (currentStep.value === 2) {
         const diveAngle = Math.PI / 3;
-        controls.minPolarAngle = diveAngle;
-        controls.maxPolarAngle = diveAngle;
+        camerasManager.controls.minPolarAngle = diveAngle;
+        camerasManager.controls.maxPolarAngle = diveAngle;
       }
     }
   }
 
-  controls.update();
+  camerasManager.update();
   renderer.render(scene, camera);
   stats.end();
 };
