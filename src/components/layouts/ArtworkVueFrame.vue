@@ -37,7 +37,7 @@
           </template>
         </Button>
 
-        <Button color="artwork" icon-only icon-primary>
+        <Button color="artwork" icon-only icon-primary @click="goToGlobalList">
           <template #icon-primary>
             <IconGallery />
           </template>
@@ -121,6 +121,10 @@ const goToPrev = () => {
       router.push(`/${route.params.citySlug}/${route.params.museumSlug}/${museum.value.artworks[prevIndex].slug}`);
     }
   }
+}
+
+const goToGlobalList = () => {
+  router.push(`/${route.params.citySlug}/${route.params.museumSlug}/list`);
 }
 </script>
 
