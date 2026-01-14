@@ -38,6 +38,7 @@ const pointer = new THREE.Vector2();
 
 watch([() => route.params, allData], ([params, data]) => {
   if (!data || !controls) return;
+  resetMapControls();
 
   if (params.citySlug && params.museumSlug) {
     const city = data.find(v => v.slug === params.citySlug);
@@ -97,6 +98,8 @@ const resetMapControls = () => {
   controls.maxAzimuthAngle = CONFIG.controls.map.maxAzimuthAngle;
   controls.minPolarAngle = 0;
   controls.maxPolarAngle = Math.PI / 2;
+  controls.minDistance = 0;
+  controls.maxDistance = Infinity;
 };
 
 const initThree = () => {
@@ -139,14 +142,30 @@ const animate = () => {
   if (isZooming) {
     camera.position.lerp(destinationCoordonates, 0.07);
     controls.target.lerp(targetDestination, 0.07);
+
     const dist = camera.position.distanceTo(destinationCoordonates);
     if (dist < 0.01) {
       isZooming = false;
-
       if (currentStep.value === 2) {
-        const diveAngle = Math.PI / 3;
-        controls.minPolarAngle = diveAngle;
-        controls.maxPolarAngle = diveAngle;
+        controls.minPolarAngle = Math.PI / 3;
+        controls.maxPolarAngle = Math.PI / 3;
+        controls.minDistance = 4;
+        controls.maxDistance = 12;
+      }
+    }
+  } else {
+    if (currentStep.value === 2) {
+      controls.target.lerp(targetDestination, 0.05);
+
+      const idealDistance = 7;
+      const offset = new THREE.Vector3().subVectors(camera.position, controls.target);
+      const currentDistance = offset.length();
+
+      if (Math.abs(currentDistance - idealDistance) > 0.001) {
+        const magnetStrength = 0.04;
+        const newDistance = THREE.MathUtils.lerp(currentDistance, idealDistance, magnetStrength);
+        offset.setLength(newDistance);
+        camera.position.copy(controls.target).add(offset);
       }
     }
   }
