@@ -22,11 +22,11 @@ const museum = computed(() => {
 
   <Transition name="fade" mode="out-in" appear>
 
-    <div v-if="museum">
+    <div class="test" v-if="museum">
 
       <p  :key="museum.slug">{{ museum.name }}</p>
 
-      <RouterLink @click.stop  v-if="museum.artworks.length < 2" class="test" :to="`/${route.params.citySlug}/${museum.slug}/${artwork.slug}`" v-for="artwork in museum.artworks " :key="artwork.slug">
+      <RouterLink @click.stop  v-if="museum.artworks.length < 2"  :to="`/${route.params.citySlug}/${museum.slug}/${artwork.slug}`" v-for="artwork in museum.artworks " :key="artwork.slug">
         {{ artwork.name }}
       </RouterLink>
       <RouterLink @click.stop v-if="museum.artworks.length > 1" class="test" :to="`/${route.params.citySlug}/${museum.slug}/list`">
@@ -64,6 +64,9 @@ p, .test {
   position: fixed;
   left: 0;
   top: 0;
+  background: white;
+  width: 50%;
+  height: 100%;
 }
 
 </style>

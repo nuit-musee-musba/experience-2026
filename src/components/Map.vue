@@ -1,6 +1,5 @@
 <script setup>
 import { onMounted, onBeforeUnmount, ref, watch, computed } from 'vue';
-
 import * as THREE from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { MapPlane } from '@/webgl/components/MapPlane.js';
@@ -10,20 +9,17 @@ import all from '@/assets/world/all.svg?url';
 import BaseButton from '@/components/buttons/Button.vue';
 import { useRouter, useRoute } from "vue-router";
 import { allData } from '@/store.js';
-import { GUI } from '@/webgl/utils/GUI.js';
 import { Stats } from '@/webgl/utils/Stats.js';
 
 const route = useRoute();
 const router = useRouter();
-const isArtworkActive = computed(() => {
-  return route.name === 'artwork-detail';
-});
+const isArtworkActive = computed(() => route.name === 'artwork-detail');
 
 const containerRef = ref(null);
 const props = defineProps(['path']);
 
 let scene, camera, renderer, controls, animationId, stats;
-let mapPlane, ambientLight, directionalLight, mapPins;
+let mapPlane, mapPins;
 let allPins = null;
 
 let isZooming = false;
@@ -36,8 +32,11 @@ const targetDestination = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 
+// --- LOGIQUE DE NAVIGATION ---
 watch([() => route.params, allData], ([params, data]) => {
   if (!data || !controls) return;
+
+  // On remet tout à plat avant de changer de vue
   resetMapControls();
 
   if (params.citySlug && params.museumSlug) {
@@ -46,16 +45,19 @@ watch([() => route.params, allData], ([params, data]) => {
 
     if (museum) {
       targetDestination.set(museum.x, museum.y, -9.5);
+
+      // DÉCALAGE OPTIQUE (Le target est à droite, la cam regarde "à côté")
+      const width = containerRef.value.clientWidth;
+      const height = containerRef.value.clientHeight;
+      // On décale de 25% vers la gauche pour libérer le menu de 50%
+      camera.setViewOffset(width, height, -width * 0.25, 0, width, height);
+
       const distance = 7;
       const diveAngle = Math.PI / 3;
-
-      const offsetZ = distance * Math.cos(diveAngle);
-      const offsetY = distance * Math.sin(diveAngle);
-
       destinationCoordonates.set(
-        museum.x,
-        museum.y - offsetY,
-        -9.5 + offsetZ
+          museum.x,
+          museum.y - (distance * Math.sin(diveAngle)),
+          -9.5 + (distance * Math.cos(diveAngle))
       );
 
       controls.minAzimuthAngle = -Infinity;
@@ -73,7 +75,6 @@ watch([() => route.params, allData], ([params, data]) => {
     if (city) {
       destinationCoordonates.set(city.x, city.y, 6);
       targetDestination.set(city.x, city.y, -9.5);
-      resetMapControls();
       renderLevel(city.museums);
       isTraveling = false;
       isZooming = true;
@@ -84,7 +85,6 @@ watch([() => route.params, allData], ([params, data]) => {
   else {
     destinationCoordonates.set(-5, 5, 50);
     targetDestination.set(-5, 5, -9.5);
-    resetMapControls();
     renderLevel(data);
     isTraveling = false;
     isZooming = true;
@@ -94,6 +94,9 @@ watch([() => route.params, allData], ([params, data]) => {
 
 const resetMapControls = () => {
   if (!controls) return;
+  // On annule le décalage optique
+  if(camera) camera.clearViewOffset();
+
   controls.minAzimuthAngle = CONFIG.controls.map.minAzimuthAngle;
   controls.maxAzimuthAngle = CONFIG.controls.map.maxAzimuthAngle;
   controls.minPolarAngle = 0;
@@ -143,8 +146,7 @@ const animate = () => {
     camera.position.lerp(destinationCoordonates, 0.07);
     controls.target.lerp(targetDestination, 0.07);
 
-    const dist = camera.position.distanceTo(destinationCoordonates);
-    if (dist < 0.01) {
+    if (camera.position.distanceTo(destinationCoordonates) < 0.01) {
       isZooming = false;
       if (currentStep.value === 2) {
         controls.minPolarAngle = Math.PI / 3;
@@ -155,15 +157,16 @@ const animate = () => {
     }
   } else {
     if (currentStep.value === 2) {
+      // Aimant sur le target
       controls.target.lerp(targetDestination, 0.05);
 
+      // Aimant de zoom
       const idealDistance = 7;
       const offset = new THREE.Vector3().subVectors(camera.position, controls.target);
       const currentDistance = offset.length();
 
       if (Math.abs(currentDistance - idealDistance) > 0.001) {
-        const magnetStrength = 0.04;
-        const newDistance = THREE.MathUtils.lerp(currentDistance, idealDistance, magnetStrength);
+        const newDistance = THREE.MathUtils.lerp(currentDistance, idealDistance, 0.04);
         offset.setLength(newDistance);
         camera.position.copy(controls.target).add(offset);
       }
@@ -199,9 +202,18 @@ const goBack = () => {
 
 const handleResize = () => {
   if (!containerRef.value) return;
-  camera.aspect = containerRef.value.clientWidth / containerRef.value.clientHeight;
+  const width = containerRef.value.clientWidth;
+  const height = containerRef.value.clientHeight;
+
+  camera.aspect = width / height;
+
+  // On recalcule le décalage si on est au musée
+  if (currentStep.value === 2) {
+    camera.setViewOffset(width, height, -width * 0.25, 0, width, height);
+  }
+
   camera.updateProjectionMatrix();
-  renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight);
+  renderer.setSize(width, height);
 };
 
 onMounted(async () => {
@@ -236,18 +248,15 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100vh;
   outline: none;
-
   &.map-frozen {
     pointer-events: none;
   }
 }
 
-
 .back-button {
   position: fixed;
   right: 20px;
-  top:
-    20px;
+  top: 20px;
   z-index: 999;
 }
 </style>
