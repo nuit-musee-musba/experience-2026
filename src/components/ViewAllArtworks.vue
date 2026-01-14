@@ -1,75 +1,260 @@
+<script setup>
+import { useRoute, useRouter } from "vue-router";
+import { allData } from '@/store.js';
+import { computed, ref, onMounted, onUnmounted } from 'vue';
+import Button from "./buttons/Button.vue";
+import IconClose from "./icons/IconClose.vue";
+
+const route = useRoute();
+const router = useRouter();
+
+const allArtworks = computed(() => {
+  if (!allData.value) return [];
+  const list = [];
+  allData.value.forEach(city => {
+    city.museums.forEach(museum => {
+      if (museum.artworks) {
+        museum.artworks.forEach(artwork => {
+          list.push({
+            ...artwork,
+            citySlug: city.slug,
+            museumSlug: museum.slug
+          });
+        });
+      }
+    });
+  });
+  return list;
+});
+
+const goBack = () => {
+  router.push(`/`);
+}
+
+const thumbHeight = ref(0);
+const thumbTop = ref(0);
+const scrollContainer = ref(null);
+
+const updateScrollbar = () => {
+  if (scrollContainer.value) {
+    const { scrollTop, scrollHeight, clientHeight } = scrollContainer.value;
+    if (scrollHeight <= clientHeight) {
+      thumbHeight.value = 0;
+      thumbTop.value = 0;
+      return;
+    }
+    thumbHeight.value = (clientHeight / scrollHeight) * 100;
+    thumbTop.value = (scrollTop / scrollHeight) * 100;
+  }
+}
+
+let resizeObserver = null;
+
+onMounted(() => {
+  if (scrollContainer.value) {
+    scrollContainer.value.addEventListener('scroll', updateScrollbar);
+    
+    resizeObserver = new ResizeObserver(updateScrollbar);
+    resizeObserver.observe(scrollContainer.value);
+    const grid = scrollContainer.value.querySelector('.artwork-grid');
+    if (grid) {
+      resizeObserver.observe(grid);
+    }
+    
+    updateScrollbar();
+  }
+})
+
+onUnmounted(() => {
+  if (scrollContainer.value) {
+    scrollContainer.value.removeEventListener('scroll', updateScrollbar);
+  }
+  if (resizeObserver) {
+    resizeObserver.disconnect();
+  }
+})
+</script>
+
 <template>
-  <div>
-    <button class="btn" @click="openModal">
-      Voir toutes les œuvres
-    </button>
+  <div class="artwork-list-page">
+    <header class="header">
+      <h1 class="title">Explorez tous les décors de Jean Dupas</h1>
+    </header>
 
-    <div v-if="isOpen" class="overlay" @click.self="closeModal">
-      <div class="modal">
-        <h2>Toutes les œuvres</h2>
-
-        <ul>
-          <li v-for="oeuvre in oeuvres" :key="oeuvre.id">
-            {{ oeuvre.title }}
-          </li>
-        </ul>
-
-        <button class="btn-close" @click="closeModal">
-          Fermer
-        </button>
+    <div class="scroll-wrapper">
+      <div class="content-container" ref="scrollContainer">
+        <div class="artwork-grid">
+          <RouterLink 
+            v-for="artwork in allArtworks" 
+            :key="`${artwork.citySlug}-${artwork.museumSlug}-${artwork.slug}`"
+            :to="`/${artwork.citySlug}/${artwork.museumSlug}/${artwork.slug}`"
+            class="artwork-item"
+          >
+            <div class="artwork-image">
+               <img v-if="artwork.images && artwork.images.length > 0" :src="`/images/${artwork.images[0].file}`" :alt="artwork.name">
+            </div>
+            <div class="artwork-info">
+              <h2 class="artwork-name">{{ artwork.name }}</h2>
+              <p class="artwork-details">{{ artwork.place }}, {{ artwork.year }}</p>
+            </div>
+          </RouterLink>
+        </div>
       </div>
+
+      <div class="scrollbar-container">
+        <div class="scrollbar-track" :class="{ 'is-hidden': thumbHeight === 0 }">
+          <div 
+            class="scrollbar-thumb" 
+            :style="{ 
+              height: `${thumbHeight}%`,
+              top: `${thumbTop}%`
+            }"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <Button color="secondary" text-content="Fermer" icon-primary @click="goBack">
+        <template #icon-primary>
+          <IconClose />
+        </template>
+      </Button>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-
-const isOpen = ref(false)
-
-// Exemple de données (à remplacer par props ou API)
-const oeuvres = ref([
-  { id: 1, title: 'Œuvre 1' },
-  { id: 2, title: 'Œuvre 2' },
-  { id: 3, title: 'Œuvre 3' }
-])
-
-const openModal = () => {
-  isOpen.value = true
-}
-
-const closeModal = () => {
-  isOpen.value = false
-}
-</script>
-
-<style scoped>
-.btn {
-  padding: 10px 16px;
-  background: #000;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.overlay {
+<style scoped lang="scss">
+.artwork-list-page {
   position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $white;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  padding: $grid-margin;
+  box-sizing: border-box;
   z-index: 1000;
 }
 
-.modal {
-  background: white;
-  padding: 24px;
-  border-radius: 8px;
-  min-width: 300px;
+.header {
+  margin-bottom: 120px;
+  .title {
+    @include title-h1;
+    font-size: 110px;
+    margin-top: 0;
+  }
 }
 
-.btn-close {
-  margin-top: 16px;
+.scroll-wrapper {
+  flex-grow: 1;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.content-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 200px;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.artwork-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: $grid-gutter;
+  row-gap: 120px;
+  padding-bottom: 100px;
+}
+
+.artwork-item {
+  display: flex;
+  text-decoration: none;
+  color: $black;
+  align-items: center;
+
+  .artwork-image {
+    width: 450px;
+    height: 450px;
+    flex-shrink: 0;
+    margin-right: 60px;
+    background-color: $gray-100;
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .artwork-info {
+    .artwork-name {
+      @include title-h2;
+      font-size: 80px;
+      margin-bottom: 16px;
+      line-height: 1.1;
+      text-decoration: none;
+    }
+    
+    .artwork-details {
+      @include text-body;
+      font-size: 36px;
+      color: $black;
+      margin: 0;
+    }
+  }
+}
+
+.scrollbar-container {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 100px;
+  width: 16px;
+  
+  .scrollbar-track {
+    width: 100%;
+    height: 100%;
+    border: 1px solid $black;
+    position: relative;
+    box-sizing: border-box;
+    transition: opacity 0.3s ease;
+    &.is-hidden {
+      opacity: 0;
+    }
+  }
+
+  .scrollbar-thumb {
+    width: 100%;
+    background-color: $black;
+    position: absolute;
+    left: 0;
+    transition: height 0.1s ease, top 0.1s linear;
+    min-height: 40px;
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 40px;
+  
+  :deep(.btn) {
+      padding: 24px 48px;
+      font-size: 40px;
+      
+      .btn__icon svg {
+          width: 40px;
+          height: 40px;
+      }
+  }
 }
 </style>
