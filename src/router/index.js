@@ -7,6 +7,7 @@ import Carousel from "@/components/Carousel.vue";
 import ArtworkDetails from "@/components/ArtworkDetails.vue";
 import ArtworkList from "@/components/ArtworkList.vue";
 import AllArtwork from "@/components/AllArtwork.vue";
+import ViewAllArtworks from "@/components/ViewAllArtworks.vue";
 
 
 const router = createRouter({
@@ -46,6 +47,10 @@ const router = createRouter({
     {
       path: "/credits",
       component: Credits,
+    },
+    {
+      path: "/test1",
+      component: ViewAllArtworks,
     },
     {
       path: "/all",
