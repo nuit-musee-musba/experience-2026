@@ -8,6 +8,7 @@ import ArtworkDetails from "@/components/ArtworkDetails.vue";
 import ArtworkList from "@/components/ArtworkList.vue";
 import AllArtwork from "@/components/AllArtwork.vue";
 import ViewAllArtworks from "@/components/ViewAllArtworks.vue";
+import Listing from "@/components/Listing.vue";
 
 
 const router = createRouter({
@@ -51,6 +52,10 @@ const router = createRouter({
     {
       path: "/test1",
       component: ViewAllArtworks,
+    },
+    {
+      path: "/test2",
+      component: Listing,
     },
     {
       path: "/all",
