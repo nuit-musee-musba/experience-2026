@@ -6,6 +6,7 @@ import ClickImg from "@/components/ClickImg.vue";
 import Carousel from "@/components/Carousel.vue";
 import ArtworkDetails from "@/components/ArtworkDetails.vue";
 import ArtworkList from "@/components/ArtworkList.vue";
+import AllArtwork from "@/components/AllArtwork.vue";
 
 
 const router = createRouter({
@@ -45,6 +46,10 @@ const router = createRouter({
     {
       path: "/credits",
       component: Credits,
+    },
+    {
+      path: "/all",
+      component: AllArtwork,
     },
 
     {
