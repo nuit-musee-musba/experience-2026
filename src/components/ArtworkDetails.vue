@@ -34,8 +34,9 @@ const artwork = computed(() => {
         <div class="image-container">
           <img :src="artwork.image" :alt="artwork.name" />
         </div>
+        <figcaption class="figcaption">© ADAGP, Paris, 2026, photo : F. Deval, mairie de Bordeaux</figcaption>
         <div class="button-container">
-          <Button color="tertiary" text-content="Plein écran" icon-primary>
+          <Button color="secondary" text-content="Plein écran" icon-primary>
             <template #icon-primary>
               <IconFullscreen />
             </template>
@@ -49,16 +50,18 @@ const artwork = computed(() => {
             <h2 class="title">{{ artwork.name }}</h2>
             <p>Jean Dupas</p>
           </div>
-          <p class="enumeration">{{ artwork.name }}, {{ artwork.year }}, {{ artwork.technique }}, {{ artwork.place }}
-          </p>
-          <div class="artwork-place">
-            <IconPin class="pin" />
-            <span>{{ artwork.place }}</span>
-          </div>
         </div>
         <div class="artwork-container artwork-description-container">
           <div class="scroll-content">
-            <h3 class="documentation">Documentation</h3>
+            <div class="header">
+              <p class="enumeration"><span>{{ artwork.name }}</span>, {{ artwork.year }}, {{ artwork.technique }}, {{
+                artwork.place }}
+              </p>
+              <div class="artwork-place">
+                <IconPin class="pin" />
+                <span>{{ artwork.place }}</span>
+              </div>
+            </div>
             <p>{{ artwork.description }}</p>
           </div>
         </div>
@@ -78,33 +81,33 @@ const artwork = computed(() => {
   .image-section {
     width: 75%;
     height: 100%;
-    padding: 24px;
+    padding: calc($spacing-96 - $border-width) $spacing-136 $spacing-32 calc($spacing-96 - $border-width);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
 
     &::before {
-        content: '';
-        display: block;
-        position: absolute;
-        top: 0;
-        right: 0px; // -52 - 5 (border)
-        width: 52px;
-        height: 100%;
-        background-color: $blue-100;
-      }
-    
-      &::after {
-        content: '';
-        display: block;
-        position: absolute;
-        top: 0;
-        right: -5px; // -52 - 5 (border)
-        width: 5px;
-        height: 100%;
-        background-color: $black;
-      }
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0px; // -52 - 5 (border)
+      width: calc($spacing-56 - $border-width); // 52px border - 5px border
+      height: 100%;
+      background-color: $blue-300;
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      right: -$border-width; // -52 - 5 (border)
+      width: $border-width;
+      height: 100%;
+      background-color: $black;
+    }
 
     .image-container {
       flex-grow: 1;
@@ -113,7 +116,6 @@ const artwork = computed(() => {
       align-items: center;
       overflow: hidden;
       background-color: $gray-200;
-      margin: 82px 248px;
 
       img {
         max-width: 100%;
@@ -122,11 +124,18 @@ const artwork = computed(() => {
       }
     }
 
+    .figcaption {
+      font-size: $spacing-24;
+      line-height: 1.3;
+      margin-top: $spacing-10;
+      text-align: right;
+    }
+
     .button-container {
       width: 100%;
       display: flex;
       justify-content: flex-end;
-      padding-right: 52px; // compenser le bandeau bleu
+      margin-top: $spacing-74;
     }
   }
 
@@ -140,17 +149,21 @@ const artwork = computed(() => {
 
     .artwork-container {
       box-sizing: border-box;
-      padding: 32px;
+      padding: $spacing-80 $spacing-96;
       min-height: 0;
+
+      .title-and-name {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-16;
+      }
     }
 
     .artwork-infos {
-      flex: 0 0 40%;
-      border-bottom: 5px solid $black;
-      overflow-y: auto;
+      border-bottom: $border-width solid $black;
 
       &::-webkit-scrollbar {
-        width: 29px; // 24 + 5 for border
+        width: $spacing-24;
       }
 
       &::-webkit-scrollbar-thumb {
@@ -159,22 +172,11 @@ const artwork = computed(() => {
 
       display: flex;
       flex-direction: column;
-      gap: 48px;
+      gap: $spacing-48;
 
       .title {
         font-family: $font-family-headings;
         line-height: 100%;
-      }
-
-      .artwork-place {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-      
-
-      :deep(svg) {
-        width: 56px;
-        height: 56px;
       }
     }
 
@@ -193,34 +195,55 @@ const artwork = computed(() => {
       display: block;
       position: absolute;
       bottom: 0;
-      left: 5px;
-      width: calc(100% - 34px); // 5px margins left - 29px scrollbar
+      left: $border-width;
+      width: calc(100% - (#{$spacing-24} + #{$spacing-10})); // 5px margins left - 29px scrollbar
       height: 30%;
       background: linear-gradient(to top, $white 10%, transparent);
       z-index: 1;
       pointer-events: none;
+      display: none;
     }
 
     .scroll-content {
       height: 100%;
       overflow-y: auto;
-      padding: 32px;
+      padding: $spacing-80 $spacing-96;
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-96;
+
+      .header {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-24;
+      }
 
       &::-webkit-scrollbar {
-        width: 29px; // 24 + 5 for border
+        width: $spacing-24;
       }
 
       &::-webkit-scrollbar-thumb {
         background-color: $black;
       }
+
+      .artwork-place {
+        display: flex;
+        align-items: center;
+        gap: $spacing-4;
+
+
+        :deep(svg) {
+          width: $spacing-56;
+          height: $spacing-56;
+        }
+      }
+    }
+
+    .documentation {
+      font-weight: 500;
+      font-size: $spacing-56;
+      margin-bottom: $spacing-16;
     }
   }
-
-  .documentation {
-    font-weight: 500;
-    font-size: 56px;
-    margin-bottom: 16px;
-  }
-}
 }
 </style>
