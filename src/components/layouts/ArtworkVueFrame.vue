@@ -38,7 +38,7 @@
           </template>
         </Button>
 
-        <Button color="secondary" icon-only icon-primary>
+        <Button color="secondary" icon-only icon-primary @click="goToList">
           <template #icon-primary>
             <IconGallery />
           </template>
@@ -121,6 +121,10 @@ const goToPrev = () => {
       router.push(`/${route.params.citySlug}/${route.params.museumSlug}/${museum.value.artworks[prevIndex].slug}`);
     }
   }
+}
+
+const goToList = () => {
+  router.push(`/${route.params.citySlug}/${route.params.museumSlug}/list`);
 }
 </script>
 
