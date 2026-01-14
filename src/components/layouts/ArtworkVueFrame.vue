@@ -50,6 +50,7 @@
 <script setup>
 import Button from '../buttons/Button.vue';
 import IconMap from '../icons/IconMap.vue';
+import IconPin from '../icons/IconPin.vue';
 import IconArrowLeft from '../icons/IconArrowLeft.vue';
 import IconArrowRight from '../icons/IconArrowRight.vue';
 import IconGallery from '../icons/IconGallery.vue';
