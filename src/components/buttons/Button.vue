@@ -55,7 +55,7 @@ defineProps({
   justify-content: center;
   color: $black;
 
-  padding: 16px 32px;
+  padding: $spacing-16 $spacing-32;
   border: 1px solid transparent;
   border-radius: 0;
 
@@ -69,7 +69,7 @@ defineProps({
   box-sizing: border-box;
 
   .btn__label {
-    padding: 8px;
+    padding: $spacing-8;
   }
 
   &--primary-pink {
@@ -100,7 +100,7 @@ defineProps({
     }
   }
 
-  &--secondary {
+  &--primary {
     background-color: $black;
     color: $white;
     border-color: $black;
@@ -114,11 +114,38 @@ defineProps({
     }
   }
 
-  &--tertiary {
+  &--secondary {
     background-color: $white;
     color: $black;
-    border: 1px solid $black;
     border-color: $black;
+
+    &:active:not(:disabled) {
+      background-color: $gray-200;
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+  }
+
+  &--place {
+    background-color: $green-300;
+    color: $white;
+    border-color: $green-300;
+
+    &:active:not(:disabled) {
+      opacity: 0.9;
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+  }
+
+  &--artwork {
+    background-color: $blue-300;
+    color: $white;
+    border-color: $blue-300;
     &:active:not(:disabled) {
       opacity: 0.8;
     }
@@ -158,8 +185,6 @@ defineProps({
   }
 
   &--icon-only {
-    padding: 16px;
-
     .btn__label {
       display: none;
     }

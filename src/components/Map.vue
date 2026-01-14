@@ -52,9 +52,9 @@ watch([() => route.params, allData], ([params, data]) => {
       const offsetY = distance * Math.sin(diveAngle);
 
       destinationCoordonates.set(
-          museum.x,
-          museum.y - offsetY,
-          -9.5 + offsetZ
+        museum.x,
+        museum.y - offsetY,
+        -9.5 + offsetZ
       );
 
       controls.minAzimuthAngle = -Infinity;
@@ -110,7 +110,7 @@ const initThree = () => {
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setPixelRatio(1);
   containerRef.value.appendChild(renderer.domElement);
 
   stats = new Stats(containerRef.value);
@@ -226,7 +226,9 @@ onBeforeUnmount(() => {
 
 .back-button {
   position: fixed;
-  right: 20px; top:
+  right: 20px;
+  top:
     20px;
-  z-index: 999; }
+  z-index: 999;
+}
 </style>

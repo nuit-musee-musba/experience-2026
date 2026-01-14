@@ -1,6 +1,5 @@
 <template>
   <div class="layout">
-    <div class="spacing-div" role="presentation"></div>
     <div class="layout-border layout-border__top" role="presentation"></div>
     <div class="layout-border layout-border__bottom" role="presentation"></div>
     <div class="layout-border layout-border__left" role="presentation"></div>
@@ -10,13 +9,13 @@
     </main>
     <nav class="nav">
       <div class="nav-buttons">
-        <Button color="secondary" icon-only icon-primary>
+        <Button color="primary" icon-only icon-primary>
           <template #icon-primary>
             <IconMap />
           </template>
         </Button>
 
-        <Button color="secondary" text-content="Retour aux lieux" icon-primary>
+        <Button color="primary" text-content="Retour aux lieux" icon-primary>
           <template #icon-primary>
             <IconPin />
           </template>
@@ -26,19 +25,19 @@
       <div class="nav-buttons">
 
 
-        <Button color="secondary" text-content="Oeuvre précédente" icon-primary @click="goToPrev">
+        <Button color="artwork" text-content="Œuvre précédente" icon-primary @click="goToPrev">
           <template #icon-primary>
             <IconArrowLeft />
           </template>
         </Button>
 
-        <Button color="secondary" text-content="Oeuvre suivante" icon-secondary @click="goToNext">
+        <Button color="artwork" text-content="Œuvre suivante" icon-secondary @click="goToNext">
           <template #icon-secondary>
             <IconArrowRight />
           </template>
         </Button>
 
-        <Button color="secondary" icon-only icon-primary>
+        <Button color="artwork" icon-only icon-primary>
           <template #icon-primary>
             <IconGallery />
           </template>
@@ -125,7 +124,6 @@ const goToPrev = () => {
 </script>
 
 <style lang="scss" scoped>
-$border-color: $black;
 
 .layout {
   position: fixed;
@@ -140,18 +138,18 @@ $border-color: $black;
 
   .layout-border {
     position: fixed;
-    background-color: $border-color;
+    background-color: $black;
     z-index: 10;
 
     &__top,
     &__bottom {
       width: 100%;
-      height: 5px;
+      height: $border-width;
     }
 
     &__left,
     &__right {
-      width: 5px;
+      width: $border-width;
       height: 100%;
     }
 
@@ -176,15 +174,6 @@ $border-color: $black;
     }
   }
 
-  .spacing-div {
-    position: relative;
-    width: 100%;
-    height: 56px;
-    border: 5px solid $border-color;
-    border-bottom: 8px solid $border-color;
-    z-index: 9999;
-  }
-
   .main {
     flex-grow: 1;
     overflow: hidden;
@@ -193,14 +182,15 @@ $border-color: $black;
 
   .nav {
     display: flex;
-    padding: 42px 144px;
-    border: 5px solid $border-color;
-    border-top: 8px solid $border-color;
+    padding: $spacing-32;
+    border: $spacing-32;
+    @include border-5;
+    border-top: $spacing-8 solid $black;
   }
 
   .nav-buttons {
     display: flex;
-    gap: 40px;
+    gap: $spacing-40;
 
     &:first-child {
       margin-right: auto;
