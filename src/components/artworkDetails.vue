@@ -147,6 +147,15 @@ const artwork = computed(() => {
       flex: 0 0 40%;
       border-bottom: 5px solid $black;
       overflow-y: auto;
+
+      &::-webkit-scrollbar {
+        width: 29px; // 24 + 5 for border
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: $black;
+      }
+
       display: flex;
       flex-direction: column;
       gap: 48px;
@@ -184,7 +193,7 @@ const artwork = computed(() => {
       position: absolute;
       bottom: 0;
       left: 5px;
-      width: calc(100% - 10px);
+      width: calc(100% - 34px); // 5px margins left - 29px scrollbar
       height: 30%;
       background: linear-gradient(to top, $white 10%, transparent);
       z-index: 1;
@@ -195,6 +204,14 @@ const artwork = computed(() => {
       height: 100%;
       overflow-y: auto;
       padding: 32px;
+
+      &::-webkit-scrollbar {
+        width: 29px; // 24 + 5 for border
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: $black;
+      }
     }
   }
 
