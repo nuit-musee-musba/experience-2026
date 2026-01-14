@@ -1,11 +1,12 @@
-import {createRouter, createWebHistory} from "vue-router";
+import {createRouter, createWebHistory, RouterView} from "vue-router";
 import Credits from "@/components/Credits.vue";
 import Map from "@/components/Map.vue";
-import Infos from "@/components/infos.vue";
+import Infos from "@/components/Infos.vue";
 import ClickImg from "@/components/ClickImg.vue";
 import Carousel from "@/components/Carousel.vue";
 import ArtworkDetails from "@/components/ArtworkDetails.vue";
 import ArtworkList from "@/components/ArtworkList.vue";
+import AllArtwork from "@/components/AllArtwork.vue";
 
 
 const router = createRouter({
@@ -15,24 +16,11 @@ const router = createRouter({
       path: "/",
       component: Map,
       props: { path: "basilique.jpg" },
-    },
-    {
-      path: "/credits",
-      component: Credits,
-    },
-    {
-      path: "/map",
-      component: Map,
       children: [
-        {
-          path: "",
-          name: "world-map",
-          component: null,
-        },
         {
           path: ":citySlug",
           name: "city-detail",
-          component: null,
+          component: RouterView,
           children: [
             {
               path: ":museumSlug",
@@ -40,21 +28,30 @@ const router = createRouter({
               component: Infos,
               children: [
                 {
-                  path: ":artworkSlug",
-                  name: "artwork-detail",
-                  component: ArtworkDetails,
-                },
-                {
-                  path: "list",
+                  path: "list", // <--- ON MET LA LISTE EN PREMIER
                   name: "artworks-lists",
                   component: ArtworkList,
                 },
-              ],
-            },
-          ],
-        },
-      ],
+                {
+                  path: ":artworkSlug",
+                  name: "artwork-detail",
+                  component: ArtworkDetails,
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
+    {
+      path: "/credits",
+      component: Credits,
+    },
+    {
+      path: "/all",
+      component: AllArtwork,
+    },
+
     {
       path: "/img",
       component: ClickImg,
