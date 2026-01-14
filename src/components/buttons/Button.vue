@@ -1,33 +1,168 @@
-<script setup>
-import { computed } from 'vue'
+<template>
+  <button class="btn" :class="[
+    `btn--${color}`,
+    { 'btn--icon-only': iconOnly }
+  ]" :disabled="state === 'disable'">
+    <span v-if="iconPrimary" class="btn__icon btn__icon--primary">
+      <slot name="icon-primary">
+      </slot>
+    </span>
 
-const props = defineProps({
-  variant: {
+    <span v-if="!iconOnly && textContent" class="btn__label">
+      {{ textContent }}
+    </span>
+
+    <span v-if="iconSecondary" class="btn__icon btn__icon--secondary">
+      <slot name="icon-secondary">
+      </slot>
+    </span>
+  </button>
+</template>
+
+<script setup>
+defineProps({
+  color: {
     type: String,
-    default: 'pink',
+    default: 'primary-pink',
   },
-  icon: {
+  state: {
+    type: String,
+    default: 'default',
+  },
+  iconOnly: {
     type: Boolean,
     default: false,
   },
-  as: {
+  iconPrimary: {
+    type: Boolean,
+    default: false,
+  },
+  iconSecondary: {
+    type: Boolean,
+    default: false,
+  },
+  textContent: {
     type: String,
-    default: 'button',
+    default: '',
   },
 })
-
-const classes = computed(() => ({
-  [`button--${props.variant}`]: true,
-  'button--icon': props.icon,
-}))
 </script>
 
-<template>
-  <component
-      :is="as"
-      :class="classes"
-      class="button"
-  >
-    <slot />
-  </component>
-</template>
+<style lang="scss" scoped>
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: $black;
+
+  padding: 16px 32px;
+  border: 1px solid transparent;
+  border-radius: 0;
+
+  font-family: $font-family-sans-serif;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 1;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+
+  .btn__label {
+    padding: 8px;
+  }
+
+  &--primary-pink {
+    background-color: $pink-100;
+    color: $black;
+    border-color: $pink-100;
+
+    &:active:not(:disabled) {
+      opacity: 0.9;
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+  }
+
+  &--primary-blue {
+    background-color: $blue-100;
+    color: $black;
+    border-color: $blue-100;
+
+    &:active:not(:disabled) {
+      opacity: 0.9;
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+  }
+
+  &--secondary {
+    background-color: $black;
+    color: $white;
+    border-color: $black;
+
+    &:active:not(:disabled) {
+      opacity: 0.9;
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+  }
+
+  &--tertiary {
+    background-color: $white;
+    color: $black;
+    border: 1px solid $black;
+    border-color: $black;
+    &:active:not(:disabled) {
+      opacity: 0.8;
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+  }
+
+  &:disabled {
+    background-color: $gray-400;
+    color: $gray-500;
+    cursor: not-allowed;
+    border-color: transparent;
+    pointer-events: none;
+  }
+
+  &__icon {
+    font-size: 32px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: currentColor;
+
+    &--primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    :deep(svg) {
+      fill: currentColor;
+      width: 90px;
+      height: 90px;
+    }
+  }
+
+  &--icon-only {
+    padding: 16px;
+
+    .btn__label {
+      display: none;
+    }
+  }
+}
+</style>

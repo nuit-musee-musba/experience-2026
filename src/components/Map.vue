@@ -1,5 +1,6 @@
 <script setup>
-import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
+import { onMounted, onBeforeUnmount, ref, watch, computed } from 'vue';
+
 import * as THREE from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { MapPlane } from '@/webgl/components/MapPlane.js';
@@ -14,6 +15,10 @@ import { Stats } from '@/webgl/utils/Stats.js';
 
 const route = useRoute();
 const router = useRouter();
+const isArtworkActive = computed(() => {
+  return route.name === 'artwork-detail';
+});
+
 const containerRef = ref(null);
 const props = defineProps(['path']);
 
@@ -184,8 +189,8 @@ onMounted(async () => {
   initThree();
   const response = await fetch("/public/content/content.json");
   allPins = await response.json();
-  allData.value = allPins;
-  renderLevel(allPins);
+  allData.value = allPins.data;
+  renderLevel(allPins.data);
   window.addEventListener('click', onMapClick);
   window.addEventListener('resize', handleResize);
 });
@@ -199,7 +204,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="containerRef" class="scene-container"></div>
+  <div ref="containerRef" class="scene-container" :class="{ 'map-frozen': isArtworkActive }"></div>
+
   <BaseButton v-show="currentStep > 0" @click="goBack" variant="black" class="back-button">
     Retour
   </BaseButton>
@@ -211,7 +217,12 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100vh;
   outline: none;
+
+  &.map-frozen {
+    pointer-events: none;
+  }
 }
+
 
 .back-button {
   position: fixed;

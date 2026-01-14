@@ -2,9 +2,9 @@
 </script>
 
 <template>
-  <Idle>
+  <!-- <Idle> -->
     <router-view />
-  </Idle>
+  <!-- </Idle> -->
 </template>
 
 <style scoped>

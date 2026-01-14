@@ -1,9 +1,5 @@
 <template>
-  <button 
-    class="nav-button" 
-    :class="{ 'is-active': active, 'is-quarter': quarter }"
-    @click="$emit('click')"
-  >
+  <button class="nav-button" :class="{ 'is-active': active, 'is-quarter': quarter }" @click="$emit('click')">
     <div class="content">
       <slot name="icon">
         <span class="default-icon">🗺️</span>
@@ -30,7 +26,7 @@ defineProps({
   justify-content: center;
   padding-bottom: 20px;
   transition: all 0.3s ease;
-  
+
   /* Forme de base : Demi-cercle */
   width: 200px;
   height: 100px;
@@ -49,7 +45,8 @@ defineProps({
 /* Version quart de cercle (à droite sur l'image) */
 .nav-button.is-quarter {
   width: 100px;
-  border-radius: 100% 0 0 0; /* Arrondi uniquement en haut à gauche */
+  border-radius: 100% 0 0 0;
+  /* Arrondi uniquement en haut à gauche */
 }
 
 .content {

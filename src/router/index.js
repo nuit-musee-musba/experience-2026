@@ -66,7 +66,7 @@ const router = createRouter({
       path: "/carousel",
       component: Carousel,
       props: { images: ["/images/basilique.jpg", "/images/basilique2.jpg"] },
-    }
+    },
   ],
 });
 
