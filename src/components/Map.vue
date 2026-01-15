@@ -224,12 +224,10 @@ const onMapClick = (event) => {
   if (window.TouchEvent && event instanceof TouchEvent) {
     const finger = firstFingerOfEvent(event);
     if (!finger) {
-      if (event.cancelable) event.preventDefault();
       return;
     }
     clientX = finger.clientX;
     clientY = finger.clientY;
-    if (event.cancelable) event.preventDefault();
   } else {
     clientX = event.clientX;
     clientY = event.clientY;
@@ -240,6 +238,7 @@ const onMapClick = (event) => {
   raycaster.setFromCamera(pointer, camera);
   const intersects = raycaster.intersectObjects(mapPins.getPins(), true);
   if (intersects.length > 0) {
+    if (event.cancelable) event.preventDefault();
     const clickedObject = intersects[0].object;
     if (clickedObject.userData.museums) router.push(`/${clickedObject.userData.slug}`);
     else if (clickedObject.userData.artworks) router.push(`/${activeCitySlug.value}/${clickedObject.userData.slug}`);
@@ -272,15 +271,19 @@ onMounted(async () => {
   allPins = await response.json();
   allData.value = allPins.data;
   renderLevel(allPins.data);
-  window.addEventListener('click', onMapClick);
-  window.addEventListener('touchstart', onMapClick, { passive: false });
+  if (containerRef.value) {
+    containerRef.value.addEventListener('click', onMapClick);
+    containerRef.value.addEventListener('touchstart', onMapClick, { passive: false });
+  }
   window.addEventListener('resize', handleResize);
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize);
-  window.removeEventListener('click', onMapClick);
-  window.removeEventListener('touchstart', onMapClick);
+  if (containerRef.value) {
+    containerRef.value.removeEventListener('click', onMapClick);
+    containerRef.value.removeEventListener('touchstart', onMapClick);
+  }
   cancelAnimationFrame(animationId);
   if (renderer) renderer.dispose();
 });
