@@ -1,5 +1,5 @@
 <template>
-  <button class="nav-button" :class="{ 'is-active': active, 'is-quarter': quarter }" @click="$emit('click')">
+  <button class="nav-button" :class="{ 'is-active': active, 'is-quarter': quarter }" @click="$emit('click')" @touchstart="handleTouch">
     <div class="content">
       <slot name="icon">
         <span class="default-icon">🗺️</span>
@@ -10,11 +10,23 @@
 </template>
 
 <script setup>
+import { firstFingerOfEvent } from '@/utils/touch/touch';
+
 defineProps({
   label: String,
   active: Boolean,
   quarter: Boolean // Pour les formes en quart de cercle à droite
 })
+
+const handleTouch = (event) => {
+  const finger = firstFingerOfEvent(event);
+  if (!finger) {
+    if (event.cancelable) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }
+}
 </script>
 
 <style scoped>

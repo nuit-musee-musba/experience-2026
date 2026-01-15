@@ -19,6 +19,79 @@ Vous n'avez peut-être pas d'écran 4k de 1m50 x 1m.
 Vous pouvez simuler cette qualité sur chrome en ouvrant l'inspecteur d'élément et en définissant une taille d'écran personnalisée : 3840 x 2160 pixels
 Tuto vidéo : [tuto-custom-screen.mp4](https://drive.google.com/file/d/13nn7Nf9MTph6T_OHQdIMjQydiNKbts94/view?usp=sharing)
 
+## Filtrage Tactile (Anti-Missclick)
+
+Cette mise à jour introduit une couche logicielle de détection intelligente des contacts. Elle garantit que seules les interactions volontaires (doigts) sont traitées, filtrant ainsi les erreurs fréquentes sur les grands écrans.
+
+### 1. Contexte & Problématique
+
+Pourquoi ce changement ?
+Sur les tables tactiles à technologie Infrarouge, contrairement aux smartphones capacitifs, tout objet coupant les faisceaux lumineux est considéré comme un "clic".
+
+**Problème** : Manches de vêtements, paumes de main, ou objets posés déclenchent des actions indésirables.
+**Solution** : Une analyse logicielle de l'empreinte du contact (forme et taille) avant validation.
+
+### 2. Logique de Détection
+
+Le filtrage repose sur deux critères mathématiques stricts situés dans `src/utils/touch/`.
+
+**Critère A : Le Rayon (Radius)**
+Vérifie la taille physique de la zone de contact.
+- **Zone Valide** : Entre 10px et 50px.
+- **Rejeté** :
+    - Trop petit (< 10px) : Pointe de stylo, ongle.
+    - Trop grand (> 50px) : Paume, bras, objet large.
+
+**Critère B : Le Ratio (Forme)**
+Vérifie la proportion largeur/hauteur de l'empreinte.
+- **Forme Valide** : Ronde ou légèrement ovale.
+- **Rejeté** : Formes trop allongées (Ratio > 1.7 ou < 0.5).
+
+### 3. Architecture des Fichiers ("Le Cerveau")
+
+| Fichier | Rôle |
+| :--- | :--- |
+| `src/utils/touch/touch.ts` | Point d'entrée. Contient `firstFingerOfEvent`. Trie les points de contact et renvoie le premier qui est valide. |
+| `src/utils/touch/fingerTouchRecognition/byRadius.ts` | Calculs. Contient la logique mathématique pour valider le rayon et le ratio. |
+| `src/utils/touch/fingerTouchRecognition/byPression.ts` | Optionnel. Permet de filtrer par la force de pression (si le hardware le supporte). |
+
+### 4. Composants Impactés
+
+La sécurité a été déployée sur l'ensemble des interactions critiques :
+**La Carte (Map.vue)** : Empêche le déplacement ou l'ouverture de ville lors d'un appui accidentel (ex: main posée).
+**Boutons (Button.vue & NavButton.vue)** : Protégés contre les déclenchements involontaires.
+**Images (ClickImg.vue)** : Les zones interactives ignorent les contacts informes.
+**Carrousel (Carousel.vue)** : Navigation et mode plein écran sécurisés.
+
+### 5. Guide d'Implémentation (Best Practices)
+
+ **Règle d'or pour l'équipe**
+Pour toute nouvelle interaction tactile :
+ Évitez `v-on:click` ou `@click` (souvent simulé et instable sur infrarouge).
+ Utilisez `@touchstart` couplé à la fonction utilitaire.
+
+**Exemple de code standard**
+Voici le pattern à utiliser dans vos composants :
+
+```typescript
+import { firstFingerOfEvent } from "@/utils/touch/touch";
+
+const handleTouch = (event: TouchEvent) => {
+  // 1. Filtrage : "Est-ce un vrai doigt ?"
+  const finger = firstFingerOfEvent(event);
+
+  if (!finger) {
+    return; // Ce n'est pas un doigt valide, on arrête tout.
+  }
+
+  // 2. Action : Exécuter la logique si le filtre est passé
+  doSomething();
+
+  // 3. Sécurité : Empêcher les comportements natifs (zoom, scroll, double tap)
+  if (event.cancelable) event.preventDefault();
+}
+```
+
 ## Développement
 
 ```bash

@@ -12,6 +12,7 @@ import { useRouter, useRoute } from "vue-router";
 import { allData } from '@/store.js';
 import { GUI } from '@/webgl/utils/GUI.js';
 import { Stats } from '@/webgl/utils/Stats.js';
+import { firstFingerOfEvent } from '@/utils/touch/touch';
 
 const route = useRoute();
 const router = useRouter();
@@ -161,8 +162,24 @@ const renderLevel = (dataList) => {
 };
 
 const onMapClick = (event) => {
-  pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-  pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  let clientX, clientY;
+
+  if (window.TouchEvent && event instanceof TouchEvent) {
+    const finger = firstFingerOfEvent(event);
+    if (!finger) {
+      if (event.cancelable) event.preventDefault();
+      return;
+    }
+    clientX = finger.clientX;
+    clientY = finger.clientY;
+    if (event.cancelable) event.preventDefault();
+  } else {
+    clientX = event.clientX;
+    clientY = event.clientY;
+  }
+
+  pointer.x = (clientX / window.innerWidth) * 2 - 1;
+  pointer.y = -(clientY / window.innerHeight) * 2 + 1;
   raycaster.setFromCamera(pointer, camera);
   const intersects = raycaster.intersectObjects(mapPins.getPins(), true);
   if (intersects.length > 0) {
@@ -192,12 +209,14 @@ onMounted(async () => {
   allData.value = allPins.data;
   renderLevel(allPins.data);
   window.addEventListener('click', onMapClick);
+  window.addEventListener('touchstart', onMapClick, { passive: false });
   window.addEventListener('resize', handleResize);
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize);
   window.removeEventListener('click', onMapClick);
+  window.removeEventListener('touchstart', onMapClick);
   cancelAnimationFrame(animationId);
   if (renderer) renderer.dispose();
 });
