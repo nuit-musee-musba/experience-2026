@@ -3,8 +3,6 @@ import { onMounted, onBeforeUnmount, ref, watch, computed } from 'vue';
 import * as THREE from 'three';
 import { CamerasManager } from '@/webgl/managers/CamerasManagers.js';
 import { Map3D } from '@/webgl/components/Map3D.js';
-import { MapPlane } from '@/webgl/components/MapPlane.js';
-import all from '@/assets/world/all.svg?url';
 import { MapPins } from '@/webgl/components/MapPins.js';
 import { CONFIG } from '@/config/webgl.js';
 import BaseButton from '@/components/buttons/Button.vue';
@@ -24,7 +22,7 @@ const containerRef = ref(null);
 const props = defineProps(['path']);
 
 let scene, camera, renderer, animationId, stats;
-let map3D, mapPlane, ambientLight, directionalLight, mapPins, gui, camerasManager;
+let map3D, ambientLight, directionalLight, mapPins, gui, camerasManager;
 let allPins = null;
 
 let isZooming = false;
@@ -61,8 +59,9 @@ const updateCameraTarget = () => {
 
       // Also update controls constraints immediately if already in view
       if (!isZooming) {
-        camerasManager.controls.minPolarAngle = diveAngle;
-        camerasManager.controls.maxPolarAngle = diveAngle;
+        const stepConfig = CONFIG.controls.map.steps[2];
+        camerasManager.controls.minPolarAngle = stepConfig.minPolarAngle;
+        camerasManager.controls.maxPolarAngle = stepConfig.maxPolarAngle;
 
         // Force camera position update if not zooming
         camera.position.copy(destinationCoordonates);
@@ -93,13 +92,15 @@ watch([() => route.params, allData], ([params, data]) => {
       isZooming = true;
 
       // Calculate destination
+      console.log('Traveling to museum:', museum);
+      console.log('City data:', city);
       updateCameraTarget();
     }
   }
   else if (params.citySlug) {
     const city = data.find(v => v.slug === params.citySlug);
     if (city) {
-      destinationCoordonates.set(city.x, city.y, 6);
+      destinationCoordonates.set(city.x, city.y, 2);
       targetDestination.set(city.x, city.y, -29.5);
       resetMapControls();
       renderLevel(city.museums);
@@ -125,7 +126,9 @@ const resetMapControls = () => {
   camerasManager.controls.minAzimuthAngle = CONFIG.controls.map.minAzimuthAngle;
   camerasManager.controls.maxAzimuthAngle = CONFIG.controls.map.maxAzimuthAngle;
   camerasManager.controls.minPolarAngle = 0;
-  camerasManager.controls.maxPolarAngle = Math.PI / 2;
+  camerasManager.controls.maxPolarAngle = Math.PI;
+  camerasManager.controls.minDistance = 0;
+  camerasManager.controls.maxDistance = Infinity;
 };
 
 const initThree = () => {
@@ -144,7 +147,6 @@ const initThree = () => {
 
   stats = new Stats(containerRef.value);
   gui = new GUI(containerRef.value);
-  mapPlane = new MapPlane(scene, all, CONFIG.mapPlane.width, CONFIG.mapPlane.height);
   map3D = new Map3D(scene);
   gui.addMap(map3D);
   mapPins = new MapPins(scene);
@@ -174,10 +176,12 @@ const animate = () => {
     if (dist < 0.01) {
       isZooming = false;
 
-      if (currentStep.value === 2) {
-        const diveAngle = CONFIG.camera.museumView.diveAngle;
-        camerasManager.controls.minPolarAngle = diveAngle;
-        camerasManager.controls.maxPolarAngle = diveAngle;
+      if (currentStep.value !== null && CONFIG.controls.map.steps[currentStep.value]) {
+        const stepConfig = CONFIG.controls.map.steps[currentStep.value];
+        camerasManager.controls.minPolarAngle = stepConfig.minPolarAngle;
+        camerasManager.controls.maxPolarAngle = stepConfig.maxPolarAngle;
+        camerasManager.controls.minDistance = stepConfig.minDistance;
+        camerasManager.controls.maxDistance = stepConfig.maxDistance;
       }
     }
   }
@@ -193,6 +197,7 @@ const renderLevel = (dataList) => {
 
 const onMapClick = (event) => {
   let clientX, clientY;
+
 
   if (window.TouchEvent && event instanceof TouchEvent) {
     const finger = firstFingerOfEvent(event);
@@ -211,6 +216,18 @@ const onMapClick = (event) => {
   pointer.x = (clientX / window.innerWidth) * 2 - 1;
   pointer.y = -(clientY / window.innerHeight) * 2 + 1;
   raycaster.setFromCamera(pointer, camera);
+  // console.log('onMapClick', raycaster);
+
+  if (map3D && map3D.model) {
+    const mapIntersects = raycaster.intersectObject(map3D.model, true);
+    if (mapIntersects.length > 0) {
+      console.log('Map Position:', {
+        x: mapIntersects[0].point.x,
+        y: mapIntersects[0].point.y,
+        z: mapIntersects[0].point.z
+      });
+    }
+  }
 
   const interactables = [
     ...mapPins.getPins(),

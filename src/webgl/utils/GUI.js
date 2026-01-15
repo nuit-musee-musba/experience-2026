@@ -6,42 +6,33 @@ export class GUI {
     this.pane = new Pane({ title: "Experience Config", expanded: true });
   }
 
-  addMap(mapPlane) {
-    const mapFolder = this.pane.addFolder({ title: "Map" });
+  addMap(map3D) {
+    if (!map3D) return;
+
+    const mapFolder = this.pane.addFolder({ title: "Map 3D" });
 
     mapFolder
-      .addBinding(CONFIG.mapPlane, "correction", {
-        x: { min: -500, max: 500 },
-        y: { min: -500, max: 500 },
-        z: { min: -500, max: 500 },
-      })
-      .on("change", () => {
-        if (mapPlane) mapPlane.update();
-      });
+      .addBinding(map3D.params, "scale", { min: 0, max: 100 })
+      .on("change", () => map3D.update());
 
     mapFolder
-      .addBinding(CONFIG.mapPlane, "planePositionZ", { min: -1000, max: 0 })
-      .on("change", () => {
-        if (mapPlane) mapPlane.update();
-      });
+      .addBinding(map3D.params, "groupPositionZ", { min: -100, max: 0 })
+      .on("change", () => map3D.update());
+
     mapFolder
-      .addBinding(CONFIG.mapPlane, "scale", { min: 0, max: 50 })
-      .on("change", () => {
-        if (mapPlane) mapPlane.update();
-      });
-    mapFolder
-      .addBinding(CONFIG.mapPlane, "planeRotationX", {
+      .addBinding(map3D.params, "rotationX", {
         min: -Math.PI,
         max: Math.PI,
       })
-      .on("change", () => {
-        if (mapPlane) mapPlane.update();
-      });
+      .on("change", () => map3D.update());
+
     mapFolder
-      .addBinding(CONFIG.mapPlane, "backgroundZ", { min: -100, max: 10 })
-      .on("change", () => {
-        if (mapPlane) mapPlane.update();
-      });
+      .addBinding(map3D.params, "position", {
+        x: { min: -500, max: 500,  },
+        y: { min: -500, max: 500 },
+        z: { min: -500, max: 500 },
+      })
+      .on("change", () => map3D.update());
   }
 
   addLights(ambientLight, directionalLight) {

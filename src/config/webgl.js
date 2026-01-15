@@ -64,6 +64,26 @@ export const CONFIG = {
       maxPolarAngle: Math.PI,
       minAzimuthAngle: -0.05,
       maxAzimuthAngle: 0.05,
+      steps: {
+        0: {
+          minDistance: 30,
+          maxDistance: 60,
+          minPolarAngle: 0,
+          maxPolarAngle: 0,
+        },
+        1: {
+          minDistance: 30,
+          maxDistance: 50,
+          minPolarAngle: 0,
+          maxPolarAngle: 0,
+        },
+        2: {
+          minDistance: 4,
+          maxDistance: 12,
+          minPolarAngle: Math.PI / 3,
+          maxPolarAngle: Math.PI / 2,
+        },
+      },
     },
     orbit: {},
   },

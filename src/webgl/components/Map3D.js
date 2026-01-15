@@ -15,6 +15,20 @@ export class Map3D {
     this.dracoLoader.setDecoderPath("/draco/");
     this.loader.setDRACOLoader(this.dracoLoader);
 
+    // Initialize parameters with defaults (prioritizing what was working/hardcoded)
+    this.params = {
+      scale: 48.91, // Matches previous hardcoded value
+      opacity: 1,
+      visible: true,
+      position: {
+        x: -173,
+        y: -2.3,
+        z: -5.0,
+      },
+      groupPositionZ: CONFIG.mapPlane.planePositionZ,
+      rotationX: Math.PI / 2,
+    };
+
     this.init();
 
     this.material = new THREE.MeshMatcapMaterial({
@@ -35,11 +49,7 @@ export class Map3D {
       this.model = gltf.scene;
 
       if (this.model) {
-        const s = CONFIG.mapPlane.scale;
-        this.model.scale.set(s, s, s);
-        this.model.position.x = CONFIG.mapPlane.correction.x;
-        this.model.position.y = CONFIG.mapPlane.correction.y;
-        this.model.position.z = CONFIG.mapPlane.correction.z;
+        this.updateTransformAndUniforms();
       }
 
       this.group.add(this.model);
@@ -61,12 +71,11 @@ export class Map3D {
     this.interactables = [];
 
     this.model.traverse((child) => {
-      console.log("Traversing child:", child.name); // Log EVERY child name
+      // console.log("Traversing child:", child.name); // Log EVERY child name
 
       if (child.name.startsWith("sphere-")) {
         // Attempt to match the part after "sphere-" to a city slug
         // logic: if child.name is "sphere-bordeaux", we look for "bordeaux"
-        // logic: if child.name is "sphere-new-york", we look for "new-york"
 
         const possibleSlug = child.name.replace("sphere-", "");
         let city = this.data.find(
@@ -112,17 +121,25 @@ export class Map3D {
     return this.interactables;
   }
 
-  update() {
-    this.group.rotation.x = Math.PI / 2;
-    this.group.position.z = CONFIG.mapPlane.planePositionZ;
-
+  updateTransformAndUniforms() {
     if (this.model) {
-      this.model.position.x = CONFIG.mapPlane.correction.x;
-      this.model.position.y = CONFIG.mapPlane.correction.y;
-      this.model.position.z = CONFIG.mapPlane.correction.z;
-
-      const s = CONFIG.mapPlane.scale;
-      this.model.scale.set(50, 50, 50);
+      this.model.scale.set(
+        this.params.scale,
+        this.params.scale,
+        this.params.scale
+      );
+      this.model.position.set(
+        this.params.position.x,
+        this.params.position.y,
+        this.params.position.z
+      );
     }
+  }
+
+  update() {
+    this.group.rotation.x = this.params.rotationX;
+    this.group.position.z = this.params.groupPositionZ;
+
+    this.updateTransformAndUniforms();
   }
 }
