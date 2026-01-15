@@ -127,7 +127,7 @@ const goToPrev = () => {
 // 4️⃣ Liste des œuvres
 const goToGlobalList = () => {
   if (!museum.value) return;
-  router.push(`/${city.value.slug}/${museum.value.slug}/list`);
+  router.push(`/list`);
 }
 </script>
 
