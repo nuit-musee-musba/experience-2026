@@ -42,14 +42,16 @@ const city = computed(() => {
       </div>
         <div class="location-container location-description-container">
           <div class="scroll-content">
-            <div class="location-main-image"></div>
+            <div class="location-main-image">
+              <img v-if="museum.images && museum.images.length > 0" :src="`/images/${encodeURI(museum.images[0].file)}`" :alt="museum.name" />
+            </div>
             <div class="scroll-content-box">
               <p :key="museum.slug">{{ museum.description }}</p>
               <h3 class="locations-artworks-section-title">Découvrez les oeuvres de ce lieu</h3>
               <div class="location-artworks-listing">
               <RouterLink class="artworks-item" @click.stop :to="`/${route.params.citySlug}/${museum.slug}/${artwork.slug}`" v-for="artwork in museum.artworks " :key="artwork.slug">
                 <div class="artworks-item-image">
-
+                  <img v-if="artwork.images && artwork.images.length > 0" :src="`/images/${encodeURI(artwork.images[0].file)}`" :alt="artwork.name" />
                 </div>
                 <p>{{ artwork.name }}</p>
               </RouterLink>
@@ -102,9 +104,18 @@ const city = computed(() => {
 }
 
 .location-main-image {
-  background: gray;
   width: 100%;
   height: 800px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 .location-detail-box {
@@ -234,7 +245,16 @@ const city = computed(() => {
       .artworks-item-image {
         width: 480px;
         height: 418px;
-        background: gray;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
       }
     }
 
