@@ -4,9 +4,11 @@
     <div class="layout-border layout-border__bottom" role="presentation"></div>
     <div class="layout-border layout-border__left" role="presentation"></div>
     <div class="layout-border layout-border__right" role="presentation"></div>
+
     <main class="main">
       <slot></slot>
     </main>
+
     <nav v-if="!hideNav" class="nav nav-location">
       <div class="nav-buttons">
         <Button color="primary" icon-only icon-primary @click="goToStart">
@@ -15,28 +17,30 @@
           </template>
         </Button>
 
-        <Button color="secondary " @click="goToCity" :text-content="`Retour à ${city.name}`" icon-primary>
+        <!-- Retour à la ville -->
+        <Button v-if="city" color="secondary" @click="goToCity('paris')" :text-content="`Retour à ${city.name}`" icon-primary>
           <template #icon-primary>
-            <IconPin />
+            <IconPin /> 
           </template>
         </Button>
       </div>
 
       <div class="nav-buttons">
-
-
+        <!-- Lieu précédent -->
         <Button color="place" text-content="Lieu précédent" icon-primary @click="goToPrev">
           <template #icon-primary>
             <IconArrowLeft />
           </template>
         </Button>
 
+        <!-- Lieu suivant -->
         <Button color="place" text-content="Lieu suivant" icon-secondary @click="goToNext">
           <template #icon-secondary>
             <IconArrowRight />
           </template>
         </Button>
 
+        <!-- Liste des œuvres -->
         <Button color="artwork" icon-only icon-primary @click="goToGlobalList">
           <template #icon-primary>
             <IconGallery />
@@ -45,7 +49,6 @@
       </div>
     </nav>
   </div>
-
 </template>
 
 <script setup>
@@ -67,37 +70,20 @@ defineProps({
   hideNav: { type: Boolean, default: false }
 });
 
+// Ville actuelle
 const city = computed(() => {
-  if (allData.value) {
-    const laVille = allData.value.find( ville => ville.slug === route.params.citySlug );
-    return laVille;
-  }
-})
+  if (!allData.value) return null;
+  return allData.value.find(ville => ville.slug === route.params.citySlug);
+});
 
-const artwork = computed(() => {
-  if (allData.value) {
-    const laVille = allData.value.find(ville => ville.slug === route.params.citySlug);
-    if (laVille) {
-      const leMusee = laVille.museums.find(m => m.slug === route.params.museumSlug);
-      if (leMusee) {
-        const leArtwork = leMusee.artworks.find(a => a.slug === route.params.artworkSlug);
-        return leArtwork;
-      }
-    }
-  }
-  return null;
-})
-
+// Musée actuel
 const museum = computed(() => {
-  if (allData.value) {
-    const laVille = allData.value.find(ville => ville.slug === route.params.citySlug);
-    if (laVille) {
-      const leMusee = laVille.museums.find(m => m.slug === route.params.museumSlug);
-      return leMusee;
-    }
-  }
-  return null;
-})
+  if (!city.value) return null;
+  return city.value.museums.find(m => m.slug === route.params.museumSlug);
+});
+
+// Liste des musées pour la navigation entre lieux
+const museums = computed(() => city.value ? city.value.museums : []);
 
 const goToStart = () => {
   router.push("/");
@@ -107,110 +93,76 @@ const goToCity = () => {
   router.push(`/${route.params.citySlug}`);
 }
 
+// Lieu suivant (musée suivant)
 const goToNext = () => {
+  const list = museums.value;
+  if (!list || list.length === 0) return;
 
-  const isIndex = (element) => element.slug === route.params.artworkSlug;
+  const currentIndex = list.findIndex(m => m.slug === route.params.museumSlug);
+  if (currentIndex === -1) return;
 
-  if (museum.value.artworks.length > 1) {
-    const indexfinal = museum.value.artworks.findIndex(isIndex)
-    let nextIndex = indexfinal + 1;
+  const nextIndex = (currentIndex + 1) % list.length;
+  const nextMuseum = list[nextIndex];
 
-    if (museum.value.artworks[nextIndex]) {
-      router.push(`/${route.params.citySlug}/${route.params.museumSlug}/${museum.value.artworks[nextIndex].slug}`);
-
-    } else {
-      nextIndex = 0;
-      router.push(`/${route.params.citySlug}/${route.params.museumSlug}/${museum.value.artworks[nextIndex].slug}`);
-    }
-  }
+  // REDIRECTION UNIQUEMENT VERS LE MUSEE (pas d'œuvre)
+  router.push(`/${city.value.slug}/${nextMuseum.slug}`);
 }
 
+// Lieu précédent (musée précédent)
 const goToPrev = () => {
+  const list = museums.value;
+  if (!list || list.length === 0) return;
 
-  const isIndex = (element) => element.slug === route.params.artworkSlug;
+  const currentIndex = list.findIndex(m => m.slug === route.params.museumSlug);
+  if (currentIndex === -1) return;
 
-  if (museum.value.artworks.length > 1) {
-    const indexfinal = museum.value.artworks.findIndex(isIndex)
-    let prevIndex = indexfinal - 1;
+  const prevIndex = (currentIndex - 1 + list.length) % list.length;
+  const prevMuseum = list[prevIndex];
 
-    if (museum.value.artworks[prevIndex]) {
-      router.push(`/${route.params.citySlug}/${route.params.museumSlug}/${museum.value.artworks[prevIndex].slug}`);
-
-    } else {
-      prevIndex = museum.value.artworks.length - 1;
-      router.push(`/${route.params.citySlug}/${route.params.museumSlug}/${museum.value.artworks[prevIndex].slug}`);
-    }
-  }
+  // REDIRECTION UNIQUEMENT VERS LE MUSEE (pas d'œuvre)
+  router.push(`/${city.value.slug}/${prevMuseum.slug}`);
 }
 
+
+// 4️⃣ Liste des œuvres
 const goToGlobalList = () => {
-  router.push(`/${route.params.citySlug}/${route.params.museumSlug}/list`);
+  if (!museum.value) return;
+  router.push(`/${city.value.slug}/${museum.value.slug}/list`);
 }
 </script>
 
 <style lang="scss" scoped>
-
 .layout {
   position: fixed;
   left: 0;
   top: 0;
   height: 100%;
   width: fit-content;
-
   display: flex;
   flex-direction: column;
-
-
 
   .layout-border {
     position: fixed;
     z-index: 10;
 
-    &__top,
-    &__bottom {
-      width: 100%;
-      height: $border-width;
-    }
+    &__top, &__bottom { width: 100%; height: $border-width; }
+    &__left, &__right { width: $border-width; height: 100%; }
 
-    &__left,
-    &__right {
-      width: $border-width;
-      height: 100%;
-    }
-
-    &__top {
-      top: 0;
-      left: 0;
-    }
-
-    &__bottom {
-      bottom: 0;
-      left: 0;
-    }
-
-    &__left {
-      top: 0;
-      left: 0;
-    }
-
-    &__right {
-      top: 0;
-      right: 0;
-    }
+    &__top { top: 0; left: 0; }
+    &__bottom { bottom: 0; left: 0; }
+    &__left { top: 0; left: 0; }
+    &__right { top: 0; right: 0; }
   }
 
   .main {
     flex-grow: 1;
     height: fit-content;
   }
-
-
 }
 
 .nav {
   display: flex;
   padding: $spacing-32;
-  border: $spacing-32;
   border-top: $spacing-8 solid $black;
   background: white;
   z-index: 3;

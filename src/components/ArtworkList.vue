@@ -86,7 +86,7 @@ onUnmounted(() => {
             class="artwork-item"
           >
             <div class="artwork-image">
-               <img v-if="artwork.images && artwork.images.length > 0" :src="`/images/${artwork.images[0].file}`" :alt="artwork.name">
+               <img v-if="artwork.images && artwork.images.length > 0" :src="`/images/${encodeURI(artwork.images[0].file)}`" :alt="artwork.name">
             </div>
             <div class="artwork-info">
               <h2 class="artwork-name">{{ artwork.name }}</h2>
@@ -181,8 +181,7 @@ onUnmounted(() => {
     height: 450px;
     flex-shrink: 0;
     margin-right: 60px;
-    background-color: $gray-100;
-    
+
     img {
       width: 100%;
       height: 100%;

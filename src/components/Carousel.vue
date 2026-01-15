@@ -32,8 +32,11 @@ const handleTouch = (event, callback) => {
   const finger = firstFingerOfEvent(event);
   if (finger) {
     callback();
+    if (event.cancelable) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
   }
-  if (event.cancelable) event.preventDefault();
 }
 </script>
 
