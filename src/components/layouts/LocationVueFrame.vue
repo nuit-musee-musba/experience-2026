@@ -11,14 +11,13 @@
 
     <nav v-if="!hideNav" class="nav nav-location">
       <div class="nav-buttons">
-        <!-- Bouton carte -->
+
         <Button color="primary" icon-only icon-primary>
           <template #icon-primary>
             <IconMap />
           </template>
         </Button>
 
-        <!-- Retour à la ville -->
         <Button color="secondary" @click="goToCity('paris')" :text-content="`Retour à ${city.name}`" icon-primary>
           <template #icon-primary>
             <IconPin /> 
@@ -27,21 +26,18 @@
       </div>
 
       <div class="nav-buttons">
-        <!-- Lieu précédent -->
         <Button color="place" text-content="Lieu précédent" icon-primary @click="goToPrev">
           <template #icon-primary>
             <IconArrowLeft />
           </template>
         </Button>
 
-        <!-- Lieu suivant -->
         <Button color="place" text-content="Lieu suivant" icon-secondary @click="goToNext">
           <template #icon-secondary>
             <IconArrowRight />
           </template>
         </Button>
 
-        <!-- Liste des œuvres -->
         <Button color="artwork" icon-only icon-primary @click="goToGlobalList">
           <template #icon-primary>
             <IconGallery />
@@ -71,22 +67,18 @@ defineProps({
   hideNav: { type: Boolean, default: false }
 });
 
-// Ville actuelle
 const city = computed(() => {
   if (!allData.value) return null;
   return allData.value.find(ville => ville.slug === route.params.citySlug);
 });
 
-// Musée actuel
 const museum = computed(() => {
   if (!city.value) return null;
   return city.value.museums.find(m => m.slug === route.params.museumSlug);
 });
 
-// Liste des musées pour la navigation entre lieux
 const museums = computed(() => city.value ? city.value.museums : []);
 
-// 1️⃣ Retour à la ville
 const goToCity = (city) => {
   if (!city.value) return;
   router.push({
@@ -95,7 +87,6 @@ const goToCity = (city) => {
   });
 }
 
-// Lieu suivant (musée suivant)
 const goToNext = () => {
   const list = museums.value;
   if (!list || list.length === 0) return;
@@ -106,11 +97,9 @@ const goToNext = () => {
   const nextIndex = (currentIndex + 1) % list.length;
   const nextMuseum = list[nextIndex];
 
-  // REDIRECTION UNIQUEMENT VERS LE MUSEE (pas d'œuvre)
   router.push(`/${city.value.slug}/${nextMuseum.slug}`);
 }
 
-// Lieu précédent (musée précédent)
 const goToPrev = () => {
   const list = museums.value;
   if (!list || list.length === 0) return;
@@ -121,12 +110,9 @@ const goToPrev = () => {
   const prevIndex = (currentIndex - 1 + list.length) % list.length;
   const prevMuseum = list[prevIndex];
 
-  // REDIRECTION UNIQUEMENT VERS LE MUSEE (pas d'œuvre)
   router.push(`/${city.value.slug}/${prevMuseum.slug}`);
 }
 
-
-// 4️⃣ Liste des œuvres
 const goToGlobalList = () => {
   if (!museum.value) return;
   router.push(`/${city.value.slug}/${museum.value.slug}/list`);
