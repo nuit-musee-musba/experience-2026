@@ -1,6 +1,7 @@
 <script setup>
 import {computed, ref, watch, onUnmounted} from 'vue';
 import hotAreaData from '@/assets/hot-area.json';
+import { firstFingerOfEvent } from '@/utils/touch/touch';
 
 
 const props = defineProps({
@@ -55,6 +56,14 @@ const closeOverlay = () => {
   zoom.value = 1
 }
 
+const handleTouch = (event, area) => {
+  const finger = firstFingerOfEvent(event);
+  if (finger) {
+    handleClick(area);
+  }
+  if (event.cancelable) event.preventDefault();
+}
+
 
 </script>
 
@@ -67,7 +76,7 @@ const closeOverlay = () => {
       left: area.x + '%',
       width: area.w + '%',
       height: area.h + '%'
-    }" class="clickable-area" @click="handleClick(area)"></div>
+    }" class="clickable-area" @click="handleClick(area)" @touchstart="handleTouch($event, area)"></div>
   </div>
   <div v-if="showOverlay" class="overlay" @click.self="closeOverlay">
     <div class="overlay-content">
