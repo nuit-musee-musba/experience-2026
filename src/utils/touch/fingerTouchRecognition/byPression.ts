@@ -10,4 +10,16 @@ const minTouchForce = () =>
 
 export const isFingerTouchByPression: IsFingerTouchStrategy = (
   touch: Touch
-): boolean => touch.force >= minTouchForce();
+): boolean => {
+  const force = touch.force;
+  const min = minTouchForce();
+  const accepted = force >= min;
+
+  if (!accepted) {
+    console.log('[Touch] Rejeté par pression :', { force, min });
+  } else {
+    console.log('[Touch] Accepté par pression :', { force, min });
+  }
+
+  return accepted;
+};

@@ -12,15 +12,18 @@
 <script setup>
 import { firstFingerOfEvent } from '@/utils/touch/touch';
 
-defineProps({
+const props = defineProps({
   label: String,
   active: Boolean,
   quarter: Boolean // Pour les formes en quart de cercle à droite
 })
 
+const emit = defineEmits(['click'])
+
 const handleTouch = (event) => {
   const finger = firstFingerOfEvent(event);
-  if (!finger) {
+  if (finger) {
+    emit('click');
     if (event.cancelable) {
       event.preventDefault();
       event.stopPropagation();

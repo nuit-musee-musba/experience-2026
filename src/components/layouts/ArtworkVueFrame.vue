@@ -9,13 +9,13 @@
     </main>
     <nav class="nav">
       <div class="nav-buttons">
-        <Button color="primary" icon-only icon-primary>
+        <Button color="primary" icon-only icon-primary @click="goToStart">
           <template #icon-primary>
             <IconMap />
           </template>
         </Button>
 
-        <Button color="primary" text-content="Retour aux lieux" icon-primary>
+        <Button color="primary" text-content="Retour aux lieux" icon-primary @click="goToMuseum">
           <template #icon-primary>
             <IconPin />
           </template>
@@ -86,6 +86,14 @@ const museum = computed(() => {
   }
   return null;
 })
+
+const goToStart = () => {
+  router.push("/");
+}
+
+const goToMuseum = () => {
+  router.push(`/${route.params.citySlug}/${route.params.museumSlug}`);
+}
 
 const goToNext = () => {
 

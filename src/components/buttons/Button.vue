@@ -2,7 +2,7 @@
   <button class="btn" :class="[
     `btn--${color}`,
     { 'btn--icon-only': iconOnly }
-  ]" :disabled="state === 'disable'" @touchstart="handleTouch">
+  ]" :disabled="state === 'disable'" @touchstart="handleTouch" @click="$emit('click')">
     <span v-if="iconPrimary" class="btn__icon btn__icon--primary">
       <slot name="icon-primary">
       </slot>
@@ -22,7 +22,7 @@
 <script setup>
 import { firstFingerOfEvent } from '@/utils/touch/touch';
 
-defineProps({
+const props = defineProps({
   color: {
     type: String,
     default: 'primary-pink',
@@ -49,9 +49,14 @@ defineProps({
   },
 })
 
+const emit = defineEmits(['click'])
+
 const handleTouch = (event) => {
   const finger = firstFingerOfEvent(event);
-  if (!finger) {
+  if (finger) {
+    if (props.state !== 'disable') {
+      emit('click');
+    }
     if (event.cancelable) {
       event.preventDefault();
       event.stopPropagation();
