@@ -32,11 +32,10 @@ const targetDestination = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 
-// --- LOGIQUE DE NAVIGATION ---
+
 watch([() => route.params, allData], ([params, data]) => {
   if (!data || !controls) return;
 
-  // On remet tout à plat avant de changer de vue
   resetMapControls();
 
   if (params.citySlug && params.museumSlug) {
@@ -46,10 +45,8 @@ watch([() => route.params, allData], ([params, data]) => {
     if (museum) {
       targetDestination.set(museum.x, museum.y, -9.5);
 
-      // DÉCALAGE OPTIQUE (Le target est à droite, la cam regarde "à côté")
       const width = containerRef.value.clientWidth;
       const height = containerRef.value.clientHeight;
-      // On décale de 25% vers la gauche pour libérer le menu de 50%
       camera.setViewOffset(width, height, -width * 0.25, 0, width, height);
 
       const distance = 7;
@@ -94,7 +91,6 @@ watch([() => route.params, allData], ([params, data]) => {
 
 const resetMapControls = () => {
   if (!controls) return;
-  // On annule le décalage optique
   if(camera) camera.clearViewOffset();
 
   controls.minAzimuthAngle = CONFIG.controls.map.minAzimuthAngle;
@@ -153,15 +149,54 @@ const animate = () => {
         controls.maxPolarAngle = Math.PI / 3;
         controls.minDistance = 4;
         controls.maxDistance = 12;
+        controls.maxPolarAngle = Math.PI / 2;
+      }
+
+      if (currentStep.value === 1) {
+        controls.minDistance = 8;
+        controls.maxDistance = 24;
+        controls.maxPolarAngle = 0;
+      }
+
+      if (currentStep.value === 0) {
+        controls.minDistance = 30;
+        controls.maxDistance = 60;
+        controls.maxPolarAngle = 0;
       }
     }
   } else {
     if (currentStep.value === 2) {
-      // Aimant sur le target
       controls.target.lerp(targetDestination, 0.05);
 
-      // Aimant de zoom
       const idealDistance = 7;
+      const offset = new THREE.Vector3().subVectors(camera.position, controls.target);
+      const currentDistance = offset.length();
+
+      if (Math.abs(currentDistance - idealDistance) > 0.001) {
+        const newDistance = THREE.MathUtils.lerp(currentDistance, idealDistance, 0.04);
+        offset.setLength(newDistance);
+        camera.position.copy(controls.target).add(offset);
+      }
+    }
+
+    if (currentStep.value === 1) {
+      controls.target.lerp(targetDestination, 0.05);
+
+      const idealDistance = 18;
+      const offset = new THREE.Vector3().subVectors(camera.position, controls.target);
+      const currentDistance = offset.length();
+
+      if (Math.abs(currentDistance - idealDistance) > 0.001) {
+        const newDistance = THREE.MathUtils.lerp(currentDistance, idealDistance, 0.04);
+        offset.setLength(newDistance);
+        camera.position.copy(controls.target).add(offset);
+      }
+    }
+
+    if (currentStep.value === 0) {
+      controls.target.lerp(targetDestination, 0.05);
+
+      const idealDistance = 50;
       const offset = new THREE.Vector3().subVectors(camera.position, controls.target);
       const currentDistance = offset.length();
 
@@ -206,8 +241,6 @@ const handleResize = () => {
   const height = containerRef.value.clientHeight;
 
   camera.aspect = width / height;
-
-  // On recalcule le décalage si on est au musée
   if (currentStep.value === 2) {
     camera.setViewOffset(width, height, -width * 0.25, 0, width, height);
   }
@@ -237,9 +270,6 @@ onBeforeUnmount(() => {
 <template>
   <div ref="containerRef" class="scene-container" :class="{ 'map-frozen': isArtworkActive }"></div>
 
-  <BaseButton v-show="currentStep > 0" @click="goBack" variant="black" class="back-button">
-    Retour
-  </BaseButton>
   <router-view></router-view>
 </template>
 
@@ -251,12 +281,5 @@ onBeforeUnmount(() => {
   &.map-frozen {
     pointer-events: none;
   }
-}
-
-.back-button {
-  position: fixed;
-  right: 20px;
-  top: 20px;
-  z-index: 999;
 }
 </style>

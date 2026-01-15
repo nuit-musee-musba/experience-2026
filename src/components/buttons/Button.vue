@@ -117,7 +117,7 @@ defineProps({
   &--secondary {
     background-color: $white;
     color: $black;
-    border-color: $black;
+    border: $black 4px solid;
 
     &:active:not(:disabled) {
       background-color: $gray-200;
