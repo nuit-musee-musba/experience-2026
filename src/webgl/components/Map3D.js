@@ -63,7 +63,6 @@ export class Map3D {
     this.model.traverse((child) => {
       console.log("Traversing child:", child.name); // Log EVERY child name
 
-      // Check for sphere- specifically for interaction
       if (child.name.startsWith("sphere-")) {
         // Attempt to match the part after "sphere-" to a city slug
         // logic: if child.name is "sphere-bordeaux", we look for "bordeaux"
@@ -80,7 +79,7 @@ export class Map3D {
           );
           city = {
             slug: possibleSlug,
-            museums: [], // Empty museums acts as a flag for "City" type in Map.vue
+            museums: [],
           };
         }
 
@@ -101,10 +100,9 @@ export class Map3D {
           ...city,
           type: "city",
         };
-        return; // Stop processing this child
+        return;
       }
 
-      // Keep original material for other meshes
       child.material = this.material;
     });
     console.log("Total Interactables in Map3D:", this.interactables);
