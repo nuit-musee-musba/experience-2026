@@ -44,7 +44,7 @@ export class MapPins {
       this.loader.load(`/models/${item.model3d}`, (gltf) => {
         const model = gltf.scene;
         model.position.set(item.x, item.y, CONFIG.pins.onceClickedZ);
-        model.scale.set(0.1, 0.1, 0.1);
+        model.scale.set(0.05, 0.05, 0.05);
         model.rotation.set(Math.PI / 2, Math.PI / 2, 0);
 
         model.traverse((child) => {
