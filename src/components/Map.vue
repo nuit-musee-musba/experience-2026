@@ -11,17 +11,20 @@ import BaseButton from '@/components/buttons/Button.vue';
 import { useRouter, useRoute } from "vue-router";
 import { allData } from '@/store.js';
 import { Stats } from '@/webgl/utils/Stats.js';
+import { GUI } from '@/webgl/utils/GUI.js';
 import { firstFingerOfEvent } from '@/utils/touch/touch';
 
 const route = useRoute();
 const router = useRouter();
-const isArtworkActive = computed(() => route.name === 'artwork-detail');
+const isArtworkActive = computed(() => {
+  return route.name === 'artwork-detail';
+});
 
 const containerRef = ref(null);
 const props = defineProps(['path']);
 
-let scene, camera, renderer, controls, animationId, stats;
-let mapPlane, mapPins;
+let scene, camera, renderer, animationId, stats;
+let map3D, mapPlane, ambientLight, directionalLight, mapPins, gui, camerasManager;
 let allPins = null;
 
 let isZooming = false;
@@ -34,11 +37,8 @@ const targetDestination = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 
-
-watch([() => route.params, allData], ([params, data]) => {
-  if (!data || !controls) return;
-
-  resetMapControls();
+const updateCameraTarget = () => {
+  if (!camerasManager) return;
 
   // Museum view
   if (currentStep.value === 2 && activeCitySlug.value) {
@@ -47,23 +47,47 @@ watch([() => route.params, allData], ([params, data]) => {
 
     if (museum) {
       targetDestination.set(museum.x, museum.y, -9.5);
+      const distance = CONFIG.camera.museumView.distance;
+      const diveAngle = CONFIG.camera.museumView.diveAngle;
 
-      const width = containerRef.value.clientWidth;
-      const height = containerRef.value.clientHeight;
-      camera.setViewOffset(width, height, -width * 0.25, 0, width, height);
+      const offsetZ = distance * Math.cos(diveAngle);
+      const offsetY = distance * Math.sin(diveAngle);
 
-      const distance = 7;
-      const diveAngle = Math.PI / 3;
       destinationCoordonates.set(
-          museum.x,
-          museum.y - (distance * Math.sin(diveAngle)),
-          -9.5 + (distance * Math.cos(diveAngle))
+        museum.x,
+        museum.y - offsetY,
+        -9.5 + offsetZ
       );
 
-      controls.minAzimuthAngle = -Infinity;
-      controls.maxAzimuthAngle = Infinity;
-      controls.minPolarAngle = 0;
-      controls.maxPolarAngle = Math.PI;
+      // Also update controls constraints immediately if already in view
+      if (!isZooming) {
+        camerasManager.controls.minPolarAngle = diveAngle;
+        camerasManager.controls.maxPolarAngle = diveAngle;
+
+        // Force camera position update if not zooming
+        camera.position.copy(destinationCoordonates);
+        camerasManager.controls.target.copy(targetDestination);
+      }
+    }
+  }
+};
+
+watch([() => route.params, allData], ([params, data]) => {
+  if (!data || !camerasManager) return;
+
+  if (params.citySlug && params.museumSlug) {
+    activeCitySlug.value = params.citySlug;
+    currentStep.value = 2;
+
+    // Initial setup for travel
+    const city = data.find(v => v.slug === params.citySlug);
+    const museum = city?.museums.find(m => m.slug === params.museumSlug);
+
+    if (museum) {
+      camerasManager.controls.minAzimuthAngle = -Infinity;
+      camerasManager.controls.maxAzimuthAngle = Infinity;
+      camerasManager.controls.minPolarAngle = 0;
+      camerasManager.controls.maxPolarAngle = Math.PI;
 
       isTraveling = true;
       isZooming = true;
@@ -76,7 +100,8 @@ watch([() => route.params, allData], ([params, data]) => {
     const city = data.find(v => v.slug === params.citySlug);
     if (city) {
       destinationCoordonates.set(city.x, city.y, 6);
-      targetDestination.set(city.x, city.y, -9.5);
+      targetDestination.set(city.x, city.y, -29.5);
+      resetMapControls();
       renderLevel(city.museums);
       isTraveling = false;
       isZooming = true;
@@ -87,7 +112,8 @@ watch([() => route.params, allData], ([params, data]) => {
   else {
     destinationCoordonates.set(-5, 5, 50);
     targetDestination.set(-5, 5, -9.5);
-    renderLevel(data);
+    resetMapControls();
+    renderLevel([]);
     isTraveling = false;
     isZooming = true;
     currentStep.value = 0;
@@ -95,15 +121,11 @@ watch([() => route.params, allData], ([params, data]) => {
 }, { immediate: true, deep: true });
 
 const resetMapControls = () => {
-  if (!controls) return;
-  if(camera) camera.clearViewOffset();
-
-  controls.minAzimuthAngle = CONFIG.controls.map.minAzimuthAngle;
-  controls.maxAzimuthAngle = CONFIG.controls.map.maxAzimuthAngle;
-  controls.minPolarAngle = 0;
-  controls.maxPolarAngle = Math.PI / 2;
-  controls.minDistance = 0;
-  controls.maxDistance = Infinity;
+  if (!camerasManager || !camerasManager.controls) return;
+  camerasManager.controls.minAzimuthAngle = CONFIG.controls.map.minAzimuthAngle;
+  camerasManager.controls.maxAzimuthAngle = CONFIG.controls.map.maxAzimuthAngle;
+  camerasManager.controls.minPolarAngle = 0;
+  camerasManager.controls.maxPolarAngle = Math.PI / 2;
 };
 
 const initThree = () => {
@@ -147,70 +169,15 @@ const animate = () => {
 
   if (isZooming && camerasManager.controls) {
     camera.position.lerp(destinationCoordonates, 0.07);
-    controls.target.lerp(targetDestination, 0.07);
-
-    if (camera.position.distanceTo(destinationCoordonates) < 0.01) {
+    camerasManager.controls.target.lerp(targetDestination, 0.07);
+    const dist = camera.position.distanceTo(destinationCoordonates);
+    if (dist < 0.01) {
       isZooming = false;
+
       if (currentStep.value === 2) {
-        controls.minPolarAngle = Math.PI / 3;
-        controls.maxPolarAngle = Math.PI / 3;
-        controls.minDistance = 4;
-        controls.maxDistance = 12;
-        controls.maxPolarAngle = Math.PI / 2;
-      }
-
-      if (currentStep.value === 1) {
-        controls.minDistance = 8;
-        controls.maxDistance = 24;
-        controls.maxPolarAngle = 0;
-      }
-
-      if (currentStep.value === 0) {
-        controls.minDistance = 30;
-        controls.maxDistance = 60;
-        controls.maxPolarAngle = 0;
-      }
-    }
-  } else {
-    if (currentStep.value === 2) {
-      controls.target.lerp(targetDestination, 0.05);
-
-      const idealDistance = 7;
-      const offset = new THREE.Vector3().subVectors(camera.position, controls.target);
-      const currentDistance = offset.length();
-
-      if (Math.abs(currentDistance - idealDistance) > 0.001) {
-        const newDistance = THREE.MathUtils.lerp(currentDistance, idealDistance, 0.04);
-        offset.setLength(newDistance);
-        camera.position.copy(controls.target).add(offset);
-      }
-    }
-
-    if (currentStep.value === 1) {
-      controls.target.lerp(targetDestination, 0.05);
-
-      const idealDistance = 18;
-      const offset = new THREE.Vector3().subVectors(camera.position, controls.target);
-      const currentDistance = offset.length();
-
-      if (Math.abs(currentDistance - idealDistance) > 0.001) {
-        const newDistance = THREE.MathUtils.lerp(currentDistance, idealDistance, 0.04);
-        offset.setLength(newDistance);
-        camera.position.copy(controls.target).add(offset);
-      }
-    }
-
-    if (currentStep.value === 0) {
-      controls.target.lerp(targetDestination, 0.05);
-
-      const idealDistance = 50;
-      const offset = new THREE.Vector3().subVectors(camera.position, controls.target);
-      const currentDistance = offset.length();
-
-      if (Math.abs(currentDistance - idealDistance) > 0.001) {
-        const newDistance = THREE.MathUtils.lerp(currentDistance, idealDistance, 0.04);
-        offset.setLength(newDistance);
-        camera.position.copy(controls.target).add(offset);
+        const diveAngle = CONFIG.camera.museumView.diveAngle;
+        camerasManager.controls.minPolarAngle = diveAngle;
+        camerasManager.controls.maxPolarAngle = diveAngle;
       }
     }
   }
@@ -255,10 +222,6 @@ const onMapClick = (event) => {
 
   if (intersects.length > 0) {
     const clickedObject = intersects[0].object;
-    // console.log('Clicked object:', clickedObject, 'object coords:', allData.value);
-    // console.log('Clicked object userData:', clickedObject.userData.x, clickedObject.userData.y);
-
-
     if (clickedObject.userData.museums) router.push(`/${clickedObject.userData.slug}`);
     else if (clickedObject.userData.artworks) router.push(`/${activeCitySlug.value}/${clickedObject.userData.slug}`);
   }
@@ -272,16 +235,9 @@ const goBack = () => {
 
 const handleResize = () => {
   if (!containerRef.value) return;
-  const width = containerRef.value.clientWidth;
-  const height = containerRef.value.clientHeight;
-
-  camera.aspect = width / height;
-  if (currentStep.value === 2) {
-    camera.setViewOffset(width, height, -width * 0.25, 0, width, height);
-  }
-
+  camera.aspect = containerRef.value.clientWidth / containerRef.value.clientHeight;
   camera.updateProjectionMatrix();
-  renderer.setSize(width, height);
+  renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight);
 };
 
 onMounted(async () => {
@@ -308,6 +264,9 @@ onBeforeUnmount(() => {
 <template>
   <div ref="containerRef" class="scene-container" :class="{ 'map-frozen': isArtworkActive }"></div>
 
+  <BaseButton v-show="currentStep > 0" @click="goBack" variant="black" class="back-button">
+    Retour
+  </BaseButton>
   <router-view></router-view>
 </template>
 
@@ -316,8 +275,17 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100vh;
   outline: none;
+
   &.map-frozen {
     pointer-events: none;
   }
+}
+
+
+.back-button {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  z-index: 999;
 }
 </style>
