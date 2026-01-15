@@ -1,0 +1,109 @@
+@use "sass:color";
+@use "colors" as *;
+@use "variables" as *;
+@use "typography" as *;
+
+// ==============================================
+// Crop Hotspot - Anneau de lumière cliquable
+// ==============================================
+.crop-hotspot {
+  position: absolute;
+  // Taille responsive pour tablette 3840x2160
+  width: clamp(60px, 4vw, 150px);
+  height: clamp(60px, 4vw, 150px);
+  border-radius: 50%;
+  // Anneau de lumière blanc
+  background: transparent;
+  border: clamp(4px, 0.25vw, 8px) solid rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+  // Effet de lueur (glow)
+  box-shadow:
+    0 0 clamp(10px, 0.8vw, 25px) rgba(255, 255, 255, 0.7),
+    0 0 clamp(20px, 1.5vw, 50px) rgba(255, 255, 255, 0.4),
+    inset 0 0 clamp(8px, 0.5vw, 15px) rgba(255, 255, 255, 0.3);
+
+  &:hover,
+  &:active {
+    border-color: $white;
+    box-shadow:
+      0 0 clamp(15px, 1vw, 35px) rgba(255, 255, 255, 0.9),
+      0 0 clamp(30px, 2vw, 70px) rgba(255, 255, 255, 0.5),
+      inset 0 0 clamp(10px, 0.7vw, 20px) rgba(255, 255, 255, 0.4);
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+// ==============================================
+// Crop Popup - Overlay avec image zoomée
+// ==============================================
+.crop-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+  .crop-popup {
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-80;
+
+    .crop-popup-image {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+
+      img {
+        max-width: 100%;
+        max-height: 70vh;
+        object-fit: contain;
+      }
+    }
+
+    .crop-popup-content {
+      display: flex;
+      flex-direction: column;
+      background-color: $white;
+
+      .crop-popup-text {
+        padding: $spacing-80 $spacing-56;
+        font-family: $font-family-sans-serif;
+        @include text-body;
+        line-height: 1.6;
+      }
+
+      .crop-popup-close {
+        align-self: flex-end;
+        display: flex;
+        align-items: center;
+        gap: $spacing-8;
+        background-color: $black;
+        color: $white;
+        padding: $spacing-16 $spacing-32;
+        border: none;
+        cursor: pointer;
+        font-family: $font-family-sans-serif;
+        @include text-body;
+        transform: translateY(-50%) translateX(50%);
+        transition: background-color 0.2s ease;
+
+        svg {
+          width: 1em;
+          height: 1em;
+        }
+
+        &:hover {
+          background-color: color.adjust($black, $lightness: 20%);
+        }
+      }
+    }
+  }
+}

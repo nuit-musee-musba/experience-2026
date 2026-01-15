@@ -1,7 +1,7 @@
 <script setup>
 import { useRoute } from "vue-router";
 import { allData } from '@/store.js';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import ArtworkVueFrame from "./layouts/ArtworkVueFrame.vue";
 
 
@@ -9,6 +9,7 @@ import Button from "./buttons/Button.vue";
 
 import IconFullscreen from '@/components/icons/IconFullscreen.vue';
 import IconPin from "./icons/IconPin.vue";
+import IconClose from "./icons/IconClose.vue";
 const route = useRoute();
 
 const artwork = computed(() => {
@@ -25,6 +26,29 @@ const artwork = computed(() => {
   return null;
 })
 
+// Crops avec coordonnées définies
+const cropsWithLocation = computed(() => {
+  if (artwork.value?.images?.[0]?.crops) {
+    return artwork.value.images[0].crops.filter(
+      crop => crop.artwork_location_x !== null && crop.artwork_location_y !== null
+    );
+  }
+  return [];
+});
+
+// Gestion de la popup
+const showPopup = ref(false);
+const activeCrop = ref(null);
+
+const openCropPopup = (crop) => {
+  activeCrop.value = crop;
+  showPopup.value = true;
+};
+
+const closePopup = () => {
+  showPopup.value = false;
+  activeCrop.value = null;
+};
 
 </script>
 <template>
@@ -33,6 +57,17 @@ const artwork = computed(() => {
       <section class="image-section">
         <div class="image-container">
           <img v-if="artwork.images && artwork.images.length > 0" :src="`/images/${encodeURI(artwork.images[0].file)}`" :alt="artwork.name" />
+          <!-- Cercles cliquables pour les crops -->
+          <div
+            v-for="crop in cropsWithLocation"
+            :key="crop.id"
+            class="crop-hotspot"
+            :style="{
+              left: crop.artwork_location_x + '%',
+              top: crop.artwork_location_y + '%'
+            }"
+            @click="openCropPopup(crop)"
+          />
         </div>
         <figcaption class="figcaption">© ADAGP, Paris, 2026, photo : F. Deval, mairie de Bordeaux</figcaption>
         <div class="button-container">
@@ -44,6 +79,22 @@ const artwork = computed(() => {
         </div>
 
       </section>
+
+      <!-- Popup pour afficher le crop zoomé -->
+      <div v-if="showPopup" class="crop-popup-overlay" @click.self="closePopup">
+        <div class="crop-popup">
+          <div class="crop-popup-image">
+            <img :src="`/images/${encodeURI(activeCrop.file)}`" :alt="activeCrop.description" />
+          </div>
+          <div class="crop-popup-content">
+            <p class="crop-popup-text">{{ activeCrop.description }}</p>
+            <button class="crop-popup-close" @click="closePopup">
+              Fermer
+              <IconClose />
+            </button>
+          </div>
+        </div>
+      </div>
       <section class="content-section">
         <div class="artwork-container artwork-infos">
           <div class="title-and-name">
@@ -115,6 +166,7 @@ const artwork = computed(() => {
       justify-content: center;
       align-items: center;
       overflow: hidden;
+      position: relative;
 
       img {
         max-width: 100%;
