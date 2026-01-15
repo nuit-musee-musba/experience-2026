@@ -4,8 +4,8 @@
       "id": 5,
       "documentId": "w1v80p00bl22zt7dgpysz6hw",
       "name": "Albert",
-      "x": -30,
-      "y": 9,
+      "x": null,
+      "y": null,
       "slug": "albert",
       "createdAt": "2026-01-14T10:09:33.801Z",
       "updatedAt": "2026-01-14T10:09:37.683Z",
@@ -17,9 +17,9 @@
           "documentId": "huv3c49iwme8abh8rl6qzm8h",
           "name": "Basilique Notre-Dame de Brébières",
           "slug": "brebiere",
-          "x": -30,
-          "y": 5,
-          "model3d": "church.glb",
+          "x": null,
+          "y": null,
+          "model3d": null,
           "description": "Albert est une ville de Picardie à mi-chemin entre Amiens et Arras. Elle fut ravagée par le premier conflit mondial, notamment la bataille de la Somme en 1916 qui aboutit à la destruction de la basilique. \n\nA la fin de la guerre, la ville se relève lentement et consacre ses premiers travaux à la reconstruction de la basilique. C'est l'architecte Louis Duthoit qui est chargé des travaux. Le batiment est réédifié entre 1926 et 1929 et rendue au culte dès 1931. L'architecte avait rencontré Jean Dupas lors de la décoration de l'Eglise du Saint-Esprit à Paris.  ",
           "adress": "Place d'Armes",
           "createdAt": "2026-01-14T10:08:42.858Z",
@@ -51,8 +51,8 @@
       "id": 7,
       "documentId": "u9f6o79rmc2tw6wionmqcmyy",
       "name": "Bordeaux",
-      "x": -40,
-      "y": 2,
+      "x": null,
+      "y": null,
       "slug": "bordeaux",
       "createdAt": "2026-01-14T10:13:19.817Z",
       "updatedAt": "2026-01-14T10:13:19.817Z",
@@ -64,8 +64,8 @@
           "documentId": "yw8p2f012ogvjnyztmg5boen",
           "name": "Hôtel Frugès",
           "slug": "hotelfruges",
-          "x": -40,
-          "y": 10,
+          "x": null,
+          "y": null,
           "model3d": null,
           "description": "Industriel ayant fait fortune dans le commerce du sucre, Henri Frugès avait aussi une passion pour l'art et des goûts aussi fastueux qu'écléctiques. En 1912, il achète une maison dans le centre de Bordeaux qu'il décide de rénover de fond en comble, avec l'aide de l'architecte Pierre Ferret, pour en faire une œuvre moderne et globale. Des artistes, en majorité bordelais, participent au chantier : Gaston Schnegg, Robert Wlérick, Jean Dupas, René Buthaud, Jean Dunand, Lucien Cazieux, Edgar Brandt, René Lalique, Émile Brunet. Synthèse unique du style Art Nouveau et Art déco, cet hôtel particulier est aujourd'hui classé Monument historique. ",
           "adress": "63, place des Martyrs de la Résistance",
@@ -632,7 +632,7 @@
           ]
         },
         {
-          "id": 55,
+          "id": 59,
           "documentId": "xzn4tyshvule4ketduepinbr",
           "name": "Pavillon de l'U.C.A.F. des Tissus et de la Manufacture des Gobelins",
           "slug": "ucaf",
@@ -642,12 +642,12 @@
           "description": "À l'Exposition universelle de Paris en 1937, un pavillon, parfois appelé \"palais\" au vu de ses dimensions monumentales, est réservé aux exposants de l'U.C.A.F : l'Union Corportative des Artistes Français. Cette union résulte d'une volonté des artistes de se regrouper au sein d'organisations de caractère corporatiste pour répondre aux difficultés entraînées par la crise économique des années 1930,  de défendre l'art français, et de favoriser les liens entre artistes et industriels. Réunissant diverses professions et artisanats, le pavillon de l'U.C.A.F. était communément appelé \"Centre des Métiers\". ",
           "adress": "Emplacement actuel du Musée du quai Branly - Jacques Chirac",
           "createdAt": "2026-01-14T10:45:43.906Z",
-          "updatedAt": "2026-01-14T16:02:55.623Z",
-          "publishedAt": "2026-01-14T16:02:55.891Z",
+          "updatedAt": "2026-01-14T16:28:17.329Z",
+          "publishedAt": "2026-01-14T16:28:17.617Z",
           "locale": "fr",
           "artworks": [
             {
-              "id": 18,
+              "id": 42,
               "documentId": "prty4du3kcebc463oaf2b5j5",
               "name": "Allégorie du Tissu",
               "artist": "Jean Dupas",
@@ -657,15 +657,42 @@
               "technique": "Huile sur toile ",
               "year": "1937",
               "createdAt": "2026-01-14T10:36:26.195Z",
-              "updatedAt": "2026-01-14T10:36:26.195Z",
-              "publishedAt": "2026-01-14T10:36:26.468Z",
+              "updatedAt": "2026-01-14T16:37:20.736Z",
+              "publishedAt": "2026-01-14T16:37:20.997Z",
               "locale": "fr",
-              "images": []
+              "images": [
+                {
+                  "id": 96,
+                  "documentId": "v5ejmhbq78580ies0flwdcq9",
+                  "file": "paris_pavillonsdelucaf_allegoriedutissu_1.webp",
+                  "description": null,
+                  "copyright": "©Photo Lysiane Gauthier/Mairie de Bordeaux/Musée d'Aquitaine ©adagp, Paris, 2026",
+                  "createdAt": "2026-01-14T16:36:00.294Z",
+                  "updatedAt": "2026-01-14T16:36:00.294Z",
+                  "publishedAt": "2026-01-14T16:36:00.592Z",
+                  "locale": "fr",
+                  "legend": "Jean Dupas, La Vigne et le Vin, 1925, huile sur toile, Bordeaux, Musée d'Aquitaine. ",
+                  "crops": []
+                },
+                {
+                  "id": 98,
+                  "documentId": "h7veo7t318judvhci0sdb2un",
+                  "file": "paris_pavillonsdelucaf_allegoriedutissu_2.webp",
+                  "description": null,
+                  "copyright": "©Région Nouvelle Aquitaine, Inventaire général du patrimoine culturel. Chabot, Bernard et Dubau, Michel, 1972©adagp, Paris, 2026",
+                  "createdAt": "2026-01-14T16:36:59.166Z",
+                  "updatedAt": "2026-01-14T16:36:59.166Z",
+                  "publishedAt": "2026-01-14T16:36:59.380Z",
+                  "locale": "fr",
+                  "legend": "Bernard Chabot et Michel Dubau, Vue intérieure de l'Athénée municipal, La Vigne et le Vin de Jean Dupas, 1972, photographie, Bordeaux, Service régional de l'Inventaire. ",
+                  "crops": []
+                }
+              ]
             }
           ]
         },
         {
-          "id": 41,
+          "id": 60,
           "documentId": "dkzza3s6sc9snybebeq256ld",
           "name": "Eglise du Saint-Esprit",
           "slug": "Eglise du Saint-Esprit",
@@ -675,12 +702,12 @@
           "description": "Dans les années 1920, en pleine crise économique, l'archevêché  de Paris lance un vaste chantier de contruction d'édifices religieux dans Paris et sa banlieue. Devant l'absence de lieux de culte et devant la montée du chômage, on prévoit la construction d'une centaine d'églises dont l'Eglise du Saint-Esprit, située dans le XIIe arrondissement, à partir de 1926. Les plans de l'église sont imaginés par l'architecte Paul Tournon. \n\nPour décorer l'intérieur de l'église, l'architecte Paul Tournon souhaite représenter l'histoire de l’Église chrétienne puis catholique qui se déroule depuis la Pentecôte et entend contribuer au renouveau de la peinture murale. Il fait \"appel à ceux que l'opinion avertie nomme les plus grands parmi les sculpteurs, peintres et décorateurs contemporains\" (extrait de la Revue de l'Art sacré, Avril 34). Jean Dupas est chargé de décorer la sixième chapelle avec l'aide de l'artiste Pougheon. ",
           "adress": "186, avenue Dausmesnil",
           "createdAt": "2026-01-14T10:51:45.474Z",
-          "updatedAt": "2026-01-14T10:53:10.173Z",
-          "publishedAt": "2026-01-14T10:53:10.566Z",
+          "updatedAt": "2026-01-14T16:42:09.926Z",
+          "publishedAt": "2026-01-14T16:42:10.205Z",
           "locale": "fr",
           "artworks": [
             {
-              "id": 22,
+              "id": 43,
               "documentId": "m0nu2ee7ocheot922w03lx5a",
               "name": "Christophe Colomb. Concile de Trente. Renaissance",
               "artist": "Jean Dupas",
@@ -690,10 +717,63 @@
               "technique": "Fresque",
               "year": "1932-1934",
               "createdAt": "2026-01-14T10:52:52.550Z",
-              "updatedAt": "2026-01-14T10:52:52.550Z",
-              "publishedAt": "2026-01-14T10:52:52.822Z",
+              "updatedAt": "2026-01-14T16:45:51.577Z",
+              "publishedAt": "2026-01-14T16:45:51.818Z",
               "locale": "fr",
-              "images": []
+              "images": [
+                {
+                  "id": 102,
+                  "documentId": "lf8ppb4prp4m26b008z1lojw",
+                  "file": "paris_saintesprit_colomb_1.webp",
+                  "description": null,
+                  "copyright": "©Ville de Paris, COARC/Jean-Marc Moser©adagp, Paris, 2026",
+                  "createdAt": "2026-01-14T16:43:27.257Z",
+                  "updatedAt": "2026-01-14T16:43:27.257Z",
+                  "publishedAt": "2026-01-14T16:43:27.478Z",
+                  "locale": "fr",
+                  "legend": "Partie inférieure de la fresque.",
+                  "crops": []
+                },
+                {
+                  "id": 104,
+                  "documentId": "b3t7efjsum2b9o3lync83iem",
+                  "file": "paris_saintesprit_colomb_2.webp",
+                  "description": null,
+                  "copyright": "©Ville de Paris, COARC/Jean-Marc Moser©adagp, Paris, 2026",
+                  "createdAt": "2026-01-14T16:44:08.108Z",
+                  "updatedAt": "2026-01-14T16:44:08.108Z",
+                  "publishedAt": "2026-01-14T16:44:08.339Z",
+                  "locale": "fr",
+                  "legend": "Partie supérieure de la fresque.",
+                  "crops": []
+                },
+                {
+                  "id": 106,
+                  "documentId": "ulqcdyvgg8c9awap72qco2om",
+                  "file": "paris_saintesprit_colomb_3.webp",
+                  "description": null,
+                  "copyright": "©Ville de Paris, COARC/Jean-Marc Moser©adagp, Paris, 2026",
+                  "createdAt": "2026-01-14T16:44:59.280Z",
+                  "updatedAt": "2026-01-14T16:44:59.280Z",
+                  "publishedAt": "2026-01-14T16:44:59.531Z",
+                  "locale": "fr",
+                  "legend": "Partie supérieure droite de la fresque.",
+                  "crops": []
+                },
+                {
+                  "id": 108,
+                  "documentId": "hoej710j21t6vznpp9k8xt0s",
+                  "file": "paris_saintesprit_colomb_4.webp",
+                  "description": null,
+                  "copyright": "©Ville de Paris, COARC/Jean-Marc Moser©adagp, Paris, 2026",
+                  "createdAt": "2026-01-14T16:45:44.760Z",
+                  "updatedAt": "2026-01-14T16:45:44.760Z",
+                  "publishedAt": "2026-01-14T16:45:44.970Z",
+                  "locale": "fr",
+                  "legend": "Partie inférieure de la fresque.",
+                  "crops": []
+                }
+              ]
             }
           ]
         }
