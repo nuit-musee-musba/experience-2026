@@ -13,6 +13,12 @@ export class MapPins {
     this.dracoLoader = new DRACOLoader();
     this.dracoLoader.setDecoderPath("/draco/");
     this.loader.setDRACOLoader(this.dracoLoader);
+    
+    this.pinModelPromise = new Promise((resolve) => {
+      this.loader.load("/models/pin.glb", (gltf) => {
+        resolve(gltf.scene);
+      });
+    });
   }
 
   createCircleTexture() {
@@ -50,32 +56,38 @@ export class MapPins {
         this.group.add(model);
       });
     } else {
-      const geometry = new THREE.SphereGeometry(
-        CONFIG.pins.museums.sphereRadius,
-        CONFIG.pins.museums.sphereWidthSegments,
-        CONFIG.pins.museums.sphereHeightSegments
-      );
-      const material = new THREE.MeshBasicMaterial({
-        color: CONFIG.colors.pinYellow,
-      });
-      const pin = new THREE.Mesh(geometry, material);
-
       if (item.artworks) {
-        pin.geometry = new THREE.BoxGeometry(
+        const geometry = new THREE.BoxGeometry(
           CONFIG.pins.artworks.geometrySizes[0],
           CONFIG.pins.artworks.geometrySizes[1],
           CONFIG.pins.artworks.geometrySizes[2]
         );
-        pin.material = new THREE.MeshBasicMaterial({
+        const material = new THREE.MeshBasicMaterial({
           color: CONFIG.colors.pinGreen,
         });
+        const pin = new THREE.Mesh(geometry, material);
+        pin.userData = item;
+        pin.position.set(item.x, item.y, CONFIG.pins.defaultZ);
+        pin.name = "pin";
+        this.group.add(pin);
+      } else {
+        this.pinModelPromise.then((model) => {
+          const pin = model.clone();
+        
+          pin.scale.set(0.1, 0.1, 0.1);
+          pin.rotation.set(Math.PI, Math.PI, Math.PI / 1);
+
+          pin.traverse((child) => {
+             if (child.isMesh) {
+               child.userData = item;
+             }
+          });
+          pin.userData = item;
+          pin.position.set(item.x, item.y, CONFIG.pins.defaultZ);
+          pin.name = "pin";
+          this.group.add(pin);
+        });
       }
-
-      pin.userData = item;
-      pin.position.set(item.x, item.y, CONFIG.pins.defaultZ);
-      pin.name = 'pin';
-      this.group.add(pin);
-
     }
   }
 
