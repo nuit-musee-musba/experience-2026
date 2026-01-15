@@ -1,130 +1,275 @@
 <template>
   <main class="listing" role="main">
+    <div class="content-wrapper">
+      <!-- Titre du listing -->
+      <h1 class="listing-title">{{ listingTitle }}</h1>
+
+      <div class="list-container">
+        <!-- Liste des œuvres -->
+        <div class="artwork-list">
+          <section
+            v-for="city in groupedArtworks"
+            :key="city.name"
+            class="city-section"
+          >
+            <h2 class="city-title">{{ city.name }}</h2>
+            <ul class="city-grid">
+              <li
+                v-for="artwork in city.artworks"
+                :key="artwork.id"
+                class="artwork-item"
+              >
+                <RouterLink
+                  :to="`/${artwork.citySlug}/${artwork.museumSlug}/${artwork.slug}`"
+                  class="artwork-link"
+                >
+                  <div class="image-wrapper">
+                    <img
+                      v-if="artwork.images && artwork.images.length > 0"
+                      :src="`/images/${artwork.images[0].file}`"
+                      :alt="`Image de l'œuvre ${artwork.name}`"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="artwork-info">
+                    <h2 class="artwork-title">{{ artwork.name }}</h2>
+                    <p class="artwork-subtitle">
+                      {{ artwork.place }}, {{ artwork.year }}
+                    </p>
+                  </div>
+                </RouterLink>
+              </li>
+            </ul>
+          </section>
+        </div>
+
+        <!-- Barre de défilement personnalisée -->
+        <div class="custom-scrollbar">
+          <div class="scrollbar-thumb"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- Bouton fermer -->
     <button
       class="close-button"
       @click="goBack"
       aria-label="Fermer le listing et revenir à l'étape précédente"
     >
-      ✕ Fermer
+      <IconClose class="close-icon" />
+      <span>Fermer</span>
     </button>
-
-    <!-- Titre du listing -->
-    <h1 class="listing-title">{{ listingTitle }}</h1>
-
-    <!-- Lieu -->
-    <p class="listing-location">
-      <span class="city">{{ city }}</span> — <span class="place">{{ placeName }}</span>
-    </p>
-
-    <!-- Liste des œuvres -->
-    <ul class="artwork-list">
-      <li
-        v-for="artwork in artworks"
-        :key="artwork.id"
-        class="artwork-item"
-      >
-        <RouterLink
-          :to="`/oeuvre/${artwork.id}`"
-          class="artwork-link"
-        >
-          <img
-            :src="artwork.image"
-            :alt="`Image de l'œuvre ${artwork.title}`"
-            loading="lazy"
-            width="300"
-            height="200"
-          />
-          <h2 class="artwork-title">{{ artwork.title }}</h2>
-        </RouterLink>
-      </li>
-    </ul>
   </main>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router'
+import { allData } from '@/store.js'
+import { computed, onMounted } from 'vue'
+import IconClose from '@/components/icons/IconClose.vue'
 
 const router = useRouter()
 
-const listingTitle = 'Œuvres exposées'
-const city = 'Bordeaux'
-const placeName = 'Musée des Beaux-Arts'
+const listingTitle = 'Explorez les grands décors de Jean Dupas'
 
-const artworks = [
-  {
-    id: 1,
-    title: 'Le Port de la Lune',
-    image: '/images/port-lune.webp'
-  },
-  {
-    id: 2,
-    title: 'La Femme au miroir',
-    image: '/images/femme-miroir.webp'
-  },
-  {
-    id: 3,
-    title: 'Nature morte aux fruits',
-    image: '/images/nature-morte.webp'
+const groupedArtworks = computed(() => {
+  if (!allData.value) return []
+  return allData.value.map(city => {
+    const cityArtworks = []
+    city.museums.forEach(museum => {
+      museum.artworks.forEach(artwork => {
+        cityArtworks.push({
+          ...artwork,
+          citySlug: city.slug,
+          museumSlug: museum.slug,
+          cityName: city.name,
+          museumName: museum.name
+        })
+      })
+    })
+    return {
+      name: city.name,
+      artworks: cityArtworks
+    }
+  }).filter(city => city.artworks.length > 0)
+})
+
+onMounted(async () => {
+  if (!allData.value) {
+    try {
+      const response = await fetch("/content/content.json")
+      const allPins = await response.json()
+      allData.value = allPins.data
+    } catch (e) {
+      console.error("Failed to fetch artworks", e)
+    }
   }
-]
+})
 
 function goBack() {
   router.back()
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@use '@/styles/variables' as *;
+
 .listing {
-  max-width: 1100px;
-  margin: auto;
-  padding: 1rem;
+  position: fixed;
+  inset: 0;
+  background: white;
+  z-index: 1000;
+  padding: 60px 80px;
+  display: flex;
+  flex-direction: column;
+  font-family: $font-family-sans-serif;
 }
 
-.close-button {
-  background: none;
-  border: none;
-  font-size: 1rem;
-  cursor: pointer;
+.content-wrapper {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .listing-title {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+  font-size: 64px;
+  font-weight: 300;
+  margin-bottom: 60px;
+  padding-bottom: 20px;
+  color: #000;
+  border-bottom: 2px solid #000;
 }
 
-.listing-location {
-  color: #444;
-  margin-bottom: 2rem;
+.list-container {
+  display: flex;
+  gap: 40px;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
 }
 
 .artwork-list {
   list-style: none;
   padding: 0;
+  margin: 0;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 40px;
+
+  /* Hide default scrollbar */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.city-section {
+  margin-bottom: 80px;
+}
+
+.city-title {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 40px;
+  text-transform: capitalize;
+}
+
+.city-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px 40px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.artwork-item {
+  // margin-bottom removed as handled by grid gap
 }
 
 .artwork-link {
   text-decoration: none;
   color: inherit;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 30px;
 }
 
-.artwork-link:focus-visible {
-  outline: 3px solid #005fcc;
-  outline-offset: 4px;
+.image-wrapper {
+  width: 180px;
+  height: 180px;
+  flex-shrink: 0;
+  background: #f0f0f0;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
-.artwork-item img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
+.artwork-info {
+  flex: 1;
 }
 
 .artwork-title {
-  margin-top: 0.5rem;
-  font-size: 1.1rem;
+  font-size: 48px;
+  font-weight: 300;
+  margin: 0 0 5px 0;
+  line-height: 1.1;
+}
+
+.artwork-subtitle {
+  font-size: 24px;
+  color: #000;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.custom-scrollbar {
+  width: 2px;
+  background: #eee;
+  position: relative;
+  height: 80%;
+  align-self: center;
+}
+
+.scrollbar-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  background: #000;
+}
+
+.close-button {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 18px;
+  text-transform: capitalize;
+
+  .close-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.artwork-link:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 4px;
 }
 </style>

@@ -54,7 +54,7 @@ const router = createRouter({
       component: ViewAllArtworks,
     },
     {
-      path: "/test2",
+      path: "/list",
       component: Listing,
     },
     {
