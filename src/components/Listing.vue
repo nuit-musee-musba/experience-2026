@@ -1,11 +1,8 @@
 <template>
   <main class="listing" role="main">
     <div class="content-wrapper">
-      <!-- Titre du listing -->
       <h1 class="listing-title">{{ listingTitle }}</h1>
-
       <div class="list-container">
-        <!-- Liste des œuvres -->
         <div class="artwork-list">
           <section
             v-for="city in groupedArtworks"
@@ -42,20 +39,11 @@
             </ul>
           </section>
         </div>
-
-        <!-- Barre de défilement personnalisée -->
-        <div class="custom-scrollbar">
-          <div class="scrollbar-thumb"></div>
+        <div class="custom-scrollbar"><div class="scrollbar-thumb"></div>
         </div>
       </div>
     </div>
-
-    <!-- Bouton fermer -->
-    <button
-      class="close-button"
-      @click="goBack"
-      aria-label="Fermer le listing et revenir à l'étape précédente"
-    >
+    <button class="close-button" @click="goBack" aria-label="Fermer le listing et revenir à l'étape précédente">
       <IconClose class="close-icon" />
       <span>Fermer</span>
     </button>
@@ -69,7 +57,6 @@ import { computed, onMounted } from 'vue'
 import IconClose from '@/components/icons/IconClose.vue'
 
 const router = useRouter()
-
 const listingTitle = 'Explorez les grands décors de Jean Dupas'
 
 const groupedArtworks = computed(() => {
@@ -160,7 +147,6 @@ function goBack() {
   overflow-y: auto;
   padding-right: 40px;
 
-  /* Hide default scrollbar */
   &::-webkit-scrollbar {
     display: none;
   }
@@ -188,9 +174,9 @@ function goBack() {
   margin: 0;
 }
 
-.artwork-item {
-  // margin-bottom removed as handled by grid gap
-}
+// .artwork-item {
+//   // margin-bottom removed as handled by grid gap
+// }
 
 .artwork-link {
   text-decoration: none;
