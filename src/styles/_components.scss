@@ -6,34 +6,6 @@
 // ==============================================
 // Crop Hotspot - Anneau de lumière cliquable
 // ==============================================
-.crop-hotspot {
-  position: absolute;
-  // Taille responsive pour tablette 3840x2160
-  width: clamp(60px, 4vw, 150px);
-  height: clamp(60px, 4vw, 150px);
-  border-radius: 50%;
-  // Anneau de lumière blanc
-  background: transparent;
-  border: clamp(4px, 0.25vw, 8px) solid rgba(255, 255, 255, 0.9);
-  cursor: pointer;
-  transform: translate(-50%, -50%);
-  transition: all 0.3s ease;
-  // Effet de lueur (glow)
-  box-shadow:
-    0 0 clamp(10px, 0.8vw, 25px) rgba(255, 255, 255, 0.7),
-    0 0 clamp(20px, 1.5vw, 50px) rgba(255, 255, 255, 0.4),
-    inset 0 0 clamp(8px, 0.5vw, 15px) rgba(255, 255, 255, 0.3);
-
-  &:hover,
-  &:active {
-    border-color: $white;
-    box-shadow:
-      0 0 clamp(15px, 1vw, 35px) rgba(255, 255, 255, 0.9),
-      0 0 clamp(30px, 2vw, 70px) rgba(255, 255, 255, 0.5),
-      inset 0 0 clamp(10px, 0.7vw, 20px) rgba(255, 255, 255, 0.4);
-    transform: translate(-50%, -50%) scale(1.05);
-  }
-}
 
 // ==============================================
 // Crop Popup - Overlay avec image zoomée
@@ -69,8 +41,6 @@
     }
 
     .crop-popup-content {
-      display: flex;
-      flex-direction: column;
       background-color: $white;
 
       .crop-popup-text {
@@ -81,7 +51,6 @@
       }
 
       .crop-popup-close {
-        align-self: flex-end;
         display: flex;
         align-items: center;
         gap: $spacing-8;
