@@ -50,6 +50,10 @@ export const CONFIG = {
     initialPosition: new THREE.Vector3(0, 0, 0),
     homePosition: new THREE.Vector3(-5, 5, 50),
     zoomLerpFactor: 0.05,
+    museumView: {
+      diveAngle: Math.PI / 3,
+      distance: 7,
+    },
   },
   controls: {
     dampingFactor: 0.05,

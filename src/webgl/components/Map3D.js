@@ -34,24 +34,6 @@ export class Map3D {
     this.loader.load(this.url, (gltf) => {
       this.model = gltf.scene;
 
-      this.model.traverse((child) => {
-        child.material = this.material;
-        if (child.name === "new-york") {
-          this.interactables.push(child);
-          child.userData = {
-            slug: "new-york",
-            type: "city",
-          };
-        }
-      });
-
-      // const materials = {};
-      // this.model.traverse((object) => {
-      //   if (object.isMesh) {
-      //     materials[object.material.name] = this.material;
-      //   }
-      // });
-
       if (this.model) {
         const s = CONFIG.mapPlane.scale;
         this.model.scale.set(s, s, s);
@@ -61,8 +43,71 @@ export class Map3D {
       }
 
       this.group.add(this.model);
+      this.refreshInteractables();
       this.update(); // Set initial state
     });
+  }
+
+  setCityData(data) {
+    this.data = data;
+    this.refreshInteractables();
+  }
+
+  refreshInteractables() {
+    if (!this.model) return;
+
+    console.log("Refreshing interactables. City Data:", this.data);
+
+    this.interactables = [];
+
+    this.model.traverse((child) => {
+      console.log("Traversing child:", child.name); // Log EVERY child name
+
+      // Check for sphere- specifically for interaction
+      if (child.name.startsWith("sphere-")) {
+        // Attempt to match the part after "sphere-" to a city slug
+        // logic: if child.name is "sphere-bordeaux", we look for "bordeaux"
+        // logic: if child.name is "sphere-new-york", we look for "new-york"
+
+        const possibleSlug = child.name.replace("sphere-", "");
+        let city = this.data.find(
+          (c) => c.slug === possibleSlug || possibleSlug.startsWith(c.slug)
+        );
+
+        if (!city) {
+          console.warn(
+            `Sphere ${child.name} found but no data in content.json. Creating default interaction.`
+          );
+          city = {
+            slug: possibleSlug,
+            museums: [], // Empty museums acts as a flag for "City" type in Map.vue
+          };
+        }
+
+        console.log(
+          `Matched interactive sphere ${child.name} to slug ${city.slug}`
+        );
+
+        // Make invisible but interactable
+        child.material = new THREE.MeshBasicMaterial({
+          transparent: true,
+          opacity: 0,
+          depthWrite: false,
+        });
+
+        this.interactables.push(child);
+        child.userData = {
+          ...child.userData,
+          ...city,
+          type: "city",
+        };
+        return; // Stop processing this child
+      }
+
+      // Keep original material for other meshes
+      child.material = this.material;
+    });
+    console.log("Total Interactables in Map3D:", this.interactables);
   }
 
   getInteractables() {

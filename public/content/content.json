@@ -128,6 +128,42 @@
           ]
         }
       ]
+    },
+    {
+      "id": 8,
+      "documentId": "dummy_ny",
+      "name": "New-York",
+      "x": -97,
+      "y": 8.4,
+      "createdAt": "2026-01-14T09:00:00.000Z",
+      "updatedAt": "2026-01-14T09:00:00.000Z",
+      "publishedAt": "2026-01-14T09:00:00.000Z",
+      "slug": "new-york",
+      "museums": []
+    },
+    {
+      "id": 9,
+      "documentId": "dummy_paris",
+      "name": "Paris",
+      "x": 147,
+      "y": 8.4,
+      "createdAt": "2026-01-14T09:00:00.000Z",
+      "updatedAt": "2026-01-14T09:00:00.000Z",
+      "publishedAt": "2026-01-14T09:00:00.000Z",
+      "slug": "paris",
+      "museums": []
+    },
+    {
+      "id": 10,
+      "documentId": "dummy_bucarest",
+      "name": "Bucarest",
+      "x": 25,
+      "y": 44,
+      "createdAt": "2026-01-14T09:00:00.000Z",
+      "updatedAt": "2026-01-14T09:00:00.000Z",
+      "publishedAt": "2026-01-14T09:00:00.000Z",
+      "slug": "bucarest",
+      "museums": []
     }
   ],
   "meta": {

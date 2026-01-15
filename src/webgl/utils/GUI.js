@@ -68,7 +68,7 @@ export class GUI {
       });
   }
 
-  addCamera(camera) {
+  addCamera(camera, onUpdate) {
     const cameraFolder = this.pane.addFolder({ title: "Camera" });
 
     cameraFolder.addBinding(CONFIG.camera, "homePosition", {
@@ -83,6 +83,21 @@ export class GUI {
           camera.fov = ev.value;
           camera.updateProjectionMatrix();
         }
+      });
+
+    const museumFolder = cameraFolder.addFolder({ title: "Museum View" });
+    museumFolder
+      .addBinding(CONFIG.camera.museumView, "diveAngle", {
+        min: 0,
+        max: Math.PI / 2,
+      })
+      .on("change", () => {
+        if (onUpdate) onUpdate();
+      });
+    museumFolder
+      .addBinding(CONFIG.camera.museumView, "distance", { min: 1, max: 50 })
+      .on("change", () => {
+        if (onUpdate) onUpdate();
       });
   }
 

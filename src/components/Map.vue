@@ -37,17 +37,18 @@ const targetDestination = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 
-watch([() => route.params, allData], ([params, data]) => {
-  if (!data || !camerasManager) return;
+const updateCameraTarget = () => {
+  if (!camerasManager) return;
 
-  if (params.citySlug && params.museumSlug) {
-    const city = data.find(v => v.slug === params.citySlug);
-    const museum = city?.museums.find(m => m.slug === params.museumSlug);
+  // Museum view
+  if (currentStep.value === 2 && activeCitySlug.value) {
+    const city = allData.value.find(v => v.slug === activeCitySlug.value);
+    const museum = city?.museums.find(m => m.slug === route.params.museumSlug);
 
     if (museum) {
       targetDestination.set(museum.x, museum.y, -9.5);
-      const distance = 7;
-      const diveAngle = Math.PI / 3;
+      const distance = CONFIG.camera.museumView.distance;
+      const diveAngle = CONFIG.camera.museumView.diveAngle;
 
       const offsetZ = distance * Math.cos(diveAngle);
       const offsetY = distance * Math.sin(diveAngle);
@@ -58,6 +59,31 @@ watch([() => route.params, allData], ([params, data]) => {
         -9.5 + offsetZ
       );
 
+      // Also update controls constraints immediately if already in view
+      if (!isZooming) {
+        camerasManager.controls.minPolarAngle = diveAngle;
+        camerasManager.controls.maxPolarAngle = diveAngle;
+
+        // Force camera position update if not zooming
+        camera.position.copy(destinationCoordonates);
+        camerasManager.controls.target.copy(targetDestination);
+      }
+    }
+  }
+};
+
+watch([() => route.params, allData], ([params, data]) => {
+  if (!data || !camerasManager) return;
+
+  if (params.citySlug && params.museumSlug) {
+    activeCitySlug.value = params.citySlug;
+    currentStep.value = 2;
+
+    // Initial setup for travel
+    const city = data.find(v => v.slug === params.citySlug);
+    const museum = city?.museums.find(m => m.slug === params.museumSlug);
+
+    if (museum) {
       camerasManager.controls.minAzimuthAngle = -Infinity;
       camerasManager.controls.maxAzimuthAngle = Infinity;
       camerasManager.controls.minPolarAngle = 0;
@@ -65,14 +91,16 @@ watch([() => route.params, allData], ([params, data]) => {
 
       isTraveling = true;
       isZooming = true;
-      currentStep.value = 2;
+
+      // Calculate destination
+      updateCameraTarget();
     }
   }
   else if (params.citySlug) {
     const city = data.find(v => v.slug === params.citySlug);
     if (city) {
       destinationCoordonates.set(city.x, city.y, 6);
-      targetDestination.set(city.x, city.y, -9.5);
+      targetDestination.set(city.x, city.y, -29.5);
       resetMapControls();
       renderLevel(city.museums);
       isTraveling = false;
@@ -85,7 +113,7 @@ watch([() => route.params, allData], ([params, data]) => {
     destinationCoordonates.set(-5, 5, 50);
     targetDestination.set(-5, 5, -9.5);
     resetMapControls();
-    renderLevel(data);
+    renderLevel([]);
     isTraveling = false;
     isZooming = true;
     currentStep.value = 0;
@@ -128,6 +156,7 @@ const initThree = () => {
 
   camerasManager = new CamerasManager(camera, renderer.domElement, 'map');
   gui.addCameraDebug(camerasManager);
+  gui.addCamera(camera, updateCameraTarget);
 
   resetMapControls();
   camera.position.copy(CONFIG.camera.homePosition);
@@ -146,7 +175,7 @@ const animate = () => {
       isZooming = false;
 
       if (currentStep.value === 2) {
-        const diveAngle = Math.PI / 3;
+        const diveAngle = CONFIG.camera.museumView.diveAngle;
         camerasManager.controls.minPolarAngle = diveAngle;
         camerasManager.controls.maxPolarAngle = diveAngle;
       }
@@ -166,9 +195,21 @@ const onMapClick = (event) => {
   pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
   pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
   raycaster.setFromCamera(pointer, camera);
-  const intersects = raycaster.intersectObjects(mapPins.getPins(), true);
+
+  const interactables = [
+    ...mapPins.getPins(),
+    ...map3D.getInteractables()
+  ];
+
+  const intersects = raycaster.intersectObjects(interactables, true);
+  console.log('Intersects:', intersects);
+
   if (intersects.length > 0) {
     const clickedObject = intersects[0].object;
+    // console.log('Clicked object:', clickedObject, 'object coords:', allData.value);
+    // console.log('Clicked object userData:', clickedObject.userData.x, clickedObject.userData.y);
+
+
     if (clickedObject.userData.museums) router.push(`/${clickedObject.userData.slug}`);
     else if (clickedObject.userData.artworks) router.push(`/${activeCitySlug.value}/${clickedObject.userData.slug}`);
   }
@@ -192,7 +233,8 @@ onMounted(async () => {
   const response = await fetch("/public/content/content.json");
   allPins = await response.json();
   allData.value = allPins.data;
-  renderLevel(allPins.data);
+  map3D.setCityData(allPins.data);
+  renderLevel([]);
   window.addEventListener('click', onMapClick);
   window.addEventListener('resize', handleResize);
 });
