@@ -9,7 +9,7 @@
     </main>
     <nav v-if="!hideNav" class="nav nav-location">
       <div class="nav-buttons">
-        <Button color="primary" icon-only icon-primary>
+        <Button color="primary" icon-only icon-primary @click="goToStart">
           <template #icon-primary>
             <IconMap />
           </template>
@@ -98,6 +98,10 @@ const museum = computed(() => {
   }
   return null;
 })
+
+const goToStart = () => {
+  router.push("/");
+}
 
 const goToCity = () => {
   router.push(`/${route.params.citySlug}`);
