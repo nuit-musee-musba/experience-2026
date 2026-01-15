@@ -1,15 +1,16 @@
 <script setup>
 import { useRoute } from "vue-router";
 import { allData } from '@/store.js';
-import { computed, ref } from 'vue';
+import { computed, ref, watch, nextTick } from 'vue';
 import ArtworkVueFrame from "./layouts/ArtworkVueFrame.vue";
-
 
 import Button from "./buttons/Button.vue";
 
-import IconFullscreen from '@/components/icons/IconFullscreen.vue';
 import IconPin from "./icons/IconPin.vue";
-import IconClose from "./icons/IconClose.vue";
+import IconLeave from "./icons/IconLeave.vue";
+import IconArrowLeft from "./icons/IconArrowLeft.vue";
+import IconArrowRight from "./icons/IconArrowRight.vue";
+
 const route = useRoute();
 
 const artwork = computed(() => {
@@ -26,10 +27,58 @@ const artwork = computed(() => {
   return null;
 })
 
+const activeImageIndex = ref(0);
+
+const scrollContent = ref(null);
+const isScrollEnd = ref(false);
+
+const handleScroll = () => {
+  if (scrollContent.value) {
+    const { scrollTop, scrollHeight, clientHeight } = scrollContent.value;
+    isScrollEnd.value = scrollTop + clientHeight >= scrollHeight - 2;
+  }
+};
+
+watch(() => artwork.value, async () => {
+  activeImageIndex.value = 0;
+  await nextTick();
+  if (scrollContent.value) {
+    scrollContent.value.scrollTop = 0;
+    handleScroll();
+  }
+});
+
+const currentImage = computed(() => {
+  if (artwork.value?.images?.length) {
+    return artwork.value.images[activeImageIndex.value];
+  }
+  return null;
+});
+
+const selectImage = (index) => {
+  activeImageIndex.value = index;
+};
+
+const scrollPrev = () => {
+  if (activeImageIndex.value > 0) {
+    activeImageIndex.value--;
+  } else {
+    activeImageIndex.value = artwork.value.images.length - 1;
+  }
+};
+
+const scrollNext = () => {
+  if (activeImageIndex.value < artwork.value.images.length - 1) {
+    activeImageIndex.value++;
+  } else {
+    activeImageIndex.value = 0;
+  }
+};
+
 // Crops avec coordonnées définies
 const cropsWithLocation = computed(() => {
-  if (artwork.value?.images?.[0]?.crops) {
-    return artwork.value.images[0].crops.filter(
+  if (currentImage.value?.crops) {
+    return currentImage.value.crops.filter(
       crop => crop.artwork_location_x !== null && crop.artwork_location_y !== null
     );
   }
@@ -56,31 +105,44 @@ const closePopup = () => {
     <div v-if="artwork" class="artwork-detail-box">
       <section class="image-section">
         <div class="image-container">
-          <img v-if="artwork.images && artwork.images.length > 0" :src="`/images/${encodeURI(artwork.images[0].file)}`" :alt="artwork.name" />
-          <!-- Cercles cliquables pour les crops -->
-          <div
-            v-for="crop in cropsWithLocation"
-            :key="crop.id"
-            class="crop-hotspot"
-            :style="{
-              left: crop.artwork_location_x + '%',
-              top: crop.artwork_location_y + '%'
-            }"
-            @click="openCropPopup(crop)"
-          />
+          <img v-if="currentImage" :src="`/images/${encodeURI(currentImage.file)}`" :alt="artwork.name" />
+          <div v-for="crop in cropsWithLocation" :key="crop.id" class="crop-hotspot" :style="{
+            left: crop.artwork_location_x + '%',
+            top: crop.artwork_location_y + '%'
+          }" @click="openCropPopup(crop)" />
         </div>
-        <figcaption class="figcaption">© ADAGP, Paris, 2026, photo : F. Deval, mairie de Bordeaux</figcaption>
-        <div class="button-container">
-          <Button color="secondary" text-content="Plein écran" icon-primary>
+        <div class="infos-containers">
+          <span class="figcaption">{{ currentImage?.copyright }}</span>
+          <span class="figcaption">{{ currentImage?.description }}</span>
+        </div>
+
+        <div class="thumbnails-container" v-if="artwork.images && artwork.images.length > 1">
+          <Button class="nav-arrow" icon-only icon-primary @click="scrollPrev">
             <template #icon-primary>
-              <IconFullscreen />
+              <IconArrowLeft />
+            </template>
+          </Button>
+
+          <div class="thumbnails-list">
+            <div class="thumbnails-track">
+              <div v-for="(img, index) in artwork.images" :key="img.id" class="thumbnail"
+                   :class="{ 'is-active': index === activeImageIndex }" @click="selectImage(index)">
+                <div class="img-container">
+                  <div class="thumbnail-overlay"></div>
+                  <img :src="`/images/${encodeURI(img.file)}`" :alt="img.description || artwork.name" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Button class="nav-arrow" icon-only icon-primary @click="scrollNext">
+            <template #icon-primary>
+              <IconArrowRight />
             </template>
           </Button>
         </div>
-
       </section>
 
-      <!-- Popup pour afficher le crop zoomé -->
       <div v-if="showPopup" class="crop-popup-overlay" @click.self="closePopup">
         <div class="crop-popup">
           <div class="crop-popup-image">
@@ -88,13 +150,15 @@ const closePopup = () => {
           </div>
           <div class="crop-popup-content">
             <p class="crop-popup-text">{{ activeCrop.description }}</p>
-            <button class="crop-popup-close" @click="closePopup">
-              Fermer
-              <IconClose />
-            </button>
+            <Button color="primary" class="bouton" icon-primary @click="closePopup" :text-content="'Fermer'">
+              <template #icon-primary>
+                <IconLeave />
+              </template>
+            </Button>
           </div>
         </div>
       </div>
+
       <section class="content-section">
         <div class="artwork-container artwork-infos">
           <div class="title-and-name">
@@ -102,11 +166,14 @@ const closePopup = () => {
             <p>Jean Dupas</p>
           </div>
         </div>
-        <div class="artwork-container artwork-description-container">
-          <div class="scroll-content">
+        <div class="artwork-container artwork-description-container" :class="{ 'is-scroll-end': isScrollEnd }">
+          <div class="scroll-content" ref="scrollContent" @scroll="handleScroll">
             <div class="header">
-              <p class="enumeration"><span>{{ artwork.name }}</span>, {{ artwork.year }}, {{ artwork.technique }}, {{
-                artwork.place }}
+              <p class="enumeration">
+                <span>{{ artwork.name }}</span>
+                <span>{{ artwork.year }}</span>
+                <span>{{ artwork.technique }}</span>
+                <span>{{ artwork.place }}</span>
               </p>
               <div class="artwork-place">
                 <IconPin class="pin" />
@@ -132,7 +199,7 @@ const closePopup = () => {
   .image-section {
     width: 75%;
     height: 100%;
-    padding: calc($spacing-96 - $border-width) $spacing-136 $spacing-32 calc($spacing-96 - $border-width);
+    padding: calc($spacing-96 - $border-width) $spacing-136 calc($spacing-96 - $border-width) calc($spacing-96 - $border-width);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -168,6 +235,45 @@ const closePopup = () => {
       overflow: hidden;
       position: relative;
 
+      .crop-hotspot {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        background: transparent;
+        border: 2.91px solid rgba(#fff, 0.5);
+        cursor: pointer;
+        transform: translate(-50%, -50%);
+        transition: all 0.3s ease;
+        box-shadow: 0px 1.62px 49.9px 53.92px rgba(255, 255, 255, 0.25);
+
+        animation: pulse-glow 3s infinite ease-in-out;
+
+        &:active {
+          border-color: $white;
+          box-shadow: 0px 1.62px 55px 65px rgba(255, 255, 255, 0.4);
+          transform: translate(-50%, -50%) scale(1.05);
+          animation: none;
+        }
+      }
+
+      @keyframes pulse-glow {
+        0% {
+          box-shadow: 0px 1.62px 49.9px 53.92px rgba(255, 255, 255, 0.25);
+          transform: translate(-50%, -50%) scale(1);
+        }
+
+        50% {
+          box-shadow: 0px 1.62px 49.9px 65px rgba(255, 255, 255, 0.35);
+          transform: translate(-50%, -50%) scale(1.02);
+        }
+
+        100% {
+          box-shadow: 0px 1.62px 49.9px 53.92px rgba(255, 255, 255, 0.25);
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+
       img {
         max-width: 100%;
         max-height: 100%;
@@ -175,18 +281,105 @@ const closePopup = () => {
       }
     }
 
+    .infos-containers {
+      display: flex;
+      justify-content: space-between;
+      gap: $spacing-32;
+    }
+    
     .figcaption {
       font-size: $spacing-24;
       line-height: 1.3;
       margin-top: $spacing-10;
       text-align: right;
+      font-weight: bold;
+    }
+
+    .thumbnails-container {
+      margin-top: $spacing-24;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: $spacing-16;
+      width: 100%;
+      height: 194px;
+      min-height: 194px;
+      padding: 0 10%;
+
+      .nav-arrow {
+        background-color: $white !important;
+        border: 1px solid $black !important;
+        cursor: pointer;
+        padding: $spacing-16 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $black;
+        transition: opacity 0.3s;
+        position: relative;
+        z-index: 10;
+
+        &:hover {
+          opacity: 0.6;
+        }
+
+        :deep(svg) {
+          width: $spacing-40 !important;
+          height: $spacing-40 !important;
+        }
+      }
+
+      .thumbnails-list {
+        overflow: hidden;
+        height: 100%;
+        margin: 0 $spacing-24;
+
+        .thumbnails-track {
+          display: flex;
+          height: 100%;
+          gap: $spacing-48;
+          justify-content: center;
+
+          .img-container {
+            width: 100%;
+            height: 100%;
+            border: 14px solid $white;
+          }
+        }
+
+        .thumbnail {
+          flex: 0 0 100px;
+          height: 100%;
+          cursor: pointer;
+          position: relative;
+          border: 7px solid transparent;
+          transition: all 0.3s;
+          opacity: 0.5;
+          aspect-ratio: 1;
+
+          &.is-active {
+            opacity: 1;
+            border-color: $black;
+          }
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+      }
     }
 
     .button-container {
       width: 100%;
       display: flex;
       justify-content: flex-end;
-      margin-top: $spacing-74;
+      margin-top: $spacing-32;
+
+      .button {
+        flex-direction: row-reverse;
+      }
     }
   }
 
@@ -200,7 +393,7 @@ const closePopup = () => {
 
     .artwork-container {
       box-sizing: border-box;
-      padding: $spacing-80 $spacing-96;
+      padding: $spacing-48 $spacing-96;
       min-height: 0;
 
       .title-and-name {
@@ -228,6 +421,7 @@ const closePopup = () => {
       .title {
         font-family: $font-family-headings;
         line-height: 100%;
+        font-style: italic;
       }
     }
 
@@ -252,7 +446,11 @@ const closePopup = () => {
       background: linear-gradient(to top, $white 10%, transparent);
       z-index: 1;
       pointer-events: none;
-      display: none;
+      transition: opacity 0.3s ease;
+    }
+
+    &.is-scroll-end::before {
+      opacity: 0;
     }
 
     .scroll-content {
@@ -261,12 +459,24 @@ const closePopup = () => {
       padding: $spacing-80 $spacing-96;
       display: flex;
       flex-direction: column;
-      gap: $spacing-96;
+      gap: $spacing-40;
 
       .header {
         display: flex;
         flex-direction: column;
         gap: $spacing-24;
+      }
+
+      .enumeration{ 
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-16;
+        font-size: $spacing-56;
+        margin-bottom: $spacing-40;
+
+        span {
+          line-height: 1;
+        }
       }
 
       &::-webkit-scrollbar {
@@ -294,6 +504,69 @@ const closePopup = () => {
       font-weight: 500;
       font-size: $spacing-56;
       margin-bottom: $spacing-16;
+    }
+  }
+
+  .crop-content-section {
+    position: relative;
+
+    .button {
+      position: absolute;
+      top: $spacing-32;
+      right: $spacing-32;
+    }
+
+  }
+
+  .crop-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+
+    .crop-popup {
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-80;
+
+      .crop-popup-image {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+
+        img {
+          max-width: 100%;
+          max-height: 70vh;
+          object-fit: contain;
+        }
+      }
+
+      .crop-popup-content {
+        background-color: $white;
+        position: relative;
+
+        .crop-popup-text {
+          padding: $spacing-80 $spacing-56;
+          font-family: $font-family-sans-serif;
+          @include text-body;
+          line-height: 1.6;
+          max-width: 1600px;
+        }
+
+        .bouton {
+          position: absolute;
+          right: calc(-1 * $spacing-56);
+          bottom: calc(-1 * $spacing-56);
+          height: fit-content;
+        }
+      }
     }
   }
 }
