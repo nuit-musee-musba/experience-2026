@@ -110,7 +110,7 @@ onUnmounted(() => {
     </div>
 
     <div class="footer">
-      <Button color="secondary" text-content="Fermer" icon-primary @click="goBack">
+      <Button color="primary" text-content="Fermer" icon-primary @click="goBack">
         <template #icon-primary>
           <IconClose />
         </template>

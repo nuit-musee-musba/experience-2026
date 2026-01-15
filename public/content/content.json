@@ -3,7 +3,7 @@
     {
       "id": 7,
       "documentId": "ki9jxbcw6ikygajozi92g08g",
-      "name": "bordeaux",
+      "name": "Bordeaux",
       "x": -30,
       "y": 9,
       "createdAt": "2026-01-13T09:00:38.771Z",
@@ -14,12 +14,12 @@
         {
           "id": 5,
           "documentId": "z7297zhhb1nvq2x97bs18tef",
-          "name": "MusBA",
+          "name": "Bourse du travail",
           "slug": "musba",
           "x": -30,
           "y": 5,
           "model3d": "church.glb",
-          "description": "oui",
+          "description": "Jean Dupas reçoit en 1936 une commande pour la décoration pour la Bourse du\nTravail de Bordeaux dont la constuction est orchestrée par l'architecte en chef\n Jacques d'Welles. ",
           "adress": "3 rue du Musée",
           "createdAt": "2026-01-13T08:58:34.205Z",
           "updatedAt": "2026-01-13T09:18:01.407Z",

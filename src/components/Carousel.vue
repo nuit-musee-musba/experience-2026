@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import CarouselVue from 'embla-carousel-vue'
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures'
+import { firstFingerOfEvent } from '@/utils/touch/touch';
 
 const props = defineProps({
   images: {
@@ -26,6 +27,14 @@ const toggleFullscreen = () => {
     document.exitFullscreen()
   }
 }
+
+const handleTouch = (event, callback) => {
+  const finger = firstFingerOfEvent(event);
+  if (finger) {
+    callback();
+  }
+  if (event.cancelable) event.preventDefault();
+}
 </script>
 
 <template>
@@ -43,17 +52,17 @@ const toggleFullscreen = () => {
       </div>
     </div>
 
-    <button class="nav-button nav-prev" @click="scrollPrev">
+    <button class="nav-button nav-prev" @click="scrollPrev" @touchstart="handleTouch($event, scrollPrev)">
       <svg viewBox="0 0 24 24">
         <path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
       </svg>
     </button>
-    <button class="nav-button nav-next" @click="scrollNext">
+    <button class="nav-button nav-next" @click="scrollNext" @touchstart="handleTouch($event, scrollNext)">
       <svg viewBox="0 0 24 24">
         <path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
       </svg>
     </button>
-    <button class="fullscreen-btn" @click="toggleFullscreen">⛶ Plein écran</button>
+    <button class="fullscreen-btn" @click="toggleFullscreen" @touchstart="handleTouch($event, toggleFullscreen)">⛶ Plein écran</button>
 
   </div>
 </template>

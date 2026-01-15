@@ -1,5 +1,5 @@
 <template>
-  <div class="layout layout-artwork">
+  <div class="layout layout-location">
     <div class="layout-border layout-border__top" role="presentation"></div>
     <div class="layout-border layout-border__bottom" role="presentation"></div>
     <div class="layout-border layout-border__left" role="presentation"></div>
@@ -7,7 +7,7 @@
     <main class="main">
       <slot></slot>
     </main>
-    <nav class="nav">
+    <nav v-if="!hideNav" class="nav nav-location">
       <div class="nav-buttons">
         <Button color="primary" icon-only icon-primary>
           <template #icon-primary>
@@ -15,7 +15,7 @@
           </template>
         </Button>
 
-        <Button color="primary" text-content="Retour aux lieux" icon-primary>
+        <Button color="secondary " @click="goToCity" :text-content="`Retour à ${city.name}`" icon-primary>
           <template #icon-primary>
             <IconPin />
           </template>
@@ -25,13 +25,13 @@
       <div class="nav-buttons">
 
 
-        <Button color="artwork" text-content="Œuvre précédente" icon-primary @click="goToPrev">
+        <Button color="place" text-content="Lieu précédent" icon-primary @click="goToPrev">
           <template #icon-primary>
             <IconArrowLeft />
           </template>
         </Button>
 
-        <Button color="artwork" text-content="Œuvre suivante" icon-secondary @click="goToNext">
+        <Button color="place" text-content="Lieu suivant" icon-secondary @click="goToNext">
           <template #icon-secondary>
             <IconArrowRight />
           </template>
@@ -45,6 +45,7 @@
       </div>
     </nav>
   </div>
+
 </template>
 
 <script setup>
@@ -61,6 +62,17 @@ import { computed } from 'vue';
 
 const router = useRouter();
 const route = useRoute();
+
+defineProps({
+  hideNav: { type: Boolean, default: false }
+});
+
+const city = computed(() => {
+  if (allData.value) {
+    const laVille = allData.value.find( ville => ville.slug === route.params.citySlug );
+    return laVille;
+  }
+})
 
 const artwork = computed(() => {
   if (allData.value) {
@@ -86,6 +98,10 @@ const museum = computed(() => {
   }
   return null;
 })
+
+const goToCity = () => {
+  router.push(`/${route.params.citySlug}`);
+}
 
 const goToNext = () => {
 
@@ -135,16 +151,15 @@ const goToGlobalList = () => {
   left: 0;
   top: 0;
   height: 100%;
-  width: 100%;
-  background: $white;
-  
+  width: fit-content;
 
   display: flex;
   flex-direction: column;
 
+
+
   .layout-border {
     position: fixed;
-    background-color: $black;
     z-index: 10;
 
     &__top,
@@ -182,25 +197,30 @@ const goToGlobalList = () => {
 
   .main {
     flex-grow: 1;
-    overflow: hidden;
-    height: 0;
+    height: fit-content;
   }
 
-  .nav {
-    display: flex;
-    padding: $spacing-32;
-    border: $spacing-32;
-    @include border-5;
-    border-top: $spacing-8 solid $black;
-  }
 
-  .nav-buttons {
-    display: flex;
-    gap: $spacing-40;
+}
 
-    &:first-child {
-      margin-right: auto;
-    }
+.nav {
+  display: flex;
+  padding: $spacing-32;
+  border: $spacing-32;
+  border-top: $spacing-8 solid $black;
+  background: white;
+  z-index: 3;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: $spacing-40;
+
+  &:first-child {
+    margin-right: auto;
   }
 }
 </style>
