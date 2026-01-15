@@ -268,7 +268,7 @@ const handleResize = () => {
 
 onMounted(async () => {
   initThree();
-  const response = await fetch("/public/content/content.json");
+  const response = await fetch("/content/content.json");
   allPins = await response.json();
   allData.value = allPins.data;
   renderLevel(allPins.data);
