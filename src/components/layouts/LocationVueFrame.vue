@@ -19,7 +19,7 @@
         </Button>
 
         <!-- Retour à la ville -->
-        <Button color="secondary" @click="goToCity('paris')" :text-content="`Retour à ${city.name}`" icon-primary>
+        <Button v-if="city" color="secondary" @click="goToCity('paris')" :text-content="`Retour à ${city.name}`" icon-primary>
           <template #icon-primary>
             <IconPin /> 
           </template>
