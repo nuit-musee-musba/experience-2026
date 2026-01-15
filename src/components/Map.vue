@@ -71,7 +71,7 @@ watch([() => route.params, allData], ([params, data]) => {
   else if (params.citySlug) {
     const city = data.find(v => v.slug === params.citySlug);
     if (city) {
-      destinationCoordonates.set(city.x, city.y, 6);
+      destinationCoordonates.set(city.x, city.y, -8);
       targetDestination.set(city.x, city.y, -9.5);
       renderLevel(city.museums);
       isTraveling = false;
@@ -148,14 +148,14 @@ const animate = () => {
       if (currentStep.value === 2) {
         controls.minPolarAngle = Math.PI / 3;
         controls.maxPolarAngle = Math.PI / 3;
-        controls.minDistance = 4;
+        controls.minDistance = -10;
         controls.maxDistance = 12;
         controls.maxPolarAngle = Math.PI / 2;
       }
 
       if (currentStep.value === 1) {
-        controls.minDistance = 8;
-        controls.maxDistance = 24;
+        controls.minDistance = 0;
+        controls.maxDistance = 10;
         controls.maxPolarAngle = 0;
       }
 
@@ -169,7 +169,7 @@ const animate = () => {
     if (currentStep.value === 2) {
       controls.target.lerp(targetDestination, 0.05);
 
-      const idealDistance = 7;
+      const idealDistance = 2;
       const offset = new THREE.Vector3().subVectors(camera.position, controls.target);
       const currentDistance = offset.length();
 
@@ -183,7 +183,7 @@ const animate = () => {
     if (currentStep.value === 1) {
       controls.target.lerp(targetDestination, 0.05);
 
-      const idealDistance = 18;
+      const idealDistance = 5;
       const offset = new THREE.Vector3().subVectors(camera.position, controls.target);
       const currentDistance = offset.length();
 
@@ -219,6 +219,18 @@ const renderLevel = (dataList) => {
 };
 
 const onMapClick = (event) => {
+
+  if (mapPlane && mapPlane.plane) {
+    const mapIntersects = raycaster.intersectObject(mapPlane.plane, true);
+    if (mapIntersects.length > 0) {
+      console.log('Map Position:', {
+        x: mapIntersects[0].point.x,
+        y: mapIntersects[0].point.y,
+        z: mapIntersects[0].point.z
+      });
+    }
+  }
+
   let clientX, clientY;
 
   if (window.TouchEvent && event instanceof TouchEvent) {
