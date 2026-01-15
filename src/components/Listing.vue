@@ -97,7 +97,8 @@ const groupedArtworks = computed(() => {
 onMounted(async () => {
   if (!allData.value) {
     try {
-      const response = await fetch("/content/content.json")
+      //const response = await fetch("/content/content.json")
+      const response = await fetch("https://useful-car-6cfb564836.strapiapp.com/api/villes?populate[museums][populate][artworks][populate][images][populate][crops][fields]=*")
       const allPins = await response.json()
       allData.value = allPins.data
     } catch (e) {
