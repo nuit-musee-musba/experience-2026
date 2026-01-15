@@ -1,129 +1,699 @@
 {
   "data": [
     {
-      "id": 7,
-      "documentId": "ki9jxbcw6ikygajozi92g08g",
-      "name": "Bordeaux",
+      "id": 5,
+      "documentId": "w1v80p00bl22zt7dgpysz6hw",
+      "name": "Albert",
       "x": -30,
       "y": 9,
-      "createdAt": "2026-01-13T09:00:38.771Z",
-      "updatedAt": "2026-01-13T09:00:45.650Z",
-      "publishedAt": "2026-01-13T09:00:45.659Z",
-      "slug": "bordeaux",
+      "slug": "albert",
+      "createdAt": "2026-01-14T10:09:33.801Z",
+      "updatedAt": "2026-01-14T10:09:37.683Z",
+      "publishedAt": "2026-01-14T10:09:37.972Z",
+      "locale": "fr",
       "museums": [
         {
-          "id": 5,
-          "documentId": "z7297zhhb1nvq2x97bs18tef",
-          "name": "Bourse du travail",
-          "slug": "musba",
+          "id": 8,
+          "documentId": "huv3c49iwme8abh8rl6qzm8h",
+          "name": "Basilique Notre-Dame de Brébières",
+          "slug": "brebiere",
           "x": -30,
           "y": 5,
           "model3d": "church.glb",
-          "description": "Jean Dupas reçoit en 1936 une commande pour la décoration pour la Bourse du\nTravail de Bordeaux dont la constuction est orchestrée par l'architecte en chef\n Jacques d'Welles. ",
-          "adress": "3 rue du Musée",
-          "createdAt": "2026-01-13T08:58:34.205Z",
-          "updatedAt": "2026-01-13T09:18:01.407Z",
-          "publishedAt": "2026-01-13T09:18:01.429Z",
+          "description": "Albert est une ville de Picardie à mi-chemin entre Amiens et Arras. Elle fut ravagée par le premier conflit mondial, notamment la bataille de la Somme en 1916 qui aboutit à la destruction de la basilique. \n\nA la fin de la guerre, la ville se relève lentement et consacre ses premiers travaux à la reconstruction de la basilique. C'est l'architecte Louis Duthoit qui est chargé des travaux. Le batiment est réédifié entre 1926 et 1929 et rendue au culte dès 1931. L'architecte avait rencontré Jean Dupas lors de la décoration de l'Eglise du Saint-Esprit à Paris.  ",
+          "adress": "Place d'Armes",
+          "createdAt": "2026-01-14T10:08:42.858Z",
+          "updatedAt": "2026-01-14T10:10:10.470Z",
+          "publishedAt": "2026-01-14T10:10:10.735Z",
+          "locale": "fr",
           "artworks": [
             {
-              "id": 3,
-              "documentId": "ic0a653ycr53hoenve80y7pc",
-              "name": "Tableau de Jean Dupas",
-              "slug": "tableau-de-jean-dupas",
-              "description": "Ce magnifique tableau nanananan",
-              "year": 2024,
-              "technique": "peinture ",
-              "createdAt": "2026-01-13T08:59:13.916Z",
-              "updatedAt": "2026-01-13T09:05:27.787Z",
-              "publishedAt": "2026-01-13T09:05:27.807Z",
-              "images": [
-                {
-                  "id": 3,
-                  "documentId": "h6gjf84pd4v567icwdtvnwvj",
-                  "file": "photo.png",
-                  "createdAt": "2026-01-13T09:00:11.645Z",
-                  "updatedAt": "2026-01-13T09:05:33.098Z",
-                  "publishedAt": "2026-01-13T09:05:33.113Z",
-                  "description": "Photo de la prise de vue",
-                  "copyright": "Copyright tout droit reservés",
-                  "conservation": "Bien conservé",
-                  "crops": [
-                    {
-                      "id": 2,
-                      "documentId": "v63xkc9fk853z5g6235ic1p9",
-                      "file": "image1_cropX",
-                      "description": "Sur cette partie de l'oeuvre....",
-                      "artwork_location_x": null,
-                      "artwork_location_y": null,
-                      "createdAt": "2026-01-13T09:00:34.198Z",
-                      "updatedAt": "2026-01-13T09:00:34.198Z",
-                      "publishedAt": "2026-01-13T09:00:34.213Z"
-                    }
-                  ]
-                }
-              ]
-            },
+              "id": 4,
+              "documentId": "zf067df280l42zc36q63pvts",
+              "name": "La procession des anges",
+              "artist": "Jean Dupas",
+              "slug": null,
+              "description": "Les saints de Dupas se succèdent en procession pour venir rendre hommage à la Vierge. Ils invitent le pèlerin à suivre leur pas, à se diriger dès son entrée dans l'église vers l'autel. ",
+              "conservation": "Partiellement conservés sur place",
+              "technique": "Toiles marouflées",
+              "year": "1943-1948",
+              "createdAt": "2026-01-14T10:09:25.533Z",
+              "updatedAt": "2026-01-14T10:09:25.533Z",
+              "publishedAt": "2026-01-14T10:09:25.745Z",
+              "locale": "fr",
+              "images": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "documentId": "u9f6o79rmc2tw6wionmqcmyy",
+      "name": "Bordeaux",
+      "x": -40,
+      "y": 2,
+      "slug": "bordeaux",
+      "createdAt": "2026-01-14T10:13:19.817Z",
+      "updatedAt": "2026-01-14T10:13:19.817Z",
+      "publishedAt": "2026-01-14T10:13:20.020Z",
+      "locale": "fr",
+      "museums": [
+        {
+          "id": 44,
+          "documentId": "yw8p2f012ogvjnyztmg5boen",
+          "name": "Hôtel Frugès",
+          "slug": "hotelfruges",
+          "x": -40,
+          "y": 10,
+          "model3d": null,
+          "description": "Industriel ayant fait fortune dans le commerce du sucre, Henri Frugès avait aussi une passion pour l'art et des goûts aussi fastueux qu'écléctiques. En 1912, il achète une maison dans le centre de Bordeaux qu'il décide de rénover de fond en comble, avec l'aide de l'architecte Pierre Ferret, pour en faire une œuvre moderne et globale. Des artistes, en majorité bordelais, participent au chantier : Gaston Schnegg, Robert Wlérick, Jean Dupas, René Buthaud, Jean Dunand, Lucien Cazieux, Edgar Brandt, René Lalique, Émile Brunet. Synthèse unique du style Art Nouveau et Art déco, cet hôtel particulier est aujourd'hui classé Monument historique. ",
+          "adress": "63, place des Martyrs de la Résistance",
+          "createdAt": "2026-01-14T10:10:45.949Z",
+          "updatedAt": "2026-01-14T13:40:27.877Z",
+          "publishedAt": "2026-01-14T13:40:28.157Z",
+          "locale": "fr",
+          "artworks": [
             {
-              "id": 7,
-              "documentId": "pmygjgozhj4jkgefoh92xswo",
-              "name": "La Gloire de Bordeaux",
-              "slug": "une-magnifique-oeuvre",
-              "description": " Cette fresque de 200 mètres carrés est réalisée par Dupas pour décorer la Salle des conférences de la Bourse du Travail de Bordeaux. Par le biais de différents allégories, elle rend hommage à la ville qui doit sa renommée à la richesse de son passé. Cette composition présente les âges successifs de l'histoire de la ville, dont le blason est placé au centre, selon leur déroulement chronologique de droite à gauche. Cette fresque de 200 mètres carrés est réalisée par Dupas pour décorer la Salle des conférences de la Bourse du Travail de Bordeaux. Par le biais de différents allégories, elle rend hommage à la ville qui doit sa renommée à la richesse de son passé. Cette composition présente les âges successifs de l'histoire de la ville, dont le blason est placé au centre, selon leur déroulement chronologique de droite à gauche. Cette fresque de 200 mètres carrés est réalisée par Dupas pour décorer la Salle des conférences de la Bourse du Travail de Bordeaux. Par le biais de différents allégories, elle rend hommage à la ville qui doit sa renommée à la richesse de son passé. Cette composition présente les âges successifs de l'histoire de la ville, dont le blason est placé au centre, selon leur déroulement chronologique de droite à gauche.",
-              "place": "Bordeaux, Bourse du Travail",
-              "year": 2005,
-              "technique": "photographie",
-              "createdAt": "2026-01-13T09:16:56.855Z",
-              "updatedAt": "2026-01-13T09:20:32.415Z",
-              "publishedAt": "2026-01-13T09:20:32.432Z",
+              "id": 27,
+              "documentId": "kf18frrrdhekl8m8rvx1764e",
+              "name": "Femme à l'Ara",
+              "artist": "Jean Dupas",
+              "slug": null,
+              "description": "Vue intérieure de l'Hôtel Frugès, 63 place de Martyrs de la Résistance, Bordeaux : dans le trumeau qui surmonte les portes était marouflée une version de La Femme à l'Ara de Jean Dupas, aujourd'hui disparue.",
+              "conservation": "Localisation inconnue",
+              "technique": "Huile sur papier collé sur toile",
+              "year": "1923",
+              "createdAt": "2026-01-14T10:11:13.117Z",
+              "updatedAt": "2026-01-14T13:46:45.100Z",
+              "publishedAt": "2026-01-14T13:46:45.365Z",
+              "locale": "fr",
               "images": [
                 {
-                  "id": 6,
-                  "documentId": "pexdlia9kjqytlsxl0lwaf68",
-                  "file": "magnifiquephoto",
-                  "createdAt": "2026-01-13T09:17:16.977Z",
-                  "updatedAt": "2026-01-13T09:17:42.216Z",
-                  "publishedAt": "2026-01-13T09:17:42.222Z",
-                  "description": "oui",
-                  "copyright": "ça m'appartiens",
-                  "conservation": "en conserve",
-                  "crops": [
-                    {
-                      "id": 4,
-                      "documentId": "tl54zx7kjmxrw50ulgp8gpqt",
-                      "file": "crop2",
-                      "description": null,
-                      "artwork_location_x": null,
-                      "artwork_location_y": null,
-                      "createdAt": "2026-01-13T09:17:24.247Z",
-                      "updatedAt": "2026-01-13T09:17:24.247Z",
-                      "publishedAt": "2026-01-13T09:17:24.251Z"
-                    },
-                    {
-                      "id": 6,
-                      "documentId": "uow6bhzwzh8lq8hsc4ukhbl2",
-                      "file": "crop3",
-                      "description": null,
-                      "artwork_location_x": null,
-                      "artwork_location_y": null,
-                      "createdAt": "2026-01-13T09:17:33.524Z",
-                      "updatedAt": "2026-01-13T09:17:33.524Z",
-                      "publishedAt": "2026-01-13T09:17:33.540Z"
-                    }
-                  ]
+                  "id": 5,
+                  "documentId": "zbnv8zc7ml154m4oyzf5czjn",
+                  "file": "bordeaux_hotelfruges_femmealara_2.webp",
+                  "description": "Ancien emplacement de La Femme à l'Ara de Jean Dupas, aujourd'hui non localisée.",
+                  "copyright": "©Le Festin, photo Michel Dubau",
+                  "createdAt": "2026-01-14T13:42:32.064Z",
+                  "updatedAt": "2026-01-14T13:45:19.351Z",
+                  "publishedAt": "2026-01-14T13:45:19.658Z",
+                  "locale": "fr",
+                  "legend": null,
+                  "crops": []
                 },
                 {
                   "id": 8,
-                  "documentId": "nnzaub0rrpdcj594uthyfxv2",
-                  "file": "deuxième magnifique photo",
-                  "createdAt": "2026-01-13T09:20:22.003Z",
-                  "updatedAt": "2026-01-13T09:20:22.003Z",
-                  "publishedAt": "2026-01-13T09:20:22.018Z",
-                  "description": "oui oui oui oui ",
-                  "copyright": "test",
-                  "conservation": null,
+                  "documentId": "am3hqn06sehqdxk49qks8uur",
+                  "file": "bordeaux_hotelfruges_femmealara_1.webp",
+                  "description": "Photographie ancienne avec La Femme à l'Ara.",
+                  "copyright": "©Christie's Images/Bridgeman Images©adagp, Paris, 2026",
+                  "createdAt": "2026-01-14T13:46:33.266Z",
+                  "updatedAt": "2026-01-14T14:27:20.387Z",
+                  "publishedAt": "2026-01-14T14:27:20.490Z",
+                  "locale": "fr",
+                  "legend": null,
+                  "crops": [
+                    {
+                      "id": 2,
+                      "documentId": "cqe57scdlen7vt19beorqooe",
+                      "description": "Sur cette partie de l'image...",
+                      "artwork_location_x": null,
+                      "artwork_location_y": null,
+                      "artwork_location_w": null,
+                      "artwork_location_h": null,
+                      "createdAt": "2026-01-14T14:25:36.783Z",
+                      "updatedAt": "2026-01-14T14:25:36.783Z",
+                      "publishedAt": "2026-01-14T14:25:37.025Z",
+                      "locale": "fr",
+                      "file": "bordeaux_hotelfruges_femmealara_1_crop_2.webp"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 43,
+          "documentId": "d72xcceax4o2lphwilwntayh",
+          "name": "Bourse du Travail",
+          "slug": "boursedutravail",
+          "x": null,
+          "y": null,
+          "model3d": null,
+          "description": "Jean Dupas reçoit en 1936 une commande pour la décoration pour la Bourse du Travail de Bordeaux dont la constuction est orchestrée par l'architecte en chef Jacques d'Welles. La façade principale, ouverte sur le Cours Aristide Briand, est représentative de l'esprit classique de l'architecte. ",
+          "adress": "44, Cours Aristide Briand",
+          "createdAt": "2026-01-14T10:12:21.611Z",
+          "updatedAt": "2026-01-14T11:29:49.770Z",
+          "publishedAt": "2026-01-14T11:29:50.143Z",
+          "locale": "fr",
+          "artworks": [
+            {
+              "id": 8,
+              "documentId": "g43dugza1g8zbherdm6rh8eo",
+              "name": "La Gloire de Bordeaux",
+              "artist": "Jean Dupas",
+              "slug": "gloiredebordo",
+              "description": "Jean Dupas reçoit en 1936 une commande pour la décoration pour la Bourse du Travail de Bordeaux dont la constuction est orchestrée par l'architecte en chef Jacques d'Welles. La façade principale, ouverte sur le Cours Aristide Briand, est représentative de l'esprit classique de l'architecte. ",
+              "conservation": "Conservés sur place",
+              "technique": "Fresque",
+              "year": "1937-1942",
+              "createdAt": "2026-01-14T10:12:58.218Z",
+              "updatedAt": "2026-01-14T10:12:58.218Z",
+              "publishedAt": "2026-01-14T10:12:58.413Z",
+              "locale": "fr",
+              "images": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "documentId": "mq4t7dw2mlpg028j71kp1d0g",
+      "name": "Bucarest",
+      "x": null,
+      "y": null,
+      "slug": "bucarest",
+      "createdAt": "2026-01-14T10:15:21.994Z",
+      "updatedAt": "2026-01-14T10:15:21.994Z",
+      "publishedAt": "2026-01-14T10:15:22.191Z",
+      "locale": "fr",
+      "museums": [
+        {
+          "id": 17,
+          "documentId": "s5eyh34b2xbfpz4c8uhup99w",
+          "name": "Palais royal de Bucarest",
+          "slug": "royalbucarest",
+          "x": null,
+          "y": null,
+          "model3d": null,
+          "description": "En 1935, Dupas obtient une commande officielle pour la décoration du plafond du Salon de l'Argenterie du Palais Royal de Bucarest. Le roi Karol (roi de Roumanie, 1930-1940) qui vient d'instaurer sa propre dictature décide de marquer son règne par la recontruction en un style néo-classique du Palais incendié en 1926. ",
+          "adress": "49-53, Calea Victoriei",
+          "createdAt": "2026-01-14T10:14:26.236Z",
+          "updatedAt": "2026-01-14T10:15:09.086Z",
+          "publishedAt": "2026-01-14T10:15:09.349Z",
+          "locale": "fr",
+          "artworks": [
+            {
+              "id": 10,
+              "documentId": "ypb2qi3p5w2g488jybepgyy2",
+              "name": "Le Char d'Apollon, dit aussi Le Zodiaque",
+              "artist": "Jean Dupas",
+              "slug": "zodiaque",
+              "description": " Ne souhaitant pas séjourné trop longtemps à Bucarest, l'artiste propose de réaliser des toiles monumentales en France, qui seront expédiées puis installées sur le plafond du Salon de l'Argenterie. Mais en\n1936, la Roumanie arrête brusquement ses paiements à l'artiste qui cesse son travail. La réalisation reprend deux ans plus tard mais ne sera finalement pas achevée, du fait des trop nombreuses commandes acceptées par l'artiste en\nsimultanée et de la dissolution du gouvernement romain par les Nazis.",
+              "conservation": "Non réalisé",
+              "technique": "Fresque",
+              "year": "1935-1940",
+              "createdAt": "2026-01-14T10:14:55.101Z",
+              "updatedAt": "2026-01-14T10:14:55.101Z",
+              "publishedAt": "2026-01-14T10:14:55.297Z",
+              "locale": "fr",
+              "images": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "documentId": "hj1nipco5uur0mvu4dpjui1a",
+      "name": "Libourne",
+      "x": null,
+      "y": null,
+      "slug": "libourne",
+      "createdAt": "2026-01-14T10:18:54.838Z",
+      "updatedAt": "2026-01-14T10:18:54.838Z",
+      "publishedAt": "2026-01-14T10:18:55.039Z",
+      "locale": "fr",
+      "museums": [
+        {
+          "id": 51,
+          "documentId": "b63tqskj83y7kgv6jn7b6vi5",
+          "name": "Lycée Max Linder",
+          "slug": "maxlinder",
+          "x": null,
+          "y": null,
+          "model3d": null,
+          "description": null,
+          "adress": "43, Allées Robert-Boulin",
+          "createdAt": "2026-01-14T10:16:32.943Z",
+          "updatedAt": "2026-01-14T15:37:45.201Z",
+          "publishedAt": "2026-01-14T15:37:45.470Z",
+          "locale": "fr",
+          "artworks": [
+            {
+              "id": 32,
+              "documentId": "k8w1414jndg1ij5np129zk4q",
+              "name": "L'Air",
+              "artist": "Jean Dupas",
+              "slug": "air",
+              "description": "Cette toile est l'oeuvre de Jean Dupas qui s'inspire du mythe de Pégase pour symboliser \"l'Air\". En effet, lors de la décoration du lycée au titre du 1% artistique, Jacques Carlu, l'architecte du lycée, propose de décorer le réfectoire avec quatre peintures représentant les  éléments : Sahuguet (L’Eau), Souverbie (La Terre), Untersteller (Le Feu), Dupas (L’Air). Il s'agit de l'une des dernières oeuvres connues de l'artiste. ",
+              "conservation": "Conservé sur place ",
+              "technique": "Peinture marouflée sur toile ou peinte directement sur le mur (incertitude)",
+              "year": "1960",
+              "createdAt": "2026-01-14T10:18:25.559Z",
+              "updatedAt": "2026-01-14T15:37:26.704Z",
+              "publishedAt": "2026-01-14T15:37:26.945Z",
+              "locale": "fr",
+              "images": [
+                {
+                  "id": 25,
+                  "documentId": "h8z48at40ziasonzr1x2iedl",
+                  "file": "libourne_lyceemaxlinder_lair.webp",
+                  "description": "L'Air, 1960, fresque ou toile marouflée, Libourne, Lycée Max Linder (réfectoire).",
+                  "copyright": "©Région Nouvelle- Aquitaine, Inventaire général du patrimoine culturel. Barroche Adrienne, 2016 ©adagp, Paris, 2026",
+                  "createdAt": "2026-01-14T15:23:46.655Z",
+                  "updatedAt": "2026-01-14T15:23:50.527Z",
+                  "publishedAt": "2026-01-14T15:23:50.753Z",
+                  "locale": "fr",
+                  "legend": null,
                   "crops": []
                 }
               ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "documentId": "szakdeso8fnbssxd35phb7g9",
+      "name": "New York",
+      "x": null,
+      "y": null,
+      "slug": "newyork",
+      "createdAt": "2026-01-14T10:19:26.173Z",
+      "updatedAt": "2026-01-14T10:22:56.833Z",
+      "publishedAt": "2026-01-14T10:22:57.049Z",
+      "locale": "fr",
+      "museums": [
+        {
+          "id": 52,
+          "documentId": "c89vj1e0epu5ia1uv0mf97vj",
+          "name": "Pavillon français",
+          "slug": "pavillonfrancais",
+          "x": null,
+          "y": null,
+          "model3d": null,
+          "description": "À l'occasion de l'Exposition universelle de New-York en 1939, la réalisation du pavillon officiel de la France, dit aussi Pavillon français, est confiée aux architectes Pierre Patout et Roger-Henri Expert, deux figures majeures de la scène architecturale française. Ensemble, il pensent la réalisation d'un bâtiment prenant la forme d'un éventail, mis en valeur par un plan d'eau. ",
+          "adress": "Flushing Meadows - Corona Park",
+          "createdAt": "2026-01-14T10:21:12.327Z",
+          "updatedAt": "2026-01-14T15:38:10.352Z",
+          "publishedAt": "2026-01-14T15:38:10.617Z",
+          "locale": "fr",
+          "artworks": [
+            {
+              "id": 31,
+              "documentId": "jkrfg565ejse3dm3aewvfmaa",
+              "name": "La Gloire de la République",
+              "artist": "Jean Dupas",
+              "slug": "gloiredelarepublique",
+              "description": "Les deux architectes confient à Jean Dupas la réalisation de la grande fresque destiée à orner le prestigieux hall d'onneur du pavillon. Les artistes se connaissent et ont déjà travaillé ensemble : dès 1925 dans le cadre du Pavillon du collectionneur de 1925 et, plus récemment, à l'occasion du décor paquebot Normandie. \n\nDans une niche de 7 x 8 m, Jean Dupas dessine une composition représentant la Gloire de la République, transcrite en panneaux de laque par Jean Dunand. ",
+              "conservation": "Disparus",
+              "technique": "Gouache et aquarelle sur papier",
+              "year": "1939",
+              "createdAt": "2026-01-14T11:04:42.905Z",
+              "updatedAt": "2026-01-14T15:34:50.795Z",
+              "publishedAt": "2026-01-14T15:34:51.042Z",
+              "locale": "fr",
+              "images": [
+                {
+                  "id": 38,
+                  "documentId": "tf6xstdrjvzeo59t4h01a17a",
+                  "file": "newyork_pavillonfrancais_lagloiredelarepublique_1.webp",
+                  "description": "Jean Dunand d'après les cartons de Jean Dupas, La Gloire de la République, 1939, laque, New York, Hall d'honneur du Pavillon français de l'exposition internationale de New York de 1939 (reproduit dans Plaisir de France, art, ameublement, jardins, mode, tourisme, mondanités, mai 1939). ",
+                  "copyright": "©BNF©adagp, Paris, 2026",
+                  "createdAt": "2026-01-14T15:31:51.336Z",
+                  "updatedAt": "2026-01-14T15:31:54.537Z",
+                  "publishedAt": "2026-01-14T15:31:54.764Z",
+                  "locale": "fr",
+                  "legend": null,
+                  "crops": []
+                },
+                {
+                  "id": 45,
+                  "documentId": "adgh3bhossa6xqbp6ip7dcee",
+                  "file": "newyork_pavillonfrancais_lagloiredelarepublique_2.webp",
+                  "description": "Pavillon de la France à l'Exposition internationale de New York, 1939 : perspective intérieure de la rotonde d'honneur, s.d., gouache et aquarelle sur papier, Paris, Cité de l'architecture et du patrimoine. ",
+                  "copyright": "©Fonds Expert, Roger-Henri (1882-1955).Académie d'architecture/Cité de l'architecture et du patrimoine/Archives d'architecture contemporaine",
+                  "createdAt": "2026-01-14T15:34:16.941Z",
+                  "updatedAt": "2026-01-14T15:34:20.159Z",
+                  "publishedAt": "2026-01-14T15:34:20.379Z",
+                  "locale": "fr",
+                  "legend": null,
+                  "crops": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "documentId": "authiyyy1wgs0ibpmgb3ydj5",
+      "name": "Paquebot Normandie",
+      "x": null,
+      "y": null,
+      "slug": "pqbtnormandie",
+      "createdAt": "2026-01-14T10:27:37.901Z",
+      "updatedAt": "2026-01-14T10:27:37.901Z",
+      "publishedAt": "2026-01-14T10:27:38.133Z",
+      "locale": "fr",
+      "museums": [
+        {
+          "id": 50,
+          "documentId": "b44zbt0ataw04blrks6wh9eu",
+          "name": "Paquebot Normandie",
+          "slug": "pqbtnormandie",
+          "x": null,
+          "y": null,
+          "model3d": null,
+          "description": "Au début des années 1930, les derniers paquebots des compagnies concurrentes allemandes et italiennes obligent la France à se lancer dans la construction d'un nouveau paquebot plus compétitif. C'est dans ce contexte qu'est lancé  le 29 octobre 1932, le paquebot Normandie, appelé aussi le \"Géant des Mers\" : mis en service en 1935, il devient le plus grand paquebot du monde.  Avec la 2nde guerre mondiale, sa destination change radicalement : réquisionné cinq jours après Pearl Harbor pour le transport des troupes américaines,  il sera en proie aux flammes en février 1942 et l'épave sera démolie. Une vente aux enchêres organisée par le gouvernement américain disperse les différents décors, dont ceux de Dupas. \n\nAmbassadeur de l'Art français, le paquebot réunit les plus artistes du moment, coordonnés sous la directions des architectes Pierre Patout, Henri Pacon, Richard Bouwens van der Boijen et Roger-Henri Expert. Le décor du Grand salon de Première classe est confié à Jean Dupas. Il crée une oeuvre monumentale sur le thème de l'Histoire de la Navigation, répartie en cinq panneaux :  l'Enlèvement d'Europe,  la Naissance d'Aphrodite, le Char de Thétis, et le Char de Poésidon L'ensemble de 400 m2 est transcrit en glace polie de Saint-Gobain, à rehauts d'or et d'argent,aux notes roses et bleues et au miroir gris et noir, exécutée par le maître-verrier Jacques-Charles Champigneulle (1907-1955). ",
+          "adress": "Océan Atlantique",
+          "createdAt": "2026-01-14T10:24:45.661Z",
+          "updatedAt": "2026-01-14T15:37:19.921Z",
+          "publishedAt": "2026-01-14T15:37:20.297Z",
+          "locale": "fr",
+          "artworks": [
+            {
+              "id": 37,
+              "documentId": "pzlco1abt4gfgw9pz90ctf0d",
+              "name": "L'Histoire de la Navigation",
+              "artist": "Jean Dupas",
+              "slug": "navigationhistoire",
+              "description": "Pour compléter le décor du Grand Salon, un cinquième panneau décoratif imaginé\npar Jean Dupas orne une porte coulissante qui conduit au Fumoir. Il s'agit d'un bas\nrelief sur laque dorée représentant de gauche à droite ; Le Char de l'Aurore, Les\nQuatre Vents, le Char de La Nuit et au centre la Rose des Vents.",
+              "conservation": "Partiellement conservé",
+              "technique": "Verre, peinture, or, argent, feuille de palladium",
+              "year": "1935",
+              "createdAt": "2026-01-14T10:25:12.821Z",
+              "updatedAt": "2026-01-14T15:53:16.347Z",
+              "publishedAt": "2026-01-14T15:53:16.595Z",
+              "locale": "fr",
+              "images": [
+                {
+                  "id": 69,
+                  "documentId": "pwod9wbd5ai72i7ys5xt9w4k",
+                  "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_2.webp",
+                  "description": "Jacques-Charles Champigneulle d'après les dessins de Jean Dupas, L'Histoire de la Navigation, 1935, verre peint, New York, The Metropolitan Museum of Art (détail).",
+                  "copyright": "©The Metropolitan Museum of Art, Dist.GrandPalaisRmn ©adagp,Paris, 2026",
+                  "createdAt": "2026-01-14T15:45:28.059Z",
+                  "updatedAt": "2026-01-14T15:45:28.059Z",
+                  "publishedAt": "2026-01-14T15:45:28.268Z",
+                  "locale": "fr",
+                  "legend": null,
+                  "crops": []
+                },
+                {
+                  "id": 65,
+                  "documentId": "jeu5auah5onpvzm0phkbuvuh",
+                  "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_1.webp",
+                  "description": "Jacques-Charles Champigneulle d'après les dessins de Jean Dupas, L'Histoire de la Navigation, 1935, verre peint, New York, The Metropolitan Museum of Art.",
+                  "copyright": "©The Metropolitan Museum of Art, Dist.GrandPalaisRmn ©adagp,Paris, 2026",
+                  "createdAt": "2026-01-14T15:44:03.092Z",
+                  "updatedAt": "2026-01-14T15:44:03.092Z",
+                  "publishedAt": "2026-01-14T15:44:03.329Z",
+                  "locale": "fr",
+                  "legend": null,
+                  "crops": []
+                },
+                {
+                  "id": 78,
+                  "documentId": "p6zhbynzy97zefklvwo4o1u7",
+                  "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_3.webp",
+                  "description": "Décor mural du grand salon de première classe du paquebot Normandie (1935) réalisé par Jacques-Charles Champigneulle d'après les dessins de Jean Dupas, L'Histoire de la",
+                  "copyright": "©Photographe: inconnu. Collection Saint-Nazaire Agglomération Tourisme-Écomusée. Fonds Chantiers de l'Atlantique©adagp, Paris, 2026",
+                  "createdAt": "2026-01-14T15:53:03.896Z",
+                  "updatedAt": "2026-01-14T15:53:03.896Z",
+                  "publishedAt": "2026-01-14T15:53:04.116Z",
+                  "locale": "fr",
+                  "legend": null,
+                  "crops": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "documentId": "unzvqpabcoii8dfd9rr2duwg",
+      "name": "Paquebot Île-de-France",
+      "x": null,
+      "y": null,
+      "slug": "pqbtidf",
+      "createdAt": "2026-01-14T10:28:10.612Z",
+      "updatedAt": "2026-01-14T10:34:20.910Z",
+      "publishedAt": "2026-01-14T10:34:21.216Z",
+      "locale": "fr",
+      "museums": [
+        {
+          "id": 56,
+          "documentId": "n6i6jw8aof80gagk34c8bb20",
+          "name": "Paquebot Ile-de-France",
+          "slug": "pqbtidf",
+          "x": null,
+          "y": null,
+          "model3d": null,
+          "description": "Symbole d'un véritable raffinement à la française, le paquebot Ile-de-France est construit en 1927 par la Compagnie générale transatlantique, qui souhaite redorer son blason et faire face à la concurrence. Véritable vitrine de l'Art déco,  il incarne le premier grand projet de navire de luxe français après la Première Guerre mondialele. Son décor est confié aux meilleurs artistes du moments afin de créer une atmosphère de luxe et d'élégance, sur le thème de la région Ile-de-France. On y retouve notamment Jacques-Émile Ruhlmann, Mathurin Méheut, Louis Süe, André Mare, Raymond Subes, Yvonne Jean-Haffen et Jean Dupas. Le paquebot est réquisitionné durant la Seconde guerre mondiale, puis reprend brièvement les voyages transatlantiques, avant d'être définitivement vendu puis détruit pour les besoins de scènes de cinéma.  ",
+          "adress": "Océan Atlantique",
+          "createdAt": "2026-01-14T10:28:29.363Z",
+          "updatedAt": "2026-01-14T16:03:22.655Z",
+          "publishedAt": "2026-01-14T16:03:22.976Z",
+          "locale": "fr",
+          "artworks": [
+            {
+              "id": 39,
+              "documentId": "hlspgsrt83fnlh34gr8qggts",
+              "name": "Sylvie",
+              "artist": "Jean Dupas",
+              "slug": "sylvie",
+              "description": "Parmi elles, le salon de thé agencé par Ruhlmann comprend un grand décor de\nDupas : il s'agit de Sylvie, faisant référence au poème éponyme de Gérard de Nerval\nconsacré à ses souvenirs d'enfance en Ile-de-France.",
+              "conservation": "Disparu",
+              "technique": "Encre et crayon sur papier",
+              "year": "1927",
+              "createdAt": "2026-01-14T10:33:56.741Z",
+              "updatedAt": "2026-01-14T16:03:51.588Z",
+              "publishedAt": "2026-01-14T16:03:51.919Z",
+              "locale": "fr",
+              "images": [
+                {
+                  "id": 42,
+                  "documentId": "efavty224zwa8nqfn534e5yw",
+                  "file": "oceanatlantique_paquebotiledefrance_sylvie_1.webp",
+                  "description": "Dessin préparatoire pour Sylvie, vers 1927, encre et crayon sur papier, collection particulière.",
+                  "copyright": "©Christie's Images/Bridgeman Images ©adagp, Paris, 2026",
+                  "createdAt": "2026-01-14T15:33:09.045Z",
+                  "updatedAt": "2026-01-14T15:33:09.045Z",
+                  "publishedAt": "2026-01-14T15:33:09.260Z",
+                  "locale": "fr",
+                  "legend": null,
+                  "crops": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "documentId": "zd6s3i5lv49lj7n0b6aajwyu",
+      "name": "Paris",
+      "x": null,
+      "y": null,
+      "slug": "paris",
+      "createdAt": "2026-01-14T10:37:22.588Z",
+      "updatedAt": "2026-01-14T10:53:17.460Z",
+      "publishedAt": "2026-01-14T10:53:17.768Z",
+      "locale": "fr",
+      "museums": [
+        {
+          "id": 48,
+          "documentId": "o53hr103jzw5dzf36voc8cjp",
+          "name": "Tour des Vins de Bordeaux",
+          "slug": "tourdesvins",
+          "x": null,
+          "y": null,
+          "model3d": null,
+          "description": "Lors de l'Exposition des Arts décoratifs modernes et industriels de 1925, les artistes bordelais Dupas, Roganeau, Buzon et Despujols recoivent la commande du décor intérieur de la Tour des vins de Bordeaux. Ils réalisent quatre toiles pour évoquer les principales vocations de l'économie de la région (La Vigne et le Vin, La Forêt landaise et ses produits, Le Port de Bordeaux et les relations d'outre-mer, et L'Agriculture). ",
+          "adress": "Esplanade des Invalides",
+          "createdAt": "2026-01-14T10:35:26.061Z",
+          "updatedAt": "2026-01-14T15:30:36.505Z",
+          "publishedAt": "2026-01-14T15:30:36.820Z",
+          "locale": "fr",
+          "artworks": [
+            {
+              "id": 33,
+              "documentId": "fdfnw1m5rhunsnt82qqxnlfz",
+              "name": "La Vigne et le Vin",
+              "artist": "Jean Dupas",
+              "slug": "lavigneetlevin",
+              "description": "Travaillée dans des tons gris et rouges, l'œuvre de Dupas représente une frise d'allégories. De gauche à droite : la Joie entourée de guirlandes, la Force tenant un gourdin, puis l'Esprit portant le livre de la science, et l'Appel qui convie d'un geste ample les personnages de gauche à participer à la fête du Vin. Le vin coule d'une source divine, une cuve sphérique, symbole de perfection. Puis à droite le Temps des vendanges incarné par l'homme à cheval qui attrape des paniers remplis de raisins. Au premier plan, une figure repliée sur elle-même, la Sorcière donne au vin son pouvoir ensorcelant. Enfin, deux femmes, l'une tient un vase fin, la Divine Liqueur, source de vie, l'autre, l'Alcool, tient un vase immense en chancelant. \n\nAchetée par la ville en 1926, cette toile décorait l'amphithéatre de l'Athénée Municipal à Bordeaux jusqu'en 1973, date à laquelle elle entrera dans les collections du Musée d'Aquitaine.",
+              "conservation": "Conservé au Musée d'Aquitaine",
+              "technique": "Huile sur toile ",
+              "year": "1925",
+              "createdAt": "2026-01-14T15:27:07.038Z",
+              "updatedAt": "2026-01-14T15:44:59.197Z",
+              "publishedAt": "2026-01-14T15:44:59.435Z",
+              "locale": "fr",
+              "images": [
+                {
+                  "id": 63,
+                  "documentId": "v5za7tyic47auahst7nzuw1r",
+                  "file": "paris_tourdesvinsdebordeaux_lavigneetlevin_1.webp",
+                  "description": "Bernard Chabot et Michel Dubau, Vue intérieure de l'Athénée municipal, La Vigne et le Vin de Jean Dupas, 1927, photographie, Bordeaux, Service régional de l'Inventaire.",
+                  "copyright": "©Région Nouvelle Aquitaine, Inventaire général du patrimoine culturel. Chabot, Bernard et Dubau, Michel, 1972©adagp, Paris, 2026",
+                  "createdAt": "2026-01-14T15:43:17.000Z",
+                  "updatedAt": "2026-01-14T15:43:17.000Z",
+                  "publishedAt": "2026-01-14T15:43:17.257Z",
+                  "locale": "fr",
+                  "legend": null,
+                  "crops": []
+                },
+                {
+                  "id": 67,
+                  "documentId": "fj5jfb368h54qjnms8glzb3q",
+                  "file": "paris_tourdesvinsdebordeaux_lavigneetlevin_2.webp",
+                  "description": "Jean Dupas, La Vigne et le Vin , 1925, huile sur toile, Bordeaux, Musée d'Aquitaine.",
+                  "copyright": "©Photo Lysiane Gauthier/Mairie de Bordeaux/Musée d'Aquitaine ©adagp, Paris, 2026",
+                  "createdAt": "2026-01-14T15:44:41.724Z",
+                  "updatedAt": "2026-01-14T15:44:41.724Z",
+                  "publishedAt": "2026-01-14T15:44:41.963Z",
+                  "locale": "fr",
+                  "legend": null,
+                  "crops": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 53,
+          "documentId": "eef7itkzypev101f7pn9k96t",
+          "name": "Cité scolaire Claude Monet",
+          "slug": "claudemonet",
+          "x": null,
+          "y": null,
+          "model3d": null,
+          "description": "Construite aux début des années 50, la cité scolaire Claude-Monet était destinée à répondre à la deande grandissante des inscriptions au lycée, ouvets aux filles depuis 1924 et gratuits depuis 1930. Implanté à l'angle de trois voies, sa disposition permet de dégager en son centre une vaste cour autour de laquelle s'organise la vie scolaire. En 1952, la décoration du hall d'honneur du lycée est attribuée à Jean Dupas par l'architecte Roger Séassal au titre du 1% artistique. ",
+          "adress": "1, rue du Docteur-Magnan",
+          "createdAt": "2026-01-14T10:38:28.079Z",
+          "updatedAt": "2026-01-14T15:54:28.941Z",
+          "publishedAt": "2026-01-14T15:54:29.255Z",
+          "locale": "fr",
+          "artworks": [
+            {
+              "id": 38,
+              "documentId": "bibll89tngdjc4cutkzja6nj",
+              "name": "Jeux de cartes et Jeux d'échecs",
+              "artist": "Jean Dupas",
+              "slug": "cartesechecs",
+              "description": "Leur sujet n'est pas précisé dans les archives. Connus sous le nom du Jeux de cartes et du Jeux d'échecs, ces toiles évoquent un univers ludique et imaginaire, selon un décor adapté au lieu et à l'imaginaire des enfants. ",
+              "conservation": "Conservés sur place",
+              "technique": "Peintures marouflées sur toile",
+              "year": "1954",
+              "createdAt": "2026-01-14T10:39:51.817Z",
+              "updatedAt": "2026-01-14T15:54:19.867Z",
+              "publishedAt": "2026-01-14T15:54:20.114Z",
+              "locale": "fr",
+              "images": [
+                {
+                  "id": 82,
+                  "documentId": "ahqsxruh85wbbjb2e78q9g0m",
+                  "file": "paris_citescolaireclaudemonet_jeuxdecartesetdechecs_1.webp",
+                  "description": null,
+                  "copyright": "©Jean-Bernard  Vialles, Région Ile-de- France ©adagp,  Paris, 2026",
+                  "createdAt": "2026-01-14T15:51:00.682Z",
+                  "updatedAt": "2026-01-14T15:54:11.834Z",
+                  "publishedAt": "2026-01-14T15:54:12.115Z",
+                  "locale": "fr",
+                  "legend": "Jeux de cartes , 1954, toile marouflée, Paris, Cité scolaire Claude Monet.",
+                  "crops": []
+                },
+                {
+                  "id": 79,
+                  "documentId": "foogbubtqgih9ffahrejr9d0",
+                  "file": "paris_citescolaireclaudemonet_jeuxdecartesetdechecs_2.webp",
+                  "description": null,
+                  "copyright": "©Jean-Bernard  Vialles, Région Ile-de- France ©adagp,  Paris, 2026",
+                  "createdAt": "2026-01-14T15:52:57.749Z",
+                  "updatedAt": "2026-01-14T15:53:57.597Z",
+                  "publishedAt": "2026-01-14T15:53:57.871Z",
+                  "locale": "fr",
+                  "legend": "Jeux d'échecs , 1954, toile marouflée, Paris, Cité scolaire Claude Monet.",
+                  "crops": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 55,
+          "documentId": "xzn4tyshvule4ketduepinbr",
+          "name": "Pavillon de l'U.C.A.F. des Tissus et de la Manufacture des Gobelins",
+          "slug": "ucaf",
+          "x": null,
+          "y": null,
+          "model3d": null,
+          "description": "À l'Exposition universelle de Paris en 1937, un pavillon, parfois appelé \"palais\" au vu de ses dimensions monumentales, est réservé aux exposants de l'U.C.A.F : l'Union Corportative des Artistes Français. Cette union résulte d'une volonté des artistes de se regrouper au sein d'organisations de caractère corporatiste pour répondre aux difficultés entraînées par la crise économique des années 1930,  de défendre l'art français, et de favoriser les liens entre artistes et industriels. Réunissant diverses professions et artisanats, le pavillon de l'U.C.A.F. était communément appelé \"Centre des Métiers\". ",
+          "adress": "Emplacement actuel du Musée du quai Branly - Jacques Chirac",
+          "createdAt": "2026-01-14T10:45:43.906Z",
+          "updatedAt": "2026-01-14T16:02:55.623Z",
+          "publishedAt": "2026-01-14T16:02:55.891Z",
+          "locale": "fr",
+          "artworks": [
+            {
+              "id": 18,
+              "documentId": "prty4du3kcebc463oaf2b5j5",
+              "name": "Allégorie du Tissu",
+              "artist": "Jean Dupas",
+              "slug": "allegorietissu",
+              "description": "Travaillée dans des tons gris et rouges, l'œuvre de Dupas représente une frise\nd'allégories. ",
+              "conservation": "Disparu",
+              "technique": "Huile sur toile ",
+              "year": "1937",
+              "createdAt": "2026-01-14T10:36:26.195Z",
+              "updatedAt": "2026-01-14T10:36:26.195Z",
+              "publishedAt": "2026-01-14T10:36:26.468Z",
+              "locale": "fr",
+              "images": []
+            }
+          ]
+        },
+        {
+          "id": 41,
+          "documentId": "dkzza3s6sc9snybebeq256ld",
+          "name": "Eglise du Saint-Esprit",
+          "slug": "Eglise du Saint-Esprit",
+          "x": null,
+          "y": null,
+          "model3d": null,
+          "description": "Dans les années 1920, en pleine crise économique, l'archevêché  de Paris lance un vaste chantier de contruction d'édifices religieux dans Paris et sa banlieue. Devant l'absence de lieux de culte et devant la montée du chômage, on prévoit la construction d'une centaine d'églises dont l'Eglise du Saint-Esprit, située dans le XIIe arrondissement, à partir de 1926. Les plans de l'église sont imaginés par l'architecte Paul Tournon. \n\nPour décorer l'intérieur de l'église, l'architecte Paul Tournon souhaite représenter l'histoire de l’Église chrétienne puis catholique qui se déroule depuis la Pentecôte et entend contribuer au renouveau de la peinture murale. Il fait \"appel à ceux que l'opinion avertie nomme les plus grands parmi les sculpteurs, peintres et décorateurs contemporains\" (extrait de la Revue de l'Art sacré, Avril 34). Jean Dupas est chargé de décorer la sixième chapelle avec l'aide de l'artiste Pougheon. ",
+          "adress": "186, avenue Dausmesnil",
+          "createdAt": "2026-01-14T10:51:45.474Z",
+          "updatedAt": "2026-01-14T10:53:10.173Z",
+          "publishedAt": "2026-01-14T10:53:10.566Z",
+          "locale": "fr",
+          "artworks": [
+            {
+              "id": 22,
+              "documentId": "m0nu2ee7ocheot922w03lx5a",
+              "name": "Christophe Colomb. Concile de Trente. Renaissance",
+              "artist": "Jean Dupas",
+              "slug": "conciledetrente",
+              "description": "Pour décorer l'intérieur de l'église, l'architecte Paul Tournon souhaite représenter\nl'histoire de l’Église chrétienne puis catholique qui se déroule depuis la Pentecôte et\nentend contribuer au renouveau de la peinture murale. Il fait \"appel à ceux que\nl'opinion avertie nomme les plus grands parmi les sculpteurs, peintres et\ndécorateurs contemporains\" (extrait de la Revue de l'Art sacré, Avril 34). Jean Dupas\nest chargé de décorer la sixième chapelle avec l'aide de l'artiste Pougheon.",
+              "conservation": "Conservé sur place",
+              "technique": "Fresque",
+              "year": "1932-1934",
+              "createdAt": "2026-01-14T10:52:52.550Z",
+              "updatedAt": "2026-01-14T10:52:52.550Z",
+              "publishedAt": "2026-01-14T10:52:52.822Z",
+              "locale": "fr",
+              "images": []
             }
           ]
         }
@@ -135,7 +705,7 @@
       "page": 1,
       "pageSize": 25,
       "pageCount": 1,
-      "total": 1
+      "total": 8
     }
   }
 }
