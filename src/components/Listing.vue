@@ -26,7 +26,7 @@
                   <div class="image-wrapper">
                     <img
                       v-if="artwork.images && artwork.images.length > 0"
-                      :src="`/images/${artwork.images[0].file}`"
+                      :src="`/images/${encodeURI(artwork.images[0].file)}`"
                       :alt="`Image de l'œuvre ${artwork.name}`"
                       loading="lazy"
                     />

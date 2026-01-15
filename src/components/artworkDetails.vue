@@ -32,7 +32,7 @@ const artwork = computed(() => {
     <div v-if="artwork" class="artwork-detail-box">
       <section class="image-section">
         <div class="image-container">
-          <img :src="artwork.image" :alt="artwork.name" />
+          <img v-if="artwork.images && artwork.images.length > 0" :src="`/images/${encodeURI(artwork.images[0].file)}`" :alt="artwork.name" />
         </div>
         <figcaption class="figcaption">© ADAGP, Paris, 2026, photo : F. Deval, mairie de Bordeaux</figcaption>
         <div class="button-container">
@@ -115,7 +115,6 @@ const artwork = computed(() => {
       justify-content: center;
       align-items: center;
       overflow: hidden;
-      background-color: $gray-200;
 
       img {
         max-width: 100%;

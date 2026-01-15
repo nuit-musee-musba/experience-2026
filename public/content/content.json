@@ -24,6 +24,18 @@
           "createdAt": "2026-01-13T08:58:34.205Z",
           "updatedAt": "2026-01-13T09:18:01.407Z",
           "publishedAt": "2026-01-13T09:18:01.429Z",
+          "images": [
+            {
+              "id": 101,
+              "file": "Bordeaux, Bourse du Travail/bordeaux_boursedutravail_1.webp",
+              "description": "Vue extérieure de la Bourse du Travail"
+            },
+            {
+              "id": 102,
+              "file": "Bordeaux, Bourse du Travail/bordeaux_boursedutravail_2.webp",
+              "description": "Vue intérieure"
+            }
+          ],
           "artworks": [
             {
               "id": 3,
@@ -40,7 +52,7 @@
                 {
                   "id": 3,
                   "documentId": "h6gjf84pd4v567icwdtvnwvj",
-                  "file": "photo.png",
+                  "file": "Bordeaux, Bourse du Travail/bordeaux_boursedutravail_1.webp",
                   "createdAt": "2026-01-13T09:00:11.645Z",
                   "updatedAt": "2026-01-13T09:05:33.098Z",
                   "publishedAt": "2026-01-13T09:05:33.113Z",
@@ -51,7 +63,7 @@
                     {
                       "id": 2,
                       "documentId": "v63xkc9fk853z5g6235ic1p9",
-                      "file": "image1_cropX",
+                      "file": "Bordeaux, Bourse du Travail/bordeaux_boursedutravail_2.webp",
                       "description": "Sur cette partie de l'oeuvre....",
                       "artwork_location_x": null,
                       "artwork_location_y": null,
@@ -79,7 +91,7 @@
                 {
                   "id": 6,
                   "documentId": "pexdlia9kjqytlsxl0lwaf68",
-                  "file": "magnifiquephoto",
+                  "file": "Bordeaux, Bourse du Travail/bordeaux_boursedutravail_lagloiredebordeaux_1.webp",
                   "createdAt": "2026-01-13T09:17:16.977Z",
                   "updatedAt": "2026-01-13T09:17:42.216Z",
                   "publishedAt": "2026-01-13T09:17:42.222Z",
@@ -90,7 +102,7 @@
                     {
                       "id": 4,
                       "documentId": "tl54zx7kjmxrw50ulgp8gpqt",
-                      "file": "crop2",
+                      "file": "Bordeaux, Bourse du Travail/bordeaux_boursedutravail_lagloiredebordeaux_2.webp",
                       "description": null,
                       "artwork_location_x": null,
                       "artwork_location_y": null,
@@ -101,7 +113,7 @@
                     {
                       "id": 6,
                       "documentId": "uow6bhzwzh8lq8hsc4ukhbl2",
-                      "file": "crop3",
+                      "file": "Bordeaux, Bourse du Travail/bordeaux_boursedutravail_lagloiredebordeaux_3.webp",
                       "description": null,
                       "artwork_location_x": null,
                       "artwork_location_y": null,
@@ -114,7 +126,7 @@
                 {
                   "id": 8,
                   "documentId": "nnzaub0rrpdcj594uthyfxv2",
-                  "file": "deuxième magnifique photo",
+                  "file": "Bordeaux, Bourse du Travail/bordeaux_boursedutravail_lagloiredebordeaux_4.webp",
                   "createdAt": "2026-01-13T09:20:22.003Z",
                   "updatedAt": "2026-01-13T09:20:22.003Z",
                   "publishedAt": "2026-01-13T09:20:22.018Z",
@@ -122,6 +134,143 @@
                   "copyright": "test",
                   "conservation": null,
                   "crops": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "documentId": "bordeaux_fruges_001",
+          "name": "Hôtel Frugès",
+          "slug": "hotel-fruges",
+          "x": null,
+          "y": null,
+          "model3d": null,
+          "description": "L'Hôtel Frugès à Bordeaux abrite des œuvres décoratives remarquables de Jean Dupas, témoignant de l'Art Déco dans l'architecture privée bordelaise.",
+          "adress": "Bordeaux",
+          "createdAt": "2026-01-15T10:00:00.000Z",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
+          "publishedAt": "2026-01-15T10:00:00.000Z",
+          "images": [
+            {
+              "id": 201,
+              "file": "Hôtel Frugès Bordeaux/bordeaux_hotelfruges_2.webp",
+              "description": "Vue de l'Hôtel Frugès"
+            }
+          ],
+          "artworks": [
+            {
+              "id": 10,
+              "documentId": "artwork_femme_ara",
+              "name": "Femme à l'Ara",
+              "slug": "femme-a-lara",
+              "description": "Œuvre décorative emblématique représentant une femme élégante accompagnée d'un ara coloré, illustration parfaite du style Art Déco de Jean Dupas avec ses lignes épurées et son élégance raffinée.",
+              "place": "Bordeaux, Hôtel Frugès",
+              "year": 1927,
+              "technique": "Peinture décorative",
+              "createdAt": "2026-01-15T10:00:00.000Z",
+              "updatedAt": "2026-01-15T10:00:00.000Z",
+              "publishedAt": "2026-01-15T10:00:00.000Z",
+              "images": [
+                {
+                  "id": 11,
+                  "documentId": "img_femme_ara_1",
+                  "file": "Hôtel Frugès Bordeaux/bordeaux_hotelfruges_femmealara_1.webp",
+                  "createdAt": "2026-01-15T10:00:00.000Z",
+                  "updatedAt": "2026-01-15T10:00:00.000Z",
+                  "publishedAt": "2026-01-15T10:00:00.000Z",
+                  "description": "Femme à l'Ara - Vue principale",
+                  "copyright": "Tous droits réservés",
+                  "conservation": "Bonne conservation",
+                  "crops": [
+                    {
+                      "id": 10,
+                      "documentId": "crop_femme_ara_1",
+                      "file": "Hôtel Frugès Bordeaux/bordeaux_hotelfruges_femmealara_2.webp",
+                      "description": "Détail du visage et de l'ara",
+                      "artwork_location_x": null,
+                      "artwork_location_y": null,
+                      "createdAt": "2026-01-15T10:00:00.000Z",
+                      "updatedAt": "2026-01-15T10:00:00.000Z",
+                      "publishedAt": "2026-01-15T10:00:00.000Z"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "documentId": "paris_001",
+      "name": "Paris",
+      "x": null,
+      "y": null,
+      "createdAt": "2026-01-15T10:00:00.000Z",
+      "updatedAt": "2026-01-15T10:00:00.000Z",
+      "publishedAt": "2026-01-15T10:00:00.000Z",
+      "slug": "paris",
+      "museums": [
+        {
+          "id": 7,
+          "documentId": "paris_saintesprit_001",
+          "name": "Église du Saint-Esprit",
+          "slug": "eglise-du-saint-esprit",
+          "x": null,
+          "y": null,
+          "model3d": null,
+          "description": "L'Église du Saint-Esprit à Paris abrite des fresques religieuses remarquables de Jean Dupas, réalisées dans le cadre d'un vaste programme de décoration religieuse des années 1930.",
+          "adress": "186, avenue Daumesnil, Paris 12ème",
+          "createdAt": "2026-01-15T10:00:00.000Z",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
+          "publishedAt": "2026-01-15T10:00:00.000Z",
+          "images": [
+            {
+              "id": 301,
+              "file": "Paris, Eglise du Saint Esprit/paris_saintesprit_1.webp",
+              "description": "Vue de l'Église du Saint-Esprit"
+            }
+          ],
+          "artworks": [
+            {
+              "id": 20,
+              "documentId": "artwork_colomb",
+              "name": "Christophe Colomb",
+              "slug": "christophe-colomb",
+              "description": "Fresque monumentale représentant la découverte de l'Amérique par Christophe Colomb, symbolisant l'expansion de la foi chrétienne.",
+              "place": "Paris, Église du Saint-Esprit",
+              "year": 1935,
+              "technique": "Fresque",
+              "createdAt": "2026-01-15T10:00:00.000Z",
+              "updatedAt": "2026-01-15T10:00:00.000Z",
+              "publishedAt": "2026-01-15T10:00:00.000Z",
+              "images": [
+                {
+                  "id": 21,
+                  "documentId": "img_colomb_1",
+                  "file": "Paris, Eglise du Saint Esprit/paris_saintesprit_colomb_1.webp",
+                  "createdAt": "2026-01-15T10:00:00.000Z",
+                  "updatedAt": "2026-01-15T10:00:00.000Z",
+                  "publishedAt": "2026-01-15T10:00:00.000Z",
+                  "description": "Christophe Colomb - Vue principale",
+                  "copyright": "Tous droits réservés",
+                  "conservation": "Excellente conservation",
+                  "crops": [
+                    {
+                      "id": 20,
+                      "documentId": "crop_colomb_1",
+                      "file": "Paris, Eglise du Saint Esprit/paris_saintesprit_colomb_2.webp",
+                      "description": "Détail de Christophe Colomb",
+                      "artwork_location_x": null,
+                      "artwork_location_y": null,
+                      "createdAt": "2026-01-15T10:00:00.000Z",
+                      "updatedAt": "2026-01-15T10:00:00.000Z",
+                      "publishedAt": "2026-01-15T10:00:00.000Z"
+                    }
+                  ]
                 }
               ]
             }
@@ -135,7 +284,7 @@
       "page": 1,
       "pageSize": 25,
       "pageCount": 1,
-      "total": 1
+      "total": 2
     }
   }
 }
