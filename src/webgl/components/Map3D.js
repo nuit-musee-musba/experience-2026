@@ -1,12 +1,11 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
-import { CONFIG } from "@/config/webgl.js";
 
 export class Map3D {
   constructor(scene) {
     this.scene = scene;
-    this.url = "/models/models.glb";
+    this.url = "/models/map.glb";
 
     this.group = new THREE.Group();
 
@@ -15,9 +14,8 @@ export class Map3D {
     this.dracoLoader.setDecoderPath("/draco/");
     this.loader.setDRACOLoader(this.dracoLoader);
 
-    // Initialize parameters with defaults (prioritizing what was working/hardcoded)
     this.params = {
-      scale: 48.91, // Matches previous hardcoded value
+      scale: 48.91,
       opacity: 1,
       visible: true,
       position: {
@@ -25,7 +23,7 @@ export class Map3D {
         y: -2.3,
         z: -5.0,
       },
-      groupPositionZ: CONFIG.mapPlane.planePositionZ,
+      groupPositionZ: -15.85,
       rotationX: Math.PI / 2,
     };
 
@@ -48,79 +46,23 @@ export class Map3D {
   }
 
   loadModel() {
-    this.interactables = [];
-
     this.loader.load(this.url, (gltf) => {
       this.model = gltf.scene;
+      this.model.traverse((child) => {
+        child.material = this.material;
+      });
 
       if (this.model) {
         this.updateTransformAndUniforms();
       }
 
       this.group.add(this.model);
-      this.refreshInteractables();
-      this.update(); // Set initial state
+      this.update();
     });
   }
 
   setCityData(data) {
     this.data = data;
-    this.refreshInteractables();
-  }
-
-  refreshInteractables() {
-    if (!this.model) return;
-
-    console.log("Refreshing interactables. City Data:", this.data);
-
-    this.interactables = [];
-
-    this.model.traverse((child) => {
-      // console.log("Traversing child:", child.name); // Log EVERY child name
-
-      if (child.name.startsWith("sphere-")) {
-        // Attempt to match the part after "sphere-" to a city slug
-        // logic: if child.name is "sphere-bordeaux", we look for "bordeaux"
-
-        const possibleSlug = child.name.replace("sphere-", "");
-        let city = this.data.find(
-          (c) => c.slug === possibleSlug || possibleSlug.startsWith(c.slug)
-        );
-
-        if (!city) {
-          console.warn(
-            `Sphere ${child.name} found but no data in content.json. Creating default interaction.`
-          );
-          city = {
-            slug: possibleSlug,
-            museums: [],
-          };
-        }
-
-        console.log(
-          `Matched interactive sphere ${child.name} to slug ${city.slug}`
-        );
-
-        // Make invisible but interactable
-        // Apply distinct city material
-        child.material = this.cityMaterial;
-
-        this.interactables.push(child);
-        child.userData = {
-          ...child.userData,
-          ...city,
-          type: "city",
-        };
-        return;
-      }
-
-      child.material = this.material;
-    });
-    console.log("Total Interactables in Map3D:", this.interactables);
-  }
-
-  getInteractables() {
-    return this.interactables;
   }
 
   updateTransformAndUniforms() {
