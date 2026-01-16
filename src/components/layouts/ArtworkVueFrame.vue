@@ -124,7 +124,7 @@ const goToPrev = () => {
 }
 
 const goToGlobalList = () => {
-  router.push(`/${route.params.citySlug}/${route.params.museumSlug}/list`);
+  router.push(`/all-artworks`);
 }
 </script>
 
