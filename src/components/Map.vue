@@ -6,7 +6,6 @@ import { MapPlane } from '@/webgl/components/MapPlane.js';
 import { MapPins } from '@/webgl/components/MapPins.js';
 import { CONFIG } from '@/config/webgl.js';
 import all from '@/assets/world/all.svg?url';
-import BaseButton from '@/components/buttons/Button.vue';
 import { useRouter, useRoute } from "vue-router";
 import { allData } from '@/store.js';
 import { Stats } from '@/webgl/utils/Stats.js';

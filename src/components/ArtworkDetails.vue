@@ -2,6 +2,8 @@
 import { useRoute } from "vue-router";
 import { allData } from '@/store.js';
 import { computed, ref, watch, nextTick } from 'vue';
+import { useElementVisibility } from '@vueuse/core'
+import { useSplitText } from '../composables/useSplitText.js'
 import ArtworkVueFrame from "./layouts/ArtworkVueFrame.vue";
 
 import Button from "./buttons/Button.vue";
@@ -22,6 +24,16 @@ const artwork = computed(() => {
         const leArtwork = leMusee.artworks.find(a => a.slug === route.params.artworkSlug);
         return leArtwork;
       }
+    }
+  }
+  return null;
+})
+
+const currentMuseum = computed(() => {
+  if (allData.value) {
+    const laVille = allData.value.find(ville => ville.slug === route.params.citySlug);
+    if (laVille) {
+      return laVille.museums.find(m => m.slug === route.params.museumSlug);
     }
   }
   return null;
@@ -99,13 +111,54 @@ const closePopup = () => {
   activeCrop.value = null;
 };
 
+// Animations
+const enumerationRef = ref(null)
+const descriptionRef = ref(null)
+
+const enumerationVisible = useElementVisibility(enumerationRef)
+const descriptionVisible = useElementVisibility(descriptionRef)
+
+const titleAndNameRef = ref(null)
+const placeRef = ref(null)
+
+const titleAndNameVisible = useElementVisibility(titleAndNameRef)
+const placeVisible = useElementVisibility(placeRef)
+
+useSplitText(descriptionRef)
+
+watch(enumerationVisible, (visible) => {
+  if (visible && enumerationRef.value) {
+    enumerationRef.value.classList.add('visible')
+  }
+}, { once: true })
+
+watch(descriptionVisible, (visible) => {
+  if (visible && descriptionRef.value) {
+    descriptionRef.value.classList.add('visible')
+  }
+}, { once: true })
+
+watch(titleAndNameVisible, (visible) => {
+  if (visible && titleAndNameRef.value) {
+    titleAndNameRef.value.classList.add('visible')
+  }
+}, { once: true })
+
+watch(placeVisible, (visible) => {
+  if (visible && placeRef.value) {
+    placeRef.value.classList.add('visible')
+  }
+}, { once: true })
+
 </script>
 <template>
   <ArtworkVueFrame>
     <div v-if="artwork" class="artwork-detail-box">
       <section class="image-section">
         <div class="image-container">
-          <img v-if="currentImage" :src="`/images/${encodeURI(currentImage.file)}`" :alt="artwork.name" />
+          <img v-for="(img, index) in artwork.images" :key="img.id" :src="`/images/${encodeURI(img.file)}`"
+            :alt="img.description || artwork.name" class="artwork-image"
+            :class="{ 'visible': index === activeImageIndex }" />
           <div v-for="crop in cropsWithLocation" :key="crop.id" class="crop-hotspot" :style="{
             left: crop.artwork_location_x + '%',
             top: crop.artwork_location_y + '%'
@@ -126,7 +179,7 @@ const closePopup = () => {
           <div class="thumbnails-list">
             <div class="thumbnails-track">
               <div v-for="(img, index) in artwork.images" :key="img.id" class="thumbnail"
-                   :class="{ 'is-active': index === activeImageIndex }" @click="selectImage(index)">
+                :class="{ 'is-active': index === activeImageIndex }" @click="selectImage(index)">
                 <div class="img-container">
                   <div class="thumbnail-overlay"></div>
                   <img :src="`/images/${encodeURI(img.file)}`" :alt="img.description || artwork.name" />
@@ -161,29 +214,30 @@ const closePopup = () => {
 
       <section class="content-section">
         <div class="artwork-container artwork-infos">
-          <div class="title-and-name">
-            <h2 class="title">{{ artwork.name }}</h2>
-            <p>Jean Dupas</p>
+          <div class="title-and-name" ref="titleAndNameRef">
+            <h2 class="title" style="--anim-index: 0">{{ artwork.name }}</h2>
+            <p style="--anim-index: 1">Jean Dupas</p>
           </div>
         </div>
         <div class="artwork-container artwork-description-container" :class="{ 'is-scroll-end': isScrollEnd }">
           <div class="scroll-content" ref="scrollContent" @scroll="handleScroll">
             <div class="header">
-              <p class="enumeration">
-                <span>{{ artwork.name }}</span>
-                <span>{{ artwork.year }}</span>
-                <span>{{ artwork.technique }}</span>
-                <span>{{ artwork.place }}</span>
+              <p class="enumeration" ref="enumerationRef">
+                <span style="--enum-index: 0">{{ artwork.name }}</span>
+                <span style="--enum-index: 1">{{ artwork.year }}</span>
+                <span style="--enum-index: 2">{{ artwork.technique }}</span>
+                <span style="--enum-index: 3">{{ currentMuseum?.adress }}</span>
               </p>
-              <div class="artwork-place">
-                <IconPin class="pin" />
-                <span>{{ artwork.place }}</span>
+              <div class="artwork-place" ref="placeRef">
+                <IconPin class="pin" style="--anim-index: 0" />
+                <span style="--anim-index: 1">{{ currentMuseum?.adress }}</span>
               </div>
             </div>
-            <p>{{ artwork.description }}</p>
+            <p ref="descriptionRef" class="description">{{ artwork.description }}</p>
           </div>
         </div>
       </section>
+      <!-- Preloader removed -->
     </div>
   </ArtworkVueFrame>
 </template>
@@ -234,6 +288,24 @@ const closePopup = () => {
       align-items: center;
       overflow: hidden;
       position: relative;
+
+      .artwork-image {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        pointer-events: none;
+
+        &.visible {
+          opacity: 1;
+          pointer-events: auto;
+        }
+      }
 
       .crop-hotspot {
         position: absolute;
@@ -286,13 +358,14 @@ const closePopup = () => {
       justify-content: space-between;
       gap: $spacing-32;
     }
-    
+
     .figcaption {
       font-size: $spacing-24;
       line-height: 1.3;
       margin-top: $spacing-10;
-      text-align: right;
+      text-align: left;
       font-weight: bold;
+      max-width: 50%;
     }
 
     .thumbnails-container {
@@ -393,13 +466,32 @@ const closePopup = () => {
 
     .artwork-container {
       box-sizing: border-box;
-      padding: $spacing-48 $spacing-96;
+      padding: $spacing-56 $spacing-96;
+      padding-top: 107px;
       min-height: 0;
 
       .title-and-name {
         display: flex;
         flex-direction: column;
         gap: $spacing-16;
+
+        >* {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 1s calc(var(--anim-index) * 0.1s) $ease-out-quint,
+            transform 1s calc(var(--anim-index) * 0.1s) $ease-out-quint;
+        }
+
+        &.visible {
+          >* {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        p {
+          line-height: 1;
+        }
       }
     }
 
@@ -467,7 +559,7 @@ const closePopup = () => {
         gap: $spacing-24;
       }
 
-      .enumeration{ 
+      .enumeration {
         display: flex;
         flex-direction: column;
         gap: $spacing-16;
@@ -476,6 +568,17 @@ const closePopup = () => {
 
         span {
           line-height: 1;
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 1s calc(var(--enum-index) * 0.1s) $ease-out-quint,
+            transform 1s calc(var(--enum-index) * 0.1s) $ease-out-quint;
+        }
+
+        &.visible {
+          span {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
       }
 
@@ -492,10 +595,46 @@ const closePopup = () => {
         align-items: center;
         gap: $spacing-4;
 
+        >span,
+        :deep(.top) {
+          opacity: 0;
+          transform: translateY(20px);
+          transform-box: fill-box;
+          transition: opacity 1s calc(var(--anim-index) * 0.1s) $ease-out-quint,
+            transform 1s calc(var(--anim-index) * 0.1s) $ease-out-quint;
+        }
+
+        &.visible {
+
+          >span,
+          :deep(.top) {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
 
         :deep(svg) {
           width: $spacing-56;
           height: $spacing-56;
+        }
+      }
+
+      .description {
+        :deep(.line) {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 1s calc(var(--line-index) * 0.05s) $ease-out-quint,
+            transform 1s calc(var(--line-index) * 0.05s) $ease-out-quint;
+          display: block; // Needed for transform to work on inline-block (default split-type is usually wrapper) but split-type lines are usually divs or styled. 
+          // split-type lines are usually absolute or relative. Let's ensure they behave.
+          // standard split-type w/ 'lines' usually wraps in .line.
+        }
+
+        &.visible {
+          :deep(.line) {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
       }
     }
