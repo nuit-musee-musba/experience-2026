@@ -159,10 +159,11 @@ watch(placeVisible, (visible) => {
           <img v-for="(img, index) in artwork.images" :key="img.id" :src="`/images/${encodeURI(img.file)}`"
             :alt="img.description || artwork.name" class="artwork-image"
             :class="{ 'visible': index === activeImageIndex }" />
-          <div v-for="crop in cropsWithLocation" :key="crop.id" class="crop-hotspot" :style="{
-            left: crop.artwork_location_x + '%',
-            top: crop.artwork_location_y + '%'
-          }" @click="openCropPopup(crop)" />
+          <div v-for="crop in cropsWithLocation" :key="crop.id" class="crop-hotspot"
+            :class="{ 'visible': currentImage?.crops?.includes(crop) }" :style="{
+              left: crop.artwork_location_x + '%',
+              top: crop.artwork_location_y + '%'
+            }" @click="openCropPopup(crop)" />
         </div>
         <div class="infos-containers">
           <span class="figcaption">{{ currentImage?.copyright }}</span>
@@ -316,10 +317,16 @@ watch(placeVisible, (visible) => {
         border: 2.91px solid rgba(#fff, 0.5);
         cursor: pointer;
         transform: translate(-50%, -50%);
-        transition: all 0.3s ease;
+        transition: opacity 0.5s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         box-shadow: 0px 1.62px 49.9px 53.92px rgba(255, 255, 255, 0.25);
+        opacity: 0;
+        pointer-events: none;
 
-        animation: pulse-glow 3s infinite ease-in-out;
+        &.visible {
+          opacity: 1;
+          pointer-events: auto;
+          animation: pulse-glow 3s infinite ease-in-out;
+        }
 
         &:active {
           border-color: $white;
