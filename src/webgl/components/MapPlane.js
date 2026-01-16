@@ -1,9 +1,8 @@
 import * as THREE from "three";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
-import { CONFIG } from "@/config/webgl.js";
 
 export class MapPlane {
-  constructor(scene, url, width, height) {
+  constructor(scene, url = "/all.svg", width = 1000, height = 700) {
     this.scene = scene;
     this.url = url;
     this.width = width;
@@ -24,22 +23,24 @@ export class MapPlane {
   }
 
   update() {
+    const backgroundZ = -10;
+    const planeRotationX = 0;
+    const planePositionZ = -10;
+    const correction = { x: 0, y: 0, z: 0 };
+
     if (this.bgPlane) {
-      this.bgPlane.position.z = CONFIG.mapPlane.backgroundZ;
+      this.bgPlane.position.z = backgroundZ;
     }
 
     // Apply corrections to the whole plane group (rotation/position)
-    this.plane.rotation.x = CONFIG.mapPlane.planeRotationX;
-    this.plane.position.z = CONFIG.mapPlane.planePositionZ;
+    this.plane.rotation.x = planeRotationX;
+    this.plane.position.z = planePositionZ;
 
     // Apply corrections to the map group inside
     if (this.mapGroup && this.basePosition) {
-      this.mapGroup.position.x =
-        this.basePosition.x + CONFIG.mapPlane.correction.x;
-      this.mapGroup.position.y =
-        this.basePosition.y + CONFIG.mapPlane.correction.y;
-      this.mapGroup.position.z =
-        this.basePosition.z + CONFIG.mapPlane.correction.z;
+      this.mapGroup.position.x = this.basePosition.x + correction.x;
+      this.mapGroup.position.y = this.basePosition.y + correction.y;
+      this.mapGroup.position.z = this.basePosition.z + correction.z;
     }
   }
 
@@ -48,7 +49,7 @@ export class MapPlane {
     const bgMaterial = new THREE.MeshBasicMaterial({ color: 0xf0f0f0 });
     this.bgPlane = new THREE.Mesh(bgGeometry, bgMaterial);
 
-    this.bgPlane.position.z = CONFIG.mapPlane.backgroundZ;
+    this.bgPlane.position.z = -10; // Hardcoded backgroundZ
     this.plane.add(this.bgPlane);
   }
 

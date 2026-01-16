@@ -2,10 +2,10 @@
 import { onMounted, onBeforeUnmount, ref, watch, computed } from 'vue';
 import * as THREE from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
-import { MapPlane } from '@/webgl/components/MapPlane.js';
+import { Map3D } from '@/webgl/components/Map3D.js';
 import { MapPins } from '@/webgl/components/MapPins.js';
 import { CONFIG } from '@/config/webgl.js';
-import all from '@/assets/world/all.svg?url';
+
 import { useRouter, useRoute } from "vue-router";
 import { allData } from '@/store.js';
 import { Stats } from '@/webgl/utils/Stats.js';
@@ -21,7 +21,7 @@ const containerRef = ref(null);
 const props = defineProps(['path']);
 
 let scene, camera, renderer, controls, animationId, stats;
-let mapPlane, mapPins;
+let mapPins;
 let allPins = null;
 
 let isZooming = false;
@@ -54,9 +54,9 @@ watch([() => route.params, allData], ([params, data]) => {
       const distance = 7;
       const diveAngle = Math.PI / 3;
       destinationCoordonates.set(
-          museum.x,
-          museum.y - (distance * Math.sin(diveAngle)),
-          -9.5 + (distance * Math.cos(diveAngle))
+        museum.x,
+        museum.y - (distance * Math.sin(diveAngle)),
+        -9.5 + (distance * Math.cos(diveAngle))
       );
 
       controls.minAzimuthAngle = -Infinity;
@@ -93,7 +93,7 @@ watch([() => route.params, allData], ([params, data]) => {
 
 const resetMapControls = () => {
   if (!controls) return;
-  if(camera) camera.clearViewOffset();
+  if (camera) camera.clearViewOffset();
 
   controls.minAzimuthAngle = CONFIG.controls.map.minAzimuthAngle;
   controls.maxAzimuthAngle = CONFIG.controls.map.maxAzimuthAngle;
@@ -118,7 +118,8 @@ const initThree = () => {
   containerRef.value.appendChild(renderer.domElement);
 
   stats = new Stats(containerRef.value);
-  mapPlane = new MapPlane(scene, all, CONFIG.mapPlane.width, CONFIG.mapPlane.height);
+  new Map3D(scene);
+  // mapPlane = new MapPlane(scene, all, CONFIG.mapPlane.width, CONFIG.mapPlane.height);
   mapPins = new MapPins(scene);
 
   scene.add(new THREE.AmbientLight(CONFIG.colors.ambientLight, CONFIG.lights.ambientIntensity));
@@ -221,17 +222,6 @@ const renderLevel = (dataList) => {
 
 const onMapClick = (event) => {
 
-  if (mapPlane && mapPlane.plane) {
-    const mapIntersects = raycaster.intersectObject(mapPlane.plane, true);
-    if (mapIntersects.length > 0) {
-      console.log('Map Position:', {
-        x: mapIntersects[0].point.x,
-        y: mapIntersects[0].point.y,
-        z: mapIntersects[0].point.z
-      });
-    }
-  }
-
   let clientX, clientY;
 
   if (window.TouchEvent && event instanceof TouchEvent) {
@@ -249,12 +239,20 @@ const onMapClick = (event) => {
   pointer.x = (clientX / window.innerWidth) * 2 - 1;
   pointer.y = -(clientY / window.innerHeight) * 2 + 1;
   raycaster.setFromCamera(pointer, camera);
-  const intersects = raycaster.intersectObjects(mapPins.getPins(), true);
+
+  const interactables = [...mapPins.getPins()];
+  const intersects = raycaster.intersectObjects(interactables, true);
+
   if (intersects.length > 0) {
     if (event.cancelable) event.preventDefault();
     const clickedObject = intersects[0].object;
     if (clickedObject.userData.museums) router.push(`/${clickedObject.userData.slug}`);
     else if (clickedObject.userData.artworks) router.push(`/${activeCitySlug.value}/${clickedObject.userData.slug}`);
+    else if (clickedObject.userData.type === 'city') {
+      // Handle city click if needed, maybe zoom or route?
+      // Based on history, maybe just router push to city
+      router.push(`/${clickedObject.userData.slug}`);
+    }
   }
 };
 
@@ -304,10 +302,10 @@ onBeforeUnmount(() => {
 
 <template>
   <div ref="containerRef" class="scene-container" :class="{ 'map-frozen': isArtworkActive }"></div>
-  <BaseFrame >
-  <template #nav>
-    <SmartNavbar v-if="!route.params.artworkSlug" />
-  </template>`
+  <BaseFrame>
+    <template #nav>
+      <SmartNavbar v-if="!route.params.artworkSlug" />
+    </template>`
   </BaseFrame>
   <router-view></router-view>
 </template>
@@ -317,6 +315,7 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100vh;
   outline: none;
+
   &.map-frozen {
     pointer-events: none;
   }

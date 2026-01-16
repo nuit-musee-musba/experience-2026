@@ -1,6 +1,6 @@
 import { IsFingerTouchStrategy } from "../touch";
 
-const MAX_RADIUS = 50;
+const MAX_RADIUS = 1000;
 const MIN_RADIUS = 0;
 
 const MAX_RADIUS_RATIO = 1.7;
