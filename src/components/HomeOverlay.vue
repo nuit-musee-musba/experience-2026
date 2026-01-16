@@ -6,11 +6,6 @@
         :class="[`bg-img-${index}`, { 'visible': startAnim }]" :style="{ '--anim-index': index }" />
     </div>
 
-    <div class="top-logo-box" :class="{ 'visible': startAnim }">
-      <span class="label-create">réalisé par</span>
-      <img src="@/assets/img/logo-mmi.png" alt="Logo MMI Bordeaux" class="logo-img" />
-    </div>
-
     <div class="intro-card">
       <div class="card-content">
 
@@ -144,48 +139,6 @@ onMounted(() => {
     right: 400px;
     left: 900px;
     z-index: 8;
-  }
-}
-
-.top-logo-box {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 10;
-
-  background-color: $white;
-  @include border-5;
-
-  padding: $spacing-32 $spacing-40;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: $spacing-8;
-
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: all 1s $ease-out-quint;
-  transition-delay: 0.5s;
-
-  &.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .label-create {
-    font-family: $font-family-sans-serif;
-    font-size: 24px;
-    font-weight: 400;
-    color: $black;
-    width: 100%;
-    text-align: left;
-  }
-
-  .logo-img {
-    height: 100px;
-    width: auto;
-    display: block;
   }
 }
 
