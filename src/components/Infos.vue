@@ -1,7 +1,9 @@
 <script setup>
 import { useRoute } from "vue-router";
 import { allData } from '@/store.js';
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
+import { useElementVisibility } from '@vueuse/core';
+import { useSplitText } from '../composables/useSplitText.js';
 import BaseFrame from "@/components/layouts/BaseFrame.vue";
 import SmartNavbar from "@/components/layouts/SmartNavbar.vue";
 
@@ -16,6 +18,27 @@ const museum = computed(() => {
   if (!city.value) return null;
   return city.value.museums.find(m => m.slug === route.params.museumSlug);
 });
+
+// Animations
+const titleAndLocationRef = ref(null);
+const descriptionRef = ref(null);
+
+const titleAndLocationVisible = useElementVisibility(titleAndLocationRef);
+const descriptionVisible = useElementVisibility(descriptionRef);
+
+useSplitText(descriptionRef);
+
+watch(titleAndLocationVisible, (visible) => {
+  if (visible && titleAndLocationRef.value) {
+    titleAndLocationRef.value.classList.add('visible');
+  }
+}, { once: true });
+
+watch(descriptionVisible, (visible) => {
+  if (visible && descriptionRef.value) {
+    descriptionRef.value.classList.add('visible');
+  }
+}, { once: true });
 </script>
 
 <template>
@@ -24,33 +47,31 @@ const museum = computed(() => {
       <div class="location-detail-box">
         <section class="content-section">
           <div class="location-container location-infos">
-            <div class="title-and-location">
-              <p>{{ city?.name }}</p>
-              <h2 class="title">{{ museum.name }}</h2>
+            <div class="title-and-location" ref="titleAndLocationRef">
+              <p style="--anim-index: 0">{{ city?.name }}</p>
+              <h2 class="title" style="--anim-index: 1">{{ museum.name }}</h2>
             </div>
           </div>
-            <div class="scroll-content">
-              <div class="location-main-image">
-                <img v-if="museum.images?.length" :src="`/images/${encodeURI(museum.images[0].file)}`" :alt="museum.name" />
-              </div>
-              <div class="scroll-content-box">
-                <p>{{ museum.description }}</p>
-                <h3 class="locations-artworks-section-title">Découvrez les œuvres de ce lieu</h3>
-                <div class="location-artworks-listing">
-                  <RouterLink
-                      class="artworks-item"
-                      v-for="artwork in museum.artworks"
-                      :key="artwork.slug"
-                      :to="`/${route.params.citySlug}/${museum.slug}/${artwork.slug}`"
-                  >
-                    <div class="artworks-item-image">
-                      <img v-if="artwork.images?.length" :src="`/images/${encodeURI(artwork.images[0].file)}`" :alt="artwork.name" />
-                    </div>
-                    <p>{{ artwork.name }}</p>
-                  </RouterLink>
-                </div>
+          <div class="scroll-content">
+            <div class="location-main-image">
+              <img v-if="museum.images?.length" :src="`/images/${encodeURI(museum.images[0].file)}`"
+                :alt="museum.name" />
+            </div>
+            <div class="scroll-content-box">
+              <p ref="descriptionRef" class="description">{{ museum.description }}</p>
+              <h3 class="locations-artworks-section-title">Découvrez les œuvres de ce lieu</h3>
+              <div class="location-artworks-listing">
+                <RouterLink class="artworks-item" v-for="artwork in museum.artworks" :key="artwork.slug"
+                  :to="`/${route.params.citySlug}/${museum.slug}/${artwork.slug}`">
+                  <div class="artworks-item-image">
+                    <img v-if="artwork.images?.length" :src="`/images/${encodeURI(artwork.images[0].file)}`"
+                      :alt="artwork.name" />
+                  </div>
+                  <p>{{ artwork.name }}</p>
+                </RouterLink>
               </div>
             </div>
+          </div>
         </section>
       </div>
       <router-view />
@@ -63,9 +84,23 @@ const museum = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-.fade-enter-active, .fade-leave-active { transition: all 0.4s ease-out; }
-.fade-enter-from { opacity: 0; transform: translateY(10px); }
-.fade-leave-to { opacity: 0; transform: translateY(-10px); }
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease-out;
+
+  .location-detail-box {
+    transition: transform 0.5s ease-out;
+  }
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+
+  .location-detail-box {
+    transform: translateX(-100%);
+  }
+}
 
 .location-detail-box {
   position: fixed;
@@ -90,15 +125,25 @@ const museum = computed(() => {
 
   .location-infos {
     border-bottom: 8px solid $black;
-    .title { font-family: $font-family-headings; line-height: 100%; }
+
+    .title {
+      font-family: $font-family-headings;
+      line-height: 100%;
+    }
   }
 
   .scroll-content {
     height: 100%;
     overflow-y: scroll;
     padding-bottom: 200px;
-    &::-webkit-scrollbar { width: $spacing-24; }
-    &::-webkit-scrollbar-thumb { background-color: $black; }
+
+    &::-webkit-scrollbar {
+      width: $spacing-24;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $black;
+    }
 
   }
 
@@ -107,6 +152,23 @@ const museum = computed(() => {
     display: flex;
     flex-direction: column;
     gap: $spacing-80;
+
+    .description {
+      :deep(.line) {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 1s calc(var(--line-index) * 0.05s) $ease-out-quint,
+          transform 1s calc(var(--line-index) * 0.05s) $ease-out-quint;
+        display: block;
+      }
+
+      &.visible {
+        :deep(.line) {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    }
   }
 }
 
@@ -117,13 +179,33 @@ const museum = computed(() => {
   box-sizing: border-box;
   padding: $spacing-48 $spacing-96;
   min-height: 0;
+
+  >* {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s calc(var(--anim-index) * 0.1s) $ease-out-quint,
+      transform 1s calc(var(--anim-index) * 0.1s) $ease-out-quint;
+  }
+
+  &.visible {
+    >* {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 .location-main-image {
   width: 100%;
   height: 800px;
   overflow: hidden;
-  img { width: 100%; height: 100%; object-fit: cover; }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   background: gray;
 }
 
@@ -135,6 +217,7 @@ const museum = computed(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 44px;
+
   .artworks-item {
     text-decoration: none;
     color: inherit;
@@ -142,11 +225,17 @@ const museum = computed(() => {
     gap: 35px;
     display: flex;
     flex-direction: column;
+
     .artworks-item-image {
       width: 480px;
       height: 418px;
       overflow: hidden;
-      img { width: 100%; height: 100%; object-fit: cover; }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     }
   }
 }

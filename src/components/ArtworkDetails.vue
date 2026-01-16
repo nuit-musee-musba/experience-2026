@@ -12,6 +12,7 @@ import IconPin from "@/components/icons/IconPin.vue";
 import IconLeave from "@/components/icons/IconLeave.vue";
 import IconArrowLeft from "./icons/IconArrowLeft.vue";
 import IconArrowRight from "./icons/IconArrowRight.vue";
+import IconFullscreen from "@/components/icons/IconFullScreen.vue";
 
 const route = useRoute();
 
@@ -97,18 +98,36 @@ const cropsWithLocation = computed(() => {
   return [];
 });
 
+const allCrops = computed(() => {
+  if (artwork.value?.images) {
+    return artwork.value.images.flatMap(img => img.crops || []).filter(
+      crop => crop.artwork_location_x !== null && crop.artwork_location_y !== null
+    );
+  }
+  return [];
+});
+
 // Gestion de la popup
 const showPopup = ref(false);
 const activeCrop = ref(null);
+const isFullScreenImage = ref(false);
 
 const openCropPopup = (crop) => {
   activeCrop.value = crop;
+  isFullScreenImage.value = false;
+  showPopup.value = true;
+};
+
+const openFullScreen = () => {
+  activeCrop.value = currentImage.value;
+  isFullScreenImage.value = true;
   showPopup.value = true;
 };
 
 const closePopup = () => {
   showPopup.value = false;
   activeCrop.value = null;
+  isFullScreenImage.value = false;
 };
 
 // Animations
@@ -195,23 +214,39 @@ watch(placeVisible, (visible) => {
             </template>
           </Button>
         </div>
+
+        <div class="fullscreen">
+          <Button class="button" color="secondary" icon-primary @click="openFullScreen" :text-content="'Plein écran'">
+            <template #icon-primary>
+              <IconFullscreen />
+            </template>
+          </Button>
+        </div>
       </section>
 
-      <div v-if="showPopup" class="crop-popup-overlay" @click.self="closePopup">
-        <div class="crop-popup">
-          <div class="crop-popup-image">
-            <img :src="`/images/${encodeURI(activeCrop.file)}`" :alt="activeCrop.description" />
-          </div>
-          <div class="crop-popup-content">
-            <p class="crop-popup-text">{{ activeCrop.description }}</p>
-            <Button color="primary" class="bouton" icon-primary @click="closePopup" :text-content="'Fermer'">
-              <template #icon-primary>
-                <IconLeave />
+      <Transition name="fade">
+        <div v-show="showPopup" class="crop-popup-overlay" @click.self="closePopup">
+          <div class="crop-popup">
+            <div class="crop-popup-image">
+              <img v-if="isFullScreenImage && activeCrop" :src="`/images/${encodeURI(activeCrop.file)}`"
+                :alt="activeCrop.description" />
+              <template v-else>
+                <img v-for="crop in allCrops" :key="crop.id" :src="`/images/${encodeURI(crop.file)}`"
+                  :alt="crop.description" v-show="activeCrop && activeCrop.id === crop.id" />
               </template>
-            </Button>
+            </div>
+            <div class="crop-popup-content">
+              <p class="crop-popup-text" v-if="activeCrop?.description">{{ activeCrop?.description }}</p>
+              <Button color="primary" class="bouton" :class="{ 'no-description': !activeCrop?.description }"
+                icon-primary @click="closePopup" :text-content="'Fermer'">
+                <template #icon-primary>
+                  <IconLeave />
+                </template>
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
+      </Transition>
 
       <section class="content-section">
         <div class="artwork-container artwork-infos">
@@ -259,6 +294,10 @@ watch(placeVisible, (visible) => {
     flex-direction: column;
     justify-content: space-between;
     position: relative;
+
+    .fullscreen {
+      text-align: right;
+    }
 
     &::before {
       content: '';
@@ -664,6 +703,16 @@ watch(placeVisible, (visible) => {
 
   }
 
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s ease;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
+
   .crop-popup-overlay {
     position: fixed;
     inset: 0;
@@ -679,6 +728,7 @@ watch(placeVisible, (visible) => {
       display: flex;
       flex-direction: column;
       gap: $spacing-80;
+      align-items: center;
 
       .crop-popup-image {
         flex: 1;
@@ -697,6 +747,7 @@ watch(placeVisible, (visible) => {
       .crop-popup-content {
         background-color: $white;
         position: relative;
+        width: fit-content;
 
         .crop-popup-text {
           padding: $spacing-80 $spacing-56;
@@ -711,6 +762,12 @@ watch(placeVisible, (visible) => {
           right: calc(-1 * $spacing-56);
           bottom: calc(-1 * $spacing-56);
           height: fit-content;
+
+          &.no-description {
+            right: 0;
+            bottom: 0;
+            transform: translate(50%, $spacing-56);
+          }
         }
       }
     }
