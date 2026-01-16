@@ -6,7 +6,7 @@ import ClickImg from "@/components/ClickImg.vue";
 import Carousel from "@/components/Carousel.vue";
 import ArtworkDetails from "@/components/ArtworkDetails.vue";
 import ArtworkList from "@/components/ArtworkList.vue";
-import AllArtwork from "@/components/AllArtwork.vue";
+import AllArtwork from "@/components/ViewAllArtworks.vue";
 import ViewAllArtworks from "@/components/ViewAllArtworks.vue";
 import Listing from "@/components/Listing.vue";
 
@@ -30,11 +30,6 @@ const router = createRouter({
               component: Infos,
               children: [
                 {
-                  path: "list", // <--- ON MET LA LISTE EN PREMIER
-                  name: "artworks-lists",
-                  component: ArtworkList,
-                },
-                {
                   path: ":artworkSlug",
                   name: "artwork-detail",
                   component: ArtworkDetails,
@@ -54,11 +49,7 @@ const router = createRouter({
       component: ViewAllArtworks,
     },
     {
-      path: "/list",
-      component: Listing,
-    },
-    {
-      path: "/all",
+      path: "/all-artworks",
       component: AllArtwork,
     },
 

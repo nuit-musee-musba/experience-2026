@@ -10,6 +10,8 @@ import { useRouter, useRoute } from "vue-router";
 import { allData } from '@/store.js';
 import { Stats } from '@/webgl/utils/Stats.js';
 import { firstFingerOfEvent } from '@/utils/touch/touch';
+import SmartNavbar from "@/components/layouts/SmartNavbar.vue";
+import BaseFrame from "@/components/layouts/BaseFrame.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -43,7 +45,7 @@ watch([() => route.params, allData], ([params, data]) => {
     const museum = city?.museums.find(m => m.slug === params.museumSlug);
 
     if (museum) {
-      targetDestination.set(museum.x, museum.y, -9.5);
+      targetDestination.set(museum.x, museum.y, -10.5);
 
       const width = containerRef.value.clientWidth;
       const height = containerRef.value.clientHeight;
@@ -70,7 +72,7 @@ watch([() => route.params, allData], ([params, data]) => {
   else if (params.citySlug) {
     const city = data.find(v => v.slug === params.citySlug);
     if (city) {
-      destinationCoordonates.set(city.x, city.y, -8);
+      destinationCoordonates.set(city.x, city.y, -5);
       targetDestination.set(city.x, city.y, -9.5);
       renderLevel(city.museums);
       isTraveling = false;
@@ -302,7 +304,11 @@ onBeforeUnmount(() => {
 
 <template>
   <div ref="containerRef" class="scene-container" :class="{ 'map-frozen': isArtworkActive }"></div>
-
+  <BaseFrame >
+  <template #nav>
+    <SmartNavbar v-if="!route.params.artworkSlug" />
+  </template>`
+  </BaseFrame>
   <router-view></router-view>
 </template>
 

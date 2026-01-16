@@ -3,7 +3,7 @@
 
 h1,
 .h1 {
-  font-family: var(--font-familly-headings), sans-serif;
+  font-family: $font-family-headings, sans-serif;
   font-size: 128px;
   font-style: normal;
   font-weight: 400;
@@ -13,7 +13,7 @@ h1,
 
 h2,
 .h2 {
-  font-family: var(--font-familly-headings), sans-serif;
+  font-family: $font-family-headings, sans-serif;
   font-size: 100px;
   font-style: normal;
   font-weight: 400;
@@ -22,7 +22,7 @@ h2,
 }
 
 a {
-  font-family: var(--font-familly-sans-serif), sans-serif;
+  font-family: $font-family-sans-serif, sans-serif;
   font-size: 32px;
   font-style: normal;
   font-weight: 400;
