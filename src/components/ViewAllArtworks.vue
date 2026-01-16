@@ -1,88 +1,124 @@
 <script setup>
-import {useRoute, useRouter} from 'vue-router';
-import BaseFrame from '@/components/layouts/BaseFrame.vue';
-import Button from '@/components/buttons/Button.vue';
-import IconClose from '@/components/icons/IconClose.vue';
-import {computed} from "vue";
-import {allData} from "@/store.js";
+import { useRoute, useRouter } from 'vue-router'
+import { computed } from 'vue'
+import BaseFrame from '@/components/layouts/BaseFrame.vue'
+import Button from '@/components/buttons/Button.vue'
+import IconClose from '@/components/icons/IconClose.vue'
+import { allData } from '@/store.js'
 
-const router = useRouter();
+const router = useRouter()
+const route = useRoute()
 
 const closeGallery = () => {
-  router.back();
-};
+  router.back()
+}
 
-const allCities = computed(() => allData.value || []);
-
-const route = useRoute();
+const allCities = computed(() => allData.value || [])
 
 const city = computed(() => {
-  if (!allData.value) return null;
-  return allData.value.find(v => v.slug === route.params.citySlug);
-});
+  if (!allData.value) return null
+  return allData.value.find(v => v.slug === route.params.citySlug)
+})
 
 const museum = computed(() => {
-  if (!city.value) return null;
-  return city.value.museums.find(m => m.slug === route.params.museumSlug);
-});
-
-
-
+  if (!city.value) return null
+  return city.value.museums.find(m => m.slug === route.params.museumSlug)
+})
 </script>
 
 <template>
   <BaseFrame>
     <div class="gallery-container">
       <header class="gallery-header">
-        <h1>Explorez les grands décors de Jean Dupas </h1>
+        <h1>Explorez les grands décors de Jean Dupas</h1>
       </header>
 
-      <Button class="close-button" text-content="Fermer" color="primary" icon-primary @click="closeGallery">
-        <template #icon-primary><IconClose /></template>
+      <Button
+        class="close-button"
+        text-content="Fermer"
+        color="primary"
+        icon-primary
+        @click="closeGallery"
+      >
+        <template #icon-primary>
+          <IconClose />
+        </template>
       </Button>
 
       <div class="content-listing">
         <div v-for="cityItem in allCities" :key="cityItem.slug" class="artworks-grid">
           <h2 class="city-name">{{ cityItem.name }}</h2>
+
           <div class="artworks-list">
-          <div v-for="museumItem in cityItem.museums" :key="museumItem.slug">
-
-
+            <div v-for="museumItem in cityItem.museums" :key="museumItem.slug">
               <RouterLink
-                  class="artwork-item"
-                  v-for="artwork in museumItem.artworks"
-                  :to="`/${cityItem.slug}/${museumItem.slug}/${artwork.slug}`"
+                v-for="artwork in museumItem.artworks"
+                :key="artwork.slug"
+                class="artwork-item"
+                :to="`/${cityItem.slug}/${museumItem.slug}/${artwork.slug}`"
               >
                 <div class="artworks-item-image">
-                  <img v-if="artwork.images?.length" :src="`/images/${encodeURI(artwork.images[0].file)}`" :alt="artwork.name" />
+                  <img
+                    v-if="artwork.images?.length"
+                    :src="`/images/${encodeURI(artwork.images[0].file)}`"
+                    :alt="artwork.name"
+                  />
                 </div>
+
                 <div class="artwork-item-infos">
                   <h2>{{ artwork.name }}</h2>
+
                   <div class="artworks-details">
                     <p>{{ cityItem.name }},</p>
                     <p>{{ museumItem.name }},</p>
                     <p>{{ artwork.year }}</p>
                   </div>
-
                 </div>
-
               </RouterLink>
-
-          </div>
+            </div>
           </div>
         </div>
       </div>
-
     </div>
   </BaseFrame>
 </template>
 
 <style lang="scss" scoped>
+/* ===== CONTAINER SCROLL ===== */
 .gallery-container {
   height: 100%;
   width: 100%;
   overflow-y: auto;
 }
+
+/* ===== SCROLLBAR VISIBLE ===== */
+
+/* Chrome / Edge / Safari */
+.gallery-container::-webkit-scrollbar {
+  width: 16px;
+}
+
+.gallery-container::-webkit-scrollbar-track {
+  background: #e0e0e0;
+}
+
+.gallery-container::-webkit-scrollbar-thumb {
+  background-color: #000;
+  border-radius: 8px;
+  border: 4px solid #e0e0e0;
+}
+
+.gallery-container::-webkit-scrollbar-thumb:hover {
+  background-color: #333;
+}
+
+/* Firefox */
+.gallery-container {
+  scrollbar-width: auto;
+  scrollbar-color: #000 #e0e0e0;
+}
+
+/* ===== UI ===== */
 
 .close-button {
   position: absolute;
@@ -139,9 +175,8 @@ const museum = computed(() => {
   height: 276px;
   background: gray;
 
-
   img {
-    aspect-ratio: 1/1;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
     width: 100%;
     height: 100%;
