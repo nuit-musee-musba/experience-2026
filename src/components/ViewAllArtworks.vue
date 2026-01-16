@@ -1,259 +1,162 @@
 <script setup>
-import { useRoute, useRouter } from "vue-router";
-import { allData } from '@/store.js';
-import { computed, ref, onMounted, onUnmounted } from 'vue';
-import Button from "./buttons/Button.vue";
-import IconClose from "./icons/IconClose.vue";
+import {useRoute, useRouter} from 'vue-router';
+import BaseFrame from '@/components/layouts/BaseFrame.vue';
+import Button from '@/components/buttons/Button.vue';
+import IconClose from '@/components/icons/IconClose.vue';
+import {computed} from "vue";
+import {allData} from "@/store.js";
 
-const route = useRoute();
 const router = useRouter();
 
-const allArtworks = computed(() => {
-  if (!allData.value) return [];
-  const list = [];
-  allData.value.forEach(city => {
-    city.museums.forEach(museum => {
-      if (museum.artworks) {
-        museum.artworks.forEach(artwork => {
-          list.push({
-            ...artwork,
-            citySlug: city.slug,
-            museumSlug: museum.slug
-          });
-        });
-      }
-    });
-  });
-  return list;
+const closeGallery = () => {
+  router.back();
+};
+
+const allCities = computed(() => allData.value || []);
+
+const route = useRoute();
+
+const city = computed(() => {
+  if (!allData.value) return null;
+  return allData.value.find(v => v.slug === route.params.citySlug);
 });
 
-const goBack = () => {
-  router.push(`/`);
-}
+const museum = computed(() => {
+  if (!city.value) return null;
+  return city.value.museums.find(m => m.slug === route.params.museumSlug);
+});
 
-const thumbHeight = ref(0);
-const thumbTop = ref(0);
-const scrollContainer = ref(null);
 
-const updateScrollbar = () => {
-  if (scrollContainer.value) {
-    const { scrollTop, scrollHeight, clientHeight } = scrollContainer.value;
-    if (scrollHeight <= clientHeight) {
-      thumbHeight.value = 0;
-      thumbTop.value = 0;
-      return;
-    }
-    thumbHeight.value = (clientHeight / scrollHeight) * 100;
-    thumbTop.value = (scrollTop / scrollHeight) * 100;
-  }
-}
 
-let resizeObserver = null;
-
-onMounted(() => {
-  if (scrollContainer.value) {
-    scrollContainer.value.addEventListener('scroll', updateScrollbar);
-    
-    resizeObserver = new ResizeObserver(updateScrollbar);
-    resizeObserver.observe(scrollContainer.value);
-    const grid = scrollContainer.value.querySelector('.artwork-grid');
-    if (grid) {
-      resizeObserver.observe(grid);
-    }
-    
-    updateScrollbar();
-  }
-})
-
-onUnmounted(() => {
-  if (scrollContainer.value) {
-    scrollContainer.value.removeEventListener('scroll', updateScrollbar);
-  }
-  if (resizeObserver) {
-    resizeObserver.disconnect();
-  }
-})
 </script>
 
 <template>
-  <div class="artwork-list-page">
-    <header class="header">
-      <h1 class="title">Explorez tous les décors de Jean Dupas</h1>
-    </header>
+  <BaseFrame>
+    <div class="gallery-container">
+      <header class="gallery-header">
+        <h1>Explorez les grands décors de Jean Dupas </h1>
+      </header>
 
-    <div class="scroll-wrapper">
-      <div class="content-container" ref="scrollContainer">
-        <div class="artwork-grid">
-          <RouterLink 
-            v-for="artwork in allArtworks" 
-            :key="`${artwork.citySlug}-${artwork.museumSlug}-${artwork.slug}`"
-            :to="`/${artwork.citySlug}/${artwork.museumSlug}/${artwork.slug}`"
-            class="artwork-item"
-          >
-            <div class="artwork-image">
-               <img v-if="artwork.images && artwork.images.length > 0" :src="`/images/${encodeURI(artwork.images[0].file)}`" :alt="artwork.name">
-            </div>
-            <div class="artwork-info">
-              <h2 class="artwork-name">{{ artwork.name }}</h2>
-              <p class="artwork-details">{{ artwork.place }}, {{ artwork.year }}</p>
-            </div>
-          </RouterLink>
-        </div>
-      </div>
-
-      <div class="scrollbar-container">
-        <div class="scrollbar-track" :class="{ 'is-hidden': thumbHeight === 0 }">
-          <div 
-            class="scrollbar-thumb" 
-            :style="{ 
-              height: `${thumbHeight}%`,
-              top: `${thumbTop}%`
-            }"
-          ></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer">
-      <Button color="secondary" text-content="Fermer" icon-primary @click="goBack">
-        <template #icon-primary>
-          <IconClose />
-        </template>
+      <Button class="close-button" text-content="Fermer" color="primary" icon-primary @click="closeGallery">
+        <template #icon-primary><IconClose /></template>
       </Button>
+
+      <div class="content-listing">
+        <div v-for="cityItem in allCities" :key="cityItem.slug" class="artworks-grid">
+          <h2 class="city-name">{{ cityItem.name }}</h2>
+          <div class="artworks-list">
+          <div v-for="museumItem in cityItem.museums" :key="museumItem.slug">
+
+
+              <RouterLink
+                  class="artwork-item"
+                  v-for="artwork in museumItem.artworks"
+                  :to="`/${cityItem.slug}/${museumItem.slug}/${artwork.slug}`"
+              >
+                <div class="artworks-item-image">
+                  <img v-if="artwork.images?.length" :src="`/images/${encodeURI(artwork.images[0].file)}`" :alt="artwork.name" />
+                </div>
+                <div class="artwork-item-infos">
+                  <h2>{{ artwork.name }}</h2>
+                  <div class="artworks-details">
+                    <p>{{ cityItem.name }},</p>
+                    <p>{{ museumItem.name }},</p>
+                    <p>{{ artwork.year }}</p>
+                  </div>
+
+                </div>
+
+              </RouterLink>
+
+          </div>
+          </div>
+        </div>
+      </div>
+
     </div>
-  </div>
+  </BaseFrame>
 </template>
 
-<style scoped lang="scss">
-.artwork-list-page {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+<style lang="scss" scoped>
+.gallery-container {
   height: 100%;
-  background-color: $white;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.close-button {
+  position: absolute;
+  right: 46px;
+  bottom: 46px;
+}
+
+.city-name {
+  font-family: $font-family-sans-serif, sans-serif;
+  font-size: 56px;
+  font-weight: 500;
+  margin-bottom: 72px;
+}
+
+.content-listing {
+  padding: $spacing-96;
   display: flex;
   flex-direction: column;
-  padding: $grid-margin;
-  box-sizing: border-box;
-  z-index: 1000;
+  gap: $spacing-136;
 }
 
-.header {
-  margin-bottom: 120px;
-  .title {
-    @include title-h1;
-    font-size: 110px;
-    margin-top: 0;
-  }
-}
-
-.scroll-wrapper {
-  flex-grow: 1;
+.artworks-list {
   display: flex;
-  position: relative;
-  overflow: hidden;
-}
-
-.content-container {
-  flex-grow: 1;
-  overflow-y: auto;
-  padding-right: 200px;
-  
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.artwork-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: $grid-gutter;
-  row-gap: 120px;
-  padding-bottom: 100px;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-right: 100px;
+  flex-wrap: wrap;
 }
 
 .artwork-item {
   display: flex;
-  text-decoration: none;
-  color: $black;
+  flex-direction: row;
   align-items: center;
+  text-decoration: none;
+  gap: $spacing-80;
+  margin-bottom: $spacing-80;
 
-  .artwork-image {
-    width: 450px;
-    height: 450px;
-    flex-shrink: 0;
-    margin-right: 60px;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+  .artwork-item-infos {
+    h2 {
+      font-size: 100px;
     }
-  }
 
-  .artwork-info {
-    .artwork-name {
-      @include title-h2;
-      font-size: 80px;
-      margin-bottom: 16px;
-      line-height: 1.1;
-      text-decoration: none;
-    }
-    
-    .artwork-details {
-      @include text-body;
-      font-size: 36px;
-      color: $black;
-      margin: 0;
+    .artworks-details {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+      font-size: 48px;
     }
   }
 }
 
-.scrollbar-container {
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 100px;
-  width: 16px;
-  
-  .scrollbar-track {
+.artworks-item-image {
+  width: 276px;
+  height: 276px;
+  background: gray;
+
+
+  img {
+    aspect-ratio: 1/1;
+    object-fit: cover;
     width: 100%;
     height: 100%;
-    border: 1px solid $black;
-    position: relative;
-    box-sizing: border-box;
-    transition: opacity 0.3s ease;
-    &.is-hidden {
-      opacity: 0;
-    }
-  }
-
-  .scrollbar-thumb {
-    width: 100%;
-    background-color: $black;
-    position: absolute;
-    left: 0;
-    transition: height 0.1s ease, top 0.1s linear;
-    min-height: 40px;
   }
 }
 
-.footer {
+.gallery-header {
   display: flex;
-  justify-content: flex-end;
-  padding-top: 40px;
-  
-  :deep(.btn) {
-      padding: 24px 48px;
-      font-size: 40px;
-      
-      .btn__icon svg {
-          width: 40px;
-          height: 40px;
-      }
-  }
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: $spacing-48 $spacing-96;
+  border-bottom: 8px solid $black;
+  width: 100vw;
+
+  @include title-h1;
 }
 </style>
