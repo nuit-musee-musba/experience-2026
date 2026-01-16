@@ -31,6 +31,10 @@ const resetApplication = () => {
     router.push('/');
   }
 };
+
+import CreditsOverlay from "@/components/CreditsOverlay.vue";
+
+const showCredits = ref(false);
 </script>
 
 <style scoped>
@@ -48,5 +52,17 @@ const resetApplication = () => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.page {
+  padding: 40px;
+}
+
+.open-btn {
+  padding: 12px 20px;
+  background: black;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 </style>

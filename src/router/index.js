@@ -1,5 +1,4 @@
 import {createRouter, createWebHistory, RouterView} from "vue-router";
-import Credits from "@/components/Credits.vue";
 import Map from "@/components/Map.vue";
 import Infos from "@/components/Infos.vue";
 import ClickImg from "@/components/ClickImg.vue";
@@ -9,6 +8,7 @@ import ArtworkList from "@/components/ArtworkList.vue";
 import AllArtwork from "@/components/ViewAllArtworks.vue";
 import ViewAllArtworks from "@/components/ViewAllArtworks.vue";
 import Listing from "@/components/Listing.vue";
+import Credit from "@/components/CreditsOverlay.vue";
 
 
 const router = createRouter({
@@ -41,12 +41,12 @@ const router = createRouter({
       ]
     },
     {
-      path: "/credits",
-      component: Credits,
-    },
-    {
       path: "/test1",
       component: ViewAllArtworks,
+    },
+        {
+      path: "/credits",
+      component: Credit,
     },
     {
       path: "/all-artworks",
