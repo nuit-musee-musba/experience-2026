@@ -200,7 +200,7 @@ onMounted(() => {
 
   width: 60vw;
   max-width: 2200px;
-  padding: $spacing-80;
+  padding: $spacing-144;
 
   @media (max-width: 1024px) {
     width: 85vw;
@@ -221,6 +221,8 @@ onMounted(() => {
   margin: 0;
   word-break: normal;
   line-height: 1.2;
+  font-size: 128px;
+  letter-spacing: 0;
 
   opacity: 0;
   transform: translateY(20px);
