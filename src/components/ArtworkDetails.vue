@@ -4,12 +4,12 @@ import { allData } from '@/store.js';
 import { computed, ref, watch, nextTick } from 'vue';
 import { useElementVisibility } from '@vueuse/core'
 import { useSplitText } from '../composables/useSplitText.js'
-import ArtworkVueFrame from "./layouts/ArtworkVueFrame.vue";
+import ArtworkVueFrame from "@/components/layouts/ArtworkVueFrame.vue";
 
-import Button from "./buttons/Button.vue";
+import Button from "@/components/buttons/Button.vue";
 
-import IconPin from "./icons/IconPin.vue";
-import IconLeave from "./icons/IconLeave.vue";
+import IconPin from "@/components/icons/IconPin.vue";
+import IconLeave from "@/components/icons/IconLeave.vue";
 import IconArrowLeft from "./icons/IconArrowLeft.vue";
 import IconArrowRight from "./icons/IconArrowRight.vue";
 
