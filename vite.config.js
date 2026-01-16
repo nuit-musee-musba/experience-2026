@@ -17,6 +17,7 @@ export default defineConfig({
           @use "@/styles/_variables.scss" as *;
           @use "@/styles/_colors.scss" as *;
           @use "@/styles/_typography.scss" as *;
+          @use "@/styles/_easings.scss" as *;
           @use "@/styles/_utils.scss" as *;
         `,
       },
