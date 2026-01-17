@@ -6,6 +6,10 @@ export class GUI {
     this.pane = new Pane({ title: "Experience Config", expanded: false });
   }
 
+  destroy() {
+    this.pane.dispose();
+  }
+
   addMap(mapPlane) {
     const mapFolder = this.pane.addFolder({ title: "Map" });
 

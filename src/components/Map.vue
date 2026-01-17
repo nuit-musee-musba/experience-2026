@@ -3,7 +3,9 @@ import { onMounted, onBeforeUnmount, ref, watch, computed } from 'vue';
 import * as THREE from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { Map3D } from '@/webgl/components/Map3D.js';
+import { MapPlane } from '@/webgl/components/MapPlane.js';
 import { MapPins } from '@/webgl/components/MapPins.js';
+import { GUI } from '@/webgl/utils/GUI.js';
 import { CONFIG } from '@/config/webgl.js';
 
 import { useRouter, useRoute } from "vue-router";
@@ -20,10 +22,10 @@ const isArtworkActive = computed(() => route.name === 'artwork-detail');
 const containerRef = ref(null);
 const props = defineProps(['path']);
 
-let scene, camera, renderer, controls, animationId, stats;
+let scene, camera, renderer, controls, animationId, stats, gui;
 let mapPins;
 let allPins = null;
-
+let mapPlane = null;
 let isZooming = false;
 let isTraveling = false;
 const currentStep = ref(0);
@@ -118,8 +120,12 @@ const initThree = () => {
   containerRef.value.appendChild(renderer.domElement);
 
   stats = new Stats(containerRef.value);
-  new Map3D(scene);
-  // mapPlane = new MapPlane(scene, all, CONFIG.mapPlane.width, CONFIG.mapPlane.height);
+  // new Map3D(scene);
+  mapPlane = new MapPlane(scene);
+
+  gui = new GUI();
+  gui.addMap(mapPlane);
+
   mapPins = new MapPins(scene);
 
   scene.add(new THREE.AmbientLight(CONFIG.colors.ambientLight, CONFIG.lights.ambientIntensity));
@@ -297,6 +303,7 @@ onBeforeUnmount(() => {
   }
   cancelAnimationFrame(animationId);
   if (renderer) renderer.dispose();
+  if (gui) gui.destroy();
 });
 </script>
 
