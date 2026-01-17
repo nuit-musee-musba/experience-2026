@@ -174,6 +174,7 @@ const museum = computed(() => {
   width: 276px;
   height: 276px;
   background: gray;
+  transition: opacity 0.2s ease-in-out;
 
   img {
     aspect-ratio: 1 / 1;

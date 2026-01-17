@@ -1,42 +1,29 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import { CSS2DObject } from "three/examples/jsm/renderers/CSS2DRenderer.js";
 import { CONFIG } from "@/config/webgl.js";
 
+const PIN_SVG = `
+<svg width="90" height="124" viewBox="0 0 90 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M44.6917 0C20.0091 0 0 20.0091 0 44.6917C0 50.9269 3.60864 59.8328 6.53594 65.3846L37.9286 120.498C41.5625 124.334 47.9218 124.839 50.95 120.498L82.6455 65.3846C86.2794 57.814 89.3833 50.9269 89.3833 44.6917C89.3833 20.0091 69.3742 0 44.6917 0Z" fill="#F5AEBC"/>
+<path d="M44.6919 15.1919C60.9842 15.192 74.1919 28.3995 74.1919 44.6919C74.1918 60.9841 60.9841 74.1918 44.6919 74.1919C28.3995 74.1919 15.192 60.9842 15.1919 44.6919C15.1919 28.3995 28.3995 15.1919 44.6919 15.1919Z" stroke="white" stroke-width="4.84517"/>
+<path d="M25.5381 44.6919C31.2842 36.7112 38.6264 31.9229 44.6917 31.9229C50.757 31.9229 58.0992 36.7112 63.8452 44.6919C58.0992 52.6726 50.757 57.4609 44.6917 57.4609C38.6264 57.4609 31.2842 52.6726 25.5381 44.6919Z" stroke="white" stroke-width="5.74607" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M44.6917 51.0762C48.2177 51.0762 51.0762 48.2177 51.0762 44.6917C51.0762 41.1656 48.2177 38.3071 44.6917 38.3071C41.1656 38.3071 38.3071 41.1656 38.3071 44.6917C38.3071 48.2177 41.1656 51.0762 44.6917 51.0762Z" fill="white"/>
+</svg>
+`;
+
 export class MapPins {
-  constructor(scene) {
+  constructor(scene, onClick) {
     this.scene = scene;
+    this.onClick = onClick;
     this.group = new THREE.Group();
     this.scene.add(this.group);
-    this.circleTexture = this.createCircleTexture();
+
     this.loader = new GLTFLoader();
     this.dracoLoader = new DRACOLoader();
     this.dracoLoader.setDecoderPath("/draco/");
     this.loader.setDRACOLoader(this.dracoLoader);
-    
-    this.pinModelPromise = new Promise((resolve) => {
-      this.loader.load("/models/pin.glb", (gltf) => {
-        resolve(gltf.scene);
-      });
-    });
-  }
-
-  createCircleTexture() {
-    const canvas = document.createElement("canvas");
-    canvas.width = CONFIG.pins.circleTextureSize;
-    canvas.height = CONFIG.pins.circleTextureSize;
-    const ctx = canvas.getContext("2d");
-    ctx.beginPath();
-    ctx.arc(
-      CONFIG.pins.circleTextureSize / 2,
-      CONFIG.pins.circleTextureSize / 2,
-      CONFIG.pins.circleRadius,
-      0,
-      2 * Math.PI
-    );
-    ctx.fillStyle = "#ffffff";
-    ctx.fill();
-    return new THREE.CanvasTexture(canvas);
   }
 
   addPin(item) {
@@ -71,22 +58,44 @@ export class MapPins {
         pin.name = "pin";
         this.group.add(pin);
       } else {
-        this.pinModelPromise.then((model) => {
-          const pin = model.clone();
-        
-          pin.scale.set(0.1, 0.1, 0.1);
-          pin.rotation.set(Math.PI, Math.PI, Math.PI / 1);
+        // HTML Pin Logic
+        const wrapper = document.createElement("div");
+        wrapper.style.cursor = "pointer";
+        wrapper.style.pointerEvents = "auto";
 
-          pin.traverse((child) => {
-             if (child.isMesh) {
-               child.userData = item;
-             }
-          });
-          pin.userData = item;
-          pin.position.set(item.x, item.y, CONFIG.pins.defaultZ);
-          pin.name = "pin";
-          this.group.add(pin);
+        const inner = document.createElement("div");
+        inner.innerHTML = PIN_SVG;
+        inner.style.transform = "translateY(-50%)";
+        if (CONFIG.pins.htmlScale) {
+          inner.style.scale = CONFIG.pins.htmlScale;
+        }
+
+        wrapper.appendChild(inner);
+
+        wrapper.addEventListener("click", (e) => {
+          e.stopPropagation();
+          console.log("Pin clicked", item);
+          if (this.onClick) {
+            this.onClick(item);
+          }
         });
+
+        wrapper.addEventListener(
+          "touchstart",
+          (e) => {
+            e.stopPropagation();
+            if (this.onClick) {
+              this.onClick(item);
+            }
+          },
+          { passive: false }
+        );
+
+        const label = new CSS2DObject(wrapper);
+        label.position.set(item.x, item.y, CONFIG.pins.defaultZ);
+        label.userData = item;
+
+        this.group.add(label);
       }
     }
   }
@@ -99,6 +108,7 @@ export class MapPins {
   clear() {
     while (this.group.children.length > 0) {
       const object = this.group.children[0];
+
       if (object.traverse) {
         object.traverse((child) => {
           if (child.geometry) child.geometry.dispose();
@@ -111,9 +121,12 @@ export class MapPins {
           }
         });
       }
-      if (object.geometry) object.geometry.dispose();
-      if (object.material) object.material.dispose();
+
       this.group.remove(object);
+
+      if (object.element && object.element.parentNode) {
+        object.element.parentNode.removeChild(object.element);
+      }
     }
   }
 

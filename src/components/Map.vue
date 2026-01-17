@@ -2,8 +2,11 @@
 import { onMounted, onBeforeUnmount, ref, watch, computed } from 'vue';
 import * as THREE from 'three';
 import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
+import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 import { Map3D } from '@/webgl/components/Map3D.js';
+import { MapPlane } from '@/webgl/components/MapPlane.js';
 import { MapPins } from '@/webgl/components/MapPins.js';
+import { GUI } from '@/webgl/utils/GUI.js';
 import { CONFIG } from '@/config/webgl.js';
 
 import { useRouter, useRoute } from "vue-router";
@@ -20,10 +23,10 @@ const isArtworkActive = computed(() => route.name === 'artwork-detail');
 const containerRef = ref(null);
 const props = defineProps(['path']);
 
-let scene, camera, renderer, controls, animationId, stats;
+let scene, camera, renderer, labelRenderer, controls, animationId, stats, gui;
 let mapPins;
 let allPins = null;
-
+let mapPlane = null;
 let isZooming = false;
 let isTraveling = false;
 const currentStep = ref(0);
@@ -103,6 +106,14 @@ const resetMapControls = () => {
   controls.maxDistance = Infinity;
 };
 
+const handlePinClick = (item) => {
+  if (item.museums) router.push(`/${item.slug}`);
+  else if (item.artworks) router.push(`/${activeCitySlug.value}/${item.slug}`);
+  else if (item.type === 'city') {
+    router.push(`/${item.slug}`);
+  }
+};
+
 const initThree = () => {
   if (!containerRef.value) return;
 
@@ -117,10 +128,21 @@ const initThree = () => {
   renderer.setPixelRatio(1);
   containerRef.value.appendChild(renderer.domElement);
 
+  labelRenderer = new CSS2DRenderer();
+  labelRenderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight);
+  labelRenderer.domElement.style.position = 'absolute';
+  labelRenderer.domElement.style.top = '0px';
+  labelRenderer.domElement.style.pointerEvents = 'none';
+  containerRef.value.appendChild(labelRenderer.domElement);
+
   stats = new Stats(containerRef.value);
-  new Map3D(scene);
-  // mapPlane = new MapPlane(scene, all, CONFIG.mapPlane.width, CONFIG.mapPlane.height);
-  mapPins = new MapPins(scene);
+  // new Map3D(scene);
+  mapPlane = new MapPlane(scene);
+
+  gui = new GUI();
+  gui.addMap(mapPlane);
+
+  mapPins = new MapPins(scene, handlePinClick);
 
   scene.add(new THREE.AmbientLight(CONFIG.colors.ambientLight, CONFIG.lights.ambientIntensity));
   const dirLight = new THREE.DirectionalLight(CONFIG.colors.directionalLight, CONFIG.lights.directionalIntensity);
@@ -213,6 +235,7 @@ const animate = () => {
 
   controls.update();
   renderer.render(scene, camera);
+  labelRenderer.render(scene, camera);
   stats.end();
 };
 
@@ -274,6 +297,7 @@ const handleResize = () => {
 
   camera.updateProjectionMatrix();
   renderer.setSize(width, height);
+  labelRenderer.setSize(width, height);
 };
 
 onMounted(async () => {
@@ -297,6 +321,8 @@ onBeforeUnmount(() => {
   }
   cancelAnimationFrame(animationId);
   if (renderer) renderer.dispose();
+  if (gui) gui.destroy();
+  if (labelRenderer && labelRenderer.domElement) labelRenderer.domElement.remove();
 });
 </script>
 

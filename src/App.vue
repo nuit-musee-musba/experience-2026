@@ -2,6 +2,7 @@
   <IdleView @idle="resetApplication">
     <div class="app-container">
       
+      <CreditsOverlay @close="showCredits = false" />
       <router-view />
 
       <transition name="fade">
@@ -17,6 +18,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import IdleView from "@/components/IdleView.vue";
 import HomeOverlay from "@/components/HomeOverlay.vue";
+import CreditsOverlay from "@/components/CreditsOverlay.vue";
 
 const router = useRouter();
 const showHome = ref(true);
@@ -31,8 +33,6 @@ const resetApplication = () => {
     router.push('/');
   }
 };
-
-import CreditsOverlay from "@/components/CreditsOverlay.vue";
 
 const showCredits = ref(false);
 </script>
