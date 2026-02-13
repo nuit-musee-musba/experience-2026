@@ -10,9 +10,9 @@ import Button from "@/components/buttons/Button.vue";
 
 import IconPin from "@/components/icons/IconPin.vue";
 import IconLeave from "@/components/icons/IconLeave.vue";
-import IconArrowLeft from "./icons/IconArrowLeft.vue";
-import IconArrowRight from "./icons/IconArrowRight.vue";
-import IconFullscreen from "@/components/icons/IconFullScreen.vue";
+import IconArrowLeft from "@/components/icons/IconArrowLeft.vue";
+import IconArrowRight from "@/components/icons/IconArrowRight.vue";
+import IconFullscreen from "@/components/icons/IconFullscreen.vue";
 
 const route = useRoute();
 
