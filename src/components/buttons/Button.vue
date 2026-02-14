@@ -145,6 +145,34 @@ const handleTouch = (event) => {
     }
   }
 
+  &--city {
+    background-color: transparent;
+    color: black;
+    border: black 4px solid;
+
+    &:active:not(:disabled) {
+      opacity: 0.9;
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+  }
+
+  &--continent {
+    background-color: transparent;
+    color: black;
+    border: black 4px solid;
+
+    &:active:not(:disabled) {
+      opacity: 0.9;
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+  }
+
   &--place {
     background-color: $green-300;
     color: $white;

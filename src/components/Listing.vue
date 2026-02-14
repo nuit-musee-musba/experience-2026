@@ -5,27 +5,27 @@
       <div class="list-container">
         <div class="artwork-list">
           <section
-            v-for="city in groupedArtworks"
-            :key="city.name"
-            class="city-section"
+              v-for="city in groupedArtworks"
+              :key="city.name"
+              class="city-section"
           >
             <h2 class="city-title">{{ city.name }}</h2>
             <ul class="city-grid">
               <li
-                v-for="artwork in city.artworks"
-                :key="artwork.id"
-                class="artwork-item"
+                  v-for="artwork in city.artworks"
+                  :key="artwork.id"
+                  class="artwork-item"
               >
                 <RouterLink
-                  :to="`/${artwork.citySlug}/${artwork.museumSlug}/${artwork.slug}`"
-                  class="artwork-link"
+                    :to="`/${artwork.continentSlug}/${artwork.citySlug}/${artwork.museumSlug}/${artwork.slug}`"
+                    class="artwork-link"
                 >
                   <div class="image-wrapper">
                     <img
-                      v-if="artwork.images && artwork.images.length > 0"
-                      :src="`/images/${encodeURI(artwork.images[0].file)}`"
-                      :alt="`Image de l'œuvre ${artwork.name}`"
-                      loading="lazy"
+                        v-if="artwork.images && artwork.images.length > 0"
+                        :src="`/images/${encodeURI(artwork.images[0].file)}`"
+                        :alt="`Image de l'œuvre ${artwork.name}`"
+                        loading="lazy"
                     />
                   </div>
                   <div class="artwork-info">
@@ -61,31 +61,47 @@ const listingTitle = 'Explorez les grands décors de Jean Dupas'
 
 const groupedArtworks = computed(() => {
   if (!allData.value) return []
-  return allData.value.map(city => {
-    const cityArtworks = []
-    city.museums.forEach(museum => {
-      museum.artworks.forEach(artwork => {
-        cityArtworks.push({
-          ...artwork,
-          citySlug: city.slug,
-          museumSlug: museum.slug,
-          cityName: city.name,
-          museumName: museum.name
+
+  const cities = []
+
+  // Parcourir tous les continents
+  allData.value.forEach(continent => {
+    const continentSlug = continent.Name.toLowerCase()
+
+    // Parcourir toutes les villes du continent
+    continent.cities.forEach(city => {
+      const cityArtworks = []
+
+      // Parcourir tous les musées de la ville
+      city.museums.forEach(museum => {
+        museum.artworks.forEach(artwork => {
+          cityArtworks.push({
+            ...artwork,
+            continentSlug: continentSlug,
+            citySlug: city.slug,
+            museumSlug: museum.slug,
+            cityName: city.name,
+            museumName: museum.name
+          })
         })
       })
+
+      if (cityArtworks.length > 0) {
+        cities.push({
+          name: city.name,
+          artworks: cityArtworks
+        })
+      }
     })
-    return {
-      name: city.name,
-      artworks: cityArtworks
-    }
-  }).filter(city => city.artworks.length > 0)
+  })
+
+  return cities
 })
 
 onMounted(async () => {
   if (!allData.value) {
     try {
       const response = await fetch("/content/content.json")
-      //const response = await fetch("https://useful-car-6cfb564836.strapiapp.com/api/villes?populate[museums][populate][artworks][populate][images][populate][crops][fields]=*")
       const allPins = await response.json()
       allData.value = allPins.data
     } catch (e) {
@@ -174,10 +190,6 @@ function goBack() {
   margin: 0;
 }
 
-// .artwork-item {
-//   // margin-bottom removed as handled by grid gap
-// }
-
 .artwork-link {
   text-decoration: none;
   color: inherit;
@@ -191,7 +203,7 @@ function goBack() {
   height: 180px;
   flex-shrink: 0;
   background: #f0f0f0;
-  
+
   img {
     width: 100%;
     height: 100%;

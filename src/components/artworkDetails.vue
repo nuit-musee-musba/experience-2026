@@ -18,12 +18,21 @@ const route = useRoute();
 
 const artwork = computed(() => {
   if (allData.value) {
-    const laVille = allData.value.find(ville => ville.slug === route.params.citySlug);
-    if (laVille) {
-      const leMusee = laVille.museums.find(m => m.slug === route.params.museumSlug);
-      if (leMusee) {
-        const leArtwork = leMusee.artworks.find(a => a.slug === route.params.artworkSlug);
-        return leArtwork;
+    // Trouver le continent
+    const leContinent = allData.value.find(continent =>
+        continent.Name.toLowerCase() === route.params.continentSlug
+    );
+
+    if (leContinent) {
+      // Trouver la ville dans le continent
+      const laVille = leContinent.cities.find(ville => ville.slug === route.params.citySlug);
+
+      if (laVille) {
+        const leMusee = laVille.museums.find(m => m.slug === route.params.museumSlug);
+        if (leMusee) {
+          const leArtwork = leMusee.artworks.find(a => a.slug === route.params.artworkSlug);
+          return leArtwork;
+        }
       }
     }
   }
@@ -32,9 +41,16 @@ const artwork = computed(() => {
 
 const currentMuseum = computed(() => {
   if (allData.value) {
-    const laVille = allData.value.find(ville => ville.slug === route.params.citySlug);
-    if (laVille) {
-      return laVille.museums.find(m => m.slug === route.params.museumSlug);
+    // Trouver le continent
+    const leContinent = allData.value.find(continent =>
+        continent.Name.toLowerCase() === route.params.continentSlug
+    );
+
+    if (leContinent) {
+      const laVille = leContinent.cities.find(ville => ville.slug === route.params.citySlug);
+      if (laVille) {
+        return laVille.museums.find(m => m.slug === route.params.museumSlug);
+      }
     }
   }
   return null;
@@ -92,7 +108,7 @@ const scrollNext = () => {
 const cropsWithLocation = computed(() => {
   if (currentImage.value?.crops) {
     return currentImage.value.crops.filter(
-      crop => crop.artwork_location_x !== null && crop.artwork_location_y !== null
+        crop => crop.artwork_location_x !== null && crop.artwork_location_y !== null
     );
   }
   return [];
@@ -101,7 +117,7 @@ const cropsWithLocation = computed(() => {
 const allCrops = computed(() => {
   if (artwork.value?.images) {
     return artwork.value.images.flatMap(img => img.crops || []).filter(
-      crop => crop.artwork_location_x !== null && crop.artwork_location_y !== null
+        crop => crop.artwork_location_x !== null && crop.artwork_location_y !== null
     );
   }
   return [];
@@ -176,10 +192,10 @@ watch(placeVisible, (visible) => {
       <section class="image-section">
         <div class="image-container">
           <img v-for="(img, index) in artwork.images" :key="img.id" :src="`/images/${encodeURI(img.file)}`"
-            :alt="img.description || artwork.name" class="artwork-image"
-            :class="{ 'visible': index === activeImageIndex }" />
+               :alt="img.description || artwork.name" class="artwork-image"
+               :class="{ 'visible': index === activeImageIndex }" />
           <div v-for="crop in cropsWithLocation" :key="crop.id" class="crop-hotspot"
-            :class="{ 'visible': currentImage?.crops?.includes(crop) }" :style="{
+               :class="{ 'visible': currentImage?.crops?.includes(crop) }" :style="{
               left: crop.artwork_location_x + '%',
               top: crop.artwork_location_y + '%'
             }" @click="openCropPopup(crop)" />
@@ -199,7 +215,7 @@ watch(placeVisible, (visible) => {
           <div class="thumbnails-list">
             <div class="thumbnails-track">
               <div v-for="(img, index) in artwork.images" :key="img.id" class="thumbnail"
-                :class="{ 'is-active': index === activeImageIndex }" @click="selectImage(index)">
+                   :class="{ 'is-active': index === activeImageIndex }" @click="selectImage(index)">
                 <div class="img-container">
                   <div class="thumbnail-overlay"></div>
                   <img :src="`/images/${encodeURI(img.file)}`" :alt="img.description || artwork.name" />
@@ -223,30 +239,31 @@ watch(placeVisible, (visible) => {
           </Button>
         </div>
       </section>
-
-      <Transition name="fade">
-        <div v-show="showPopup" class="crop-popup-overlay" @click.self="closePopup">
-          <div class="crop-popup">
-            <div class="crop-popup-image">
-              <img v-if="isFullScreenImage && activeCrop" :src="`/images/${encodeURI(activeCrop.file)}`"
-                :alt="activeCrop.description" />
-              <template v-else>
-                <img v-for="crop in allCrops" :key="crop.id" :src="`/images/${encodeURI(crop.file)}`"
-                  :alt="crop.description" v-show="activeCrop && activeCrop.id === crop.id" />
-              </template>
-            </div>
-            <div class="crop-popup-content">
-              <p class="crop-popup-text" v-if="activeCrop?.description">{{ activeCrop?.description }}</p>
-              <Button color="primary" class="bouton" :class="{ 'no-description': !activeCrop?.description }"
-                icon-primary @click="closePopup" :text-content="'Fermer'">
-                <template #icon-primary>
-                  <IconLeave />
+      <Teleport to="body">
+        <Transition name="fade">
+          <div v-show="showPopup" class="crop-popup-overlay" @click.self="closePopup">
+            <div class="crop-popup">
+              <div class="crop-popup-image">
+                <img v-if="isFullScreenImage && activeCrop" :src="`/images/${encodeURI(activeCrop.file)}`"
+                     :alt="activeCrop.description" />
+                <template v-else>
+                  <img v-for="crop in allCrops" :key="crop.id" :src="`/images/${encodeURI(crop.file)}`"
+                       :alt="crop.description" v-show="activeCrop && activeCrop.id === crop.id" />
                 </template>
-              </Button>
+              </div>
+              <div class="crop-popup-content">
+                <p class="crop-popup-text" v-if="activeCrop?.description">{{ activeCrop?.description }}</p>
+                <Button color="primary" class="bouton" :class="{ 'no-description': !activeCrop?.description }"
+                        icon-primary @click="closePopup" :text-content="'Fermer'">
+                  <template #icon-primary>
+                    <IconLeave />
+                  </template>
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </Transition>
+        </Transition>
+      </Teleport>
 
       <section class="content-section">
         <div class="artwork-container artwork-infos">
@@ -273,12 +290,22 @@ watch(placeVisible, (visible) => {
           </div>
         </div>
       </section>
-      <!-- Preloader removed -->
     </div>
   </ArtworkVueFrame>
 </template>
 
 <style scoped lang="scss">
+
+:global(.fade-enter-active),
+:global(.fade-leave-active) {
+  transition: opacity 0.5s ease;
+}
+
+:global(.fade-enter-from),
+:global(.fade-leave-to) {
+  opacity: 0;
+}
+
 .artwork-detail-box {
   height: 100%;
   width: 100%;
@@ -289,10 +316,10 @@ watch(placeVisible, (visible) => {
   .image-section {
     width: 75%;
     height: 100%;
-    padding: calc($spacing-96 - $border-width) $spacing-136 calc($spacing-96 - $border-width) calc($spacing-96 - $border-width);
+    padding: calc($spacing-96 - $border-width) $spacing-136 293px calc($spacing-96 - $border-width);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     position: relative;
 
     .fullscreen {
@@ -304,8 +331,8 @@ watch(placeVisible, (visible) => {
       display: block;
       position: absolute;
       top: 0;
-      right: 0px; // -52 - 5 (border)
-      width: calc($spacing-56 - $border-width); // 52px border - 5px border
+      right: 0px;
+      width: calc($spacing-56 - $border-width);
       height: 100%;
       background-color: $blue-300;
     }
@@ -315,7 +342,7 @@ watch(placeVisible, (visible) => {
       display: block;
       position: absolute;
       top: 0;
-      right: -$border-width; // -52 - 5 (border)
+      right: -$border-width;
       width: $border-width;
       height: 100%;
       background-color: $black;
@@ -401,7 +428,7 @@ watch(placeVisible, (visible) => {
 
     .infos-containers {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       gap: $spacing-32;
     }
 
@@ -426,10 +453,10 @@ watch(placeVisible, (visible) => {
       padding: 0 10%;
 
       .nav-arrow {
-        background-color: $white !important;
-        border: 1px solid $black !important;
+        background-color: $white;
+        border: 4px solid $black;
         cursor: pointer;
-        padding: $spacing-16 !important;
+        padding: $spacing-16;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -437,10 +464,6 @@ watch(placeVisible, (visible) => {
         transition: opacity 0.3s;
         position: relative;
         z-index: 10;
-
-        &:hover {
-          opacity: 0.6;
-        }
 
         :deep(svg) {
           width: $spacing-40 !important;
@@ -525,7 +548,7 @@ watch(placeVisible, (visible) => {
           opacity: 0;
           transform: translateY(20px);
           transition: opacity 1s calc(var(--anim-index) * 0.1s) $ease-out-quint,
-            transform 1s calc(var(--anim-index) * 0.1s) $ease-out-quint;
+          transform 1s calc(var(--anim-index) * 0.1s) $ease-out-quint;
         }
 
         &.visible {
@@ -594,7 +617,7 @@ watch(placeVisible, (visible) => {
     .scroll-content {
       height: 100%;
       overflow-y: auto;
-      padding: $spacing-80 $spacing-96;
+      padding: 80px 96px 260px 96px;
       display: flex;
       flex-direction: column;
       gap: $spacing-40;
@@ -617,7 +640,7 @@ watch(placeVisible, (visible) => {
           opacity: 0;
           transform: translateY(20px);
           transition: opacity 1s calc(var(--enum-index) * 0.1s) $ease-out-quint,
-            transform 1s calc(var(--enum-index) * 0.1s) $ease-out-quint;
+          transform 1s calc(var(--enum-index) * 0.1s) $ease-out-quint;
         }
 
         &.visible {
@@ -647,7 +670,7 @@ watch(placeVisible, (visible) => {
           transform: translateY(20px);
           transform-box: fill-box;
           transition: opacity 1s calc(var(--anim-index) * 0.1s) $ease-out-quint,
-            transform 1s calc(var(--anim-index) * 0.1s) $ease-out-quint;
+          transform 1s calc(var(--anim-index) * 0.1s) $ease-out-quint;
         }
 
         &.visible {
@@ -670,10 +693,8 @@ watch(placeVisible, (visible) => {
           opacity: 0;
           transform: translateY(20px);
           transition: opacity 1s calc(var(--line-index) * 0.05s) $ease-out-quint,
-            transform 1s calc(var(--line-index) * 0.05s) $ease-out-quint;
-          display: block; // Needed for transform to work on inline-block (default split-type is usually wrapper) but split-type lines are usually divs or styled. 
-          // split-type lines are usually absolute or relative. Let's ensure they behave.
-          // standard split-type w/ 'lines' usually wraps in .line.
+          transform 1s calc(var(--line-index) * 0.05s) $ease-out-quint;
+          display: block;
         }
 
         &.visible {
@@ -701,16 +722,6 @@ watch(placeVisible, (visible) => {
       right: $spacing-32;
     }
 
-  }
-
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.5s ease;
-  }
-
-  .fade-enter-from,
-  .fade-leave-to {
-    opacity: 0;
   }
 
   .crop-popup-overlay {
