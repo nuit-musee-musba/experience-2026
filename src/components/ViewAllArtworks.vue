@@ -13,15 +13,45 @@ const closeGallery = () => {
   router.back()
 }
 
-const allCities = computed(() => allData.value || [])
+// Récupère tous les continents avec leurs villes
+const allContinentsWithCities = computed(() => {
+  if (!allData.value) return []
 
-const city = computed(() => {
-  if (!allData.value) return null
-  return allData.value.find(v => v.slug === route.params.citySlug)
+  // Aplatir la structure : continent → cities
+  const result = []
+
+  allData.value.forEach(continent => {
+    const continentSlug = continent.Name.toLowerCase()
+
+    continent.cities.forEach(city => {
+      result.push({
+        ...city,
+        continentSlug: continentSlug,
+        continentName: continent.Name
+      })
+    })
+  })
+
+  return result
 })
 
+// Trouve le continent actuel
+const continent = computed(() => {
+  if (!allData.value || !route.params.continentSlug) return null
+  return allData.value.find(c =>
+      c.Name.toLowerCase() === route.params.continentSlug
+  )
+})
+
+// Trouve la ville actuelle dans le continent
+const city = computed(() => {
+  if (!continent.value || !route.params.citySlug) return null
+  return continent.value.cities.find(v => v.slug === route.params.citySlug)
+})
+
+// Trouve le musée actuel dans la ville
 const museum = computed(() => {
-  if (!city.value) return null
+  if (!city.value || !route.params.museumSlug) return null
   return city.value.museums.find(m => m.slug === route.params.museumSlug)
 })
 </script>
@@ -34,11 +64,11 @@ const museum = computed(() => {
       </header>
 
       <Button
-        class="close-button"
-        text-content="Fermer"
-        color="primary"
-        icon-primary
-        @click="closeGallery"
+          class="close-button"
+          text-content="Fermer"
+          color="primary"
+          icon-primary
+          @click="closeGallery"
       >
         <template #icon-primary>
           <IconClose />
@@ -46,22 +76,22 @@ const museum = computed(() => {
       </Button>
 
       <div class="content-listing">
-        <div v-for="cityItem in allCities" :key="cityItem.slug" class="artworks-grid">
+        <div v-for="cityItem in allContinentsWithCities" :key="`${cityItem.continentSlug}-${cityItem.slug}`" class="artworks-grid">
           <h2 class="city-name">{{ cityItem.name }}</h2>
 
           <div class="artworks-list">
             <div v-for="museumItem in cityItem.museums" :key="museumItem.slug">
               <RouterLink
-                v-for="artwork in museumItem.artworks"
-                :key="artwork.slug"
-                class="artwork-item"
-                :to="`/${cityItem.slug}/${museumItem.slug}/${artwork.slug}`"
+                  v-for="artwork in museumItem.artworks"
+                  :key="artwork.slug"
+                  class="artwork-item"
+                  :to="`/${cityItem.continentSlug}/${cityItem.slug}/${museumItem.slug}/${artwork.slug}`"
               >
                 <div class="artworks-item-image">
                   <img
-                    v-if="artwork.images?.length"
-                    :src="`/images/${encodeURI(artwork.images[0].file)}`"
-                    :alt="artwork.name"
+                      v-if="artwork.images?.length"
+                      :src="`/images/${encodeURI(artwork.images[0].file)}`"
+                      :alt="artwork.name"
                   />
                 </div>
 

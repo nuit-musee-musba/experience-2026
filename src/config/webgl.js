@@ -42,6 +42,7 @@ export const CONFIG = {
       hoverZ: 6,
     },
     travelDestinationZ: -9,
+    htmlScale: 1, // Ajout pour éviter les erreurs
   },
   camera: {
     fov: 75,
@@ -50,6 +51,21 @@ export const CONFIG = {
     initialPosition: new THREE.Vector3(0, 0, 0),
     homePosition: new THREE.Vector3(-5, 5, 50),
     zoomLerpFactor: 0.05,
+  },
+  // Positions des continents
+  continents: {
+    europe: {
+      camera: new THREE.Vector3(-5, 5, 50),
+      target: new THREE.Vector3(-5, 5, -9.5)
+    },
+    amérique: {
+      camera: new THREE.Vector3(-100, 5, 50),
+      target: new THREE.Vector3(-100, 5, -9.5)
+    },
+    océan: {
+      camera: new THREE.Vector3(50, -30, 50),
+      target: new THREE.Vector3(50, -30, -9.5)
+    }
   },
   controls: {
     dampingFactor: 0.05,

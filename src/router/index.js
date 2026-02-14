@@ -19,20 +19,31 @@ const router = createRouter({
       component: Map,
       props: { path: "basilique.jpg" },
       children: [
+        // Route pour le continent seul (ex: /europe)
         {
-          path: ":citySlug",
-          name: "city-detail",
+          path: ":continentSlug",
+          name: "continent-detail",
           component: RouterView,
           children: [
+            // Route pour une ville dans un continent (ex: /europe/paris)
             {
-              path: ":museumSlug",
-              name: "museum-detail",
-              component: Infos,
+              path: ":citySlug",
+              name: "city-detail",
+              component: RouterView,
               children: [
+                // Route pour un musée dans une ville (ex: /europe/paris/tourdesvins)
                 {
-                  path: ":artworkSlug",
-                  name: "artwork-detail",
-                  component: ArtworkDetails,
+                  path: ":museumSlug",
+                  name: "museum-detail",
+                  component: Infos,
+                  children: [
+                    // Route pour une œuvre dans un musée (ex: /europe/paris/tourdesvins/lavigneetlevin)
+                    {
+                      path: ":artworkSlug",
+                      name: "artwork-detail",
+                      component: ArtworkDetails,
+                    }
+                  ]
                 }
               ]
             }
@@ -44,7 +55,7 @@ const router = createRouter({
       path: "/test1",
       component: ViewAllArtworks,
     },
-        {
+    {
       path: "/credits",
       component: Credit,
     },
@@ -52,7 +63,6 @@ const router = createRouter({
       path: "/all-artworks",
       component: AllArtwork,
     },
-
     {
       path: "/img",
       component: ClickImg,

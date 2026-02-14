@@ -30,7 +30,6 @@ const scrollContainer = ref(null);
 const updateScrollbar = () => {
   if (scrollContainer.value) {
     const { scrollTop, scrollHeight, clientHeight } = scrollContainer.value;
-    // Si tout le contenu est visible, on cache la barre (height 0)
     if (scrollHeight <= clientHeight) {
       thumbHeight.value = 0;
       thumbTop.value = 0;
@@ -46,11 +45,9 @@ let resizeObserver = null;
 onMounted(() => {
   if (scrollContainer.value) {
     scrollContainer.value.addEventListener('scroll', updateScrollbar);
-    
-    // Observer les changements de taille du contenu et du conteneur
+
     resizeObserver = new ResizeObserver(updateScrollbar);
     resizeObserver.observe(scrollContainer.value);
-    // On observe aussi le premier enfant (la grille) pour détecter les changements de hauteur du contenu
     const grid = scrollContainer.value.querySelector('.artwork-grid');
     if (grid) {
       resizeObserver.observe(grid);

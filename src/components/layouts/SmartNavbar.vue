@@ -1,7 +1,7 @@
 <template>
   <nav class="nav">
     <div class="nav-buttons">
-      <Button color="primary" icon-only icon-primary @click="router.push('/')">
+      <Button color="primary" icon-only icon-primary @click="router.push('/europe')">
         <template #icon-primary><IconMap /></template>
       </Button>
 
@@ -26,6 +26,18 @@
 </template>
 
 <script setup>
+
+// Doc pour les futurs dev à passer ici :
+
+// Ici, on fait trois grandes étapes -> on trouve dans quel niveau on est (continent, ville, muséum), puis on définit la navigation entre les différents éléments :
+
+// Si je suis au niveau continent -> je navigue entre les différents continents
+// Si je suis au niveau d'une ville -> je navigue entre les musées de cette ville
+// Si je suis au niveau d'un musée -> je navigue entre les œuvres de ce musée
+
+// Enfin, on permet l'affichage du bon label en fonction du niveau, ainsi que des bonnes valeurs dans les boutons.
+
+
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { allData } from '@/store.js';
@@ -39,44 +51,162 @@ import IconGallery from '../icons/IconGallery.vue';
 const route = useRoute();
 const router = useRouter();
 
-const isArtwork = computed(() => !!route.params.artworkSlug);
-const isMuseum = computed(() => !!route.params.museumSlug && !isArtwork.value);
+// Défini le niveau à l'aide de l'URL
 
-const currentCity = computed(() => allData.value?.find(v => v.slug === route.params.citySlug));
-const currentMuseum = computed(() => currentCity.value?.museums.find(m => m.slug === route.params.museumSlug));
+const isArtwork = computed(() => !!route.params.artworkSlug); //si j'ai bien l'URL au complet continent/ville/musée/œuvre
+const isMuseum = computed(() => !!route.params.museumSlug && !isArtwork.value); // Si j'ai bien continent/ville/musée, mais pas l'œuvre après
+const isCity = computed(() => !!route.params.citySlug && !isMuseum.value); // Si j'ai bien continent/ville, mais pas le musée après
+const isContinent = computed(() => !!route.params.continentSlug && !route.params.citySlug); // Si j'ai bien un continent d'ans l'URL, mais pas la ville après
+
+// Trouver le continent actuel
+
+const currentContinent = computed(() => {
+  if (!allData.value) return null;
+  return allData.value.find(continent => continent.Name.toLowerCase() === route.params.continentSlug);
+});
+
+// Trouver la ville actuelle dans le continent
+
+const currentCity = computed(() => {
+  if (!currentContinent.value) return null;
+  return currentContinent.value.cities.find(v => v.slug === route.params.citySlug);
+});
+
+// Trouver le musée actuel dans la ville
+
+const currentMuseum = computed(() => {
+  if (!currentCity.value) return null;
+  return currentCity.value.museums.find(m => m.slug === route.params.museumSlug);
+});
+
+// en fonction de mon niveau, je me mets dans la liste adéquate (les villes, les musées, les continents etc).
 
 const currentList = computed(() => {
   if (isArtwork.value) return currentMuseum.value?.artworks || [];
   if (isMuseum.value) return currentCity.value?.museums || [];
+  if (isCity.value) return currentContinent.value?.cities || [];
+  if (isContinent.value) return allData.value || [];
   return [];
 });
 
-const contextColor = computed(() => isArtwork.value ? 'artwork' : 'place');
-const prevLabel = computed(() => isArtwork.value ? 'Œuvre précédente' : 'Lieu précédent');
-const nextLabel = computed(() => isArtwork.value ? 'Œuvre suivante' : 'Lieu suivant');
+// Je peux du coup définir le label correct, la couleur du bouton et son lien.
 
-const backLabel = computed(() => isArtwork.value ? `Retour à ${currentMuseum.value?.name}` : `Retour à ${currentCity.value?.name}`);
+const currentIndex = computed(() => {
+  // Sécurité : si la liste est vide, on renvoie -1
+  if (!currentList.value.length) return -1;
+
+  let slug = '';
+  if (isArtwork.value) slug = route.params.artworkSlug;
+  else if (isMuseum.value) slug = route.params.museumSlug;
+  else if (isCity.value) slug = route.params.citySlug;
+  else if (isContinent.value) slug = route.params.continentSlug;
+
+  return currentList.value.findIndex(item => {
+    const itemIdentifier = item.slug || item.Name?.toLowerCase();
+    return itemIdentifier === slug;
+  });
+});
+
+// Pour définir la couleur du bouton
+
+const contextColor = computed(() => {
+  if (isArtwork.value) return 'artwork';
+  if (isMuseum.value) return 'place';
+  if (isCity.value) return 'city';
+  if (isContinent.value) return 'continent';
+});
+
+// Pour définir le label du précédent
+
+const prevLabel = computed(() => {
+  const list = currentList.value;
+  const idx = currentIndex.value;
+
+  if (!list.length || idx === -1) return "Précédent";
+
+  // Formule pour l'index précédent (on ajoute list.length pour éviter les nombres négatifs)
+  const prevIdx = (idx - 1 + list.length) % list.length;
+  const target = list[prevIdx];
+  const name = target.Name || target.name || target.slug;
+
+  if (isArtwork.value) return `Œuvre précédente`;
+  if (isMuseum.value) return name;
+  if (isCity.value) return name;
+  if (isContinent.value) return name;
+
+  return `Précédent : ${name}`;
+});
+
+// Pour définir le label du suivant
+
+const nextLabel = computed(() => {
+  const list = currentList.value;
+  const idx = currentIndex.value;
+
+  // Sécurité si les données ne sont pas prêtes
+  if (!list.length || idx === -1) return "Suivant";
+
+  // Calcul de l'index suivant avec modulo
+  const nextIdx = (idx + 1) % list.length;
+  const target = list[nextIdx];
+
+  // On récupère le nom (Name pour continent, name ou slug pour le reste)
+  const name = target.Name || target.name || target.slug;
+
+  // On adapte le préfixe selon le niveau
+  if (isArtwork.value) return `Œuvre suivante`;
+  if (isMuseum.value) return name;
+  if (isCity.value) return name;
+  if (isContinent.value) return name;
+
+  return `Suivant : ${name}`;
+});
+
+// Pour définir le label de retour
+
+const backLabel = computed(() => {
+  if (isArtwork.value) return `Retour à ${currentMuseum.value?.name}`;
+  if (isMuseum.value) return `Retour à ${currentCity.value?.name}`;
+  if (isCity.value) return `Retour vers l' ${currentContinent.value?.Name}`;
+  if (isContinent.value) return `Retour à la carte`;
+});
+
+// Pour définir le lien de retour :
+
 const backTarget = computed(() => {
-  if (isArtwork.value) return `/${route.params.citySlug}/${route.params.museumSlug}`;
-  if (isMuseum.value) return `/${route.params.citySlug}`;
+  if (isArtwork.value) {
+    return `/${route.params.continentSlug}/${route.params.citySlug}/${route.params.museumSlug}`;
+  }if (isMuseum.value) {
+    return `/${route.params.continentSlug}/${route.params.citySlug}`;
+  }if (isCity.value) {
+    return `/${route.params.continentSlug}`;
+  }if (isContinent.value) {
+    return `/europe`;
+  }
+
   return null;
 });
 
 const navigate = (direction) => {
-  const slug = isArtwork.value ? route.params.artworkSlug : route.params.museumSlug;
-  const index = currentList.value.findIndex(item => item.slug === slug);
-  const nextIndex = (index + direction + currentList.value.length) % currentList.value.length;
-  const target = currentList.value[nextIndex];
+  const list = currentList.value;
+  const idx = currentIndex.value;
 
-  const path = isArtwork.value
-      ? `/${route.params.citySlug}/${route.params.museumSlug}/${target.slug}`
-      : `/${route.params.citySlug}/${target.slug}`;
+  if (!list.length || idx === -1) return;
+
+  const nextIndex = (idx + direction + list.length) % list.length;
+  const target = list[nextIndex];
+
+  let path = '';
+  if (isArtwork.value) { path = `/${route.params.continentSlug}/${route.params.citySlug}/${route.params.museumSlug}/${target.slug}`;}
+  else if (isMuseum.value) { path = `/${route.params.continentSlug}/${route.params.citySlug}/${target.slug}`;}
+  else if (isCity.value) { path = `/${route.params.continentSlug}/${target.slug}`;}
+  else if (isContinent.value) { path = `/${target.Name.toLowerCase()}`;}
 
   router.push(path);
 };
 
 const goGallery = () => {
-    router.push(`/all-artworks`);
+  router.push('/all-artworks');
 };
 </script>
 
@@ -91,6 +221,7 @@ const goGallery = () => {
   position: fixed;
   bottom: 0;
 }
+
 .nav-buttons {
   display: flex;
   gap: $spacing-40;

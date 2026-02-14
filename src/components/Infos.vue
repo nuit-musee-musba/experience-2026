@@ -9,11 +9,21 @@ import SmartNavbar from "@/components/layouts/SmartNavbar.vue";
 
 const route = useRoute();
 
-const city = computed(() => {
+// Trouver le continent actuel
+const continent = computed(() => {
   if (!allData.value) return null;
-  return allData.value.find(v => v.slug === route.params.citySlug);
+  return allData.value.find(c =>
+      c.Name.toLowerCase() === route.params.continentSlug
+  );
 });
 
+// Trouver la ville dans le continent
+const city = computed(() => {
+  if (!continent.value) return null;
+  return continent.value.cities.find(v => v.slug === route.params.citySlug);
+});
+
+// Trouver le musée dans la ville
 const museum = computed(() => {
   if (!city.value) return null;
   return city.value.museums.find(m => m.slug === route.params.museumSlug);
@@ -55,17 +65,17 @@ watch(descriptionVisible, (visible) => {
           <div class="scroll-content">
             <div class="location-main-image">
               <img v-if="museum.images?.length" :src="`/images/${encodeURI(museum.images[0].file)}`"
-                :alt="museum.name" />
+                   :alt="museum.name" />
             </div>
             <div class="scroll-content-box">
               <p ref="descriptionRef" class="description">{{ museum.description }}</p>
               <h3 class="locations-artworks-section-title">Découvrez les œuvres de ce lieu</h3>
               <div class="location-artworks-listing">
                 <RouterLink class="artworks-item" v-for="artwork in museum.artworks" :key="artwork.slug"
-                  :to="`/${route.params.citySlug}/${museum.slug}/${artwork.slug}`">
+                            :to="`/${route.params.continentSlug}/${route.params.citySlug}/${museum.slug}/${artwork.slug}`">
                   <div class="artworks-item-image">
                     <img v-if="artwork.images?.length" :src="`/images/${encodeURI(artwork.images[0].file)}`"
-                      :alt="artwork.name" />
+                         :alt="artwork.name" />
                   </div>
                   <p>{{ artwork.name }}</p>
                 </RouterLink>
@@ -111,8 +121,7 @@ watch(descriptionVisible, (visible) => {
   width: 50%;
   max-width: 1744px;
   height: 100%;
-  border-left: 44px solid $green-300;
-  border-right: 8px solid $black;
+  border-right: 44px solid $green-300;
 }
 
 .content-section {
@@ -158,7 +167,7 @@ watch(descriptionVisible, (visible) => {
         opacity: 0;
         transform: translateY(20px);
         transition: opacity 1s calc(var(--line-index) * 0.05s) $ease-out-quint,
-          transform 1s calc(var(--line-index) * 0.05s) $ease-out-quint;
+        transform 1s calc(var(--line-index) * 0.05s) $ease-out-quint;
         display: block;
       }
 
@@ -184,7 +193,7 @@ watch(descriptionVisible, (visible) => {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 1s calc(var(--anim-index) * 0.1s) $ease-out-quint,
-      transform 1s calc(var(--anim-index) * 0.1s) $ease-out-quint;
+    transform 1s calc(var(--anim-index) * 0.1s) $ease-out-quint;
   }
 
   &.visible {
