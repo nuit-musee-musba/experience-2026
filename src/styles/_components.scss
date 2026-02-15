@@ -42,12 +42,19 @@
 
     .crop-popup-content {
       background-color: $white;
+      position: relative;
 
       .crop-popup-text {
         padding: $spacing-80 $spacing-56;
         font-family: $font-family-sans-serif;
         @include text-body;
         line-height: 1.6;
+      }
+
+      .btn {
+        position: absolute;
+        right: -50px;
+        bottom: -50px;
       }
 
       .crop-popup-close {
