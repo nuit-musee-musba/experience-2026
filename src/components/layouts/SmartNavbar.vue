@@ -1,11 +1,11 @@
 <template>
   <nav class="nav">
     <div class="nav-buttons">
-      <Button color="primary" icon-only icon-primary @click="router.push('/europe')">
+      <Button v-if="showSelectionButtons" color="primary" icon-only icon-primary @click="router.push('/europe')">
         <template #icon-primary><IconMap /></template>
       </Button>
 
-      <Button v-if="backTarget" color="secondary" icon-primary :text-content="backLabel" @click="router.push(backTarget)">
+      <Button v-if="backTarget && showSelectionButtons" color="secondary" icon-primary :text-content="backLabel" @click="router.push(backTarget)">
         <template #icon-primary><IconPin /></template>
       </Button>
     </div>
@@ -57,6 +57,10 @@ const isArtwork = computed(() => !!route.params.artworkSlug); //si j'ai bien l'U
 const isMuseum = computed(() => !!route.params.museumSlug && !isArtwork.value); // Si j'ai bien continent/ville/musée, mais pas l'œuvre après
 const isCity = computed(() => !!route.params.citySlug && !isMuseum.value); // Si j'ai bien continent/ville, mais pas le musée après
 const isContinent = computed(() => !!route.params.continentSlug && !route.params.citySlug); // Si j'ai bien un continent d'ans l'URL, mais pas la ville après
+
+const showSelectionButtons = computed(() => {
+  return isCity.value || isMuseum.value || isArtwork.value;
+});
 
 // Trouver le continent actuel
 

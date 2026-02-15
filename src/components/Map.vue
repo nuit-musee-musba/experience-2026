@@ -42,7 +42,7 @@ const pointer = new THREE.Vector2();
 // Positions de caméra pour chaque continent
 const continentPositions = {
   europe: { camera: new THREE.Vector3(-5, 5, 50), target: new THREE.Vector3(-5, 5, -9.5) },
-  amérique: { camera: new THREE.Vector3(-100, 5, 50), target: new THREE.Vector3(-100, 5, -9.5) },
+  amérique: { camera: new THREE.Vector3(-220, -16, 70), target: new THREE.Vector3(-220, -16, -9.5) },
   océan: { camera: new THREE.Vector3(50, -30, 50), target: new THREE.Vector3(50, -30, -9.5) }
 };
 

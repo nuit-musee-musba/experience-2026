@@ -45,9 +45,9 @@ export class MapPins {
     } else {
       if (item.artworks) {
         const geometry = new THREE.BoxGeometry(
-          CONFIG.pins.artworks.geometrySizes[0],
-          CONFIG.pins.artworks.geometrySizes[1],
-          CONFIG.pins.artworks.geometrySizes[2]
+            CONFIG.pins.artworks.geometrySizes[0],
+            CONFIG.pins.artworks.geometrySizes[1],
+            CONFIG.pins.artworks.geometrySizes[2]
         );
         const material = new THREE.MeshBasicMaterial({
           color: CONFIG.colors.pinGreen,
@@ -58,21 +58,36 @@ export class MapPins {
         pin.name = "pin";
         this.group.add(pin);
       } else {
-        // HTML Pin Logic
-        const wrapper = document.createElement("div");
-        wrapper.style.cursor = "pointer";
-        wrapper.style.pointerEvents = "auto";
+        const container = document.createElement("div");
+        container.style.position = "relative";
+        container.style.cursor = "pointer";
+        container.style.pointerEvents = "auto";
+        container.style.display = "flex";
+        container.style.flexDirection = "column";
+        container.style.alignItems = "center";
 
-        const inner = document.createElement("div");
-        inner.innerHTML = PIN_SVG;
-        inner.style.transform = "translateY(-50%)";
-        if (CONFIG.pins.htmlScale) {
-          inner.style.scale = CONFIG.pins.htmlScale;
+        if (item.name) {
+          const label = document.createElement("div");
+          label.textContent = item.name;
+          label.style.fontFamily = "Arial, sans-serif";
+          label.style.fontSize = "24px";
+          label.style.fontWeight = "bold";
+          label.style.color = "#000";
+          label.style.marginBottom = "75px";
+          label.style.whiteSpace = "nowrap";
+          label.style.textAlign = "center";
+          container.appendChild(label);
         }
 
-        wrapper.appendChild(inner);
+        const pinWrapper = document.createElement("div");
+        pinWrapper.innerHTML = PIN_SVG;
+        pinWrapper.style.transform = "translateY(-50%)";
+        if (CONFIG.pins.htmlScale) {
+          pinWrapper.style.scale = CONFIG.pins.htmlScale;
+        }
+        container.appendChild(pinWrapper);
 
-        wrapper.addEventListener("click", (e) => {
+        container.addEventListener("click", (e) => {
           e.stopPropagation();
           console.log("Pin clicked", item);
           if (this.onClick) {
@@ -80,22 +95,22 @@ export class MapPins {
           }
         });
 
-        wrapper.addEventListener(
-          "touchstart",
-          (e) => {
-            e.stopPropagation();
-            if (this.onClick) {
-              this.onClick(item);
-            }
-          },
-          { passive: false }
+        container.addEventListener(
+            "touchstart",
+            (e) => {
+              e.stopPropagation();
+              if (this.onClick) {
+                this.onClick(item);
+              }
+            },
+            { passive: false }
         );
 
-        const label = new CSS2DObject(wrapper);
-        label.position.set(item.x, item.y, CONFIG.pins.defaultZ);
-        label.userData = item;
+        const css2dObject = new CSS2DObject(container);
+        css2dObject.position.set(item.x, item.y, CONFIG.pins.defaultZ);
+        css2dObject.userData = item;
 
-        this.group.add(label);
+        this.group.add(css2dObject);
       }
     }
   }
