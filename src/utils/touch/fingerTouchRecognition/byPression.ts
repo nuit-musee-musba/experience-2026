@@ -15,11 +15,5 @@ export const isFingerTouchByPression: IsFingerTouchStrategy = (
   const min = minTouchForce();
   const accepted = force >= min;
 
-  if (!accepted) {
-    console.log('[Touch] Rejeté par pression :', { force, min });
-  } else {
-    console.log('[Touch] Accepté par pression :', { force, min });
-  }
-
   return accepted;
 };

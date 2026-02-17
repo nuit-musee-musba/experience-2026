@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue'
 import CarouselVue from 'embla-carousel-vue'
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures'
 import { firstFingerOfEvent } from '@/utils/touch/touch';
@@ -13,17 +12,13 @@ const props = defineProps({
 
 
 const options = { loop: true, align: 'center' }
-const [emblaRef, emblaApi] = CarouselVue(options, [WheelGesturesPlugin()])
-const emblaWrapperRef = ref(null)
+const emblaApi = CarouselVue(options, [WheelGesturesPlugin()])
 
 const scrollPrev = () => emblaApi.value && emblaApi.value.scrollPrev()
 const scrollNext = () => emblaApi.value && emblaApi.value.scrollNext()
 
 const toggleFullscreen = () => {
-  const elem = emblaWrapperRef.value
-  if (!document.fullscreenElement) {
-    elem.requestFullscreen().catch(err => console.log(err))
-  } else {
+  if (document.fullscreenElement) {
     document.exitFullscreen()
   }
 }
@@ -65,7 +60,8 @@ const handleTouch = (event, callback) => {
         <path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
       </svg>
     </button>
-    <button class="fullscreen-btn" @click="toggleFullscreen" @touchstart="handleTouch($event, toggleFullscreen)">⛶ Plein écran</button>
+    <button class="fullscreen-btn" @click="toggleFullscreen" @touchstart="handleTouch($event, toggleFullscreen)">⛶ Plein
+      écran</button>
 
   </div>
 </template>

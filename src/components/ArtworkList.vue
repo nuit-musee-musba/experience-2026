@@ -10,9 +10,9 @@ const router = useRouter();
 
 const museum = computed(() => {
   if (allData.value) {
-    const laVille = allData.value.find( ville => ville.slug === route.params.citySlug );
+    const laVille = allData.value.find(ville => ville.slug === route.params.citySlug);
     if (laVille) {
-      const leMusee = laVille.museums.find( m => m.slug === route.params.museumSlug );
+      const leMusee = laVille.museums.find(m => m.slug === route.params.museumSlug);
       return leMusee;
     }
   }
@@ -52,7 +52,7 @@ onMounted(() => {
     if (grid) {
       resizeObserver.observe(grid);
     }
-    
+
     updateScrollbar();
   }
 })
@@ -76,14 +76,11 @@ onUnmounted(() => {
     <div class="scroll-wrapper">
       <div class="content-container" ref="scrollContainer">
         <div class="artwork-grid">
-          <RouterLink 
-            v-for="artwork in museum.artworks" 
-            :key="artwork.slug"
-            :to="`/${route.params.citySlug}/${museum.slug}/${artwork.slug}`"
-            class="artwork-item"
-          >
+          <RouterLink v-for="artwork in museum.artworks" :key="artwork.slug"
+            :to="`/${route.params.citySlug}/${museum.slug}/${artwork.slug}`" class="artwork-item">
             <div class="artwork-image">
-               <img v-if="artwork.images && artwork.images.length > 0" :src="`/images/${encodeURI(artwork.images[0].file)}`" :alt="artwork.name">
+              <img v-if="artwork.images && artwork.images.length > 0"
+                :src="`/images/${encodeURI(artwork.images[0].file)}`" :alt="artwork.name">
             </div>
             <div class="artwork-info">
               <h2 class="artwork-name">{{ artwork.name }}</h2>
@@ -95,13 +92,10 @@ onUnmounted(() => {
 
       <div class="scrollbar-container">
         <div class="scrollbar-track" :class="{ 'is-hidden': thumbHeight === 0 }">
-          <div 
-            class="scrollbar-thumb" 
-            :style="{ 
-              height: `${thumbHeight}%`,
-              top: `${thumbTop}%`
-            }"
-          ></div>
+          <div class="scrollbar-thumb" :style="{
+            height: `${thumbHeight}%`,
+            top: `${thumbTop}%`
+          }"></div>
         </div>
       </div>
     </div>
@@ -133,6 +127,7 @@ onUnmounted(() => {
 
 .header {
   margin-bottom: 120px;
+
   .title {
     @include title-h1;
     font-size: 110px;
@@ -151,10 +146,11 @@ onUnmounted(() => {
   flex-grow: 1;
   overflow-y: auto;
   padding-right: 200px;
-  
+
   &::-webkit-scrollbar {
     display: none;
   }
+
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -194,7 +190,7 @@ onUnmounted(() => {
       line-height: 1.1;
       text-decoration: none;
     }
-    
+
     .artwork-details {
       @include text-body;
       font-size: 36px;
@@ -210,7 +206,7 @@ onUnmounted(() => {
   top: 0;
   bottom: 100px;
   width: 16px;
-  
+
   .scrollbar-track {
     width: 100%;
     height: 100%;
@@ -219,6 +215,7 @@ onUnmounted(() => {
     box-sizing: border-box;
     // On cache le trait de la track si le thumb est absent (pas de scroll)
     transition: opacity 0.3s ease;
+
     &.is-hidden {
       opacity: 0;
     }
@@ -238,15 +235,15 @@ onUnmounted(() => {
   display: flex;
   justify-content: flex-end;
   padding-top: 40px;
-  
+
   :deep(.btn) {
-      padding: 24px 48px;
-      font-size: 40px;
-      
-      .btn__icon svg {
-          width: 40px;
-          height: 40px;
-      }
+    padding: 24px 48px;
+    font-size: 40px;
+
+    .btn__icon svg {
+      width: 40px;
+      height: 40px;
+    }
   }
 }
 </style>

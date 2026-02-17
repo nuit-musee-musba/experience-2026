@@ -70,11 +70,6 @@ export class GUI {
   addCamera(camera) {
     const cameraFolder = this.pane.addFolder({ title: "Camera" });
 
-    cameraFolder.addBinding(CONFIG.camera, "homePosition", {
-      x: { min: -100, max: 100 },
-      y: { min: -100, max: 100 },
-      z: { min: 0, max: 200 },
-    });
     cameraFolder
       .addBinding(CONFIG.camera, "fov", { min: 10, max: 120 })
       .on("change", (ev) => {
@@ -88,25 +83,12 @@ export class GUI {
   addPins() {
     const pinsFolder = this.pane.addFolder({ title: "Pins" });
 
-    // pinsFolder.addBinding(CONFIG.pins, 'hoverDestinationZ', { min: 0, max: 50 });
-    pinsFolder.addBinding(CONFIG.pins, "travelDestinationZ", {
-      min: -50,
-      max: 10,
-    });
     pinsFolder.addBinding(CONFIG.pins.artworks, "travelOffsetY", {
       min: -10,
       max: 10,
     });
   }
 
-  addExport() {
-    this.pane
-      .addButton({ title: "Export Config to Console" })
-      .on("click", () => {
-        console.log("--- UPDATED CONFIG ---");
-        console.log(JSON.stringify(CONFIG, null, 2));
-      });
-  }
   addDebug(callback) {
     const debugFolder = this.pane.addFolder({ title: "Debug" });
 

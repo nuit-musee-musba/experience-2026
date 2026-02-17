@@ -1,19 +1,18 @@
 <script setup>
 import { onMounted, onBeforeUnmount, ref, watch, computed } from 'vue';
 import * as THREE from 'three';
-import { MapControls } from 'three/examples/jsm/controls/MapControls.js';
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 import SmartNavbar from "@/components/layouts/SmartNavbar.vue";
 import { MapPlane } from '@/webgl/components/MapPlane.js';
 import { MapPins } from '@/webgl/components/MapPins.js';
 import { GUI } from '@/webgl/utils/GUI.js';
 import { CONFIG } from '@/config/webgl.js';
+import { CamerasManager } from '@/webgl/managers/CamerasManagers.js';
 
 import { useRouter, useRoute } from "vue-router";
 import { allData } from '@/store.js';
 import { Stats } from '@/webgl/utils/Stats.js';
 import { firstFingerOfEvent } from '@/utils/touch/touch';
-import BaseFrame from "@/components/layouts/BaseFrame.vue";
 import IconArrowLeft from "@/components/icons/IconArrowLeft.vue";
 import IconArrowRight from "@/components/icons/IconArrowRight.vue";
 
@@ -22,20 +21,16 @@ const router = useRouter();
 const isArtworkActive = computed(() => route.name === 'artwork-detail');
 
 const containerRef = ref(null);
-const props = defineProps(['path']);
 
-let scene, camera, renderer, labelRenderer, controls, animationId, stats, gui;
+let scene, camera, renderer, labelRenderer, camerasManager, animationId, stats, gui;
 let mapPins;
 let allPins = null;
 let mapPlane = null;
-let isZooming = false;
-let isTraveling = false;
+const clock = new THREE.Clock();
 const currentStep = ref(-1);
 const activeCitySlug = ref(null);
 const activeContinentSlug = ref('europe');
 
-const destinationCoordonates = new THREE.Vector3();
-const targetDestination = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 
@@ -47,7 +42,7 @@ const continentPositions = {
 };
 
 watch([() => route.params, allData], ([params, data]) => {
-  if (!data || !controls) return;
+  if (!data || !camerasManager) return;
 
   const continentSlug = params.continentSlug || 'europe';
   activeContinentSlug.value = continentSlug;
@@ -56,12 +51,9 @@ watch([() => route.params, allData], ([params, data]) => {
     activeCitySlug.value = params.citySlug;
   }
 
-  resetMapControls();
-
   const continent = data.find(c => c.Name.toLowerCase() === continentSlug);
 
   if (!continent) {
-    console.warn('Continent non trouvé:', continentSlug);
     return;
   }
 
@@ -71,82 +63,76 @@ watch([() => route.params, allData], ([params, data]) => {
     const museum = city?.museums.find(m => m.slug === params.museumSlug);
 
     if (museum) {
-      targetDestination.set(museum.x, museum.y, -10.5);
       const width = containerRef.value.clientWidth;
       const height = containerRef.value.clientHeight;
       camera.setViewOffset(width, height, -width * 0.25, 0, width, height);
 
-      const distance = 7;
-      const diveAngle = Math.PI / 3;
-      destinationCoordonates.set(
-          museum.x,
-          museum.y - (distance * Math.sin(diveAngle)),
-          -9.5 + (distance * Math.cos(diveAngle))
+      const distance = CONFIG.controls.map.museum.defaultDistance;
+      // const diveAngle = Math.PI / 3;
+
+      const targetPos = new THREE.Vector3(museum.x, museum.y, -10.5);
+      const camPos = new THREE.Vector3(
+        museum.x,
+        museum.y - (distance * Math.sin(CONFIG.controls.map.museum.maxPolarAngle)),
+        -9.5 + (distance * Math.cos(CONFIG.controls.map.museum.maxPolarAngle))
       );
 
-      controls.minAzimuthAngle = -Infinity;
-      controls.maxAzimuthAngle = Infinity;
-      controls.minPolarAngle = 0;
-      controls.maxPolarAngle = Math.PI;
+      camerasManager.setLookAt(camPos, targetPos, true);
 
       renderLevel(city.museums);
 
-      isTraveling = true;
-      isZooming = true;
       currentStep.value = 2;
+      applyStepConstraints();
     }
   }
   else if (params.citySlug) {
     // Niveau 1 : Vue ville
     const city = continent.cities.find(v => v.slug === params.citySlug);
     if (city) {
-      destinationCoordonates.set(city.x, city.y, -5);
-      targetDestination.set(city.x, city.y, -9.5);
+      if (camera) camera.clearViewOffset();
+
+      const targetPos = new THREE.Vector3(city.x, city.y, -9.5);
+      const camPos = new THREE.Vector3(city.x, city.y, -5);
+
+      camerasManager.setLookAt(camPos, targetPos, true);
+
       renderLevel(city.museums);
-      isTraveling = false;
-      isZooming = true;
       currentStep.value = 1;
       activeCitySlug.value = city.slug;
+      applyStepConstraints();
     }
   }
   else if (params.continentSlug) {
     // Niveau 0 : Vue villes du continent
+    if (camera) camera.clearViewOffset();
+
     const continentPos = continentPositions[continentSlug] || continentPositions.europe;
-    destinationCoordonates.copy(continentPos.camera);
-    targetDestination.copy(continentPos.target);
+
+    camerasManager.setLookAt(continentPos.camera, continentPos.target, true);
+
     renderLevel(continent.cities);
-    isTraveling = false;
-    isZooming = true;
     currentStep.value = 0;
+    applyStepConstraints();
   }
   else {
     // Vue par défaut sur Europe
+    if (camera) camera.clearViewOffset();
+
     const continentPos = continentPositions.europe;
-    destinationCoordonates.copy(continentPos.camera);
-    targetDestination.copy(continentPos.target);
+    camerasManager.setLookAt(continentPos.camera, continentPos.target, true);
+
+
+
 
     const europeContinent = data.find(c => c.Name.toLowerCase() === 'europe');
     if (europeContinent) {
       renderLevel(europeContinent.cities);
     }
 
-    isTraveling = false;
-    isZooming = true;
     currentStep.value = 0;
+    applyStepConstraints();
   }
 }, { immediate: true });
-
-const resetMapControls = () => {
-  if (!controls) return;
-  if (camera) camera.clearViewOffset();
-
-  controls.minAzimuthAngle = CONFIG.controls.map.minAzimuthAngle;
-  controls.maxAzimuthAngle = CONFIG.controls.map.maxAzimuthAngle;
-  controls.minPolarAngle = 0;
-  controls.maxPolarAngle = Math.PI / 2;
-  controls.minDistance = 0;
-  controls.maxDistance = Infinity;
-};
 
 const handlePinClick = (item) => {
   const continent = route.params.continentSlug || activeContinentSlug.value;
@@ -198,22 +184,13 @@ const initThree = () => {
   dirLight.position.copy(CONFIG.lights.directionalPosition);
   scene.add(dirLight);
 
-  controls = new MapControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.05;
-  controls.screenSpacePanning = true;
-
-  // DÉSACTIVER LE ZOOM
-  controls.enableZoom = false;
-
-  // Permettre la rotation
-  controls.enableRotate = true;
-
-  resetMapControls();
+  camerasManager = new CamerasManager(camera, renderer.domElement);
 
   const europePos = continentPositions.europe;
-  camera.position.copy(europePos.camera);
-  controls.target.copy(europePos.target);
+  // Initialize position immediately without transition
+  camerasManager.setLookAt(europePos.camera, europePos.target, false);
+
+  applyStepConstraints();
 
   animate();
 };
@@ -221,49 +198,18 @@ const initThree = () => {
 const animate = () => {
   animationId = requestAnimationFrame(animate);
 
+  // camerasManager.update();
+
   if (isArtworkActive.value) {
     return;
   }
 
   stats.begin();
 
-  let needsUpdate = false;
+  const delta = clock.getDelta();
+  const hasUpdated = camerasManager.update(delta);
 
-  if (isZooming) {
-    camera.position.lerp(destinationCoordonates, 0.07);
-    controls.target.lerp(targetDestination, 0.07);
-    needsUpdate = true;
-
-    if (camera.position.distanceTo(destinationCoordonates) < 0.01) {
-      isZooming = false;
-      applyStepConstraints();
-    }
-  } else {
-    if (controls.update()) {
-      needsUpdate = true;
-    }
-
-    // Garder le target centré
-    if (controls.target.distanceTo(targetDestination) > 0.01) {
-      controls.target.lerp(targetDestination, 0.05);
-      needsUpdate = true;
-    }
-
-    // Correction du drift : maintenir la distance au niveau musée
-    if (currentStep.value === 2) {
-      const targetDistance = 7; // Distance définie dans le watch
-      const offset = new THREE.Vector3().subVectors(camera.position, controls.target);
-      const currentDistance = offset.length();
-
-      if (Math.abs(currentDistance - targetDistance) > 0.1) {
-        offset.setLength(targetDistance);
-        camera.position.copy(controls.target).add(offset);
-        needsUpdate = true;
-      }
-    }
-  }
-
-  if (needsUpdate || isZooming) {
+  if (hasUpdated) {
     renderer.render(scene, camera);
     labelRenderer.render(scene, camera);
   }
@@ -272,12 +218,40 @@ const animate = () => {
 };
 
 const applyStepConstraints = () => {
+  if (!camerasManager) return;
+
   if (currentStep.value === 2) {
-    // Vue musée : permettre rotation libre
-    controls.minPolarAngle = controls.maxPolarAngle = Math.PI / 3;
+    // Vue musée : permettre rotation libre mais contrainte
+    camerasManager.setConstraints({
+      minPolarAngle: CONFIG.controls.map.museum.minPolarAngle,
+      maxPolarAngle: CONFIG.controls.map.museum.maxPolarAngle,
+      minAzimuthAngle: CONFIG.controls.map.museum.minAzimuthAngle,
+      maxAzimuthAngle: CONFIG.controls.map.museum.maxAzimuthAngle,
+      minDistance: CONFIG.controls.map.museum.minDistance,
+      maxDistance: CONFIG.controls.map.museum.maxDistance
+    });
   } else {
-    // Vue ville/continent : limiter l'angle
-    controls.maxPolarAngle = 0;
+    if (currentStep.value === 1) {
+      // Vue ville
+      camerasManager.setConstraints({
+        minPolarAngle: CONFIG.controls.map.city.minPolarAngle,
+        maxPolarAngle: CONFIG.controls.map.city.maxPolarAngle,
+        minAzimuthAngle: CONFIG.controls.map.city.minAzimuthAngle,
+        maxAzimuthAngle: CONFIG.controls.map.city.maxAzimuthAngle,
+        minDistance: CONFIG.controls.map.city.minDistance,
+        maxDistance: CONFIG.controls.map.city.maxDistance
+      });
+    } else {
+      // Vue continent : limiter l'angle (vue de dessus/baisée)
+      camerasManager.setConstraints({
+        minPolarAngle: CONFIG.controls.map.continent.minPolarAngle,
+        maxPolarAngle: CONFIG.controls.map.continent.maxPolarAngle,
+        minAzimuthAngle: CONFIG.controls.map.continent.minAzimuthAngle,
+        maxAzimuthAngle: CONFIG.controls.map.continent.maxAzimuthAngle,
+        minDistance: CONFIG.controls.map.continent.minDistance,
+        maxDistance: CONFIG.controls.map.continent.maxDistance
+      });
+    }
   }
 };
 
@@ -305,6 +279,7 @@ const onMapClick = (event) => {
   const intersects = raycaster.intersectObjects(interactables, true);
 
   if (intersects.length > 0) {
+    // Si on clique sur un pin, on laisse faire
     if (event.cancelable) event.preventDefault();
     const clickedObject = intersects[0].object;
     const continent = route.params.continentSlug || activeContinentSlug.value;
@@ -360,6 +335,7 @@ onBeforeUnmount(() => {
   if (renderer) renderer.dispose();
   if (gui) gui.destroy();
   if (labelRenderer && labelRenderer.domElement) labelRenderer.domElement.remove();
+  if (camerasManager) camerasManager.dispose();
 });
 
 defineExpose({
@@ -370,28 +346,16 @@ defineExpose({
 <template>
   <div ref="containerRef" class="scene-container" :class="{ 'map-frozen': isArtworkActive }"></div>
 
-  <button
-      @click="navigateToContinent('europe')"
-      class="continent-btn continent-btn-europe"
-      :class="{ active: activeContinentSlug === 'europe' }"
-      v-if="currentStep === 0"
-  >
+  <button @click="navigateToContinent('europe')" class="continent-btn continent-btn-europe"
+          :class="{ active: activeContinentSlug === 'europe' }" v-if="currentStep === 0">
     <IconArrowRight />
   </button>
-  <button
-      @click="navigateToContinent('amérique')"
-      class="continent-btn continent-btn-america"
-      :class="{ active: activeContinentSlug === 'amérique' }"
-      v-if="currentStep === 0"
-  >
+  <button @click="navigateToContinent('amérique')" class="continent-btn continent-btn-america"
+          :class="{ active: activeContinentSlug === 'amérique' }" v-if="currentStep === 0">
     <IconArrowLeft />
   </button>
-  <button
-      @click="navigateToContinent('océan')"
-      class="continent-btn continent-btn-ocean"
-      :class="{ active: activeContinentSlug === 'océan' }"
-      v-if="currentStep === 0"
-  >
+  <button @click="navigateToContinent('océan')" class="continent-btn continent-btn-ocean"
+          :class="{ active: activeContinentSlug === 'océan' }" v-if="currentStep === 0">
     Océan
   </button>
 

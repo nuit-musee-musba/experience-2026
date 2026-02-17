@@ -12,7 +12,6 @@ export const isFingerTouchByRadius: IsFingerTouchStrategy = (
   const { radiusX, radiusY } = touch;
 
   if (radiusX === 0 && radiusY === 0) {
-    console.log('[Touch] Accepté : Rayon (0,0) détecté (souris/simulateur)');
     return true;
   }
 
@@ -24,25 +23,6 @@ export const isFingerTouchByRadius: IsFingerTouchStrategy = (
   const isRadiusYInBounds = MIN_RADIUS <= radiusY && radiusY <= MAX_RADIUS;
 
   const accepted = isRatioInBounds && isRadiusXInBounds && isRadiusYInBounds;
-
-  if (!accepted) {
-    console.log('[Touch] Rejeté :', {
-      radiusX,
-      radiusY,
-      ratio,
-      isRadiusXInBounds,
-      isRadiusYInBounds,
-      isRatioInBounds,
-      constraints: {
-        MIN_RADIUS,
-        MAX_RADIUS,
-        MIN_RADIUS_RATIO,
-        MAX_RADIUS_RATIO
-      }
-    });
-  } else {
-    console.log('[Touch] Accepté :', { radiusX, radiusY, ratio });
-  }
 
   return accepted;
 };

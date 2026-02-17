@@ -28,7 +28,6 @@ export const eventFingers = (event: TouchEvent) => {
 
 export const firstFingerOfEvent = (event: TouchEvent): Touch | undefined => {
   const fingers = eventFingers(event);
-  console.log(`[Touch] Nombre de doigts valides détectés : ${fingers.length}`);
   return fingers[0];
 };
 

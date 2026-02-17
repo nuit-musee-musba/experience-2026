@@ -39,7 +39,7 @@ const allContinentsWithCities = computed(() => {
 const continent = computed(() => {
   if (!allData.value || !route.params.continentSlug) return null
   return allData.value.find(c =>
-      c.Name.toLowerCase() === route.params.continentSlug
+    c.Name.toLowerCase() === route.params.continentSlug
   )
 })
 
@@ -63,36 +63,24 @@ const museum = computed(() => {
         <h1>Explorez les grands décors de Jean Dupas</h1>
       </header>
 
-      <Button
-          class="close-button"
-          text-content="Fermer"
-          color="primary"
-          icon-primary
-          @click="closeGallery"
-      >
+      <Button class="close-button" text-content="Fermer" color="primary" icon-primary @click="closeGallery">
         <template #icon-primary>
           <IconClose />
         </template>
       </Button>
 
       <div class="content-listing">
-        <div v-for="cityItem in allContinentsWithCities" :key="`${cityItem.continentSlug}-${cityItem.slug}`" class="artworks-grid">
+        <div v-for="cityItem in allContinentsWithCities" :key="`${cityItem.continentSlug}-${cityItem.slug}`"
+          class="artworks-grid">
           <h2 class="city-name">{{ cityItem.name }}</h2>
 
           <div class="artworks-list">
             <div v-for="museumItem in cityItem.museums" :key="museumItem.slug">
-              <RouterLink
-                  v-for="artwork in museumItem.artworks"
-                  :key="artwork.slug"
-                  class="artwork-item"
-                  :to="`/${cityItem.continentSlug}/${cityItem.slug}/${museumItem.slug}/${artwork.slug}`"
-              >
+              <RouterLink v-for="artwork in museumItem.artworks" :key="artwork.slug" class="artwork-item"
+                :to="`/${cityItem.continentSlug}/${cityItem.slug}/${museumItem.slug}/${artwork.slug}`">
                 <div class="artworks-item-image">
-                  <img
-                      v-if="artwork.images?.length"
-                      :src="`/images/${encodeURI(artwork.images[0].file)}`"
-                      :alt="artwork.name"
-                  />
+                  <img v-if="artwork.images?.length" :src="`/images/${encodeURI(artwork.images[0].file)}`"
+                    :alt="artwork.name" />
                 </div>
 
                 <div class="artwork-item-infos">

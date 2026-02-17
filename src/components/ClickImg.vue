@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref, watch, onUnmounted} from 'vue';
+import { computed, ref, watch, onUnmounted } from 'vue';
 import hotAreaData from '@/assets/hot-area.json';
 import { firstFingerOfEvent } from '@/utils/touch/touch';
 
@@ -70,7 +70,7 @@ const handleTouch = (event, area) => {
 <template>
 
   <div v-if="myData" class="img-container">
-    <img :alt="props.path" :src="imageSrc" class="base-image" draggable="false" @dragstart.prevent/>
+    <img :alt="props.path" :src="imageSrc" class="base-image" draggable="false" @dragstart.prevent />
     <div v-for="(area, name) in myData.areas" :key="name" :style="{
       top: area.y + '%',
       left: area.x + '%',
@@ -81,12 +81,7 @@ const handleTouch = (event, area) => {
   <div v-if="showOverlay" class="overlay" @click.self="closeOverlay">
     <div class="overlay-content">
       <div class="overlay-image-container">
-        <img
-            :src="imageSrc"
-            :style="imageStyle"
-            class="overlay-image"
-            alt="imageAlt"
-        />
+        <img :src="imageSrc" :style="imageStyle" class="overlay-image" alt="imageAlt" />
       </div>
 
       <div class="overlay-bottom-container">
@@ -133,7 +128,7 @@ const handleTouch = (event, area) => {
   justify-content: center;
   z-index: 1000;
 
-  .overlay-content{
+  .overlay-content {
     max-width: 90vw;
     max-height: 90vh;
     display: flex;
@@ -184,6 +179,4 @@ const handleTouch = (event, area) => {
   }
 
 }
-
-
 </style>

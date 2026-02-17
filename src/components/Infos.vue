@@ -13,7 +13,7 @@ const route = useRoute();
 const continent = computed(() => {
   if (!allData.value) return null;
   return allData.value.find(c =>
-      c.Name.toLowerCase() === route.params.continentSlug
+    c.Name.toLowerCase() === route.params.continentSlug
   );
 });
 
@@ -65,17 +65,17 @@ watch(descriptionVisible, (visible) => {
           <div class="scroll-content">
             <div class="location-main-image">
               <img v-if="museum.images?.length" :src="`/images/${encodeURI(museum.images[0].file)}`"
-                   :alt="museum.name" />
+                :alt="museum.name" />
             </div>
             <div class="scroll-content-box">
               <p ref="descriptionRef" class="description">{{ museum.description }}</p>
               <h3 class="locations-artworks-section-title">Découvrez les œuvres de ce lieu</h3>
               <div class="location-artworks-listing">
                 <RouterLink class="artworks-item" v-for="artwork in museum.artworks" :key="artwork.slug"
-                            :to="`/${route.params.continentSlug}/${route.params.citySlug}/${museum.slug}/${artwork.slug}`">
+                  :to="`/${route.params.continentSlug}/${route.params.citySlug}/${museum.slug}/${artwork.slug}`">
                   <div class="artworks-item-image">
                     <img v-if="artwork.images?.length" :src="`/images/${encodeURI(artwork.images[0].file)}`"
-                         :alt="artwork.name" />
+                      :alt="artwork.name" />
                   </div>
                   <p>{{ artwork.name }}</p>
                 </RouterLink>
@@ -167,7 +167,7 @@ watch(descriptionVisible, (visible) => {
         opacity: 0;
         transform: translateY(20px);
         transition: opacity 1s calc(var(--line-index) * 0.05s) $ease-out-quint,
-        transform 1s calc(var(--line-index) * 0.05s) $ease-out-quint;
+          transform 1s calc(var(--line-index) * 0.05s) $ease-out-quint;
         display: block;
       }
 
@@ -193,7 +193,7 @@ watch(descriptionVisible, (visible) => {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 1s calc(var(--anim-index) * 0.1s) $ease-out-quint,
-    transform 1s calc(var(--anim-index) * 0.1s) $ease-out-quint;
+      transform 1s calc(var(--anim-index) * 0.1s) $ease-out-quint;
   }
 
   &.visible {

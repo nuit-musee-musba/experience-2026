@@ -18,6 +18,7 @@ export class MapPins {
     this.scene = scene;
     this.onClick = onClick;
     this.group = new THREE.Group();
+    this.pinCache = new Map();
     this.scene.add(this.group);
 
     this.loader = new GLTFLoader();
@@ -27,6 +28,7 @@ export class MapPins {
   }
 
   addPin(item) {
+    const id = item.slug;
     if (item.model3d) {
       this.loader.load(`/models/${item.model3d}`, (gltf) => {
         const model = gltf.scene;
@@ -41,13 +43,14 @@ export class MapPins {
         });
         model.userData = item;
         this.group.add(model);
+        if (id) this.pinCache.set(id, model);
       });
     } else {
       if (item.artworks) {
         const geometry = new THREE.BoxGeometry(
-            CONFIG.pins.artworks.geometrySizes[0],
-            CONFIG.pins.artworks.geometrySizes[1],
-            CONFIG.pins.artworks.geometrySizes[2]
+          CONFIG.pins.artworks.geometrySizes[0],
+          CONFIG.pins.artworks.geometrySizes[1],
+          CONFIG.pins.artworks.geometrySizes[2],
         );
         const material = new THREE.MeshBasicMaterial({
           color: CONFIG.colors.pinGreen,
@@ -57,6 +60,7 @@ export class MapPins {
         pin.position.set(item.x, item.y, CONFIG.pins.defaultZ);
         pin.name = "pin";
         this.group.add(pin);
+        if (id) this.pinCache.set(id, pin);
       } else {
         const container = document.createElement("div");
         container.style.position = "relative";
@@ -69,11 +73,13 @@ export class MapPins {
         if (item.name) {
           const label = document.createElement("div");
           label.textContent = item.name;
-          label.style.fontFamily = "Arial, sans-serif";
-          label.style.fontSize = "24px";
-          label.style.fontWeight = "bold";
+          label.style.fontFamily = "baseFont, sans-serif";
+          label.style.fontSize = "36px";
           label.style.color = "#000";
-          label.style.marginBottom = "75px";
+          label.style.position = "absolute";
+          label.style.left = "50%";
+          label.style.top = "-65px"; // pin height / 2 + padding
+          label.style.transform = "translate(-50%, -110%)";
           label.style.whiteSpace = "nowrap";
           label.style.textAlign = "center";
           container.appendChild(label);
@@ -82,28 +88,25 @@ export class MapPins {
         const pinWrapper = document.createElement("div");
         pinWrapper.innerHTML = PIN_SVG;
         pinWrapper.style.transform = "translateY(-50%)";
-        if (CONFIG.pins.htmlScale) {
-          pinWrapper.style.scale = CONFIG.pins.htmlScale;
-        }
+
         container.appendChild(pinWrapper);
 
         container.addEventListener("click", (e) => {
           e.stopPropagation();
-          console.log("Pin clicked", item);
           if (this.onClick) {
             this.onClick(item);
           }
         });
 
         container.addEventListener(
-            "touchstart",
-            (e) => {
-              e.stopPropagation();
-              if (this.onClick) {
-                this.onClick(item);
-              }
-            },
-            { passive: false }
+          "touchstart",
+          (e) => {
+            e.stopPropagation();
+            if (this.onClick) {
+              this.onClick(item);
+            }
+          },
+          { passive: false },
         );
 
         const css2dObject = new CSS2DObject(container);
@@ -111,13 +114,22 @@ export class MapPins {
         css2dObject.userData = item;
 
         this.group.add(css2dObject);
+        if (id) this.pinCache.set(id, css2dObject);
       }
     }
   }
 
   renderLevel(dataList) {
-    this.clear();
-    dataList.forEach((item) => this.addPin(item));
+    this.pinCache.forEach((pin) => (pin.visible = false));
+
+    dataList.forEach((item) => {
+      const id = item.slug;
+      if (this.pinCache.has(id)) {
+        this.pinCache.get(id).visible = true;
+      } else {
+        this.addPin(item);
+      }
+    });
   }
 
   clear() {

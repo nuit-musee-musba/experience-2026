@@ -13,7 +13,7 @@ export const CONFIG = {
   mapPlane: {
     width: 1000,
     height: 700,
-    backgroundZ: -386.30,
+    backgroundZ: -386.3,
     scale: 0.1,
     scaleY: -1,
     positionZ: 0,
@@ -23,7 +23,7 @@ export const CONFIG = {
       z: 375.9,
     },
     planeRotationX: 0,
-    planePositionZ: -385.80,
+    planePositionZ: -385.8,
   },
   pins: {
     circleTextureSize: 64,
@@ -41,41 +41,55 @@ export const CONFIG = {
       hoverOffsetY: 0,
       hoverZ: 6,
     },
-    travelDestinationZ: -9,
-    htmlScale: 1, // Ajout pour éviter les erreurs
   },
   camera: {
     fov: 75,
     near: 0.1,
     far: 10000,
-    initialPosition: new THREE.Vector3(0, 0, 0),
-    homePosition: new THREE.Vector3(-5, 5, 50),
-    zoomLerpFactor: 0.05,
   },
   // Positions des continents
   continents: {
     europe: {
       camera: new THREE.Vector3(-5, 5, 50),
-      target: new THREE.Vector3(-5, 5, -9.5)
+      target: new THREE.Vector3(-5, 5, -9.5),
     },
     amérique: {
       camera: new THREE.Vector3(-100, 5, 50),
-      target: new THREE.Vector3(-100, 5, -9.5)
+      target: new THREE.Vector3(-100, 5, -9.5),
     },
     océan: {
       camera: new THREE.Vector3(50, -30, 50),
-      target: new THREE.Vector3(50, -30, -9.5)
-    }
+      target: new THREE.Vector3(50, -30, -9.5),
+    },
   },
   controls: {
-    dampingFactor: 0.05,
     minDistance: 0,
     map: {
-      maxDistance: 130,
-      minPolarAngle: 0,
-      maxPolarAngle: Math.PI,
-      minAzimuthAngle: -0.05,
-      maxAzimuthAngle: 0.05,
+      continent: {
+        maxDistance: 65,
+        minDistance: 50,
+        minPolarAngle: Math.PI / 12,
+        maxPolarAngle: Math.PI / 12,
+        minAzimuthAngle: -0.05,
+        maxAzimuthAngle: 0.05,
+      },
+      city: {
+        maxDistance: 13,
+        minDistance: 1,
+        minPolarAngle: 0,
+        maxPolarAngle: Math.PI / 3,
+        minAzimuthAngle: -0.05,
+        maxAzimuthAngle: 0.05,
+      },
+      museum: {
+        maxDistance: 4,
+        minDistance: 2,
+        defaultDistance: 3,
+        minPolarAngle: 0,
+        maxPolarAngle: Math.PI / 3,
+        minAzimuthAngle: -Infinity,
+        maxAzimuthAngle: Infinity,
+      },
     },
     orbit: {},
   },

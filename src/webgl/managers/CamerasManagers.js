@@ -1,84 +1,74 @@
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { MapControls } from "three/examples/jsm/Addons.js";
+import CameraControls from "camera-controls";
+import * as THREE from "three";
 import { CONFIG } from "@/config/webgl.js";
 
+CameraControls.install({ THREE: THREE });
+
 export class CamerasManager {
-  constructor(camera, rendererDomElement, cameraType = "orbit", target = null) {
-    this.cameraType = cameraType;
+  constructor(camera, rendererDomElement) {
     this.camera = camera;
     this.rendererDomElement = rendererDomElement;
     this.controls = null;
-    this.target = target;
     this.initControls();
   }
 
   initControls() {
-    this.dispose();
-    if (this.cameraType === "orbit") {
-      this.controls = null;
-      this.orbitControls();
-    } else if (this.cameraType === "map") {
-      this.controls = null;
-      this.mapControls();
-    }
+    this.controls = new CameraControls(this.camera, this.rendererDomElement);
+
+    // Default config
+    this.controls.minDistance = CONFIG.controls.minDistance;
+    this.controls.maxDistance = CONFIG.controls.map.continent.maxDistance;
+
+    this.controls.smoothTime = 0.25;
+    this.controls.draggingSmoothTime = 0.35;
+
+    // Map controls
+    this.controls.mouseButtons.wheel = CameraControls.ACTION.DOLLY;
+    this.controls.touches.two = CameraControls.ACTION.TOUCH_DOLLY_TRUCK;
+    this.controls.verticalDragToForward = true;
   }
 
-  setCameraType(type, target = null) {
-    if (this.cameraType === type && !target) return;
-    this.cameraType = type;
-    if (target) {
-      this.target = target;
-    }
-    this.initControls();
+  setConstraints(config = {}) {
+    if (config.minAzimuthAngle !== undefined)
+      this.controls.minAzimuthAngle = config.minAzimuthAngle;
+    if (config.maxAzimuthAngle !== undefined)
+      this.controls.maxAzimuthAngle = config.maxAzimuthAngle;
+
+    if (config.minPolarAngle !== undefined)
+      this.controls.minPolarAngle = config.minPolarAngle;
+    if (config.maxPolarAngle !== undefined)
+      this.controls.maxPolarAngle = config.maxPolarAngle;
+
+    if (config.minDistance !== undefined)
+      this.controls.minDistance = config.minDistance;
+    if (config.maxDistance !== undefined)
+      this.controls.maxDistance = config.maxDistance;
+
+    this.controls.enabled = config.enabled !== false;
+  }
+
+  setLookAt(position, target, enableTransition = true) {
+    this.controls
+      .normalizeRotations()
+      .setLookAt(
+        position.x,
+        position.y,
+        position.z,
+        target.x,
+        target.y,
+        target.z,
+        enableTransition,
+      );
+  }
+
+  update(delta) {
+    return this.controls.update(delta);
   }
 
   dispose() {
     if (this.controls) {
       this.controls.dispose();
       this.controls = null;
-    }
-  }
-
-  orbitControls() {
-    this.controls = new OrbitControls(this.camera, this.rendererDomElement);
-    this.controls.enableDamping = true;
-    this.controls.dampingFactor = CONFIG.controls.dampingFactor;
-    this.controls.screenSpacePanning = false;
-    this.controls.minDistance = CONFIG.controls.minDistance;
-
-    this.controls.target.set(
-      this.target?.x || 0,
-      this.target?.y || 0,
-      this.target?.z || 0
-    );
-
-    // this.controls.maxPolarAngle = Math.PI;
-  }
-
-  // Dans CamerasManager.js
-  mapControls() {
-    this.controls = new MapControls(this.camera, this.rendererDomElement);
-    this.controls.enableDamping = true;
-    this.controls.dampingFactor = CONFIG.controls.dampingFactor;
-    this.controls.screenSpacePanning = true;
-
-    // Limites de distance (Zoom)
-    this.controls.minDistance = CONFIG.controls.minDistance;
-    this.controls.maxDistance = CONFIG.controls.map.maxDistance;
-
-    // Limites d'inclinaison (Vue plongée)
-    this.controls.minPolarAngle = CONFIG.controls.map.minPolarAngle || 0;
-    this.controls.maxPolarAngle = CONFIG.controls.map.maxPolarAngle;
-
-    // Optionnel : Bloquer la rotation horizontale pour garder la carte "droite"
-    this.controls.enableRotate = true; // Gardez à true si vous voulez une légère inclinaison manuelle
-
-    this.controls.zoomToCursor = false;
-  }
-
-  update() {
-    if (this.controls) {
-      this.controls.update();
     }
   }
 }

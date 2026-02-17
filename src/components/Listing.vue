@@ -4,29 +4,16 @@
       <h1 class="listing-title">{{ listingTitle }}</h1>
       <div class="list-container">
         <div class="artwork-list">
-          <section
-              v-for="city in groupedArtworks"
-              :key="city.name"
-              class="city-section"
-          >
+          <section v-for="city in groupedArtworks" :key="city.name" class="city-section">
             <h2 class="city-title">{{ city.name }}</h2>
             <ul class="city-grid">
-              <li
-                  v-for="artwork in city.artworks"
-                  :key="artwork.id"
-                  class="artwork-item"
-              >
-                <RouterLink
-                    :to="`/${artwork.continentSlug}/${artwork.citySlug}/${artwork.museumSlug}/${artwork.slug}`"
-                    class="artwork-link"
-                >
+              <li v-for="artwork in city.artworks" :key="artwork.id" class="artwork-item">
+                <RouterLink :to="`/${artwork.continentSlug}/${artwork.citySlug}/${artwork.museumSlug}/${artwork.slug}`"
+                  class="artwork-link">
                   <div class="image-wrapper">
-                    <img
-                        v-if="artwork.images && artwork.images.length > 0"
-                        :src="`/images/${encodeURI(artwork.images[0].file)}`"
-                        :alt="`Image de l'œuvre ${artwork.name}`"
-                        loading="lazy"
-                    />
+                    <img v-if="artwork.images && artwork.images.length > 0"
+                      :src="`/images/${encodeURI(artwork.images[0].file)}`" :alt="`Image de l'œuvre ${artwork.name}`"
+                      loading="lazy" />
                   </div>
                   <div class="artwork-info">
                     <h2 class="artwork-title">{{ artwork.name }}</h2>
@@ -39,7 +26,8 @@
             </ul>
           </section>
         </div>
-        <div class="custom-scrollbar"><div class="scrollbar-thumb"></div>
+        <div class="custom-scrollbar">
+          <div class="scrollbar-thumb"></div>
         </div>
       </div>
     </div>
@@ -166,6 +154,7 @@ function goBack() {
   &::-webkit-scrollbar {
     display: none;
   }
+
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
