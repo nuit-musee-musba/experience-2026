@@ -11,7 +11,7 @@ const router = createRouter({
     {
       path: "/",
       component: Map,
-      props: { path: "basilique.jpg" },
+      props: { path: "basilique.webp" },
       children: [
         // Route pour le continent seul (ex: /europe)
         {

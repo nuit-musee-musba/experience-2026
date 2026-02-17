@@ -4,13 +4,14 @@ import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUti
 import { CONFIG } from "@/config/webgl.js";
 
 export class MapPlane {
-  constructor(scene) {
+  constructor(scene, onLoad = null) {
     this.scene = scene;
     this.config = CONFIG.mapPlane;
 
     this.group = new THREE.Group();
     this.scene.add(this.group);
 
+    this.onLoad = onLoad;
     this.loader = new SVGLoader();
 
     this.loadMap("/map.svg");
@@ -97,7 +98,22 @@ export class MapPlane {
 
       // Initial update to apply config
       this.update();
+
+      if (this.onLoad) {
+        this.onLoad();
+      }
     });
+  }
+
+  delete() {
+    this.group.clear();
+    this.group = new THREE.Group();
+    this.scene.add(this.group);
+  }
+
+  reload() {
+    this.delete();
+    this.loadMap("/map.svg");
   }
 
   update() {

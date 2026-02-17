@@ -14,9 +14,10 @@ const PIN_SVG = `
 `;
 
 export class MapPins {
-  constructor(scene, onClick) {
+  constructor(scene, onClick, requestRender = null) {
     this.scene = scene;
     this.onClick = onClick;
+    this.requestRender = requestRender;
     this.group = new THREE.Group();
     this.pinCache = new Map();
     this.scene.add(this.group);
@@ -44,6 +45,10 @@ export class MapPins {
         model.userData = item;
         this.group.add(model);
         if (id) this.pinCache.set(id, model);
+
+        if (this.requestRender) {
+          this.requestRender();
+        }
       });
     } else {
       if (item.artworks) {
