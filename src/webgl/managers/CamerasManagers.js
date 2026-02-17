@@ -2,6 +2,13 @@ import CameraControls from "camera-controls";
 import * as THREE from "three";
 import { CONFIG } from "@/config/webgl.js";
 
+const TAU = Math.PI * 2;
+
+function absoluteAngle(targetAngle, sourceAngle) {
+  const angle = targetAngle - sourceAngle;
+  return THREE.MathUtils.euclideanModulo(angle + Math.PI, TAU) - Math.PI;
+}
+
 CameraControls.install({ THREE: THREE });
 
 export class CamerasManager {
@@ -25,7 +32,8 @@ export class CamerasManager {
     // Map controls
     this.controls.mouseButtons.wheel = CameraControls.ACTION.DOLLY;
     this.controls.touches.two = CameraControls.ACTION.TOUCH_DOLLY_TRUCK;
-    this.controls.verticalDragToForward = true;
+    this.controls.mouseButtons.left = CameraControls.ACTION.SCREEN_PAN;
+    // this.controls.verticalDragToForward = true; // Deprecated/Removed as per logs
   }
 
   setConstraints(config = {}) {
@@ -48,6 +56,9 @@ export class CamerasManager {
   }
 
   setLookAt(position, target, enableTransition = true) {
+    const azimuth = absoluteAngle(this.controls.azimuthAngle, 0);
+    this.controls.azimuthAngle = azimuth;
+
     this.controls
       .normalizeRotations()
       .setLookAt(
