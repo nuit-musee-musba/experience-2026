@@ -1,9 +1,9 @@
 <script setup>
 import { useRoute } from "vue-router";
-import { allData } from '@/store.js';
-import { computed, ref, watch, nextTick } from 'vue';
-import { useElementVisibility } from '@vueuse/core'
-import { useSplitText } from '../composables/useSplitText.js'
+import { allData } from "@/store.js";
+import { computed, ref, watch, nextTick } from "vue";
+import { useElementVisibility } from "@vueuse/core";
+import { useSplitText } from "../composables/useSplitText.js";
 import ArtworkVueFrame from "@/components/layouts/ArtworkVueFrame.vue";
 
 import Button from "@/components/buttons/Button.vue";
@@ -18,27 +18,53 @@ const route = useRoute();
 
 const artwork = computed(() => {
   if (allData.value) {
-    const laVille = allData.value.find(ville => ville.slug === route.params.citySlug);
-    if (laVille) {
-      const leMusee = laVille.museums.find(m => m.slug === route.params.museumSlug);
-      if (leMusee) {
-        const leArtwork = leMusee.artworks.find(a => a.slug === route.params.artworkSlug);
-        return leArtwork;
+    // Trouver le continent
+    const leContinent = allData.value.find(
+      (continent) =>
+        continent.Name.toLowerCase() === route.params.continentSlug,
+    );
+
+    if (leContinent) {
+      // Trouver la ville dans le continent
+      const laVille = leContinent.cities.find(
+        (ville) => ville.slug === route.params.citySlug,
+      );
+
+      if (laVille) {
+        const leMusee = laVille.museums.find(
+          (m) => m.slug === route.params.museumSlug,
+        );
+        if (leMusee) {
+          const leArtwork = leMusee.artworks.find(
+            (a) => a.slug === route.params.artworkSlug,
+          );
+          return leArtwork;
+        }
       }
     }
   }
   return null;
-})
+});
 
 const currentMuseum = computed(() => {
   if (allData.value) {
-    const laVille = allData.value.find(ville => ville.slug === route.params.citySlug);
-    if (laVille) {
-      return laVille.museums.find(m => m.slug === route.params.museumSlug);
+    // Trouver le continent
+    const leContinent = allData.value.find(
+      (continent) =>
+        continent.Name.toLowerCase() === route.params.continentSlug,
+    );
+
+    if (leContinent) {
+      const laVille = leContinent.cities.find(
+        (ville) => ville.slug === route.params.citySlug,
+      );
+      if (laVille) {
+        return laVille.museums.find((m) => m.slug === route.params.museumSlug);
+      }
     }
   }
   return null;
-})
+});
 
 const activeImageIndex = ref(0);
 
@@ -52,14 +78,17 @@ const handleScroll = () => {
   }
 };
 
-watch(() => artwork.value, async () => {
-  activeImageIndex.value = 0;
-  await nextTick();
-  if (scrollContent.value) {
-    scrollContent.value.scrollTop = 0;
-    handleScroll();
-  }
-});
+watch(
+  () => artwork.value,
+  async () => {
+    activeImageIndex.value = 0;
+    await nextTick();
+    if (scrollContent.value) {
+      scrollContent.value.scrollTop = 0;
+      handleScroll();
+    }
+  },
+);
 
 const currentImage = computed(() => {
   if (artwork.value?.images?.length) {
@@ -92,7 +121,8 @@ const scrollNext = () => {
 const cropsWithLocation = computed(() => {
   if (currentImage.value?.crops) {
     return currentImage.value.crops.filter(
-      crop => crop.artwork_location_x !== null && crop.artwork_location_y !== null
+      (crop) =>
+        crop.artwork_location_x !== null && crop.artwork_location_y !== null,
     );
   }
   return [];
@@ -100,9 +130,12 @@ const cropsWithLocation = computed(() => {
 
 const allCrops = computed(() => {
   if (artwork.value?.images) {
-    return artwork.value.images.flatMap(img => img.crops || []).filter(
-      crop => crop.artwork_location_x !== null && crop.artwork_location_y !== null
-    );
+    return artwork.value.images
+      .flatMap((img) => img.crops || [])
+      .filter(
+        (crop) =>
+          crop.artwork_location_x !== null && crop.artwork_location_y !== null,
+      );
   }
   return [];
 });
@@ -131,65 +164,94 @@ const closePopup = () => {
 };
 
 // Animations
-const enumerationRef = ref(null)
-const descriptionRef = ref(null)
+const enumerationRef = ref(null);
+const descriptionRef = ref(null);
 
-const enumerationVisible = useElementVisibility(enumerationRef)
-const descriptionVisible = useElementVisibility(descriptionRef)
+const enumerationVisible = useElementVisibility(enumerationRef);
+const descriptionVisible = useElementVisibility(descriptionRef);
 
-const titleAndNameRef = ref(null)
-const placeRef = ref(null)
+const titleAndNameRef = ref(null);
+const placeRef = ref(null);
 
-const titleAndNameVisible = useElementVisibility(titleAndNameRef)
-const placeVisible = useElementVisibility(placeRef)
+const titleAndNameVisible = useElementVisibility(titleAndNameRef);
+const placeVisible = useElementVisibility(placeRef);
 
-useSplitText(descriptionRef)
+useSplitText(descriptionRef);
 
-watch(enumerationVisible, (visible) => {
-  if (visible && enumerationRef.value) {
-    enumerationRef.value.classList.add('visible')
-  }
-}, { once: true })
+watch(
+  enumerationVisible,
+  (visible) => {
+    if (visible && enumerationRef.value) {
+      enumerationRef.value.classList.add("visible");
+    }
+  },
+  { once: true },
+);
 
-watch(descriptionVisible, (visible) => {
-  if (visible && descriptionRef.value) {
-    descriptionRef.value.classList.add('visible')
-  }
-}, { once: true })
+watch(
+  descriptionVisible,
+  (visible) => {
+    if (visible && descriptionRef.value) {
+      descriptionRef.value.classList.add("visible");
+    }
+  },
+  { once: true },
+);
 
-watch(titleAndNameVisible, (visible) => {
-  if (visible && titleAndNameRef.value) {
-    titleAndNameRef.value.classList.add('visible')
-  }
-}, { once: true })
+watch(
+  titleAndNameVisible,
+  (visible) => {
+    if (visible && titleAndNameRef.value) {
+      titleAndNameRef.value.classList.add("visible");
+    }
+  },
+  { once: true },
+);
 
-watch(placeVisible, (visible) => {
-  if (visible && placeRef.value) {
-    placeRef.value.classList.add('visible')
-  }
-}, { once: true })
-
+watch(
+  placeVisible,
+  (visible) => {
+    if (visible && placeRef.value) {
+      placeRef.value.classList.add("visible");
+    }
+  },
+  { once: true },
+);
 </script>
 <template>
   <ArtworkVueFrame>
     <div v-if="artwork" class="artwork-detail-box">
       <section class="image-section">
         <div class="image-container">
-          <img v-for="(img, index) in artwork.images" :key="img.id" :src="`/images/${encodeURI(img.file)}`"
-            :alt="img.description || artwork.name" class="artwork-image"
-            :class="{ 'visible': index === activeImageIndex }" />
-          <div v-for="crop in cropsWithLocation" :key="crop.id" class="crop-hotspot"
-            :class="{ 'visible': currentImage?.crops?.includes(crop) }" :style="{
+          <img
+            v-for="(img, index) in artwork.images"
+            :key="img.id"
+            :src="`/images/${encodeURI(img.file)}`"
+            :alt="img.description || artwork.name"
+            class="artwork-image"
+            :class="{ visible: index === activeImageIndex }"
+          />
+          <div
+            v-for="crop in cropsWithLocation"
+            :key="crop.id"
+            class="crop-hotspot"
+            :class="{ visible: currentImage?.crops?.includes(crop) }"
+            :style="{
               left: crop.artwork_location_x + '%',
-              top: crop.artwork_location_y + '%'
-            }" @click="openCropPopup(crop)" />
+              top: crop.artwork_location_y + '%',
+            }"
+            @click="openCropPopup(crop)"
+          />
         </div>
         <div class="infos-containers">
           <span class="figcaption">{{ currentImage?.copyright }}</span>
           <span class="figcaption">{{ currentImage?.description }}</span>
         </div>
 
-        <div class="thumbnails-container" v-if="artwork.images && artwork.images.length > 1">
+        <div
+          class="thumbnails-container"
+          v-if="artwork.images && artwork.images.length > 1"
+        >
           <Button class="nav-arrow" icon-only icon-primary @click="scrollPrev">
             <template #icon-primary>
               <IconArrowLeft />
@@ -198,11 +260,19 @@ watch(placeVisible, (visible) => {
 
           <div class="thumbnails-list">
             <div class="thumbnails-track">
-              <div v-for="(img, index) in artwork.images" :key="img.id" class="thumbnail"
-                :class="{ 'is-active': index === activeImageIndex }" @click="selectImage(index)">
+              <div
+                v-for="(img, index) in artwork.images"
+                :key="img.id"
+                class="thumbnail"
+                :class="{ 'is-active': index === activeImageIndex }"
+                @click="selectImage(index)"
+              >
                 <div class="img-container">
                   <div class="thumbnail-overlay"></div>
-                  <img :src="`/images/${encodeURI(img.file)}`" :alt="img.description || artwork.name" />
+                  <img
+                    :src="`/images/${encodeURI(img.file)}`"
+                    :alt="img.description || artwork.name"
+                  />
                 </div>
               </div>
             </div>
@@ -216,37 +286,64 @@ watch(placeVisible, (visible) => {
         </div>
 
         <div class="fullscreen">
-          <Button class="button" color="secondary" icon-primary @click="openFullScreen" :text-content="'Plein écran'">
+          <Button
+            class="button"
+            color="secondary"
+            icon-primary
+            @click="openFullScreen"
+            :text-content="'Plein écran'"
+          >
             <template #icon-primary>
               <IconFullscreen />
             </template>
           </Button>
         </div>
       </section>
-
-      <Transition name="fade">
-        <div v-show="showPopup" class="crop-popup-overlay" @click.self="closePopup">
-          <div class="crop-popup">
-            <div class="crop-popup-image">
-              <img v-if="isFullScreenImage && activeCrop" :src="`/images/${encodeURI(activeCrop.file)}`"
-                :alt="activeCrop.description" />
-              <template v-else>
-                <img v-for="crop in allCrops" :key="crop.id" :src="`/images/${encodeURI(crop.file)}`"
-                  :alt="crop.description" v-show="activeCrop && activeCrop.id === crop.id" />
-              </template>
-            </div>
-            <div class="crop-popup-content">
-              <p class="crop-popup-text" v-if="activeCrop?.description">{{ activeCrop?.description }}</p>
-              <Button color="primary" class="bouton" :class="{ 'no-description': !activeCrop?.description }"
-                icon-primary @click="closePopup" :text-content="'Fermer'">
-                <template #icon-primary>
-                  <IconLeave />
+      <Teleport to="body">
+        <Transition name="fade">
+          <div
+            v-show="showPopup"
+            class="crop-popup-overlay"
+            @click.self="closePopup"
+          >
+            <div class="crop-popup">
+              <div class="crop-popup-image">
+                <img
+                  v-if="isFullScreenImage && activeCrop"
+                  :src="`/images/${encodeURI(activeCrop.file)}`"
+                  :alt="activeCrop.description"
+                />
+                <template v-else>
+                  <img
+                    v-for="crop in allCrops"
+                    :key="crop.id"
+                    :src="`/images/${encodeURI(crop.file)}`"
+                    :alt="crop.description"
+                    v-show="activeCrop && activeCrop.id === crop.id"
+                  />
                 </template>
-              </Button>
+              </div>
+              <div class="crop-popup-content">
+                <p class="crop-popup-text" v-if="activeCrop?.description">
+                  {{ activeCrop?.description }}
+                </p>
+                <Button
+                  color="primary"
+                  class="bouton"
+                  :class="{ 'no-description': !activeCrop?.description }"
+                  icon-primary
+                  @click="closePopup"
+                  :text-content="'Fermer'"
+                >
+                  <template #icon-primary>
+                    <IconLeave />
+                  </template>
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </Transition>
+        </Transition>
+      </Teleport>
 
       <section class="content-section">
         <div class="artwork-container artwork-infos">
@@ -255,30 +352,48 @@ watch(placeVisible, (visible) => {
             <p style="--anim-index: 1">Jean Dupas</p>
           </div>
         </div>
-        <div class="artwork-container artwork-description-container" :class="{ 'is-scroll-end': isScrollEnd }">
-          <div class="scroll-content" ref="scrollContent" @scroll="handleScroll">
+        <div
+          class="artwork-container artwork-description-container"
+          :class="{ 'is-scroll-end': isScrollEnd }"
+        >
+          <div
+            class="scroll-content"
+            ref="scrollContent"
+            @scroll="handleScroll"
+          >
             <div class="header">
               <p class="enumeration" ref="enumerationRef">
-                <span style="--enum-index: 0">{{ artwork.name }}</span>
+                <!--<span style="--enum-index: 0">{{ artwork.name }}</span>-->
                 <span style="--enum-index: 1">{{ artwork.year }}</span>
                 <span style="--enum-index: 2">{{ artwork.technique }}</span>
-                <span style="--enum-index: 3">{{ currentMuseum?.adress }}</span>
+                <!-- <span style="--enum-index: 3">{{ currentMuseum?.adress }}</span> -->
               </p>
               <div class="artwork-place" ref="placeRef">
                 <IconPin class="pin" style="--anim-index: 0" />
                 <span style="--anim-index: 1">{{ currentMuseum?.adress }}</span>
               </div>
             </div>
-            <p ref="descriptionRef" class="description">{{ artwork.description }}</p>
+            <p ref="descriptionRef" class="description">
+              {{ artwork.description }}
+            </p>
           </div>
         </div>
       </section>
-      <!-- Preloader removed -->
     </div>
   </ArtworkVueFrame>
 </template>
 
 <style scoped lang="scss">
+:global(.fade-enter-active),
+:global(.fade-leave-active) {
+  transition: opacity 0.5s ease;
+}
+
+:global(.fade-enter-from),
+:global(.fade-leave-to) {
+  opacity: 0;
+}
+
 .artwork-detail-box {
   height: 100%;
   width: 100%;
@@ -289,10 +404,11 @@ watch(placeVisible, (visible) => {
   .image-section {
     width: 75%;
     height: 100%;
-    padding: calc($spacing-96 - $border-width) $spacing-136 calc($spacing-96 - $border-width) calc($spacing-96 - $border-width);
+    padding: calc($spacing-96 - $border-width) $spacing-136 293px
+      calc($spacing-96 - $border-width);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     position: relative;
 
     .fullscreen {
@@ -300,22 +416,22 @@ watch(placeVisible, (visible) => {
     }
 
     &::before {
-      content: '';
+      content: "";
       display: block;
       position: absolute;
       top: 0;
-      right: 0px; // -52 - 5 (border)
-      width: calc($spacing-56 - $border-width); // 52px border - 5px border
+      right: 0px;
+      width: calc($spacing-56 - $border-width);
       height: 100%;
       background-color: $blue-300;
     }
 
     &::after {
-      content: '';
+      content: "";
       display: block;
       position: absolute;
       top: 0;
-      right: -$border-width; // -52 - 5 (border)
+      right: -$border-width;
       width: $border-width;
       height: 100%;
       background-color: $black;
@@ -356,15 +472,20 @@ watch(placeVisible, (visible) => {
         border: 2.91px solid rgba(#fff, 0.5);
         cursor: pointer;
         transform: translate(-50%, -50%);
-        transition: opacity 0.5s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        transition:
+          opacity 0.5s ease,
+          box-shadow 0.3s ease,
+          border-color 0.3s ease;
         box-shadow: 0px 1.62px 49.9px 53.92px rgba(255, 255, 255, 0.25);
         opacity: 0;
         pointer-events: none;
+        will-change: unset;
 
         &.visible {
           opacity: 1;
           pointer-events: auto;
           animation: pulse-glow 3s infinite ease-in-out;
+          will-change: transform, box-shadow;
         }
 
         &:active {
@@ -401,7 +522,7 @@ watch(placeVisible, (visible) => {
 
     .infos-containers {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       gap: $spacing-32;
     }
 
@@ -426,10 +547,10 @@ watch(placeVisible, (visible) => {
       padding: 0 10%;
 
       .nav-arrow {
-        background-color: $white !important;
-        border: 1px solid $black !important;
+        background-color: $white;
+        border: 4px solid $black;
         cursor: pointer;
-        padding: $spacing-16 !important;
+        padding: $spacing-16;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -437,10 +558,6 @@ watch(placeVisible, (visible) => {
         transition: opacity 0.3s;
         position: relative;
         z-index: 10;
-
-        &:hover {
-          opacity: 0.6;
-        }
 
         :deep(svg) {
           width: $spacing-40 !important;
@@ -521,15 +638,16 @@ watch(placeVisible, (visible) => {
         flex-direction: column;
         gap: $spacing-16;
 
-        >* {
+        > * {
           opacity: 0;
           transform: translateY(20px);
-          transition: opacity 1s calc(var(--anim-index) * 0.1s) $ease-out-quint,
+          transition:
+            opacity 1s calc(var(--anim-index) * 0.1s) $ease-out-quint,
             transform 1s calc(var(--anim-index) * 0.1s) $ease-out-quint;
         }
 
         &.visible {
-          >* {
+          > * {
             opacity: 1;
             transform: translateY(0);
           }
@@ -562,8 +680,6 @@ watch(placeVisible, (visible) => {
         font-style: italic;
       }
     }
-
-
   }
 
   .artwork-description-container {
@@ -574,12 +690,14 @@ watch(placeVisible, (visible) => {
     padding: 0 !important;
 
     &::before {
-      content: '';
+      content: "";
       display: block;
       position: absolute;
       bottom: 0;
       left: $border-width;
-      width: calc(100% - (#{$spacing-24} + #{$spacing-10})); // 5px margins left - 29px scrollbar
+      width: calc(
+        100% - (#{$spacing-24} + #{$spacing-10})
+      ); // 5px margins left - 29px scrollbar
       height: 30%;
       background: linear-gradient(to top, $white 10%, transparent);
       z-index: 1;
@@ -594,7 +712,7 @@ watch(placeVisible, (visible) => {
     .scroll-content {
       height: 100%;
       overflow-y: auto;
-      padding: $spacing-80 $spacing-96;
+      padding: 80px 96px 260px 96px;
       display: flex;
       flex-direction: column;
       gap: $spacing-40;
@@ -616,7 +734,8 @@ watch(placeVisible, (visible) => {
           line-height: 1;
           opacity: 0;
           transform: translateY(20px);
-          transition: opacity 1s calc(var(--enum-index) * 0.1s) $ease-out-quint,
+          transition:
+            opacity 1s calc(var(--enum-index) * 0.1s) $ease-out-quint,
             transform 1s calc(var(--enum-index) * 0.1s) $ease-out-quint;
         }
 
@@ -641,18 +760,18 @@ watch(placeVisible, (visible) => {
         align-items: center;
         gap: $spacing-4;
 
-        >span,
+        > span,
         :deep(.top) {
           opacity: 0;
           transform: translateY(20px);
           transform-box: fill-box;
-          transition: opacity 1s calc(var(--anim-index) * 0.1s) $ease-out-quint,
+          transition:
+            opacity 1s calc(var(--anim-index) * 0.1s) $ease-out-quint,
             transform 1s calc(var(--anim-index) * 0.1s) $ease-out-quint;
         }
 
         &.visible {
-
-          >span,
+          > span,
           :deep(.top) {
             opacity: 1;
             transform: translateY(0);
@@ -669,11 +788,10 @@ watch(placeVisible, (visible) => {
         :deep(.line) {
           opacity: 0;
           transform: translateY(20px);
-          transition: opacity 1s calc(var(--line-index) * 0.05s) $ease-out-quint,
+          transition:
+            opacity 1s calc(var(--line-index) * 0.05s) $ease-out-quint,
             transform 1s calc(var(--line-index) * 0.05s) $ease-out-quint;
-          display: block; // Needed for transform to work on inline-block (default split-type is usually wrapper) but split-type lines are usually divs or styled. 
-          // split-type lines are usually absolute or relative. Let's ensure they behave.
-          // standard split-type w/ 'lines' usually wraps in .line.
+          display: block;
         }
 
         &.visible {
@@ -700,17 +818,6 @@ watch(placeVisible, (visible) => {
       top: $spacing-32;
       right: $spacing-32;
     }
-
-  }
-
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.5s ease;
-  }
-
-  .fade-enter-from,
-  .fade-leave-to {
-    opacity: 0;
   }
 
   .crop-popup-overlay {
