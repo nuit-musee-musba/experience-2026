@@ -82,9 +82,9 @@ export const CONFIG = {
         maxAzimuthAngle: 0.05,
       },
       museum: {
-        maxDistance: 4,
-        minDistance: 2,
-        defaultDistance: 3,
+        maxDistance: 3,
+        minDistance: 1.5,
+        defaultDistance: 1,
         minPolarAngle: 0,
         maxPolarAngle: Math.PI / 3,
         minAzimuthAngle: -Infinity,

@@ -5,9 +5,9 @@
       <CreditsOverlay @close="showCredits = false" />
       <router-view />
 
-      <transition name="fade">
+      <!-- <transition name="fade">
         <HomeOverlay v-if="showHome" @start="startExperience" />
-      </transition>
+      </transition> -->
 
     </div>
   </IdleView>

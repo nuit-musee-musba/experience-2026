@@ -52,6 +52,12 @@ export class CamerasManager {
     if (config.maxDistance !== undefined)
       this.controls.maxDistance = config.maxDistance;
 
+    if (config.boundary !== undefined) {
+      this.controls.setBoundary(config.boundary);
+    } else {
+      this.controls.setBoundary(null);
+    }
+
     this.controls.enabled = config.enabled !== false;
   }
 

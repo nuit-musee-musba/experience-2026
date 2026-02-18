@@ -93,7 +93,7 @@ watch(
         const camPos = new THREE.Vector3(
           museum.x,
           museum.y -
-            distance * Math.sin(CONFIG.controls.map.museum.maxPolarAngle),
+          distance * Math.sin(CONFIG.controls.map.museum.maxPolarAngle),
           -9.5 + distance * Math.cos(CONFIG.controls.map.museum.maxPolarAngle),
         );
 
@@ -265,6 +265,21 @@ const applyStepConstraints = () => {
   if (!camerasManager) return;
 
   if (currentStep.value === 2) {
+    const targetY =
+     allData.value
+        .find((c) => c.Name.toLowerCase() === activeContinentSlug.value)
+        ?.cities.find((v) => v.slug === activeCitySlug.value)
+        ?.museums.find((m) => m.slug === route.params.museumSlug)?.y || 0;
+
+    const targetX =
+      allData.value
+        .find((c) => c.Name.toLowerCase() === activeContinentSlug.value)
+        ?.cities.find((v) => v.slug === activeCitySlug.value)
+        ?.museums.find((m) => m.slug === route.params.museumSlug)?.x || 0;
+
+    const boundary = new THREE.Box3();
+    boundary.min.set(targetX - 0.1, targetY - 0.1, -50);
+    boundary.max.set(targetX + 0.1, targetY + 0.1, 50);
     // Vue musée : permettre rotation libre mais contrainte
     camerasManager.setConstraints({
       minPolarAngle: CONFIG.controls.map.museum.minPolarAngle,
@@ -273,6 +288,7 @@ const applyStepConstraints = () => {
       maxAzimuthAngle: CONFIG.controls.map.museum.maxAzimuthAngle,
       minDistance: CONFIG.controls.map.museum.minDistance,
       maxDistance: CONFIG.controls.map.museum.maxDistance,
+      boundary: boundary,
     });
   } else {
     if (currentStep.value === 1) {
@@ -287,6 +303,14 @@ const applyStepConstraints = () => {
       });
     } else {
       // Vue continent : limiter l'angle (vue de dessus/baisée)
+      const targetY =
+        continentPositions[activeContinentSlug.value]?.target.y ||
+        continentPositions.europe.target.y;
+
+      const boundary = new THREE.Box3();
+      boundary.min.set(-Infinity, targetY - 0.1, -Infinity);
+      boundary.max.set(Infinity, targetY + 0.1, Infinity);
+
       camerasManager.setConstraints({
         minPolarAngle: CONFIG.controls.map.continent.minPolarAngle,
         maxPolarAngle: CONFIG.controls.map.continent.maxPolarAngle,
@@ -294,6 +318,7 @@ const applyStepConstraints = () => {
         maxAzimuthAngle: CONFIG.controls.map.continent.maxAzimuthAngle,
         minDistance: CONFIG.controls.map.continent.minDistance,
         maxDistance: CONFIG.controls.map.continent.maxDistance,
+        boundary: boundary,
       });
     }
   }
@@ -398,34 +423,18 @@ defineExpose({
 </script>
 
 <template>
-  <div
-    ref="containerRef"
-    class="scene-container"
-    :class="{ 'map-frozen': isArtworkActive }"
-  ></div>
+  <div ref="containerRef" class="scene-container" :class="{ 'map-frozen': isArtworkActive }"></div>
 
-  <button
-    @click="navigateToContinent('europe')"
-    class="continent-btn continent-btn-europe"
-    :class="{ active: activeContinentSlug === 'europe' }"
-    v-if="currentStep === 0"
-  >
+  <button @click="navigateToContinent('europe')" class="continent-btn continent-btn-europe"
+    :class="{ active: activeContinentSlug === 'europe' }" v-if="currentStep === 0">
     <IconArrowRight />
   </button>
-  <button
-    @click="navigateToContinent('amérique')"
-    class="continent-btn continent-btn-america"
-    :class="{ active: activeContinentSlug === 'amérique' }"
-    v-if="currentStep === 0"
-  >
+  <button @click="navigateToContinent('amérique')" class="continent-btn continent-btn-america"
+    :class="{ active: activeContinentSlug === 'amérique' }" v-if="currentStep === 0">
     <IconArrowLeft />
   </button>
-  <button
-    @click="navigateToContinent('océan')"
-    class="continent-btn continent-btn-ocean"
-    :class="{ active: activeContinentSlug === 'océan' }"
-    v-if="currentStep === 0"
-  >
+  <button @click="navigateToContinent('océan')" class="continent-btn continent-btn-ocean"
+    :class="{ active: activeContinentSlug === 'océan' }" v-if="currentStep === 0">
     Océan
   </button>
 
