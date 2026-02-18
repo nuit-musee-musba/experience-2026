@@ -151,8 +151,7 @@ onMounted(() => {
 
   @include border-5;
 
-  width: 60vw;
-  max-width: 2200px;
+  width: 2200px;
   padding: $spacing-144;
 
   @media (max-width: 1024px) {
