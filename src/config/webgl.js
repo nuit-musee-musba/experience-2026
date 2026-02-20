@@ -28,8 +28,8 @@ export const CONFIG = {
   pins: {
     circleTextureSize: 64,
     circleRadius: 28,
-    defaultZ: -9.5,
-    onceClickedZ: -10,
+    defaultZ: -9.9,
+    onceClickedZ: -9.9,
     artworks: {
       geometrySizes: [1, 1, 1],
       travelOffsetY: -2,
@@ -44,22 +44,22 @@ export const CONFIG = {
   },
   camera: {
     fov: 75,
-    near: 0.1,
+    near: 0.0001,
     far: 10000,
   },
   // Positions des continents
   continents: {
     europe: {
       camera: new THREE.Vector3(-5, 5, 50),
-      target: new THREE.Vector3(-5, 5, -9.5),
+      target: new THREE.Vector3(-5, 5, -9.9),
     },
     amérique: {
       camera: new THREE.Vector3(-100, 5, 50),
-      target: new THREE.Vector3(-100, 5, -9.5),
+      target: new THREE.Vector3(-100, 5, -9.9),
     },
     océan: {
       camera: new THREE.Vector3(50, -30, 50),
-      target: new THREE.Vector3(50, -30, -9.5),
+      target: new THREE.Vector3(50, -30, -9.9),
     },
   },
   controls: {
@@ -68,25 +68,25 @@ export const CONFIG = {
       continent: {
         maxDistance: 65,
         minDistance: 50,
-        minPolarAngle: Math.PI / 12,
-        maxPolarAngle: Math.PI / 12,
-        minAzimuthAngle: -0.05,
-        maxAzimuthAngle: 0.05,
+        minPolarAngle: 0,
+        maxPolarAngle: 0,
+        minAzimuthAngle: 0,
+        maxAzimuthAngle: 0,
       },
       city: {
-        maxDistance: 13,
-        minDistance: 1,
-        minPolarAngle: 0,
-        maxPolarAngle: Math.PI / 3,
+        maxDistance: 5,
+        minDistance: 4,
+        minPolarAngle: (Math.PI / 3) * 0.9,
+        maxPolarAngle: (Math.PI / 3) * 1.1,
         minAzimuthAngle: -0.05,
         maxAzimuthAngle: 0.05,
       },
       museum: {
-        maxDistance: 4,
-        minDistance: 2,
-        defaultDistance: 3,
-        minPolarAngle: 0,
-        maxPolarAngle: Math.PI / 3,
+        maxDistance: 1,
+        minDistance: 0.6,
+        defaultDistance: 0.7,
+        minPolarAngle: (Math.PI / 3) * 0.9,
+        maxPolarAngle: (Math.PI / 3) * 1.1,
         minAzimuthAngle: -Infinity,
         maxAzimuthAngle: Infinity,
       },

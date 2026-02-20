@@ -2,25 +2,36 @@
   <nav class="nav">
     <div class="nav-buttons">
       <Button v-if="showSelectionButtons" color="primary" icon-only icon-primary @click="router.push('/europe')">
-        <template #icon-primary><IconMap /></template>
+        <template #icon-primary>
+          <IconMap />
+        </template>
       </Button>
 
-      <Button v-if="backTarget && showSelectionButtons" color="secondary" icon-primary :text-content="backLabel" @click="router.push(backTarget)">
-        <template #icon-primary><IconPin /></template>
+      <Button v-if="backTarget && showSelectionButtons" color="secondary" icon-primary :text-content="backLabel"
+              @click="router.push(backTarget)">
+        <template #icon-primary>
+          <IconPin />
+        </template>
       </Button>
     </div>
 
     <div class="nav-buttons" v-if="currentList.length > 1">
       <Button :color="contextColor" icon-primary :text-content="prevLabel" @click="navigate(-1)">
-        <template #icon-primary><IconArrowLeft /></template>
+        <template #icon-primary>
+          <IconArrowLeft />
+        </template>
       </Button>
 
       <Button :color="contextColor" icon-secondary :text-content="nextLabel" @click="navigate(1)">
-        <template #icon-secondary><IconArrowRight /></template>
+        <template #icon-secondary>
+          <IconArrowRight />
+        </template>
       </Button>
     </div>
     <Button class="galery-button" color="artwork" icon-only icon-primary @click="goGallery">
-      <template #icon-primary><IconGallery /></template>
+      <template #icon-primary>
+        <IconGallery />
+      </template>
     </Button>
   </nav>
 </template>
@@ -180,11 +191,11 @@ const backLabel = computed(() => {
 const backTarget = computed(() => {
   if (isArtwork.value) {
     return `/${route.params.continentSlug}/${route.params.citySlug}/${route.params.museumSlug}`;
-  }if (isMuseum.value) {
+  } if (isMuseum.value) {
     return `/${route.params.continentSlug}/${route.params.citySlug}`;
-  }if (isCity.value) {
+  } if (isCity.value) {
     return `/${route.params.continentSlug}`;
-  }if (isContinent.value) {
+  } if (isContinent.value) {
     return `/europe`;
   }
 
@@ -201,10 +212,10 @@ const navigate = (direction) => {
   const target = list[nextIndex];
 
   let path = '';
-  if (isArtwork.value) { path = `/${route.params.continentSlug}/${route.params.citySlug}/${route.params.museumSlug}/${target.slug}`;}
-  else if (isMuseum.value) { path = `/${route.params.continentSlug}/${route.params.citySlug}/${target.slug}`;}
-  else if (isCity.value) { path = `/${route.params.continentSlug}/${target.slug}`;}
-  else if (isContinent.value) { path = `/${target.Name.toLowerCase()}`;}
+  if (isArtwork.value) { path = `/${route.params.continentSlug}/${route.params.citySlug}/${route.params.museumSlug}/${target.slug}`; }
+  else if (isMuseum.value) { path = `/${route.params.continentSlug}/${route.params.citySlug}/${target.slug}`; }
+  else if (isCity.value) { path = `/${route.params.continentSlug}/${target.slug}`; }
+  else if (isContinent.value) { path = `/${target.Name.toLowerCase()}`; }
 
   router.push(path);
 };
@@ -216,6 +227,7 @@ const goGallery = () => {
 
 <style lang="scss" scoped>
 .nav {
+  z-index: 1;
   display: flex;
   padding: $spacing-32;
   border-top: $spacing-8 solid $black;
@@ -229,7 +241,10 @@ const goGallery = () => {
 .nav-buttons {
   display: flex;
   gap: $spacing-40;
-  &:first-child { margin-right: auto; }
+
+  &:first-child {
+    margin-right: auto;
+  }
 }
 
 .galery-button {

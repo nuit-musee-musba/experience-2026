@@ -34,6 +34,7 @@
   }
 
   .main {
+    z-index: 10;
     flex-grow: 1;
     overflow-y: auto;
   }

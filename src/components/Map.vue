@@ -5,7 +5,6 @@ import { CSS2DRenderer } from "three/examples/jsm/renderers/CSS2DRenderer.js";
 import SmartNavbar from "@/components/layouts/SmartNavbar.vue";
 import { MapPlane } from "@/webgl/components/MapPlane.js";
 import { MapPins } from "@/webgl/components/MapPins.js";
-import { GUI } from "@/webgl/utils/GUI.js";
 import { CONFIG } from "@/config/webgl.js";
 import { CamerasManager } from "@/webgl/managers/CamerasManagers.js";
 
@@ -28,8 +27,7 @@ let scene,
   labelRenderer,
   camerasManager,
   animationId,
-  stats,
-  gui;
+  stats;
 let mapPins;
 let allPins = null;
 let mapPlane = null;
@@ -46,15 +44,15 @@ const pointer = new THREE.Vector2();
 const continentPositions = {
   europe: {
     camera: new THREE.Vector3(-5, 5, 50),
-    target: new THREE.Vector3(-5, 5, -9.5),
+    target: new THREE.Vector3(-5, 5, -9.9),
   },
   amérique: {
     camera: new THREE.Vector3(-220, -16, 70),
-    target: new THREE.Vector3(-220, -16, -9.5),
+    target: new THREE.Vector3(-220, -16, -9.9),
   },
   océan: {
     camera: new THREE.Vector3(50, -30, 50),
-    target: new THREE.Vector3(50, -30, -9.5),
+    target: new THREE.Vector3(50, -30, -9.9),
   },
 };
 
@@ -89,12 +87,12 @@ watch(
         const distance = CONFIG.controls.map.museum.defaultDistance;
         // const diveAngle = Math.PI / 3;
 
-        const targetPos = new THREE.Vector3(museum.x, museum.y, -10.5);
+        const targetPos = new THREE.Vector3(museum.x, museum.y, -9.9);
         const camPos = new THREE.Vector3(
           museum.x,
           museum.y -
-            distance * Math.sin(CONFIG.controls.map.museum.maxPolarAngle),
-          -9.5 + distance * Math.cos(CONFIG.controls.map.museum.maxPolarAngle),
+          distance * Math.sin(CONFIG.controls.map.museum.maxPolarAngle),
+          -9.9 + distance * Math.cos(CONFIG.controls.map.museum.maxPolarAngle),
         );
 
         camerasManager.setLookAt(camPos, targetPos, true);
@@ -110,8 +108,15 @@ watch(
       if (city) {
         if (camera) camera.clearViewOffset();
 
-        const targetPos = new THREE.Vector3(city.x, city.y, -9.5);
-        const camPos = new THREE.Vector3(city.x, city.y, -5);
+        const distance = CONFIG.controls.map.city.minDistance;
+
+        const targetPos = new THREE.Vector3(city.x, city.y, -9.9);
+
+        const camPos = new THREE.Vector3(
+          city.x,
+          city.y - distance * Math.sin(CONFIG.controls.map.city.maxPolarAngle),
+          -9.9 + distance * Math.cos(CONFIG.controls.map.city.maxPolarAngle),
+        );
 
         camerasManager.setLookAt(camPos, targetPos, true);
 
@@ -210,9 +215,10 @@ const initThree = () => {
   };
 
   mapPlane = new MapPlane(scene, requestRender);
-  gui = new GUI();
-  gui.addMap(mapPlane);
   mapPins = new MapPins(scene, handlePinClick, requestRender);
+
+  const axesHelper = new THREE.AxesHelper(500);
+  scene.add(axesHelper);
 
   scene.add(
     new THREE.AmbientLight(
@@ -231,7 +237,7 @@ const initThree = () => {
 
   const europePos = continentPositions.europe;
   // Initialize position immediately without transition
-  camerasManager.setLookAt(europePos.camera, europePos.target, false);
+  camerasManager.setLookAt(europePos.camera, europePos.target, true);
 
   applyStepConstraints();
 
@@ -265,7 +271,22 @@ const applyStepConstraints = () => {
   if (!camerasManager) return;
 
   if (currentStep.value === 2) {
-    // Vue musée : permettre rotation libre mais contrainte
+    const targetY =
+      allData.value
+        .find((c) => c.Name.toLowerCase() === activeContinentSlug.value)
+        ?.cities.find((v) => v.slug === activeCitySlug.value)
+        ?.museums.find((m) => m.slug === route.params.museumSlug)?.y || 0;
+
+    const targetX =
+      // Vue musée : permettre rotation libre mais contrainte
+      allData.value
+        .find((c) => c.Name.toLowerCase() === activeContinentSlug.value)
+        ?.cities.find((v) => v.slug === activeCitySlug.value)
+        ?.museums.find((m) => m.slug === route.params.museumSlug)?.x || 0;
+
+    const boundary = new THREE.Box3();
+    boundary.min.set(targetX - 0.05, targetY - 0.05, -50);
+    boundary.max.set(targetX + 0.05, targetY + 0.05, 50);
     camerasManager.setConstraints({
       minPolarAngle: CONFIG.controls.map.museum.minPolarAngle,
       maxPolarAngle: CONFIG.controls.map.museum.maxPolarAngle,
@@ -273,10 +294,24 @@ const applyStepConstraints = () => {
       maxAzimuthAngle: CONFIG.controls.map.museum.maxAzimuthAngle,
       minDistance: CONFIG.controls.map.museum.minDistance,
       maxDistance: CONFIG.controls.map.museum.maxDistance,
+      boundary: boundary,
     });
   } else {
     if (currentStep.value === 1) {
       // Vue ville
+      const targetY =
+        allData.value
+          .find((c) => c.Name.toLowerCase() === activeContinentSlug.value)
+          ?.cities.find((v) => v.slug === activeCitySlug.value)?.y || 0;
+
+      const targetX =
+        allData.value
+          .find((c) => c.Name.toLowerCase() === activeContinentSlug.value)
+          ?.cities.find((v) => v.slug === activeCitySlug.value)?.x || 0;
+
+      const boundary = new THREE.Box3();
+      boundary.min.set(targetX - 0.1, targetY - 0.1, -50);
+      boundary.max.set(targetX + 0.1, targetY + 0.1, 50);
       camerasManager.setConstraints({
         minPolarAngle: CONFIG.controls.map.city.minPolarAngle,
         maxPolarAngle: CONFIG.controls.map.city.maxPolarAngle,
@@ -284,9 +319,22 @@ const applyStepConstraints = () => {
         maxAzimuthAngle: CONFIG.controls.map.city.maxAzimuthAngle,
         minDistance: CONFIG.controls.map.city.minDistance,
         maxDistance: CONFIG.controls.map.city.maxDistance,
+        boundary: boundary,
       });
     } else {
       // Vue continent : limiter l'angle (vue de dessus/baisée)
+      const targetY =
+        continentPositions[activeContinentSlug.value]?.target.y ||
+        continentPositions.europe.target.y;
+
+      const targetX =
+        continentPositions[activeContinentSlug.value]?.target.x ||
+        continentPositions.europe.target.x;
+
+      const boundary = new THREE.Box3();
+      boundary.min.set(targetX - 1, targetY - 1, -50);
+      boundary.max.set(targetX + 1, targetY + 1, 50);
+
       camerasManager.setConstraints({
         minPolarAngle: CONFIG.controls.map.continent.minPolarAngle,
         maxPolarAngle: CONFIG.controls.map.continent.maxPolarAngle,
@@ -294,6 +342,7 @@ const applyStepConstraints = () => {
         maxAzimuthAngle: CONFIG.controls.map.continent.maxAzimuthAngle,
         minDistance: CONFIG.controls.map.continent.minDistance,
         maxDistance: CONFIG.controls.map.continent.maxDistance,
+        boundary: boundary,
       });
     }
   }
@@ -386,7 +435,6 @@ onBeforeUnmount(() => {
   }
   cancelAnimationFrame(animationId);
   if (renderer) renderer.dispose();
-  if (gui) gui.destroy();
   if (labelRenderer && labelRenderer.domElement)
     labelRenderer.domElement.remove();
   if (camerasManager) camerasManager.dispose();
@@ -398,34 +446,18 @@ defineExpose({
 </script>
 
 <template>
-  <div
-    ref="containerRef"
-    class="scene-container"
-    :class="{ 'map-frozen': isArtworkActive }"
-  ></div>
+  <div ref="containerRef" class="scene-container" :class="{ 'map-frozen': isArtworkActive }"></div>
 
-  <button
-    @click="navigateToContinent('europe')"
-    class="continent-btn continent-btn-europe"
-    :class="{ active: activeContinentSlug === 'europe' }"
-    v-if="currentStep === 0"
-  >
+  <button @click="navigateToContinent('europe')" class="continent-btn continent-btn-europe"
+    :class="{ active: activeContinentSlug === 'europe' }" v-if="currentStep === 0">
     <IconArrowRight />
   </button>
-  <button
-    @click="navigateToContinent('amérique')"
-    class="continent-btn continent-btn-america"
-    :class="{ active: activeContinentSlug === 'amérique' }"
-    v-if="currentStep === 0"
-  >
+  <button @click="navigateToContinent('amérique')" class="continent-btn continent-btn-america"
+    :class="{ active: activeContinentSlug === 'amérique' }" v-if="currentStep === 0">
     <IconArrowLeft />
   </button>
-  <button
-    @click="navigateToContinent('océan')"
-    class="continent-btn continent-btn-ocean"
-    :class="{ active: activeContinentSlug === 'océan' }"
-    v-if="currentStep === 0"
-  >
+  <button @click="navigateToContinent('océan')" class="continent-btn continent-btn-ocean"
+    :class="{ active: activeContinentSlug === 'océan' }" v-if="currentStep === 0">
     Océan
   </button>
 

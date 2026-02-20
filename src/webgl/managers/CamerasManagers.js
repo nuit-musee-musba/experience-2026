@@ -30,10 +30,7 @@ export class CamerasManager {
     this.controls.draggingSmoothTime = 0.35;
 
     // Map controls
-    this.controls.mouseButtons.wheel = CameraControls.ACTION.DOLLY;
-    this.controls.touches.two = CameraControls.ACTION.TOUCH_DOLLY_TRUCK;
-    this.controls.mouseButtons.left = CameraControls.ACTION.SCREEN_PAN;
-    // this.controls.verticalDragToForward = true; // Deprecated/Removed as per logs
+    this.controls.touches.two = CameraControls.ACTION.TOUCH_DOLLY;
   }
 
   setConstraints(config = {}) {
@@ -51,6 +48,12 @@ export class CamerasManager {
       this.controls.minDistance = config.minDistance;
     if (config.maxDistance !== undefined)
       this.controls.maxDistance = config.maxDistance;
+
+    if (config.boundary !== undefined) {
+      this.controls.setBoundary(config.boundary);
+    } else {
+      this.controls.setBoundary(null);
+    }
 
     this.controls.enabled = config.enabled !== false;
   }
