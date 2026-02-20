@@ -30,10 +30,7 @@ export class CamerasManager {
     this.controls.draggingSmoothTime = 0.35;
 
     // Map controls
-    this.controls.mouseButtons.wheel = CameraControls.ACTION.DOLLY;
-    this.controls.touches.two = CameraControls.ACTION.TOUCH_DOLLY_TRUCK;
-    this.controls.mouseButtons.left = CameraControls.ACTION.SCREEN_PAN;
-    // this.controls.verticalDragToForward = true; // Deprecated/Removed as per logs
+    this.controls.touches.two = CameraControls.ACTION.TOUCH_DOLLY;
   }
 
   setConstraints(config = {}) {

@@ -6,8 +6,14 @@ export class Stats {
     this.stats = new StatsJs();
     this.stats.showPanel(0);
     this.stats.dom.style.top = "0px";
-    this.stats.dom.style.left = "0%";
-    this.stats.dom.style.transformOrigin = "top right";
+    this.stats.dom.style.left = "0px";
+    
+    const children = this.stats.dom.children;
+    for (let i = 0; i < children.length; i++) {
+        children[i].style.display = 'block';
+        children[i].style.pointerEvents = 'none';
+    }
+
     this.body.appendChild(this.stats.dom);
   }
 
