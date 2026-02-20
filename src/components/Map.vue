@@ -266,21 +266,21 @@ const applyStepConstraints = () => {
 
   if (currentStep.value === 2) {
     const targetY =
-     allData.value
+      allData.value
         .find((c) => c.Name.toLowerCase() === activeContinentSlug.value)
         ?.cities.find((v) => v.slug === activeCitySlug.value)
         ?.museums.find((m) => m.slug === route.params.museumSlug)?.y || 0;
 
     const targetX =
+      // Vue musée : permettre rotation libre mais contrainte
       allData.value
         .find((c) => c.Name.toLowerCase() === activeContinentSlug.value)
         ?.cities.find((v) => v.slug === activeCitySlug.value)
         ?.museums.find((m) => m.slug === route.params.museumSlug)?.x || 0;
 
     const boundary = new THREE.Box3();
-    boundary.min.set(targetX - 0.1, targetY - 0.1, -50);
-    boundary.max.set(targetX + 0.1, targetY + 0.1, 50);
-    // Vue musée : permettre rotation libre mais contrainte
+    boundary.min.set(targetX - 0.05, targetY - 0.05, -50);
+    boundary.max.set(targetX + 0.05, targetY + 0.05, 50);
     camerasManager.setConstraints({
       minPolarAngle: CONFIG.controls.map.museum.minPolarAngle,
       maxPolarAngle: CONFIG.controls.map.museum.maxPolarAngle,
@@ -293,6 +293,19 @@ const applyStepConstraints = () => {
   } else {
     if (currentStep.value === 1) {
       // Vue ville
+      const targetY =
+        allData.value
+          .find((c) => c.Name.toLowerCase() === activeContinentSlug.value)
+          ?.cities.find((v) => v.slug === activeCitySlug.value)?.y || 0;
+
+      const targetX =
+        allData.value
+          .find((c) => c.Name.toLowerCase() === activeContinentSlug.value)
+          ?.cities.find((v) => v.slug === activeCitySlug.value)?.x || 0;
+
+      const boundary = new THREE.Box3();
+      boundary.min.set(targetX - 0.1, targetY - 0.1, -50);
+      boundary.max.set(targetX + 0.1, targetY + 0.1, 50);
       camerasManager.setConstraints({
         minPolarAngle: CONFIG.controls.map.city.minPolarAngle,
         maxPolarAngle: CONFIG.controls.map.city.maxPolarAngle,
@@ -300,6 +313,7 @@ const applyStepConstraints = () => {
         maxAzimuthAngle: CONFIG.controls.map.city.maxAzimuthAngle,
         minDistance: CONFIG.controls.map.city.minDistance,
         maxDistance: CONFIG.controls.map.city.maxDistance,
+        boundary: boundary,
       });
     } else {
       // Vue continent : limiter l'angle (vue de dessus/baisée)
@@ -307,9 +321,12 @@ const applyStepConstraints = () => {
         continentPositions[activeContinentSlug.value]?.target.y ||
         continentPositions.europe.target.y;
 
+      const targetX = continentPositions[activeContinentSlug.value]?.target.x ||
+        continentPositions.europe.target.x;
+
       const boundary = new THREE.Box3();
-      boundary.min.set(-Infinity, targetY - 0.1, -Infinity);
-      boundary.max.set(Infinity, targetY + 0.1, Infinity);
+      boundary.min.set(targetX - 1, targetY - 1, -50);
+      boundary.max.set(targetX + 1, targetY + 1, 50);
 
       camerasManager.setConstraints({
         minPolarAngle: CONFIG.controls.map.continent.minPolarAngle,

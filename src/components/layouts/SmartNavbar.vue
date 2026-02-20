@@ -8,7 +8,7 @@
       </Button>
 
       <Button v-if="backTarget && showSelectionButtons" color="secondary" icon-primary :text-content="backLabel"
-        @click="router.push(backTarget)">
+              @click="router.push(backTarget)">
         <template #icon-primary>
           <IconPin />
         </template>
