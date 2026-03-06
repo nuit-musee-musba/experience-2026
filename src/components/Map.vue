@@ -21,13 +21,7 @@ const isArtworkActive = computed(() => route.name === "artwork-detail");
 
 const containerRef = ref(null);
 
-let scene,
-  camera,
-  renderer,
-  labelRenderer,
-  camerasManager,
-  animationId,
-  stats;
+let scene, camera, renderer, labelRenderer, camerasManager, animationId, stats;
 let mapPins;
 let allPins = null;
 let mapPlane = null;
@@ -91,7 +85,7 @@ watch(
         const camPos = new THREE.Vector3(
           museum.x,
           museum.y -
-          distance * Math.sin(CONFIG.controls.map.museum.maxPolarAngle),
+            distance * Math.sin(CONFIG.controls.map.museum.maxPolarAngle),
           -9.9 + distance * Math.cos(CONFIG.controls.map.museum.maxPolarAngle),
         );
 
@@ -216,9 +210,6 @@ const initThree = () => {
 
   mapPlane = new MapPlane(scene, requestRender);
   mapPins = new MapPins(scene, handlePinClick, requestRender);
-
-  const axesHelper = new THREE.AxesHelper(500);
-  scene.add(axesHelper);
 
   scene.add(
     new THREE.AmbientLight(
@@ -446,18 +437,34 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="containerRef" class="scene-container" :class="{ 'map-frozen': isArtworkActive }"></div>
+  <div
+    ref="containerRef"
+    class="scene-container"
+    :class="{ 'map-frozen': isArtworkActive }"
+  ></div>
 
-  <button @click="navigateToContinent('europe')" class="continent-btn continent-btn-europe"
-    :class="{ active: activeContinentSlug === 'europe' }" v-if="currentStep === 0">
+  <button
+    @click="navigateToContinent('europe')"
+    class="continent-btn continent-btn-europe"
+    :class="{ active: activeContinentSlug === 'europe' }"
+    v-if="currentStep === 0"
+  >
     <IconArrowRight />
   </button>
-  <button @click="navigateToContinent('amérique')" class="continent-btn continent-btn-america"
-    :class="{ active: activeContinentSlug === 'amérique' }" v-if="currentStep === 0">
+  <button
+    @click="navigateToContinent('amérique')"
+    class="continent-btn continent-btn-america"
+    :class="{ active: activeContinentSlug === 'amérique' }"
+    v-if="currentStep === 0"
+  >
     <IconArrowLeft />
   </button>
-  <button @click="navigateToContinent('océan')" class="continent-btn continent-btn-ocean"
-    :class="{ active: activeContinentSlug === 'océan' }" v-if="currentStep === 0">
+  <button
+    @click="navigateToContinent('océan')"
+    class="continent-btn continent-btn-ocean"
+    :class="{ active: activeContinentSlug === 'océan' }"
+    v-if="currentStep === 0"
+  >
     Océan
   </button>
 
