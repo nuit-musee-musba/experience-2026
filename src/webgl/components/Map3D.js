@@ -23,7 +23,7 @@ export class Map3D {
         y: -2.3,
         z: -5.0,
       },
-      groupPositionZ: -15.85,
+      groupPositionZ: -5.85,
       rotationX: Math.PI / 2,
     };
 
@@ -70,12 +70,12 @@ export class Map3D {
       this.model.scale.set(
         this.params.scale,
         this.params.scale,
-        this.params.scale
+        this.params.scale,
       );
       this.model.position.set(
         this.params.position.x,
         this.params.position.y,
-        this.params.position.z
+        this.params.position.z,
       );
     }
   }
