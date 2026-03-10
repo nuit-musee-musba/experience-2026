@@ -43,7 +43,7 @@ export const CONFIG = {
     },
   },
   camera: {
-    fov: 75,
+    fov: 45,
     near: 0.0001,
     far: 10000,
   },
@@ -82,11 +82,11 @@ export const CONFIG = {
         maxAzimuthAngle: 0.05,
       },
       museum: {
-        maxDistance: 1,
+        maxDistance: 1.5,
         minDistance: 0.6,
-        defaultDistance: 0.7,
+        defaultDistance: 1.3,
         minPolarAngle: (Math.PI / 3) * 0.9,
-        maxPolarAngle: (Math.PI / 3) * 1.1,
+        maxPolarAngle: (Math.PI / 3) * 1.25,
         minAzimuthAngle: -Infinity,
         maxAzimuthAngle: Infinity,
       },
