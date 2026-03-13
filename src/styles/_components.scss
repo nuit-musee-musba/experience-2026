@@ -20,11 +20,10 @@
   z-index: 1000;
 
   .crop-popup {
-    max-width: 90vw;
-    max-height: 90vh;
     display: flex;
     flex-direction: column;
     gap: $spacing-80;
+    align-items: center;
 
     .crop-popup-image {
       flex: 1;
@@ -32,10 +31,13 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      width: fit-content;
 
       img {
-        max-width: 100%;
-        max-height: 70vh;
+        max-width: 70vw;
+        max-height: 90vh;
+        width: auto;
+        height: 80vh;
         object-fit: contain;
       }
     }
@@ -43,6 +45,7 @@
     .crop-popup-content {
       background-color: $white;
       position: relative;
+      align-self: stretch;
 
       .crop-popup-text {
         padding: $spacing-80 $spacing-56;
