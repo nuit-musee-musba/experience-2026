@@ -44,10 +44,6 @@ const continentPositions = {
     camera: new THREE.Vector3(-220, -16, 100),
     target: new THREE.Vector3(-220, -16, -9.9),
   },
-  // océan: {
-  //   camera: new THREE.Vector3(50, -30, 50),
-  //   target: new THREE.Vector3(50, -30, -9.9),
-  // },
 };
 
 watch(
@@ -459,14 +455,6 @@ defineExpose({
   >
     <IconArrowLeft />
   </button>
-  <!-- <button
-    @click="navigateToContinent('océan')"
-    class="continent-btn continent-btn-ocean"
-    :class="{ active: activeContinentSlug === 'océan' }"
-    v-if="currentStep === 0"
-  >
-    Océan
-  </button> -->
 
   <SmartNavbar />
 
