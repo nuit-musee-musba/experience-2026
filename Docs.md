@@ -13,10 +13,10 @@ Vous pouvez contacter par mail [billel.tighidet@mmibordeaux.com](mailto:billel.t
 ## Mettre à jour les données de l'expérience
 Une fois que vous avez mis à jour le contenu depuis strapi, vous devez exporter le JSON.
 
-1. Ouvrir le [lien d'export de strapi](https://useful-car-6cfb564836.strapiapp.com/api/continents?populate[cities][populate][museums][populate][images]=true&populate[cities][populate][museums][populate][artworks][populate][images][populate]=*)
+1. Ouvrir le [lien d'export de strapi](https://useful-car-6cfb564836.strapiapp.com/api/continents?sort=id:DESC&populate[cities][populate][museums][populate][images]=true&populate[cities][populate][museums][populate][artworks][populate][images][populate]=*)
 2. copier le contenu
 3. coller dans le fichier `public/content/content.json`
 4. créer un commit portant le nom `update content`
 5. envoyer sur la branche `main`
 
-
+**il est important d'avoir continents?sort=id:DESC dans l'url sinon l'Amérique arrive en premier**

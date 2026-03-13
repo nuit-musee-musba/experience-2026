@@ -1,445 +1,6 @@
 {
   "data": [
     {
-      "id": 10,
-      "documentId": "gxl51dxqfsy3jrx8a63s6857",
-      "Name": "Amérique",
-      "createdAt": "2026-01-15T14:05:02.154Z",
-      "updatedAt": "2026-03-10T15:59:11.349Z",
-      "publishedAt": "2026-03-10T15:59:11.734Z",
-      "locale": "fr",
-      "cities": [
-        {
-          "id": 39,
-          "documentId": "szakdeso8fnbssxd35phb7g9",
-          "name": "New York",
-          "x": -264.5,
-          "y": -6,
-          "slug": "newyork",
-          "createdAt": "2026-01-14T10:19:26.173Z",
-          "updatedAt": "2026-03-10T15:48:48.221Z",
-          "publishedAt": "2026-03-10T15:48:48.533Z",
-          "locale": "fr",
-          "museums": [
-            {
-              "id": 113,
-              "documentId": "c89vj1e0epu5ia1uv0mf97vj",
-              "name": "Pavillon français",
-              "slug": "pavillonfrancais",
-              "x": -264.5,
-              "y": -5.5,
-              "model3d": "new_york_pavillon_francais.glb",
-              "description": "À l'occasion de l'Exposition universelle de New-York en 1939, la réalisation du pavillon officiel de la France, dit aussi Pavillon français, est confiée aux architectes Pierre Patout et Roger-Henri Expert, deux figures majeures de la scène architecturale française. Ensemble, il pensent la réalisation d'un bâtiment prenant la forme d'un éventail, mis en valeur par un plan d'eau. ",
-              "adress": "Flushing Meadows - Corona Park",
-              "createdAt": "2026-01-14T10:21:12.327Z",
-              "updatedAt": "2026-03-10T15:49:32.092Z",
-              "publishedAt": "2026-03-10T15:49:32.445Z",
-              "locale": "fr",
-              "actualname": "Pavillon français",
-              "images": [
-                {
-                  "id": 180,
-                  "documentId": "fs380v0tazmwsd6o8dujmiop",
-                  "file": "newyork_pavillonfrancais_1.webp",
-                  "description": "Pavillon de la France à l'Exposition internationale de New York, 1939 : plan général de la salle d'audition et de ses dépendances, mai 1938, encre sur papier, Paris, Cité de l'architecture et du patrimoine. ",
-                  "copyright": "© Fonds Expert, RogerHenri (1882-1955). Académie d'architecture, Cité de l'architecture et du patrimoine, Archives d'architecture contemporaine",
-                  "createdAt": "2026-01-14T15:28:03.315Z",
-                  "updatedAt": "2026-01-16T10:27:52.854Z",
-                  "publishedAt": "2026-01-16T10:27:53.174Z",
-                  "locale": "fr",
-                  "legend": null
-                },
-                {
-                  "id": 157,
-                  "documentId": "jronkujqhmyn195khk7p41vc",
-                  "file": "newyork_pavillonfrancais_2.webp",
-                  "description": "Pavillon de la France à l'Exposition internationale de New York, 1939 : vue extérieure d'ensemble, s.d., photographie entrecollée sur papier, Paris, Cité de l'architecture et du patrimoine. ",
-                  "copyright": "© Fonds Expert, Roger-Henri (1882-1955). Académie d'architecture, Cité de l'architecture et du patrimoine, Archives d'architecture contemporaine",
-                  "createdAt": "2026-01-14T15:29:02.089Z",
-                  "updatedAt": "2026-01-16T09:18:14.732Z",
-                  "publishedAt": "2026-01-16T09:18:15.074Z",
-                  "locale": "fr",
-                  "legend": null
-                }
-              ],
-              "artworks": [
-                {
-                  "id": 31,
-                  "documentId": "jkrfg565ejse3dm3aewvfmaa",
-                  "name": "La Gloire de la République",
-                  "artist": "Jean Dupas",
-                  "slug": "gloiredelarepublique",
-                  "description": "Les deux architectes confient à Jean Dupas la réalisation de la grande fresque destiée à orner le prestigieux hall d'onneur du pavillon. Les artistes se connaissent et ont déjà travaillé ensemble : dès 1925 dans le cadre du Pavillon du collectionneur de 1925 et, plus récemment, à l'occasion du décor paquebot Normandie. \n\nDans une niche de 7 x 8 m, Jean Dupas dessine une composition représentant la Gloire de la République, transcrite en panneaux de laque par Jean Dunand. ",
-                  "conservation": "Disparus",
-                  "technique": "Gouache et aquarelle sur papier",
-                  "year": "1939",
-                  "createdAt": "2026-01-14T11:04:42.905Z",
-                  "updatedAt": "2026-01-14T15:34:50.795Z",
-                  "publishedAt": "2026-01-14T15:34:51.042Z",
-                  "locale": "fr",
-                  "images": [
-                    {
-                      "id": 182,
-                      "documentId": "tf6xstdrjvzeo59t4h01a17a",
-                      "file": "newyork_pavillonfrancais_lagloiredelarepublique_1.webp",
-                      "description": "Jean Dunand d'après les cartons de Jean Dupas, La Gloire de la République, 1939, laque, New York, Hall d'honneur du Pavillon français de l'exposition internationale de New York de 1939 (reproduit dans Plaisir de France, art, ameublement, jardins, mode, tourisme, mondanités, mai 1939). ",
-                      "copyright": "©ADAGP Paris, 2026, BNF",
-                      "createdAt": "2026-01-14T15:31:51.336Z",
-                      "updatedAt": "2026-01-16T10:30:34.789Z",
-                      "publishedAt": "2026-01-16T10:30:35.114Z",
-                      "locale": "fr",
-                      "legend": null,
-                      "crops": [],
-                      "localizations": []
-                    },
-                    {
-                      "id": 161,
-                      "documentId": "adgh3bhossa6xqbp6ip7dcee",
-                      "file": "newyork_pavillonfrancais_lagloiredelarepublique_2.webp",
-                      "description": "Pavillon de la France à l'Exposition internationale de New York, 1939 : perspective intérieure de la rotonde d'honneur, s.d., gouache et aquarelle sur papier, Paris, Cité de l'architecture et du patrimoine. ",
-                      "copyright": "© Fonds Expert, Roger-Henri (1882-1955). Académie d'architecture, Cité de l'architecture et du patrimoine, Archives d'architecture contemporaine",
-                      "createdAt": "2026-01-14T15:34:16.941Z",
-                      "updatedAt": "2026-01-16T09:22:42.277Z",
-                      "publishedAt": "2026-01-16T09:22:42.608Z",
-                      "locale": "fr",
-                      "legend": null,
-                      "crops": [],
-                      "localizations": []
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": 48,
-          "documentId": "authiyyy1wgs0ibpmgb3ydj5",
-          "name": "Paquebot Normandie",
-          "x": -150,
-          "y": 0,
-          "slug": "pqbtnormandie",
-          "createdAt": "2026-01-14T10:27:37.901Z",
-          "updatedAt": "2026-03-13T00:42:26.018Z",
-          "publishedAt": "2026-03-13T00:42:26.344Z",
-          "locale": "fr",
-          "museums": [
-            {
-              "id": 122,
-              "documentId": "b44zbt0ataw04blrks6wh9eu",
-              "name": "Paquebot Normandie",
-              "slug": "pqbtnormandie",
-              "x": -150,
-              "y": 0,
-              "model3d": null,
-              "description": "Au début des années 1930, les derniers paquebots des compagnies concurrentes allemandes et italiennes obligent la France à se lancer dans la construction d'un nouveau paquebot plus compétitif. C'est dans ce contexte qu'est lancé  le 29 octobre 1932, le paquebot Normandie, appelé aussi le \"Géant des Mers\" : mis en service en 1935, il devient le plus grand paquebot du monde.  Avec la 2nde guerre mondiale, sa destination change radicalement : réquisionné cinq jours après Pearl Harbor pour le transport des troupes américaines,  il sera en proie aux flammes en février 1942 et l'épave sera démolie. Une vente aux enchêres organisée par le gouvernement américain disperse les différents décors, dont ceux de Dupas. \n\nAmbassadeur de l'Art français, le paquebot réunit les plus artistes du moment, coordonnés sous la directions des architectes Pierre Patout, Henri Pacon, Richard Bouwens van der Boijen et Roger-Henri Expert. Le décor du Grand salon de Première classe est confié à Jean Dupas. Il crée une oeuvre monumentale sur le thème de l'Histoire de la Navigation, répartie en cinq panneaux :  l'Enlèvement d'Europe,  la Naissance d'Aphrodite, le Char de Thétis, et le Char de Poésidon L'ensemble de 400 m2 est transcrit en glace polie de Saint-Gobain, à rehauts d'or et d'argent,aux notes roses et bleues et au miroir gris et noir, exécutée par le maître-verrier Jacques-Charles Champigneulle (1907-1955). ",
-              "adress": "Océan Atlantique",
-              "createdAt": "2026-01-14T10:24:45.661Z",
-              "updatedAt": "2026-03-13T00:42:32.564Z",
-              "publishedAt": "2026-03-13T00:42:32.933Z",
-              "locale": "fr",
-              "actualname": null,
-              "images": [
-                {
-                  "id": 209,
-                  "documentId": "psxgvcf502cs8w2mb4wz66hg",
-                  "file": "oceanatlantique_paquebotnormandie_1.webp",
-                  "description": "Le paquebot Normandie (1935) remorqué vers la forme-écluse\nJoubert dans le bassin de Penhoët à Saint-Nazaire, 4 mai 1935, 1935, photographie, Saint-Nazaire, Collection Saint-Nazaire",
-                  "copyright": "© Photo : inconnu. Collection Saint Nazaire Agglomération Tourisme, Écomusée, Fonds Chantiers de l'Atlantique",
-                  "createdAt": "2026-01-14T15:36:03.418Z",
-                  "updatedAt": "2026-01-16T10:51:23.549Z",
-                  "publishedAt": "2026-01-16T10:51:23.886Z",
-                  "locale": "fr",
-                  "legend": null
-                },
-                {
-                  "id": 164,
-                  "documentId": "qhr892p8q21me9bum92h5xps",
-                  "file": "oceanatlantique_paquebotnormandie_2.wepb",
-                  "description": "Le Grand salon du paquebot Normandie, 1940-1942, photographie, Bordeaux, La Mémoire de Bordeaux/Collection Pierre Bytchowsky.",
-                  "copyright": "© Photo : La Mémoire de Bordeaux, Collection Pierre Bytchowsky ",
-                  "createdAt": "2026-01-14T15:39:19.876Z",
-                  "updatedAt": "2026-01-16T09:32:08.947Z",
-                  "publishedAt": "2026-01-16T09:32:09.202Z",
-                  "locale": "fr",
-                  "legend": null
-                }
-              ],
-              "artworks": [
-                {
-                  "id": 72,
-                  "documentId": "pzlco1abt4gfgw9pz90ctf0d",
-                  "name": "L'Histoire de la Navigation",
-                  "artist": "Jean Dupas",
-                  "slug": "navigationhistoire",
-                  "description": "Pour compléter le décor du Grand Salon, un cinquième panneau décoratif imaginé\npar Jean Dupas orne une porte coulissante qui conduit au Fumoir. Il s'agit d'un bas\nrelief sur laque dorée représentant de gauche à droite ; Le Char de l'Aurore, Les\nQuatre Vents, le Char de La Nuit et au centre la Rose des Vents.",
-                  "conservation": "Partiellement conservé",
-                  "technique": "Verre, peinture, or, argent, feuille de palladium",
-                  "year": "1935",
-                  "createdAt": "2026-01-14T10:25:12.821Z",
-                  "updatedAt": "2026-01-16T10:57:26.630Z",
-                  "publishedAt": "2026-01-16T10:57:26.943Z",
-                  "locale": "fr",
-                  "images": [
-                    {
-                      "id": 224,
-                      "documentId": "pwod9wbd5ai72i7ys5xt9w4k",
-                      "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_2.webp",
-                      "description": "Jacques-Charles Champigneulle d'après les dessins de Jean Dupas, L'Histoire de la Navigation, 1935, verre peint, New York, The Metropolitan Museum of Art (détail).",
-                      "copyright": "©The Metropolitan Museum of Art, Dist.GrandPalaisRmn ©adagp,Paris, 2026",
-                      "createdAt": "2026-01-14T15:45:28.059Z",
-                      "updatedAt": "2026-01-16T15:21:03.450Z",
-                      "publishedAt": "2026-01-16T15:21:03.694Z",
-                      "locale": "fr",
-                      "legend": null,
-                      "crops": [
-                        {
-                          "id": 40,
-                          "documentId": "u662u2ljomi9m54hhxqcaszz",
-                          "description": "Poséidon tient en son pouvoir l'amphore où sont retenus les vagues. Appuyé sur une lyre, son geste et son expression autoritaire rappellent que les sirènes lui doivent obéissance avant de faire entendre leur chant ensorcelant. ",
-                          "artwork_location_x": null,
-                          "artwork_location_y": null,
-                          "artwork_location_w": null,
-                          "artwork_location_h": null,
-                          "createdAt": "2026-01-16T14:51:33.169Z",
-                          "updatedAt": "2026-01-16T15:20:58.630Z",
-                          "publishedAt": "2026-01-16T15:20:58.835Z",
-                          "locale": "fr",
-                          "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_crop_1.webp",
-                          "filename": null
-                        },
-                        {
-                          "id": 37,
-                          "documentId": "ee6elmieiwstvh6ymyln53si",
-                          "description": "L'une d'elle située juste derrière lui jette un regard d'envie vers les nombreux vaisseaux qui l'entourent. ",
-                          "artwork_location_x": null,
-                          "artwork_location_y": null,
-                          "artwork_location_w": null,
-                          "artwork_location_h": null,
-                          "createdAt": "2026-01-16T15:18:53.056Z",
-                          "updatedAt": "2026-01-16T15:18:53.056Z",
-                          "publishedAt": "2026-01-16T15:18:53.234Z",
-                          "locale": "fr",
-                          "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_crop_2.webp",
-                          "filename": null
-                        },
-                        {
-                          "id": 39,
-                          "documentId": "v8i5kwjnx8eboj2chkh27fm6",
-                          "description": "Au premier plan à droite, les compagnons du dieu, les Tritons, s'ébattent joyeusement.",
-                          "artwork_location_x": null,
-                          "artwork_location_y": null,
-                          "artwork_location_w": null,
-                          "artwork_location_h": null,
-                          "createdAt": "2026-01-16T15:20:28.058Z",
-                          "updatedAt": "2026-01-16T15:20:28.058Z",
-                          "publishedAt": "2026-01-16T15:20:28.221Z",
-                          "locale": "fr",
-                          "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_crop_3.webp",
-                          "filename": null
-                        }
-                      ],
-                      "localizations": []
-                    },
-                    {
-                      "id": 65,
-                      "documentId": "jeu5auah5onpvzm0phkbuvuh",
-                      "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_1.webp",
-                      "description": "Jacques-Charles Champigneulle d'après les dessins de Jean Dupas, L'Histoire de la Navigation, 1935, verre peint, New York, The Metropolitan Museum of Art.",
-                      "copyright": "©The Metropolitan Museum of Art, Dist.GrandPalaisRmn ©adagp,Paris, 2026",
-                      "createdAt": "2026-01-14T15:44:03.092Z",
-                      "updatedAt": "2026-01-14T15:44:03.092Z",
-                      "publishedAt": "2026-01-14T15:44:03.329Z",
-                      "locale": "fr",
-                      "legend": null,
-                      "crops": [],
-                      "localizations": []
-                    },
-                    {
-                      "id": 212,
-                      "documentId": "p6zhbynzy97zefklvwo4o1u7",
-                      "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_3.webp",
-                      "description": "Décor mural du grand salon de première classe du paquebot Normandie (1935) réalisé par Jacques-Charles Champigneulle d'après les dessins de Jean Dupas, L'Histoire de la",
-                      "copyright": "© ADAGP Paris, 2026, photo : inconnu. Collection Saint-Nazaire Agglomération Tourisme, Écomusée, Fonds Chantiers de l'Atlantique",
-                      "createdAt": "2026-01-14T15:53:03.896Z",
-                      "updatedAt": "2026-01-16T10:53:14.394Z",
-                      "publishedAt": "2026-01-16T10:53:14.713Z",
-                      "locale": "fr",
-                      "legend": null,
-                      "crops": [],
-                      "localizations": []
-                    },
-                    {
-                      "id": 213,
-                      "documentId": "sdh6fl65jax8dqm3cef55vm2",
-                      "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_4.webp",
-                      "description": "Jean Dupas, Dessin préparatoire pour Le char de Thétis , vers 1934, crayon et fusain, collection particulière.",
-                      "copyright": "© ADAGP Paris, 2026, photo : inconnu. Collection Saint-Nazaire Agglomération Tourisme, Écomusée, Fonds Chantiers de l'Atlantique",
-                      "createdAt": "2026-01-14T15:54:11.002Z",
-                      "updatedAt": "2026-01-16T10:53:48.416Z",
-                      "publishedAt": "2026-01-16T10:53:48.736Z",
-                      "locale": "fr",
-                      "legend": null,
-                      "crops": [],
-                      "localizations": []
-                    },
-                    {
-                      "id": 216,
-                      "documentId": "cp25ofhsluepo63z0hojpcl0",
-                      "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_7.webp",
-                      "description": "première classe du paquebot Normandie (1935), 1935, photographie, Saint-Nazaire, Collection Saint-Nazaire Agglomération Tourisme-Écomusée.",
-                      "copyright": "© Photo : inconnu. Collection Saint-Nazaire Agglomération Tourisme, Écomusée, Fonds Chantiers de l'Atlantique",
-                      "createdAt": "2026-01-14T15:56:17.459Z",
-                      "updatedAt": "2026-01-16T10:54:39.491Z",
-                      "publishedAt": "2026-01-16T10:54:39.807Z",
-                      "locale": "fr",
-                      "legend": null,
-                      "crops": [],
-                      "localizations": []
-                    },
-                    {
-                      "id": 219,
-                      "documentId": "hfv3yc8dy5v4zmymayckboyv",
-                      "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_6.webp",
-                      "description": "Champigneulle d'après les dessins de Jean Dupas, L'enlèvement d'Europe , panneau décoratif provenant du grand salon de première classe du paquebot Normandie , 1935",
-                      "copyright": "© ADAGP Paris, 2026, photo : Jean-Claude Lemée, Collection Saint-Nazaire Agglomération Tourisme-Écomusée",
-                      "createdAt": "2026-01-14T15:59:51.930Z",
-                      "updatedAt": "2026-01-16T10:56:53.699Z",
-                      "publishedAt": "2026-01-16T10:56:54.024Z",
-                      "locale": "fr",
-                      "legend": null,
-                      "crops": [],
-                      "localizations": []
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": 47,
-          "documentId": "unzvqpabcoii8dfd9rr2duwg",
-          "name": "Paquebot Île-de-France",
-          "x": -170,
-          "y": -10,
-          "slug": "pqbtidf",
-          "createdAt": "2026-01-14T10:28:10.612Z",
-          "updatedAt": "2026-03-13T00:41:13.214Z",
-          "publishedAt": "2026-03-13T00:41:13.551Z",
-          "locale": "fr",
-          "museums": [
-            {
-              "id": 121,
-              "documentId": "n6i6jw8aof80gagk34c8bb20",
-              "name": "Paquebot Ile-de-France",
-              "slug": "pqbtidf",
-              "x": -170,
-              "y": -10,
-              "model3d": null,
-              "description": "Symbole d'un véritable raffinement à la française, le paquebot Ile-de-France est construit en 1927 par la Compagnie générale transatlantique, qui souhaite redorer son blason et faire face à la concurrence. Véritable vitrine de l'Art déco,  il incarne le premier grand projet de navire de luxe français après la Première Guerre mondialele. Son décor est confié aux meilleurs artistes du moments afin de créer une atmosphère de luxe et d'élégance, sur le thème de la région Ile-de-France. On y retouve notamment Jacques-Émile Ruhlmann, Mathurin Méheut, Louis Süe, André Mare, Raymond Subes, Yvonne Jean-Haffen et Jean Dupas. Le paquebot est réquisitionné durant la Seconde guerre mondiale, puis reprend brièvement les voyages transatlantiques, avant d'être définitivement vendu puis détruit pour les besoins de scènes de cinéma.  ",
-              "adress": "Océan Atlantique",
-              "createdAt": "2026-01-14T10:28:29.363Z",
-              "updatedAt": "2026-03-13T00:41:29.073Z",
-              "publishedAt": "2026-03-13T00:41:29.428Z",
-              "locale": "fr",
-              "actualname": "Paquebot Ile-de-France",
-              "images": [
-                {
-                  "id": 221,
-                  "documentId": "owmh4fkrlcx5jwn7m07cropz",
-                  "file": "oceanatlantique_paquebotiledefrance_2.webp",
-                  "description": null,
-                  "copyright": "© Photo : inconnu. Collection Saint-Nazaire Agglomération Tourisme, Écomusée, Fonds Chantiers de l'Atlantique",
-                  "createdAt": "2026-01-14T15:27:02.909Z",
-                  "updatedAt": "2026-01-16T11:00:01.904Z",
-                  "publishedAt": "2026-01-16T11:00:02.237Z",
-                  "locale": "fr",
-                  "legend": "Départ du paquebot Ile-de-France (1927) de Saint-Nazaire, 29 mai 1927, 1927, photographie, Saint-Nazaire, Collection Saint-Nazaire Agglomération Tourisme-Écomusée."
-                },
-                {
-                  "id": 222,
-                  "documentId": "c3f8i336tkmknehd9i0jkgdd",
-                  "file": "oceanatlantique_paquebotiledefrance_1.webp",
-                  "description": "Parmi elles, le salon de thé agencé par Ruhlmann comprend un grand décor de Dupas : il s'agit de Sylvie, faisant référence au poème éponyme de Gérard de Nerval consacré à ses souvenirs d'enfance en Ile-de-France. \n",
-                  "copyright": "© Photo : inconnu. Collection Saint-Nazaire Agglomération Tourisme, Écomusée, Fonds Chantiers de l'Atlantique",
-                  "createdAt": "2026-01-14T15:21:10.229Z",
-                  "updatedAt": "2026-01-16T11:00:17.710Z",
-                  "publishedAt": "2026-01-16T11:00:18.047Z",
-                  "locale": "fr",
-                  "legend": "Le salon de thé de première classe du paquebot Ile-de-France (1927), conçu par Jacques-Émile Ruhlmann, 1927, photographie, Saint-Nazaire, Collection Saint-Nazaire Agglomération Tourisme-Écomusée."
-                }
-              ],
-              "artworks": [
-                {
-                  "id": 39,
-                  "documentId": "hlspgsrt83fnlh34gr8qggts",
-                  "name": "Sylvie",
-                  "artist": "Jean Dupas",
-                  "slug": "sylvie",
-                  "description": "Parmi elles, le salon de thé agencé par Ruhlmann comprend un grand décor de\nDupas : il s'agit de Sylvie, faisant référence au poème éponyme de Gérard de Nerval\nconsacré à ses souvenirs d'enfance en Ile-de-France.",
-                  "conservation": "Disparu",
-                  "technique": "Encre et crayon sur papier",
-                  "year": "1927",
-                  "createdAt": "2026-01-14T10:33:56.741Z",
-                  "updatedAt": "2026-01-14T16:03:51.588Z",
-                  "publishedAt": "2026-01-14T16:03:51.919Z",
-                  "locale": "fr",
-                  "images": [
-                    {
-                      "id": 225,
-                      "documentId": "efavty224zwa8nqfn534e5yw",
-                      "file": "oceanatlantique_paquebotiledefrance_sylvie_1.webp",
-                      "description": "Dessin préparatoire pour Sylvie, vers 1927, encre et crayon sur papier, collection particulière.",
-                      "copyright": "© ADAGP Paris, 2026, photo : Christie's Images, Bridgeman Images ",
-                      "createdAt": "2026-01-14T15:33:09.045Z",
-                      "updatedAt": "2026-01-16T15:27:35.252Z",
-                      "publishedAt": "2026-01-16T15:27:35.582Z",
-                      "locale": "fr",
-                      "legend": "Dessin préparatoire pour Sylvie, vers 1927, encre et crayon sur papier, collection particulière.",
-                      "crops": [
-                        {
-                          "id": 42,
-                          "documentId": "ey8d900k7wftiva4fj7p6mzt",
-                          "description": "La scène de gauche évoque le souvenir d'une journée de promenade à cheval en compagnie de Sylvie. ",
-                          "artwork_location_x": null,
-                          "artwork_location_y": null,
-                          "artwork_location_w": null,
-                          "artwork_location_h": null,
-                          "createdAt": "2026-01-16T15:26:56.171Z",
-                          "updatedAt": "2026-01-16T15:26:56.171Z",
-                          "publishedAt": "2026-01-16T15:26:56.398Z",
-                          "locale": "fr",
-                          "file": "oceanatlantique_paquebotiledefrance_sylvie_1_crop_2.webp",
-                          "filename": null
-                        },
-                        {
-                          "id": 56,
-                          "documentId": "fejouiwwfovt81876ak8yelp",
-                          "description": "À droite, des garçons jouent au tir à l'arc. Au centre, la jeune Adrienne chante une romance.",
-                          "artwork_location_x": null,
-                          "artwork_location_y": null,
-                          "artwork_location_w": null,
-                          "artwork_location_h": null,
-                          "createdAt": "2026-01-16T15:27:30.112Z",
-                          "updatedAt": "2026-03-10T15:45:00.867Z",
-                          "publishedAt": "2026-03-10T15:45:01.143Z",
-                          "locale": "fr",
-                          "file": "oceanatlantique_paquebotiledefrance_sylvie_1_crop_1.webp",
-                          "filename": null
-                        }
-                      ],
-                      "localizations": []
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
       "id": 11,
       "documentId": "flx1z9468hxv3lwnbpvjmsht",
       "Name": "Europe",
@@ -449,15 +10,15 @@
       "locale": "fr",
       "cities": [
         {
-          "id": 35,
+          "id": 50,
           "documentId": "w1v80p00bl22zt7dgpysz6hw",
           "name": "Albert",
           "x": -25,
-          "y": 28,
+          "y": 31,
           "slug": "albert",
           "createdAt": "2026-01-14T10:09:33.801Z",
-          "updatedAt": "2026-03-10T15:17:51.657Z",
-          "publishedAt": "2026-03-10T15:17:51.987Z",
+          "updatedAt": "2026-03-13T11:26:56.723Z",
+          "publishedAt": "2026-03-13T11:26:57.032Z",
           "locale": "fr",
           "museums": [
             {
@@ -1150,15 +711,15 @@
           ]
         },
         {
-          "id": 38,
+          "id": 49,
           "documentId": "zd6s3i5lv49lj7n0b6aajwyu",
           "name": "Paris",
-          "x": -28,
-          "y": 22,
+          "x": -26,
+          "y": 25,
           "slug": "paris",
           "createdAt": "2026-01-14T10:37:22.588Z",
-          "updatedAt": "2026-03-10T15:32:18.093Z",
-          "publishedAt": "2026-03-10T15:32:18.397Z",
+          "updatedAt": "2026-03-13T11:26:35.385Z",
+          "publishedAt": "2026-03-13T11:26:35.705Z",
           "locale": "fr",
           "museums": [
             {
@@ -1788,6 +1349,445 @@
                       "locale": "fr",
                       "legend": null,
                       "crops": [],
+                      "localizations": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "documentId": "gxl51dxqfsy3jrx8a63s6857",
+      "Name": "Amérique",
+      "createdAt": "2026-01-15T14:05:02.154Z",
+      "updatedAt": "2026-03-10T15:59:11.349Z",
+      "publishedAt": "2026-03-10T15:59:11.734Z",
+      "locale": "fr",
+      "cities": [
+        {
+          "id": 39,
+          "documentId": "szakdeso8fnbssxd35phb7g9",
+          "name": "New York",
+          "x": -264.5,
+          "y": -6,
+          "slug": "newyork",
+          "createdAt": "2026-01-14T10:19:26.173Z",
+          "updatedAt": "2026-03-10T15:48:48.221Z",
+          "publishedAt": "2026-03-10T15:48:48.533Z",
+          "locale": "fr",
+          "museums": [
+            {
+              "id": 113,
+              "documentId": "c89vj1e0epu5ia1uv0mf97vj",
+              "name": "Pavillon français",
+              "slug": "pavillonfrancais",
+              "x": -264.5,
+              "y": -5.5,
+              "model3d": "new_york_pavillon_francais.glb",
+              "description": "À l'occasion de l'Exposition universelle de New-York en 1939, la réalisation du pavillon officiel de la France, dit aussi Pavillon français, est confiée aux architectes Pierre Patout et Roger-Henri Expert, deux figures majeures de la scène architecturale française. Ensemble, il pensent la réalisation d'un bâtiment prenant la forme d'un éventail, mis en valeur par un plan d'eau. ",
+              "adress": "Flushing Meadows - Corona Park",
+              "createdAt": "2026-01-14T10:21:12.327Z",
+              "updatedAt": "2026-03-10T15:49:32.092Z",
+              "publishedAt": "2026-03-10T15:49:32.445Z",
+              "locale": "fr",
+              "actualname": "Pavillon français",
+              "images": [
+                {
+                  "id": 180,
+                  "documentId": "fs380v0tazmwsd6o8dujmiop",
+                  "file": "newyork_pavillonfrancais_1.webp",
+                  "description": "Pavillon de la France à l'Exposition internationale de New York, 1939 : plan général de la salle d'audition et de ses dépendances, mai 1938, encre sur papier, Paris, Cité de l'architecture et du patrimoine. ",
+                  "copyright": "© Fonds Expert, RogerHenri (1882-1955). Académie d'architecture, Cité de l'architecture et du patrimoine, Archives d'architecture contemporaine",
+                  "createdAt": "2026-01-14T15:28:03.315Z",
+                  "updatedAt": "2026-01-16T10:27:52.854Z",
+                  "publishedAt": "2026-01-16T10:27:53.174Z",
+                  "locale": "fr",
+                  "legend": null
+                },
+                {
+                  "id": 157,
+                  "documentId": "jronkujqhmyn195khk7p41vc",
+                  "file": "newyork_pavillonfrancais_2.webp",
+                  "description": "Pavillon de la France à l'Exposition internationale de New York, 1939 : vue extérieure d'ensemble, s.d., photographie entrecollée sur papier, Paris, Cité de l'architecture et du patrimoine. ",
+                  "copyright": "© Fonds Expert, Roger-Henri (1882-1955). Académie d'architecture, Cité de l'architecture et du patrimoine, Archives d'architecture contemporaine",
+                  "createdAt": "2026-01-14T15:29:02.089Z",
+                  "updatedAt": "2026-01-16T09:18:14.732Z",
+                  "publishedAt": "2026-01-16T09:18:15.074Z",
+                  "locale": "fr",
+                  "legend": null
+                }
+              ],
+              "artworks": [
+                {
+                  "id": 31,
+                  "documentId": "jkrfg565ejse3dm3aewvfmaa",
+                  "name": "La Gloire de la République",
+                  "artist": "Jean Dupas",
+                  "slug": "gloiredelarepublique",
+                  "description": "Les deux architectes confient à Jean Dupas la réalisation de la grande fresque destiée à orner le prestigieux hall d'onneur du pavillon. Les artistes se connaissent et ont déjà travaillé ensemble : dès 1925 dans le cadre du Pavillon du collectionneur de 1925 et, plus récemment, à l'occasion du décor paquebot Normandie. \n\nDans une niche de 7 x 8 m, Jean Dupas dessine une composition représentant la Gloire de la République, transcrite en panneaux de laque par Jean Dunand. ",
+                  "conservation": "Disparus",
+                  "technique": "Gouache et aquarelle sur papier",
+                  "year": "1939",
+                  "createdAt": "2026-01-14T11:04:42.905Z",
+                  "updatedAt": "2026-01-14T15:34:50.795Z",
+                  "publishedAt": "2026-01-14T15:34:51.042Z",
+                  "locale": "fr",
+                  "images": [
+                    {
+                      "id": 182,
+                      "documentId": "tf6xstdrjvzeo59t4h01a17a",
+                      "file": "newyork_pavillonfrancais_lagloiredelarepublique_1.webp",
+                      "description": "Jean Dunand d'après les cartons de Jean Dupas, La Gloire de la République, 1939, laque, New York, Hall d'honneur du Pavillon français de l'exposition internationale de New York de 1939 (reproduit dans Plaisir de France, art, ameublement, jardins, mode, tourisme, mondanités, mai 1939). ",
+                      "copyright": "©ADAGP Paris, 2026, BNF",
+                      "createdAt": "2026-01-14T15:31:51.336Z",
+                      "updatedAt": "2026-01-16T10:30:34.789Z",
+                      "publishedAt": "2026-01-16T10:30:35.114Z",
+                      "locale": "fr",
+                      "legend": null,
+                      "crops": [],
+                      "localizations": []
+                    },
+                    {
+                      "id": 161,
+                      "documentId": "adgh3bhossa6xqbp6ip7dcee",
+                      "file": "newyork_pavillonfrancais_lagloiredelarepublique_2.webp",
+                      "description": "Pavillon de la France à l'Exposition internationale de New York, 1939 : perspective intérieure de la rotonde d'honneur, s.d., gouache et aquarelle sur papier, Paris, Cité de l'architecture et du patrimoine. ",
+                      "copyright": "© Fonds Expert, Roger-Henri (1882-1955). Académie d'architecture, Cité de l'architecture et du patrimoine, Archives d'architecture contemporaine",
+                      "createdAt": "2026-01-14T15:34:16.941Z",
+                      "updatedAt": "2026-01-16T09:22:42.277Z",
+                      "publishedAt": "2026-01-16T09:22:42.608Z",
+                      "locale": "fr",
+                      "legend": null,
+                      "crops": [],
+                      "localizations": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 48,
+          "documentId": "authiyyy1wgs0ibpmgb3ydj5",
+          "name": "Paquebot Normandie",
+          "x": -150,
+          "y": 0,
+          "slug": "pqbtnormandie",
+          "createdAt": "2026-01-14T10:27:37.901Z",
+          "updatedAt": "2026-03-13T00:42:26.018Z",
+          "publishedAt": "2026-03-13T00:42:26.344Z",
+          "locale": "fr",
+          "museums": [
+            {
+              "id": 122,
+              "documentId": "b44zbt0ataw04blrks6wh9eu",
+              "name": "Paquebot Normandie",
+              "slug": "pqbtnormandie",
+              "x": -150,
+              "y": 0,
+              "model3d": null,
+              "description": "Au début des années 1930, les derniers paquebots des compagnies concurrentes allemandes et italiennes obligent la France à se lancer dans la construction d'un nouveau paquebot plus compétitif. C'est dans ce contexte qu'est lancé  le 29 octobre 1932, le paquebot Normandie, appelé aussi le \"Géant des Mers\" : mis en service en 1935, il devient le plus grand paquebot du monde.  Avec la 2nde guerre mondiale, sa destination change radicalement : réquisionné cinq jours après Pearl Harbor pour le transport des troupes américaines,  il sera en proie aux flammes en février 1942 et l'épave sera démolie. Une vente aux enchêres organisée par le gouvernement américain disperse les différents décors, dont ceux de Dupas. \n\nAmbassadeur de l'Art français, le paquebot réunit les plus artistes du moment, coordonnés sous la directions des architectes Pierre Patout, Henri Pacon, Richard Bouwens van der Boijen et Roger-Henri Expert. Le décor du Grand salon de Première classe est confié à Jean Dupas. Il crée une oeuvre monumentale sur le thème de l'Histoire de la Navigation, répartie en cinq panneaux :  l'Enlèvement d'Europe,  la Naissance d'Aphrodite, le Char de Thétis, et le Char de Poésidon L'ensemble de 400 m2 est transcrit en glace polie de Saint-Gobain, à rehauts d'or et d'argent,aux notes roses et bleues et au miroir gris et noir, exécutée par le maître-verrier Jacques-Charles Champigneulle (1907-1955). ",
+              "adress": "Océan Atlantique",
+              "createdAt": "2026-01-14T10:24:45.661Z",
+              "updatedAt": "2026-03-13T00:42:32.564Z",
+              "publishedAt": "2026-03-13T00:42:32.933Z",
+              "locale": "fr",
+              "actualname": null,
+              "images": [
+                {
+                  "id": 209,
+                  "documentId": "psxgvcf502cs8w2mb4wz66hg",
+                  "file": "oceanatlantique_paquebotnormandie_1.webp",
+                  "description": "Le paquebot Normandie (1935) remorqué vers la forme-écluse\nJoubert dans le bassin de Penhoët à Saint-Nazaire, 4 mai 1935, 1935, photographie, Saint-Nazaire, Collection Saint-Nazaire",
+                  "copyright": "© Photo : inconnu. Collection Saint Nazaire Agglomération Tourisme, Écomusée, Fonds Chantiers de l'Atlantique",
+                  "createdAt": "2026-01-14T15:36:03.418Z",
+                  "updatedAt": "2026-01-16T10:51:23.549Z",
+                  "publishedAt": "2026-01-16T10:51:23.886Z",
+                  "locale": "fr",
+                  "legend": null
+                },
+                {
+                  "id": 164,
+                  "documentId": "qhr892p8q21me9bum92h5xps",
+                  "file": "oceanatlantique_paquebotnormandie_2.wepb",
+                  "description": "Le Grand salon du paquebot Normandie, 1940-1942, photographie, Bordeaux, La Mémoire de Bordeaux/Collection Pierre Bytchowsky.",
+                  "copyright": "© Photo : La Mémoire de Bordeaux, Collection Pierre Bytchowsky ",
+                  "createdAt": "2026-01-14T15:39:19.876Z",
+                  "updatedAt": "2026-01-16T09:32:08.947Z",
+                  "publishedAt": "2026-01-16T09:32:09.202Z",
+                  "locale": "fr",
+                  "legend": null
+                }
+              ],
+              "artworks": [
+                {
+                  "id": 72,
+                  "documentId": "pzlco1abt4gfgw9pz90ctf0d",
+                  "name": "L'Histoire de la Navigation",
+                  "artist": "Jean Dupas",
+                  "slug": "navigationhistoire",
+                  "description": "Pour compléter le décor du Grand Salon, un cinquième panneau décoratif imaginé\npar Jean Dupas orne une porte coulissante qui conduit au Fumoir. Il s'agit d'un bas\nrelief sur laque dorée représentant de gauche à droite ; Le Char de l'Aurore, Les\nQuatre Vents, le Char de La Nuit et au centre la Rose des Vents.",
+                  "conservation": "Partiellement conservé",
+                  "technique": "Verre, peinture, or, argent, feuille de palladium",
+                  "year": "1935",
+                  "createdAt": "2026-01-14T10:25:12.821Z",
+                  "updatedAt": "2026-01-16T10:57:26.630Z",
+                  "publishedAt": "2026-01-16T10:57:26.943Z",
+                  "locale": "fr",
+                  "images": [
+                    {
+                      "id": 224,
+                      "documentId": "pwod9wbd5ai72i7ys5xt9w4k",
+                      "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_2.webp",
+                      "description": "Jacques-Charles Champigneulle d'après les dessins de Jean Dupas, L'Histoire de la Navigation, 1935, verre peint, New York, The Metropolitan Museum of Art (détail).",
+                      "copyright": "©The Metropolitan Museum of Art, Dist.GrandPalaisRmn ©adagp,Paris, 2026",
+                      "createdAt": "2026-01-14T15:45:28.059Z",
+                      "updatedAt": "2026-01-16T15:21:03.450Z",
+                      "publishedAt": "2026-01-16T15:21:03.694Z",
+                      "locale": "fr",
+                      "legend": null,
+                      "crops": [
+                        {
+                          "id": 40,
+                          "documentId": "u662u2ljomi9m54hhxqcaszz",
+                          "description": "Poséidon tient en son pouvoir l'amphore où sont retenus les vagues. Appuyé sur une lyre, son geste et son expression autoritaire rappellent que les sirènes lui doivent obéissance avant de faire entendre leur chant ensorcelant. ",
+                          "artwork_location_x": null,
+                          "artwork_location_y": null,
+                          "artwork_location_w": null,
+                          "artwork_location_h": null,
+                          "createdAt": "2026-01-16T14:51:33.169Z",
+                          "updatedAt": "2026-01-16T15:20:58.630Z",
+                          "publishedAt": "2026-01-16T15:20:58.835Z",
+                          "locale": "fr",
+                          "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_crop_1.webp",
+                          "filename": null
+                        },
+                        {
+                          "id": 37,
+                          "documentId": "ee6elmieiwstvh6ymyln53si",
+                          "description": "L'une d'elle située juste derrière lui jette un regard d'envie vers les nombreux vaisseaux qui l'entourent. ",
+                          "artwork_location_x": null,
+                          "artwork_location_y": null,
+                          "artwork_location_w": null,
+                          "artwork_location_h": null,
+                          "createdAt": "2026-01-16T15:18:53.056Z",
+                          "updatedAt": "2026-01-16T15:18:53.056Z",
+                          "publishedAt": "2026-01-16T15:18:53.234Z",
+                          "locale": "fr",
+                          "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_crop_2.webp",
+                          "filename": null
+                        },
+                        {
+                          "id": 39,
+                          "documentId": "v8i5kwjnx8eboj2chkh27fm6",
+                          "description": "Au premier plan à droite, les compagnons du dieu, les Tritons, s'ébattent joyeusement.",
+                          "artwork_location_x": null,
+                          "artwork_location_y": null,
+                          "artwork_location_w": null,
+                          "artwork_location_h": null,
+                          "createdAt": "2026-01-16T15:20:28.058Z",
+                          "updatedAt": "2026-01-16T15:20:28.058Z",
+                          "publishedAt": "2026-01-16T15:20:28.221Z",
+                          "locale": "fr",
+                          "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_crop_3.webp",
+                          "filename": null
+                        }
+                      ],
+                      "localizations": []
+                    },
+                    {
+                      "id": 65,
+                      "documentId": "jeu5auah5onpvzm0phkbuvuh",
+                      "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_1.webp",
+                      "description": "Jacques-Charles Champigneulle d'après les dessins de Jean Dupas, L'Histoire de la Navigation, 1935, verre peint, New York, The Metropolitan Museum of Art.",
+                      "copyright": "©The Metropolitan Museum of Art, Dist.GrandPalaisRmn ©adagp,Paris, 2026",
+                      "createdAt": "2026-01-14T15:44:03.092Z",
+                      "updatedAt": "2026-01-14T15:44:03.092Z",
+                      "publishedAt": "2026-01-14T15:44:03.329Z",
+                      "locale": "fr",
+                      "legend": null,
+                      "crops": [],
+                      "localizations": []
+                    },
+                    {
+                      "id": 212,
+                      "documentId": "p6zhbynzy97zefklvwo4o1u7",
+                      "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_3.webp",
+                      "description": "Décor mural du grand salon de première classe du paquebot Normandie (1935) réalisé par Jacques-Charles Champigneulle d'après les dessins de Jean Dupas, L'Histoire de la",
+                      "copyright": "© ADAGP Paris, 2026, photo : inconnu. Collection Saint-Nazaire Agglomération Tourisme, Écomusée, Fonds Chantiers de l'Atlantique",
+                      "createdAt": "2026-01-14T15:53:03.896Z",
+                      "updatedAt": "2026-01-16T10:53:14.394Z",
+                      "publishedAt": "2026-01-16T10:53:14.713Z",
+                      "locale": "fr",
+                      "legend": null,
+                      "crops": [],
+                      "localizations": []
+                    },
+                    {
+                      "id": 213,
+                      "documentId": "sdh6fl65jax8dqm3cef55vm2",
+                      "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_4.webp",
+                      "description": "Jean Dupas, Dessin préparatoire pour Le char de Thétis , vers 1934, crayon et fusain, collection particulière.",
+                      "copyright": "© ADAGP Paris, 2026, photo : inconnu. Collection Saint-Nazaire Agglomération Tourisme, Écomusée, Fonds Chantiers de l'Atlantique",
+                      "createdAt": "2026-01-14T15:54:11.002Z",
+                      "updatedAt": "2026-01-16T10:53:48.416Z",
+                      "publishedAt": "2026-01-16T10:53:48.736Z",
+                      "locale": "fr",
+                      "legend": null,
+                      "crops": [],
+                      "localizations": []
+                    },
+                    {
+                      "id": 216,
+                      "documentId": "cp25ofhsluepo63z0hojpcl0",
+                      "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_7.webp",
+                      "description": "première classe du paquebot Normandie (1935), 1935, photographie, Saint-Nazaire, Collection Saint-Nazaire Agglomération Tourisme-Écomusée.",
+                      "copyright": "© Photo : inconnu. Collection Saint-Nazaire Agglomération Tourisme, Écomusée, Fonds Chantiers de l'Atlantique",
+                      "createdAt": "2026-01-14T15:56:17.459Z",
+                      "updatedAt": "2026-01-16T10:54:39.491Z",
+                      "publishedAt": "2026-01-16T10:54:39.807Z",
+                      "locale": "fr",
+                      "legend": null,
+                      "crops": [],
+                      "localizations": []
+                    },
+                    {
+                      "id": 219,
+                      "documentId": "hfv3yc8dy5v4zmymayckboyv",
+                      "file": "oceanatlantique_paquebotnormandie_lhistoiredelanavigation_6.webp",
+                      "description": "Champigneulle d'après les dessins de Jean Dupas, L'enlèvement d'Europe , panneau décoratif provenant du grand salon de première classe du paquebot Normandie , 1935",
+                      "copyright": "© ADAGP Paris, 2026, photo : Jean-Claude Lemée, Collection Saint-Nazaire Agglomération Tourisme-Écomusée",
+                      "createdAt": "2026-01-14T15:59:51.930Z",
+                      "updatedAt": "2026-01-16T10:56:53.699Z",
+                      "publishedAt": "2026-01-16T10:56:54.024Z",
+                      "locale": "fr",
+                      "legend": null,
+                      "crops": [],
+                      "localizations": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 47,
+          "documentId": "unzvqpabcoii8dfd9rr2duwg",
+          "name": "Paquebot Île-de-France",
+          "x": -170,
+          "y": -10,
+          "slug": "pqbtidf",
+          "createdAt": "2026-01-14T10:28:10.612Z",
+          "updatedAt": "2026-03-13T00:41:13.214Z",
+          "publishedAt": "2026-03-13T00:41:13.551Z",
+          "locale": "fr",
+          "museums": [
+            {
+              "id": 121,
+              "documentId": "n6i6jw8aof80gagk34c8bb20",
+              "name": "Paquebot Ile-de-France",
+              "slug": "pqbtidf",
+              "x": -170,
+              "y": -10,
+              "model3d": null,
+              "description": "Symbole d'un véritable raffinement à la française, le paquebot Ile-de-France est construit en 1927 par la Compagnie générale transatlantique, qui souhaite redorer son blason et faire face à la concurrence. Véritable vitrine de l'Art déco,  il incarne le premier grand projet de navire de luxe français après la Première Guerre mondialele. Son décor est confié aux meilleurs artistes du moments afin de créer une atmosphère de luxe et d'élégance, sur le thème de la région Ile-de-France. On y retouve notamment Jacques-Émile Ruhlmann, Mathurin Méheut, Louis Süe, André Mare, Raymond Subes, Yvonne Jean-Haffen et Jean Dupas. Le paquebot est réquisitionné durant la Seconde guerre mondiale, puis reprend brièvement les voyages transatlantiques, avant d'être définitivement vendu puis détruit pour les besoins de scènes de cinéma.  ",
+              "adress": "Océan Atlantique",
+              "createdAt": "2026-01-14T10:28:29.363Z",
+              "updatedAt": "2026-03-13T00:41:29.073Z",
+              "publishedAt": "2026-03-13T00:41:29.428Z",
+              "locale": "fr",
+              "actualname": "Paquebot Ile-de-France",
+              "images": [
+                {
+                  "id": 221,
+                  "documentId": "owmh4fkrlcx5jwn7m07cropz",
+                  "file": "oceanatlantique_paquebotiledefrance_2.webp",
+                  "description": null,
+                  "copyright": "© Photo : inconnu. Collection Saint-Nazaire Agglomération Tourisme, Écomusée, Fonds Chantiers de l'Atlantique",
+                  "createdAt": "2026-01-14T15:27:02.909Z",
+                  "updatedAt": "2026-01-16T11:00:01.904Z",
+                  "publishedAt": "2026-01-16T11:00:02.237Z",
+                  "locale": "fr",
+                  "legend": "Départ du paquebot Ile-de-France (1927) de Saint-Nazaire, 29 mai 1927, 1927, photographie, Saint-Nazaire, Collection Saint-Nazaire Agglomération Tourisme-Écomusée."
+                },
+                {
+                  "id": 222,
+                  "documentId": "c3f8i336tkmknehd9i0jkgdd",
+                  "file": "oceanatlantique_paquebotiledefrance_1.webp",
+                  "description": "Parmi elles, le salon de thé agencé par Ruhlmann comprend un grand décor de Dupas : il s'agit de Sylvie, faisant référence au poème éponyme de Gérard de Nerval consacré à ses souvenirs d'enfance en Ile-de-France. \n",
+                  "copyright": "© Photo : inconnu. Collection Saint-Nazaire Agglomération Tourisme, Écomusée, Fonds Chantiers de l'Atlantique",
+                  "createdAt": "2026-01-14T15:21:10.229Z",
+                  "updatedAt": "2026-01-16T11:00:17.710Z",
+                  "publishedAt": "2026-01-16T11:00:18.047Z",
+                  "locale": "fr",
+                  "legend": "Le salon de thé de première classe du paquebot Ile-de-France (1927), conçu par Jacques-Émile Ruhlmann, 1927, photographie, Saint-Nazaire, Collection Saint-Nazaire Agglomération Tourisme-Écomusée."
+                }
+              ],
+              "artworks": [
+                {
+                  "id": 39,
+                  "documentId": "hlspgsrt83fnlh34gr8qggts",
+                  "name": "Sylvie",
+                  "artist": "Jean Dupas",
+                  "slug": "sylvie",
+                  "description": "Parmi elles, le salon de thé agencé par Ruhlmann comprend un grand décor de\nDupas : il s'agit de Sylvie, faisant référence au poème éponyme de Gérard de Nerval\nconsacré à ses souvenirs d'enfance en Ile-de-France.",
+                  "conservation": "Disparu",
+                  "technique": "Encre et crayon sur papier",
+                  "year": "1927",
+                  "createdAt": "2026-01-14T10:33:56.741Z",
+                  "updatedAt": "2026-01-14T16:03:51.588Z",
+                  "publishedAt": "2026-01-14T16:03:51.919Z",
+                  "locale": "fr",
+                  "images": [
+                    {
+                      "id": 225,
+                      "documentId": "efavty224zwa8nqfn534e5yw",
+                      "file": "oceanatlantique_paquebotiledefrance_sylvie_1.webp",
+                      "description": "Dessin préparatoire pour Sylvie, vers 1927, encre et crayon sur papier, collection particulière.",
+                      "copyright": "© ADAGP Paris, 2026, photo : Christie's Images, Bridgeman Images ",
+                      "createdAt": "2026-01-14T15:33:09.045Z",
+                      "updatedAt": "2026-01-16T15:27:35.252Z",
+                      "publishedAt": "2026-01-16T15:27:35.582Z",
+                      "locale": "fr",
+                      "legend": "Dessin préparatoire pour Sylvie, vers 1927, encre et crayon sur papier, collection particulière.",
+                      "crops": [
+                        {
+                          "id": 42,
+                          "documentId": "ey8d900k7wftiva4fj7p6mzt",
+                          "description": "La scène de gauche évoque le souvenir d'une journée de promenade à cheval en compagnie de Sylvie. ",
+                          "artwork_location_x": null,
+                          "artwork_location_y": null,
+                          "artwork_location_w": null,
+                          "artwork_location_h": null,
+                          "createdAt": "2026-01-16T15:26:56.171Z",
+                          "updatedAt": "2026-01-16T15:26:56.171Z",
+                          "publishedAt": "2026-01-16T15:26:56.398Z",
+                          "locale": "fr",
+                          "file": "oceanatlantique_paquebotiledefrance_sylvie_1_crop_2.webp",
+                          "filename": null
+                        },
+                        {
+                          "id": 56,
+                          "documentId": "fejouiwwfovt81876ak8yelp",
+                          "description": "À droite, des garçons jouent au tir à l'arc. Au centre, la jeune Adrienne chante une romance.",
+                          "artwork_location_x": null,
+                          "artwork_location_y": null,
+                          "artwork_location_w": null,
+                          "artwork_location_h": null,
+                          "createdAt": "2026-01-16T15:27:30.112Z",
+                          "updatedAt": "2026-03-10T15:45:00.867Z",
+                          "publishedAt": "2026-03-10T15:45:01.143Z",
+                          "locale": "fr",
+                          "file": "oceanatlantique_paquebotiledefrance_sylvie_1_crop_1.webp",
+                          "filename": null
+                        }
+                      ],
                       "localizations": []
                     }
                   ]
