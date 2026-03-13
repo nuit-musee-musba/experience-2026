@@ -82,7 +82,24 @@ watch(
   () => artwork.value,
   async () => {
     activeImageIndex.value = 0;
+
     await nextTick();
+
+    if (titleAndNameVisible.value) titleAndNameRef.value?.classList.add("visible");
+    if (placeVisible.value) placeRef.value?.classList.add("visible");
+    if (enumerationVisible.value) enumerationRef.value?.classList.add("visible");
+
+    if (descriptionRef.value) {
+      // S’assurer que les .line existent avant la classe
+      split();
+      requestAnimationFrame(() => {
+        // Reset + reflow pour garantir la relance de la transition
+        descriptionRef.value.classList.remove('visible');
+        void descriptionRef.value.offsetHeight;
+        descriptionRef.value.classList.add('visible');
+      });
+    }
+
     if (scrollContent.value) {
       scrollContent.value.scrollTop = 0;
       handleScroll();
@@ -176,7 +193,7 @@ const placeRef = ref(null);
 const titleAndNameVisible = useElementVisibility(titleAndNameRef);
 const placeVisible = useElementVisibility(placeRef);
 
-useSplitText(descriptionRef);
+const { split } = useSplitText(descriptionRef);
 
 watch(
   enumerationVisible,
@@ -185,18 +202,22 @@ watch(
       enumerationRef.value.classList.add("visible");
     }
   },
-  { once: true },
 );
 
-watch(
-  descriptionVisible,
-  (visible) => {
-    if (visible && descriptionRef.value) {
-      descriptionRef.value.classList.add("visible");
-    }
-  },
-  { once: true },
-);
+watch(descriptionVisible, (visible) => {
+  if (!descriptionRef.value) return;
+  if (visible) {
+    // S’assurer que le split est fait avant d’ajouter la classe visible
+    split();
+
+    requestAnimationFrame(() => {
+      descriptionRef.value?.classList.add('visible');
+    });
+  } else {
+    // En option: retirer la classe quand ça redevient invisible
+    descriptionRef.value.classList.remove('visible');
+  }
+});
 
 watch(
   titleAndNameVisible,
@@ -205,7 +226,6 @@ watch(
       titleAndNameRef.value.classList.add("visible");
     }
   },
-  { once: true },
 );
 
 watch(
@@ -215,7 +235,6 @@ watch(
       placeRef.value.classList.add("visible");
     }
   },
-  { once: true },
 );
 </script>
 <template>
@@ -347,7 +366,11 @@ watch(
 
       <section class="content-section">
         <div class="artwork-container artwork-infos">
-          <div class="title-and-name" ref="titleAndNameRef">
+          <div
+            class="title-and-name"
+            ref="titleAndNameRef"
+            :key="artwork.slug"
+          >
             <h2 class="title" style="--anim-index: 0">{{ artwork.name }}</h2>
             <p style="--anim-index: 1">Jean Dupas</p>
           </div>
@@ -362,18 +385,31 @@ watch(
             @scroll="handleScroll"
           >
             <div class="header">
-              <p class="enumeration" ref="enumerationRef">
+              <p
+                class="enumeration"
+                ref="enumerationRef"
+                :key="artwork.slug"
+              >
                 <!--<span style="--enum-index: 0">{{ artwork.name }}</span>-->
                 <span style="--enum-index: 1">{{ artwork.year }}</span>
                 <span style="--enum-index: 2">{{ artwork.technique }}</span>
                 <!-- <span style="--enum-index: 3">{{ currentMuseum?.adress }}</span> -->
               </p>
-              <div class="artwork-place" ref="placeRef">
-                <IconPin class="pin" style="--anim-index: 0" />
+              <div
+                class="artwork-place"
+                ref="placeRef"
+                :key="artwork.slug"
+              >
+
                 <span style="--anim-index: 1">{{ currentMuseum?.adress }}</span>
               </div>
             </div>
-            <p ref="descriptionRef" class="description">
+            <p
+              ref="descriptionRef"
+              class="description"
+              :key="artwork.slug"
+
+            >
               {{ artwork.description }}
             </p>
           </div>
@@ -793,6 +829,7 @@ watch(
             transform 1s calc(var(--line-index) * 0.05s) $ease-out-quint;
           display: block;
         }
+
 
         &.visible {
           :deep(.line) {
