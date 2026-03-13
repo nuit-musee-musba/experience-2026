@@ -37,16 +37,12 @@ const pointer = new THREE.Vector2();
 // Positions de caméra pour chaque continent
 const continentPositions = {
   europe: {
-    camera: new THREE.Vector3(-5, 5, 50),
-    target: new THREE.Vector3(-5, 5, -9.9),
+    camera: new THREE.Vector3(-5, 8, 80),
+    target: new THREE.Vector3(-5, 8, -9.9),
   },
   amérique: {
-    camera: new THREE.Vector3(-220, -16, 70),
+    camera: new THREE.Vector3(-220, -16, 100),
     target: new THREE.Vector3(-220, -16, -9.9),
-  },
-  océan: {
-    camera: new THREE.Vector3(50, -30, 50),
-    target: new THREE.Vector3(50, -30, -9.9),
   },
 };
 
@@ -458,14 +454,6 @@ defineExpose({
     v-if="currentStep === 0"
   >
     <IconArrowLeft />
-  </button>
-  <button
-    @click="navigateToContinent('océan')"
-    class="continent-btn continent-btn-ocean"
-    :class="{ active: activeContinentSlug === 'océan' }"
-    v-if="currentStep === 0"
-  >
-    Océan
   </button>
 
   <SmartNavbar />

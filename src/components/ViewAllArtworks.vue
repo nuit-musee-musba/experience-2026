@@ -75,7 +75,7 @@ const museum = computed(() => {
           <h2 class="city-name">{{ cityItem.name }}</h2>
 
           <div class="artworks-list">
-            <div v-for="museumItem in cityItem.museums" :key="museumItem.slug">
+            <template v-for="museumItem in cityItem.museums" :key="museumItem.slug">
               <RouterLink v-for="artwork in museumItem.artworks" :key="artwork.slug" class="artwork-item"
                 :to="`/${cityItem.continentSlug}/${cityItem.slug}/${museumItem.slug}/${artwork.slug}`">
                 <div class="artworks-item-image">
@@ -86,14 +86,12 @@ const museum = computed(() => {
                 <div class="artwork-item-infos">
                   <h2>{{ artwork.name }}</h2>
 
-                  <div class="artworks-details">
-                    <p>{{ cityItem.name }},</p>
-                    <p>{{ museumItem.name }},</p>
-                    <p>{{ artwork.year }}</p>
-                  </div>
+                  <p class="artworks-details">
+                    {{ cityItem.name }}, {{ museumItem.name }}, {{ artwork.year }}
+                  </p>
                 </div>
               </RouterLink>
-            </div>
+            </template>
           </div>
         </div>
       </div>
@@ -159,11 +157,9 @@ const museum = computed(() => {
 }
 
 .artworks-list {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-right: 100px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: $spacing-80;
 }
 
 .artwork-item {
@@ -193,7 +189,7 @@ const museum = computed(() => {
   height: 276px;
   background: gray;
   transition: opacity 0.2s ease-in-out;
-
+  flex-shrink: 0;
   img {
     aspect-ratio: 1 / 1;
     object-fit: cover;

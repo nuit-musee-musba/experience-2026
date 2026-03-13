@@ -76,9 +76,7 @@ export class MapPlane {
           BufferGeometryUtils.mergeGeometries(strokeGeometries);
         const strokeMaterial = new THREE.MeshBasicMaterial({
           color: 0x000000,
-          depthWrite: false,
           side: THREE.DoubleSide,
-          depthTest: false,
           transparent: true,
         });
         const strokeMesh = new THREE.Mesh(mergedStrokeGeometry, strokeMaterial);
