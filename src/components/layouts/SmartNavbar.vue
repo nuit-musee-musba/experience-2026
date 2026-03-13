@@ -16,13 +16,23 @@
     </div>
 
     <div class="nav-buttons" v-if="currentList.length > 1">
-      <Button :color="contextColor" icon-primary :text-content="prevLabel" @click="navigate(-1)" v-if="currentList.length > 2">
+      <Button 
+        :color="contextColor"
+        icon-primary
+        :text-content="prevLabel"
+        @click="navigate(-1)"
+        v-if="enablePrevious">
         <template #icon-primary>
           <IconArrowLeft />
         </template>
       </Button>
 
-      <Button :color="contextColor" icon-secondary :text-content="nextLabel" @click="navigate(1)">
+      <Button
+        :color="contextColor"
+        icon-secondary
+        :text-content="nextLabel"
+        @click="navigate(1)"
+        v-if="enableNext">
         <template #icon-secondary>
           <IconArrowRight />
         </template>
@@ -94,12 +104,25 @@ const currentMuseum = computed(() => {
   return currentCity.value.museums.find(m => m.slug === route.params.museumSlug);
 });
 
+const allCities = computed(() => {
+  let cities = [];
+  allData.value?.forEach(continent => {
+    // This is an ugly way to re-create path
+    // Each object should have a path attribute instead of re-creating it every times
+    continent.cities.forEach( city => {
+      city.path = (`/${continent.Name}/${city.slug}`).toLowerCase();
+    });
+    cities = [...continent.cities, ...cities];
+  });
+  return cities;
+});
+
 // en fonction de mon niveau, je me mets dans la liste adéquate (les villes, les musées, les continents etc).
 
 const currentList = computed(() => {
   if (isArtwork.value) return currentMuseum.value?.artworks || [];
   if (isMuseum.value) return currentCity.value?.museums || [];
-  if (isCity.value) return currentContinent.value?.cities || [];
+  if (isCity.value) return allCities.value || []; // Let users navigate through all cities to avoid navigation stucked only on Europe
   if (isContinent.value) return allData.value || [];
   return [];
 });
@@ -202,6 +225,14 @@ const backTarget = computed(() => {
   return null;
 });
 
+const enablePrevious = computed(() => {
+  return currentIndex.value > 0;
+});
+
+const enableNext = computed(() => {
+  return currentIndex.value < currentList.value?.length - 1;
+});
+
 const navigate = (direction) => {
   const list = currentList.value;
   const idx = currentIndex.value;
@@ -214,7 +245,7 @@ const navigate = (direction) => {
   let path = '';
   if (isArtwork.value) { path = `/${route.params.continentSlug}/${route.params.citySlug}/${route.params.museumSlug}/${target.slug}`; }
   else if (isMuseum.value) { path = `/${route.params.continentSlug}/${route.params.citySlug}/${target.slug}`; }
-  else if (isCity.value) { path = `/${route.params.continentSlug}/${target.slug}`; }
+  else if (isCity.value) { path = target.path; }
   else if (isContinent.value) { path = `/${target.Name.toLowerCase()}`; }
 
   router.push(path);
