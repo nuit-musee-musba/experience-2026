@@ -31,10 +31,17 @@ export function useSplitText(element) {
       }
 
       if (el) {
-        nextTick(() => split());
+        split();
 
-        observer = new ResizeObserver(() => {
-          split();
+        let lastWidth = 0;
+        observer = new ResizeObserver((entries) => {
+          for (const entry of entries) {
+            const width = Math.round(entry.contentRect.width);
+            if (width !== lastWidth) {
+              lastWidth = width;
+              split();
+            }
+          }
         });
         observer.observe(el);
       }

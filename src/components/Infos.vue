@@ -36,19 +36,36 @@ const descriptionRef = ref(null);
 const titleAndLocationVisible = useElementVisibility(titleAndLocationRef);
 const descriptionVisible = useElementVisibility(descriptionRef);
 
-useSplitText(descriptionRef);
+const { split } = useSplitText(descriptionRef);
+
+watch(() => museum.value, async () => {
+  await nextTick();
+  
+  // Si déjà visible, on doit forcer la ré-animation
+  if (titleAndLocationVisible.value) titleAndLocationRef.value?.classList.add('visible');
+  if (descriptionVisible.value && descriptionRef.value) {
+    split();
+    requestAnimationFrame(() => {
+      descriptionRef.value?.classList.add('visible');
+    });
+  }
+});
 
 watch(titleAndLocationVisible, (visible) => {
   if (visible && titleAndLocationRef.value) {
     titleAndLocationRef.value.classList.add('visible');
   }
-}, { once: true });
+});
 
 watch(descriptionVisible, (visible) => {
   if (visible && descriptionRef.value) {
-    descriptionRef.value.classList.add('visible');
+    // S'assurer que le split est fait avant d'ajouter la classe visible
+    split();
+    requestAnimationFrame(() => {
+      descriptionRef.value?.classList.add('visible');
+    });
   }
-}, { once: true });
+});
 </script>
 
 <template>
@@ -57,7 +74,11 @@ watch(descriptionVisible, (visible) => {
       <div class="location-detail-box">
         <section class="content-section">
           <div class="location-container location-infos">
-            <div class="title-and-location" ref="titleAndLocationRef">
+            <div
+              class="title-and-location"
+              ref="titleAndLocationRef"
+              :key="museum.slug"
+            >
               <p style="--anim-index: 0">{{ city?.name }}</p>
               <h2 class="title" style="--anim-index: 1">{{ museum.name }}</h2>
             </div>
@@ -68,7 +89,13 @@ watch(descriptionVisible, (visible) => {
                 :alt="museum.name" />
             </div>
             <div class="scroll-content-box">
-              <p ref="descriptionRef" class="description">{{ museum.description }}</p>
+              <p
+                ref="descriptionRef"
+                class="description"
+                :key="museum.slug"
+              >
+                {{ museum.description }}
+              </p>
               <h3 class="locations-artworks-section-title">Découvrez les œuvres de ce lieu</h3>
               <div class="location-artworks-listing">
                 <RouterLink class="artworks-item" v-for="artwork in museum.artworks" :key="artwork.slug"
