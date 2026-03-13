@@ -1,28 +1,28 @@
 {
   "data": [
     {
-      "id": 2,
+      "id": 9,
       "documentId": "flx1z9468hxv3lwnbpvjmsht",
       "Name": "Europe",
       "createdAt": "2026-01-15T14:04:29.007Z",
-      "updatedAt": "2026-01-15T14:04:29.007Z",
-      "publishedAt": "2026-01-15T14:04:29.227Z",
+      "updatedAt": "2026-03-10T15:52:44.948Z",
+      "publishedAt": "2026-03-10T15:52:45.298Z",
       "locale": "fr",
       "cities": [
         {
-          "id": 5,
+          "id": 35,
           "documentId": "w1v80p00bl22zt7dgpysz6hw",
           "name": "Albert",
           "x": -25,
           "y": 28,
           "slug": "albert",
           "createdAt": "2026-01-14T10:09:33.801Z",
-          "updatedAt": "2026-01-14T10:09:37.683Z",
-          "publishedAt": "2026-01-14T10:09:37.972Z",
+          "updatedAt": "2026-03-10T15:17:51.657Z",
+          "publishedAt": "2026-03-10T15:17:51.987Z",
           "locale": "fr",
           "museums": [
             {
-              "id": 89,
+              "id": 114,
               "documentId": "huv3c49iwme8abh8rl6qzm8h",
               "name": "Basilique Notre-Dame de Brébières",
               "slug": "brebiere",
@@ -32,8 +32,8 @@
               "description": "Albert est une ville de Picardie à mi-chemin entre Amiens et Arras. Elle fut ravagée par le premier conflit mondial, notamment la bataille de la Somme en 1916 qui aboutit à la destruction de la basilique. \n\nA la fin de la guerre, la ville se relève lentement et consacre ses premiers travaux à la reconstruction de la basilique. C'est l'architecte Louis Duthoit qui est chargé des travaux. Le batiment est réédifié entre 1926 et 1929 et rendue au culte dès 1931. L'architecte avait rencontré Jean Dupas lors de la décoration de l'Eglise du Saint-Esprit à Paris.  ",
               "adress": "Place d'Armes",
               "createdAt": "2026-01-14T10:08:42.858Z",
-              "updatedAt": "2026-01-16T14:41:35.145Z",
-              "publishedAt": "2026-01-16T14:41:35.499Z",
+              "updatedAt": "2026-03-10T15:50:40.289Z",
+              "publishedAt": "2026-03-10T15:50:40.637Z",
               "locale": "fr",
               "actualname": "Basilique Notre-Dame de Brébières",
               "images": [
@@ -117,7 +117,7 @@
                       "legend": null,
                       "crops": [
                         {
-                          "id": 12,
+                          "id": 47,
                           "documentId": "xp8bk5m2vdqxyt53ipj2efiy",
                           "description": " Ici, par exemple, à gauche, saint Pierre avec ses clés montre la voie du Paradis, suivi de saint André avec sa croix.",
                           "artwork_location_x": 50,
@@ -125,14 +125,14 @@
                           "artwork_location_w": 20,
                           "artwork_location_h": 20,
                           "createdAt": "2026-01-15T16:06:46.684Z",
-                          "updatedAt": "2026-01-15T16:06:46.684Z",
-                          "publishedAt": "2026-01-15T16:06:46.946Z",
+                          "updatedAt": "2026-03-10T15:25:28.892Z",
+                          "publishedAt": "2026-03-10T15:25:29.192Z",
                           "locale": "fr",
                           "file": "albret_placedarmes_laprocessiondesanges_2_crop_1.webp",
                           "filename": null
                         },
                         {
-                          "id": 14,
+                          "id": 46,
                           "documentId": "d1780ylyfj2p1ac0t8otgx6a",
                           "description": " Ici, par exemple, à gauche, saint Pierre avec ses clés montre la voie du Paradis, suivi de saint André avec sa croix",
                           "artwork_location_x": 50,
@@ -140,8 +140,8 @@
                           "artwork_location_w": 20,
                           "artwork_location_h": 20,
                           "createdAt": "2026-01-15T16:10:00.536Z",
-                          "updatedAt": "2026-01-15T16:10:00.536Z",
-                          "publishedAt": "2026-01-15T16:10:00.762Z",
+                          "updatedAt": "2026-03-10T15:22:43.837Z",
+                          "publishedAt": "2026-03-10T15:22:44.119Z",
                           "locale": "fr",
                           "file": "albret_placedarmes_laprocessiondesanges_2_crop_2.webp",
                           "filename": null
@@ -176,7 +176,7 @@
                       "legend": null,
                       "crops": [
                         {
-                          "id": 17,
+                          "id": 48,
                           "documentId": "csnamh5nqow8ktmsqwu4dxce",
                           "description": "Le fond bleu évoque le ciel poncté d'étoiles et inscrit la procession dans une dimension sacrée. Dupas représente les Apôtres et les Saints en évoquant leur vie chrétienne et leur martyr.",
                           "artwork_location_x": 50,
@@ -184,8 +184,8 @@
                           "artwork_location_w": 20,
                           "artwork_location_h": 20,
                           "createdAt": "2026-01-15T16:12:25.546Z",
-                          "updatedAt": "2026-01-15T16:19:58.214Z",
-                          "publishedAt": "2026-01-15T16:19:58.435Z",
+                          "updatedAt": "2026-03-10T15:26:31.427Z",
+                          "publishedAt": "2026-03-10T15:26:31.697Z",
                           "locale": "fr",
                           "file": "albret_placedarmes_laprocessiondesanges_3_crop_1.webp",
                           "filename": null
@@ -200,19 +200,19 @@
           ]
         },
         {
-          "id": 31,
+          "id": 42,
           "documentId": "u9f6o79rmc2tw6wionmqcmyy",
           "name": "Bordeaux",
           "x": -33,
           "y": 7.5,
           "slug": "bordeaux",
           "createdAt": "2026-01-14T10:13:19.817Z",
-          "updatedAt": "2026-01-16T11:27:52.140Z",
-          "publishedAt": "2026-01-16T11:27:52.461Z",
+          "updatedAt": "2026-03-10T15:58:27.792Z",
+          "publishedAt": "2026-03-10T15:58:28.183Z",
           "locale": "fr",
           "museums": [
             {
-              "id": 93,
+              "id": 120,
               "documentId": "yw8p2f012ogvjnyztmg5boen",
               "name": "Hôtel Frugès",
               "slug": "hotelfruges",
@@ -222,8 +222,8 @@
               "description": "Industriel ayant fait fortune dans le commerce du sucre, Henri Frugès avait aussi une passion pour l'art et des goûts aussi fastueux qu'écléctiques. En 1912, il achète une maison dans le centre de Bordeaux qu'il décide de rénover de fond en comble, avec l'aide de l'architecte Pierre Ferret, pour en faire une œuvre moderne et globale. Des artistes, en majorité bordelais, participent au chantier : Gaston Schnegg, Robert Wlérick, Jean Dupas, René Buthaud, Jean Dunand, Lucien Cazieux, Edgar Brandt, René Lalique, Émile Brunet. Synthèse unique du style Art Nouveau et Art déco, cet hôtel particulier est aujourd'hui classé Monument historique. ",
               "adress": "63, place des Martyrs de la Résistance",
               "createdAt": "2026-01-14T10:10:45.949Z",
-              "updatedAt": "2026-01-16T14:42:26.841Z",
-              "publishedAt": "2026-01-16T14:42:27.134Z",
+              "updatedAt": "2026-03-10T16:16:28.412Z",
+              "publishedAt": "2026-03-10T16:16:28.776Z",
               "locale": "fr",
               "actualname": "Hôtel Frugès",
               "images": [
@@ -289,7 +289,7 @@
               ]
             },
             {
-              "id": 90,
+              "id": 106,
               "documentId": "d72xcceax4o2lphwilwntayh",
               "name": "Bourse du Travail",
               "slug": "boursedutravail",
@@ -299,8 +299,8 @@
               "description": "Jean Dupas reçoit en 1936 une commande pour la décoration pour la Bourse du Travail de Bordeaux dont la constuction est orchestrée par l'architecte en chef Jacques d'Welles. La façade principale, ouverte sur le Cours Aristide Briand, est représentative de l'esprit classique de l'architecte. \n\nSur la façade principale de la Bourse du Travail de Bordeaux, un bas-relief représente une allégorie de la ville avec les figures symboliques de la Paix, du Travail, des Arts Plastiques et de la Navigation, créée par le sculpteur Alfred Janniot (1889-1969). ",
               "adress": "44, Cours Aristide Briand",
               "createdAt": "2026-01-14T10:12:21.611Z",
-              "updatedAt": "2026-01-16T14:41:51.906Z",
-              "publishedAt": "2026-01-16T14:41:52.257Z",
+              "updatedAt": "2026-03-10T15:28:17.132Z",
+              "publishedAt": "2026-03-10T15:28:17.486Z",
               "locale": "fr",
               "actualname": "Bourse du Travail",
               "images": [
@@ -385,22 +385,22 @@
                           "filename": null
                         },
                         {
-                          "id": 21,
+                          "id": 45,
                           "documentId": "ih05na7yhzpb9lz044cgig99",
                           "description": "Au centre de la fresque, à droite, Mercure, dieu messager, protecteur de la Ville de Bordeaux,  tient dans sa main droite le caducée, source de richesse et symbole de paix, et de sa main gauche le bras d'Aphrodite, déesse de la beauté. A leur gauche,  la Renommée, personnage ailé, vient couvrir de gloire la Ville de Bordeaux au son de sa trompette. ",
-                          "artwork_location_x": null,
-                          "artwork_location_y": null,
-                          "artwork_location_w": null,
-                          "artwork_location_h": null,
+                          "artwork_location_x": 50,
+                          "artwork_location_y": 35,
+                          "artwork_location_w": 20,
+                          "artwork_location_h": 20,
                           "createdAt": "2026-01-15T16:26:29.328Z",
-                          "updatedAt": "2026-01-15T16:26:29.328Z",
-                          "publishedAt": "2026-01-15T16:26:29.536Z",
+                          "updatedAt": "2026-02-19T10:39:49.341Z",
+                          "publishedAt": "2026-02-19T10:39:49.564Z",
                           "locale": "fr",
                           "file": "bordeaux_boursedutravail_lagloiredebordeaux_4_crop_3.webp",
                           "filename": null
                         },
                         {
-                          "id": 29,
+                          "id": 49,
                           "documentId": "dc0r44tt8kmvv1c0gxrui7l8",
                           "description": "Les deux personnages à droite de la fresque évoquent le passé antique de Bordeaux. Bacchus évoque la culture du vin et Cérès la culture du blé, permettant l'enrichissement de la Ville.  A l'arrière-plan, les piliers à arcade évoquent l'architecture du Temple de Tutelle, rare témoignage du monde romain. ",
                           "artwork_location_x": 75,
@@ -408,8 +408,8 @@
                           "artwork_location_w": 20,
                           "artwork_location_h": 20,
                           "createdAt": "2026-01-15T16:34:49.836Z",
-                          "updatedAt": "2026-01-15T16:34:49.836Z",
-                          "publishedAt": "2026-01-15T16:34:49.979Z",
+                          "updatedAt": "2026-03-10T15:29:34.615Z",
+                          "publishedAt": "2026-03-10T15:29:34.887Z",
                           "locale": "fr",
                           "file": "bordeaux_boursedutravail_gloiredebordeaux_13_crop_1.webp",
                           "filename": null
@@ -618,19 +618,19 @@
           ]
         },
         {
-          "id": 27,
+          "id": 37,
           "documentId": "mq4t7dw2mlpg028j71kp1d0g",
           "name": "Bucarest",
           "x": 46,
           "y": 9,
           "slug": "bucarest",
           "createdAt": "2026-01-14T10:15:21.994Z",
-          "updatedAt": "2026-01-16T11:08:11.146Z",
-          "publishedAt": "2026-01-16T11:08:11.393Z",
+          "updatedAt": "2026-03-10T15:29:58.416Z",
+          "publishedAt": "2026-03-10T15:29:58.724Z",
           "locale": "fr",
           "museums": [
             {
-              "id": 95,
+              "id": 107,
               "documentId": "s5eyh34b2xbfpz4c8uhup99w",
               "name": "Palais royal de Bucarest",
               "slug": "royalbucarest",
@@ -640,8 +640,8 @@
               "description": "En 1935, Dupas obtient une commande officielle pour la décoration du plafond du Salon de l'Argenterie du Palais Royal de Bucarest. Le roi Karol (roi de Roumanie, 1930-1940) qui vient d'instaurer sa propre dictature décide de marquer son règne par la recontruction en un style néo-classique du Palais incendié en 1926. ",
               "adress": "49-53, Calea Victoriei",
               "createdAt": "2026-01-14T10:14:26.236Z",
-              "updatedAt": "2026-01-16T14:42:55.691Z",
-              "publishedAt": "2026-01-16T14:42:55.980Z",
+              "updatedAt": "2026-03-10T15:30:56.029Z",
+              "publishedAt": "2026-03-10T15:30:56.387Z",
               "locale": "fr",
               "actualname": "Palais royal de Bucarest",
               "images": [
@@ -687,7 +687,7 @@
                       "legend": null,
                       "crops": [
                         {
-                          "id": 33,
+                          "id": 50,
                           "documentId": "w164u7eodg8o5xj73l0goa9n",
                           "description": "Le roi souhaite une composition représentant le \"Char du Soleil\", dans l'esprit du décor de la chapelle Sistine de Michel-Ange. Dans sa version finale, Dupas propose\nde représenter le Char d'Apollon sur fond de ciel étoilé, accompagné des signes du Zodiaque et de figures mythologiques.",
                           "artwork_location_x": 25,
@@ -695,8 +695,8 @@
                           "artwork_location_w": 20,
                           "artwork_location_h": 20,
                           "createdAt": "2026-01-15T16:41:38.580Z",
-                          "updatedAt": "2026-01-16T11:58:09.803Z",
-                          "publishedAt": "2026-01-16T11:58:10.031Z",
+                          "updatedAt": "2026-03-10T15:31:30.397Z",
+                          "publishedAt": "2026-03-10T15:31:30.666Z",
                           "locale": "fr",
                           "file": "bucarest_palaisroyaldebucarest_lechardapollon_crop_1.webp",
                           "filename": "bucarest_palaisroyaldebucarest_lechardapollon_crop_1.webp"
@@ -711,19 +711,19 @@
           ]
         },
         {
-          "id": 29,
+          "id": 38,
           "documentId": "zd6s3i5lv49lj7n0b6aajwyu",
           "name": "Paris",
           "x": -28,
           "y": 22,
           "slug": "paris",
           "createdAt": "2026-01-14T10:37:22.588Z",
-          "updatedAt": "2026-01-16T11:11:16.792Z",
-          "publishedAt": "2026-01-16T11:11:17.038Z",
+          "updatedAt": "2026-03-10T15:32:18.093Z",
+          "publishedAt": "2026-03-10T15:32:18.397Z",
           "locale": "fr",
           "museums": [
             {
-              "id": 99,
+              "id": 108,
               "documentId": "o53hr103jzw5dzf36voc8cjp",
               "name": "Tour des Vins de Bordeaux",
               "slug": "tourdesvins",
@@ -733,8 +733,8 @@
               "description": "Lors de l'Exposition des Arts décoratifs modernes et industriels de 1925, les artistes bordelais Dupas, Roganeau, Buzon et Despujols recoivent la commande du décor intérieur de la Tour des vins de Bordeaux. Ils réalisent quatre toiles pour évoquer les principales vocations de l'économie de la région (La Vigne et le Vin, La Forêt landaise et ses produits, Le Port de Bordeaux et les relations d'outre-mer, et L'Agriculture). ",
               "adress": "Esplanade des Invalides",
               "createdAt": "2026-01-14T10:35:26.061Z",
-              "updatedAt": "2026-01-16T14:44:01.882Z",
-              "publishedAt": "2026-01-16T14:44:02.167Z",
+              "updatedAt": "2026-03-10T15:33:14.604Z",
+              "publishedAt": "2026-03-10T15:33:14.944Z",
               "locale": "fr",
               "actualname": "Tour des Vins de Bordeaux",
               "images": [
@@ -780,33 +780,33 @@
                   "locale": "fr",
                   "images": [
                     {
-                      "id": 63,
+                      "id": 226,
                       "documentId": "v5za7tyic47auahst7nzuw1r",
                       "file": "paris_tourdesvinsdebordeaux_lavignetlevin_1.webp",
                       "description": "Bernard Chabot et Michel Dubau, Vue intérieure de l'Athénée municipal, La Vigne et le Vin de Jean Dupas, 1927, photographie, Bordeaux, Service régional de l'Inventaire.",
                       "copyright": "©Région Nouvelle Aquitaine, Inventaire général du patrimoine culturel. Chabot, Bernard et Dubau, Michel, 1972©adagp, Paris, 2026",
                       "createdAt": "2026-01-14T15:43:17.000Z",
-                      "updatedAt": "2026-01-14T15:43:17.000Z",
-                      "publishedAt": "2026-01-14T15:43:17.257Z",
+                      "updatedAt": "2026-03-10T15:37:22.542Z",
+                      "publishedAt": "2026-03-10T15:37:22.878Z",
                       "locale": "fr",
                       "legend": null,
                       "crops": [],
                       "localizations": []
                     },
                     {
-                      "id": 187,
+                      "id": 227,
                       "documentId": "fj5jfb368h54qjnms8glzb3q",
                       "file": "paris_tourdesvinsdebordeaux_lavignetlevin_2.webp",
                       "description": "Jean Dupas, La Vigne et le Vin , 1925, huile sur toile, Bordeaux, Musée d'Aquitaine.",
                       "copyright": "© AGAGP Paris, 2026, Musée d'Aquitaine, photo : Lysiane Gauthier, Mairie de Bordeaux",
                       "createdAt": "2026-01-14T15:44:41.724Z",
-                      "updatedAt": "2026-01-16T10:34:55.867Z",
-                      "publishedAt": "2026-01-16T10:34:56.191Z",
+                      "updatedAt": "2026-03-10T15:38:01.301Z",
+                      "publishedAt": "2026-03-10T15:38:01.629Z",
                       "locale": "fr",
                       "legend": null,
                       "crops": [
                         {
-                          "id": 23,
+                          "id": 51,
                           "documentId": "ybrivf83b134u7q7lzzsll8s",
                           "description": "De gauche à droite : la Joie entourée de guirlandes, la Force tenant un gourdin, puis l'Esprit portant le livre de la science, et l'Appel qui convie d'un geste ample les personnages de gauche à participer à la fête du Vin. Le vin coule d'une source divine, une cuve sphérique, symbole de perfection. ",
                           "artwork_location_x": 58,
@@ -814,14 +814,14 @@
                           "artwork_location_w": 20,
                           "artwork_location_h": 20,
                           "createdAt": "2026-01-15T16:28:10.983Z",
-                          "updatedAt": "2026-01-15T16:28:10.983Z",
-                          "publishedAt": "2026-01-15T16:28:11.157Z",
+                          "updatedAt": "2026-03-10T15:38:36.831Z",
+                          "publishedAt": "2026-03-10T15:38:37.105Z",
                           "locale": "fr",
                           "file": "paris_tourdesvinsdebordeaux_lavignetlevin_2_crop_1.webp",
                           "filename": null
                         },
                         {
-                          "id": 25,
+                          "id": 52,
                           "documentId": "ch53qju8mxwzk7ac63hix9ir",
                           "description": "À droite le Temps des vendanges incarné par l'homme à cheval qui attrape des paniers remplis de raisins. ",
                           "artwork_location_x": 83,
@@ -829,14 +829,14 @@
                           "artwork_location_w": 20,
                           "artwork_location_h": 20,
                           "createdAt": "2026-01-15T16:29:17.532Z",
-                          "updatedAt": "2026-01-15T16:29:17.532Z",
-                          "publishedAt": "2026-01-15T16:29:17.717Z",
+                          "updatedAt": "2026-03-10T15:40:39.249Z",
+                          "publishedAt": "2026-03-10T15:40:39.520Z",
                           "locale": "fr",
                           "file": "paris_tourdesvinsdebordeaux_lavignetlevin_2_crop_2.webp",
                           "filename": null
                         },
                         {
-                          "id": 27,
+                          "id": 53,
                           "documentId": "xgyxabssapksrbuh10mpvt5l",
                           "description": "Au premier plan, une figure repliée sur elle-même, la Sorcière donne au vin son pouvoir ensorcelant. ",
                           "artwork_location_x": 75,
@@ -844,8 +844,8 @@
                           "artwork_location_w": 20,
                           "artwork_location_h": 20,
                           "createdAt": "2026-01-15T16:30:26.546Z",
-                          "updatedAt": "2026-01-15T16:30:26.546Z",
-                          "publishedAt": "2026-01-15T16:30:26.716Z",
+                          "updatedAt": "2026-03-10T15:41:29.745Z",
+                          "publishedAt": "2026-03-10T15:41:30.015Z",
                           "locale": "fr",
                           "file": "paris_tourdesvinsdebordeaux_lavignetlevin_2_crop_3.webp",
                           "filename": null
@@ -858,7 +858,7 @@
               ]
             },
             {
-              "id": 91,
+              "id": 109,
               "documentId": "eef7itkzypev101f7pn9k96t",
               "name": "Cité scolaire Claude Monet",
               "slug": "claudemonet",
@@ -868,8 +868,8 @@
               "description": "Construite aux début des années 50, la cité scolaire Claude-Monet était destinée à répondre à la deande grandissante des inscriptions au lycée, ouvets aux filles depuis 1924 et gratuits depuis 1930. Implanté à l'angle de trois voies, sa disposition permet de dégager en son centre une vaste cour autour de laquelle s'organise la vie scolaire. En 1952, la décoration du hall d'honneur du lycée est attribuée à Jean Dupas par l'architecte Roger Séassal au titre du 1% artistique. ",
               "adress": "1, rue du Docteur-Magnan",
               "createdAt": "2026-01-14T10:38:28.079Z",
-              "updatedAt": "2026-01-16T14:42:01.190Z",
-              "publishedAt": "2026-01-16T14:42:01.541Z",
+              "updatedAt": "2026-03-10T15:42:24.994Z",
+              "publishedAt": "2026-03-10T15:42:25.332Z",
               "locale": "fr",
               "actualname": "Cité scolaire Claude Monet",
               "images": [
@@ -935,7 +935,7 @@
               ]
             },
             {
-              "id": 100,
+              "id": 111,
               "documentId": "xzn4tyshvule4ketduepinbr",
               "name": "Pavillon de l'U.C.A.F. des Tissus et de la Manufacture des Gobelins",
               "slug": "ucaf",
@@ -945,8 +945,8 @@
               "description": "À l'Exposition universelle de Paris en 1937, un pavillon, parfois appelé \"palais\" au vu de ses dimensions monumentales, est réservé aux exposants de l'U.C.A.F : l'Union Corportative des Artistes Français. Cette union résulte d'une volonté des artistes de se regrouper au sein d'organisations de caractère corporatiste pour répondre aux difficultés entraînées par la crise économique des années 1930,  de défendre l'art français, et de favoriser les liens entre artistes et industriels. Réunissant diverses professions et artisanats, le pavillon de l'U.C.A.F. était communément appelé \"Centre des Métiers\". ",
               "adress": "Emplacement actuel du Musée du quai Branly - Jacques Chirac",
               "createdAt": "2026-01-14T10:45:43.906Z",
-              "updatedAt": "2026-01-16T14:44:27.857Z",
-              "publishedAt": "2026-01-16T14:44:28.161Z",
+              "updatedAt": "2026-03-10T15:43:09.930Z",
+              "publishedAt": "2026-03-10T15:43:10.273Z",
               "locale": "fr",
               "actualname": "Pavillon de l'U.C.A.F. des Tissus et de la Manufacture des Gobelins",
               "images": [
@@ -1024,7 +1024,7 @@
               ]
             },
             {
-              "id": 92,
+              "id": 112,
               "documentId": "dkzza3s6sc9snybebeq256ld",
               "name": "Eglise du Saint-Esprit",
               "slug": "Eglise du Saint-Esprit",
@@ -1034,8 +1034,8 @@
               "description": "Dans les années 1920, en pleine crise économique, l'archevêché  de Paris lance un vaste chantier de contruction d'édifices religieux dans Paris et sa banlieue. Devant l'absence de lieux de culte et devant la montée du chômage, on prévoit la construction d'une centaine d'églises dont l'Eglise du Saint-Esprit, située dans le XIIe arrondissement, à partir de 1926. Les plans de l'église sont imaginés par l'architecte Paul Tournon. \n\nPour décorer l'intérieur de l'église, l'architecte Paul Tournon souhaite représenter l'histoire de l’Église chrétienne puis catholique qui se déroule depuis la Pentecôte et entend contribuer au renouveau de la peinture murale. Il fait \"appel à ceux que l'opinion avertie nomme les plus grands parmi les sculpteurs, peintres et décorateurs contemporains\" (extrait de la Revue de l'Art sacré, Avril 34). Jean Dupas est chargé de décorer la sixième chapelle avec l'aide de l'artiste Pougheon. ",
               "adress": "186, avenue Dausmesnil",
               "createdAt": "2026-01-14T10:51:45.474Z",
-              "updatedAt": "2026-01-16T14:42:13.183Z",
-              "publishedAt": "2026-01-16T14:42:13.533Z",
+              "updatedAt": "2026-03-10T15:43:48.337Z",
+              "publishedAt": "2026-03-10T15:43:48.673Z",
               "locale": "fr",
               "actualname": "Eglise du Saint-Esprit",
               "images": [
@@ -1129,7 +1129,7 @@
               ]
             },
             {
-              "id": 65,
+              "id": 119,
               "documentId": "r0vxvwk6fg7rfm6ehbekxi85",
               "name": "Hôtel du collectionneur ",
               "slug": "hotelcollectionneur",
@@ -1139,8 +1139,8 @@
               "description": "Lors de l'Exposition internationale des arts décoratifs et industriels de 1925, Jean Dupas est chargé avec plusieurs autres artistes de participer au décor du grand salon de l'Hôtel du Collectionneur sous la direction de l'ensemblier-décorateur Jacques-Emile Ruhlmann. Ce pavillon, conçû par l'architecte Pierre Patout, incarne l’esprit même du style Art déco, qui a d’ailleurs tiré son nom de l’Exposition de 1925.",
               "adress": "Esplanade des Invalides",
               "createdAt": "2026-01-14T16:47:28.914Z",
-              "updatedAt": "2026-01-15T13:54:16.795Z",
-              "publishedAt": "2026-01-15T13:54:17.071Z",
+              "updatedAt": "2026-03-10T16:14:30.847Z",
+              "publishedAt": "2026-03-10T16:14:31.199Z",
               "locale": "fr",
               "actualname": null,
               "images": [
@@ -1186,37 +1186,37 @@
                       "legend": "Les Perruches, 1925, huile sur toile, collection particulière. ",
                       "crops": [
                         {
-                          "id": 4,
+                          "id": 55,
                           "documentId": "ry2s1m9vk7k98nrqtvnnujza",
-                          "description": "A droite, une femme blonde caressant une colombe évoque la douceur et la sensualité.\nDerrière elle, une autre perruche, incarne la fantaisie et la légèreté dans ses gestes et les motifs de sa robe. ",
+                          "description": "À droite, une femme blonde caressant une colombe évoque la douceur et la sensualité.\nDerrière elle, une autre perruche, incarne la fantaisie et la légèreté dans ses gestes et les motifs de sa robe. ",
                           "artwork_location_x": 70,
                           "artwork_location_y": 10,
                           "artwork_location_w": 20,
                           "artwork_location_h": 20,
                           "createdAt": "2026-01-15T15:58:04.690Z",
-                          "updatedAt": "2026-01-15T15:58:04.690Z",
-                          "publishedAt": "2026-01-15T15:58:04.912Z",
+                          "updatedAt": "2026-03-10T15:44:47.732Z",
+                          "publishedAt": "2026-03-10T15:44:48.008Z",
                           "locale": "fr",
                           "file": "paris_hotelducollectionneur_lesperruches_1_crop_1.webp",
                           "filename": null
                         },
                         {
-                          "id": 6,
+                          "id": 57,
                           "documentId": "gx681v8phrph1h0h1yq2g8n3",
-                          "description": "A gauche, une femme brune au regard sombre tenant deux bouquets de roses représente une allégorie de la fidélité. ",
+                          "description": "À gauche, une femme brune au regard sombre tenant deux bouquets de roses représente une allégorie de la fidélité. ",
                           "artwork_location_x": 38,
                           "artwork_location_y": 10,
                           "artwork_location_w": 20,
                           "artwork_location_h": 20,
                           "createdAt": "2026-01-15T15:59:04.316Z",
-                          "updatedAt": "2026-01-15T15:59:04.316Z",
-                          "publishedAt": "2026-01-15T15:59:04.540Z",
+                          "updatedAt": "2026-03-10T15:47:02.086Z",
+                          "publishedAt": "2026-03-10T15:47:02.360Z",
                           "locale": "fr",
                           "file": "paris_hotelducollectionneur_lesperruches_1_crop_2.webp",
                           "filename": null
                         },
                         {
-                          "id": 8,
+                          "id": 58,
                           "documentId": "gb69phdw6v9x5zfhh8hnpr2r",
                           "description": "Au premier plan, la figure couchée qui s'éveille dans un vol de colombe suggère le charme et l'érotisme. ",
                           "artwork_location_x": 35,
@@ -1224,14 +1224,14 @@
                           "artwork_location_w": 20,
                           "artwork_location_h": 20,
                           "createdAt": "2026-01-15T16:00:12.428Z",
-                          "updatedAt": "2026-01-15T16:00:12.428Z",
-                          "publishedAt": "2026-01-15T16:00:12.643Z",
+                          "updatedAt": "2026-03-10T15:47:39.990Z",
+                          "publishedAt": "2026-03-10T15:47:40.264Z",
                           "locale": "fr",
                           "file": "paris_hotelducollectionneur_lesperruches_1_crop_3.webp",
                           "filename": null
                         },
                         {
-                          "id": 10,
+                          "id": 59,
                           "documentId": "evio6di8dulvcdykbh0466eg",
                           "description": "Une femme assise coiffée d'un chapeau et tenant un rameau d'olivier ferme le cercle et incarne la paix.",
                           "artwork_location_x": 62,
@@ -1239,8 +1239,8 @@
                           "artwork_location_w": 20,
                           "artwork_location_h": 20,
                           "createdAt": "2026-01-15T16:01:00.320Z",
-                          "updatedAt": "2026-01-15T16:01:00.320Z",
-                          "publishedAt": "2026-01-15T16:01:00.535Z",
+                          "updatedAt": "2026-03-10T15:48:21.888Z",
+                          "publishedAt": "2026-03-10T15:48:22.163Z",
                           "locale": "fr",
                           "file": "paris_hotelducollectionneur_lesperruches_1_crop_4.webp",
                           "filename": null
@@ -1267,121 +1267,32 @@
               ]
             }
           ]
-        },
-        {
-          "id": 30,
-          "documentId": "hj1nipco5uur0mvu4dpjui1a",
-          "name": "Libourne",
-          "x": -28,
-          "y": 8.5,
-          "slug": "libourne",
-          "createdAt": "2026-01-14T10:18:54.838Z",
-          "updatedAt": "2026-01-16T11:27:19.141Z",
-          "publishedAt": "2026-01-16T11:27:19.482Z",
-          "locale": "fr",
-          "museums": [
-            {
-              "id": 94,
-              "documentId": "b63tqskj83y7kgv6jn7b6vi5",
-              "name": "Lycée Max Linder",
-              "slug": "maxlinder",
-              "x": -28,
-              "y": 8.5,
-              "model3d": "libourne_lycee_max_linder.glb",
-              "description": null,
-              "adress": "43, Allées Robert-Boulin",
-              "createdAt": "2026-01-14T10:16:32.943Z",
-              "updatedAt": "2026-01-16T14:42:43.708Z",
-              "publishedAt": "2026-01-16T14:42:44.018Z",
-              "locale": "fr",
-              "actualname": "Lycée Max Linder",
-              "images": [
-                {
-                  "id": 153,
-                  "documentId": "yugbpbidbvjoo9zt7rwmfha4",
-                  "file": "libourne_lyceemaxlinder_1.webp",
-                  "description": "Le lycée Max Linder à Libourne, 43, Allées Robert-Boulin.",
-                  "copyright": "© Photo : Adrienne Barroche Région Nouvelle-Aquitaine, Inventaire général du patrimoine culturel, 2016",
-                  "createdAt": "2026-01-14T15:19:16.077Z",
-                  "updatedAt": "2026-01-16T09:14:40.484Z",
-                  "publishedAt": "2026-01-16T09:14:40.843Z",
-                  "locale": "fr",
-                  "legend": null
-                },
-                {
-                  "id": 154,
-                  "documentId": "cb5r31wcy15i4cw97l1c50n7",
-                  "file": "libourne_lyceemaxlinder_2.webp",
-                  "description": "Le lycée Max Linder à Libourne, 43, Allées Robert-Boulin.",
-                  "copyright": "© Photo : Adrienne Barroche Région Nouvelle-Aquitaine, Inventaire général du patrimoine culturel, 2016",
-                  "createdAt": "2026-01-14T15:21:07.945Z",
-                  "updatedAt": "2026-01-16T09:14:54.514Z",
-                  "publishedAt": "2026-01-16T09:14:54.847Z",
-                  "locale": "fr",
-                  "legend": null
-                }
-              ],
-              "artworks": [
-                {
-                  "id": 32,
-                  "documentId": "k8w1414jndg1ij5np129zk4q",
-                  "name": "L'Air",
-                  "artist": "Jean Dupas",
-                  "slug": "air",
-                  "description": "Cette toile est l'oeuvre de Jean Dupas qui s'inspire du mythe de Pégase pour symboliser \"l'Air\". En effet, lors de la décoration du lycée au titre du 1% artistique, Jacques Carlu, l'architecte du lycée, propose de décorer le réfectoire avec quatre peintures représentant les  éléments : Sahuguet (L’Eau), Souverbie (La Terre), Untersteller (Le Feu), Dupas (L’Air). Il s'agit de l'une des dernières oeuvres connues de l'artiste. ",
-                  "conservation": "Conservé sur place ",
-                  "technique": "Peinture marouflée sur toile ou peinte directement sur le mur (incertitude)",
-                  "year": "1960",
-                  "createdAt": "2026-01-14T10:18:25.559Z",
-                  "updatedAt": "2026-01-14T15:37:26.704Z",
-                  "publishedAt": "2026-01-14T15:37:26.945Z",
-                  "locale": "fr",
-                  "images": [
-                    {
-                      "id": 179,
-                      "documentId": "h8z48at40ziasonzr1x2iedl",
-                      "file": "libourne_lyceemaxlinder_lair.webp",
-                      "description": "L'Air, 1960, fresque ou toile marouflée, Libourne, Lycée Max Linder (réfectoire).",
-                      "copyright": "© ADAGP Paris, 2026, photo : Adrienne Barroche Région Nouvelle-Aquitaine, Inventaire général du patrimoine culturel, 2016",
-                      "createdAt": "2026-01-14T15:23:46.655Z",
-                      "updatedAt": "2026-01-16T10:26:11.740Z",
-                      "publishedAt": "2026-01-16T10:26:12.062Z",
-                      "locale": "fr",
-                      "legend": null,
-                      "crops": [],
-                      "localizations": []
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
         }
       ]
     },
     {
-      "id": 4,
+      "id": 10,
       "documentId": "gxl51dxqfsy3jrx8a63s6857",
       "Name": "Amérique",
       "createdAt": "2026-01-15T14:05:02.154Z",
-      "updatedAt": "2026-01-15T14:05:02.154Z",
-      "publishedAt": "2026-01-15T14:05:02.382Z",
+      "updatedAt": "2026-03-10T15:59:11.349Z",
+      "publishedAt": "2026-03-10T15:59:11.734Z",
       "locale": "fr",
       "cities": [
         {
-          "id": 14,
+          "id": 39,
           "documentId": "szakdeso8fnbssxd35phb7g9",
           "name": "New York",
           "x": -264.5,
           "y": -6,
           "slug": "newyork",
           "createdAt": "2026-01-14T10:19:26.173Z",
-          "updatedAt": "2026-01-14T10:22:56.833Z",
-          "publishedAt": "2026-01-14T10:22:57.049Z",
+          "updatedAt": "2026-03-10T15:48:48.221Z",
+          "publishedAt": "2026-03-10T15:48:48.533Z",
           "locale": "fr",
           "museums": [
             {
-              "id": 98,
+              "id": 113,
               "documentId": "c89vj1e0epu5ia1uv0mf97vj",
               "name": "Pavillon français",
               "slug": "pavillonfrancais",
@@ -1391,8 +1302,8 @@
               "description": "À l'occasion de l'Exposition universelle de New-York en 1939, la réalisation du pavillon officiel de la France, dit aussi Pavillon français, est confiée aux architectes Pierre Patout et Roger-Henri Expert, deux figures majeures de la scène architecturale française. Ensemble, il pensent la réalisation d'un bâtiment prenant la forme d'un éventail, mis en valeur par un plan d'eau. ",
               "adress": "Flushing Meadows - Corona Park",
               "createdAt": "2026-01-14T10:21:12.327Z",
-              "updatedAt": "2026-01-16T14:43:49.320Z",
-              "publishedAt": "2026-01-16T14:43:49.606Z",
+              "updatedAt": "2026-03-10T15:49:32.092Z",
+              "publishedAt": "2026-03-10T15:49:32.445Z",
               "locale": "fr",
               "actualname": "Pavillon français",
               "images": [
@@ -1470,43 +1381,32 @@
               ]
             }
           ]
-        }
-      ]
-    },
-    {
-      "id": 7,
-      "documentId": "u4tkddmc62l7ntiwevsta0iq",
-      "Name": "Océan",
-      "createdAt": "2026-01-15T14:05:29.766Z",
-      "updatedAt": "2026-01-15T14:05:47.855Z",
-      "publishedAt": "2026-01-15T14:05:48.183Z",
-      "locale": "fr",
-      "cities": [
+        },
         {
-          "id": 16,
+          "id": 48,
           "documentId": "authiyyy1wgs0ibpmgb3ydj5",
           "name": "Paquebot Normandie",
-          "x": null,
-          "y": null,
+          "x": -150,
+          "y": 0,
           "slug": "pqbtnormandie",
           "createdAt": "2026-01-14T10:27:37.901Z",
-          "updatedAt": "2026-01-14T10:27:37.901Z",
-          "publishedAt": "2026-01-14T10:27:38.133Z",
+          "updatedAt": "2026-03-13T00:42:26.018Z",
+          "publishedAt": "2026-03-13T00:42:26.344Z",
           "locale": "fr",
           "museums": [
             {
-              "id": 67,
+              "id": 122,
               "documentId": "b44zbt0ataw04blrks6wh9eu",
               "name": "Paquebot Normandie",
               "slug": "pqbtnormandie",
-              "x": null,
-              "y": null,
+              "x": -150,
+              "y": 0,
               "model3d": null,
               "description": "Au début des années 1930, les derniers paquebots des compagnies concurrentes allemandes et italiennes obligent la France à se lancer dans la construction d'un nouveau paquebot plus compétitif. C'est dans ce contexte qu'est lancé  le 29 octobre 1932, le paquebot Normandie, appelé aussi le \"Géant des Mers\" : mis en service en 1935, il devient le plus grand paquebot du monde.  Avec la 2nde guerre mondiale, sa destination change radicalement : réquisionné cinq jours après Pearl Harbor pour le transport des troupes américaines,  il sera en proie aux flammes en février 1942 et l'épave sera démolie. Une vente aux enchêres organisée par le gouvernement américain disperse les différents décors, dont ceux de Dupas. \n\nAmbassadeur de l'Art français, le paquebot réunit les plus artistes du moment, coordonnés sous la directions des architectes Pierre Patout, Henri Pacon, Richard Bouwens van der Boijen et Roger-Henri Expert. Le décor du Grand salon de Première classe est confié à Jean Dupas. Il crée une oeuvre monumentale sur le thème de l'Histoire de la Navigation, répartie en cinq panneaux :  l'Enlèvement d'Europe,  la Naissance d'Aphrodite, le Char de Thétis, et le Char de Poésidon L'ensemble de 400 m2 est transcrit en glace polie de Saint-Gobain, à rehauts d'or et d'argent,aux notes roses et bleues et au miroir gris et noir, exécutée par le maître-verrier Jacques-Charles Champigneulle (1907-1955). ",
               "adress": "Océan Atlantique",
               "createdAt": "2026-01-14T10:24:45.661Z",
-              "updatedAt": "2026-01-15T13:54:45.740Z",
-              "publishedAt": "2026-01-15T13:54:46.031Z",
+              "updatedAt": "2026-03-13T00:42:32.564Z",
+              "publishedAt": "2026-03-13T00:42:32.933Z",
               "locale": "fr",
               "actualname": null,
               "images": [
@@ -1688,30 +1588,30 @@
           ]
         },
         {
-          "id": 25,
+          "id": 47,
           "documentId": "unzvqpabcoii8dfd9rr2duwg",
           "name": "Paquebot Île-de-France",
-          "x": null,
-          "y": null,
+          "x": -170,
+          "y": -10,
           "slug": "pqbtidf",
           "createdAt": "2026-01-14T10:28:10.612Z",
-          "updatedAt": "2026-01-15T14:05:51.653Z",
-          "publishedAt": "2026-01-15T14:05:51.900Z",
+          "updatedAt": "2026-03-13T00:41:13.214Z",
+          "publishedAt": "2026-03-13T00:41:13.551Z",
           "locale": "fr",
           "museums": [
             {
-              "id": 96,
+              "id": 121,
               "documentId": "n6i6jw8aof80gagk34c8bb20",
               "name": "Paquebot Ile-de-France",
               "slug": "pqbtidf",
-              "x": null,
-              "y": null,
+              "x": -170,
+              "y": -10,
               "model3d": null,
               "description": "Symbole d'un véritable raffinement à la française, le paquebot Ile-de-France est construit en 1927 par la Compagnie générale transatlantique, qui souhaite redorer son blason et faire face à la concurrence. Véritable vitrine de l'Art déco,  il incarne le premier grand projet de navire de luxe français après la Première Guerre mondialele. Son décor est confié aux meilleurs artistes du moments afin de créer une atmosphère de luxe et d'élégance, sur le thème de la région Ile-de-France. On y retouve notamment Jacques-Émile Ruhlmann, Mathurin Méheut, Louis Süe, André Mare, Raymond Subes, Yvonne Jean-Haffen et Jean Dupas. Le paquebot est réquisitionné durant la Seconde guerre mondiale, puis reprend brièvement les voyages transatlantiques, avant d'être définitivement vendu puis détruit pour les besoins de scènes de cinéma.  ",
               "adress": "Océan Atlantique",
               "createdAt": "2026-01-14T10:28:29.363Z",
-              "updatedAt": "2026-01-16T14:43:14.294Z",
-              "publishedAt": "2026-01-16T14:43:14.589Z",
+              "updatedAt": "2026-03-13T00:41:29.073Z",
+              "publishedAt": "2026-03-13T00:41:29.428Z",
               "locale": "fr",
               "actualname": "Paquebot Ile-de-France",
               "images": [
@@ -1784,16 +1684,16 @@
                           "filename": null
                         },
                         {
-                          "id": 44,
+                          "id": 56,
                           "documentId": "fejouiwwfovt81876ak8yelp",
-                          "description": "A droite, des garçons jouent au tir à l'arc. Au centre, la jeune Adrienne chante une romance.",
+                          "description": "À droite, des garçons jouent au tir à l'arc. Au centre, la jeune Adrienne chante une romance.",
                           "artwork_location_x": null,
                           "artwork_location_y": null,
                           "artwork_location_w": null,
                           "artwork_location_h": null,
                           "createdAt": "2026-01-16T15:27:30.112Z",
-                          "updatedAt": "2026-01-16T15:27:30.112Z",
-                          "publishedAt": "2026-01-16T15:27:30.326Z",
+                          "updatedAt": "2026-03-10T15:45:00.867Z",
+                          "publishedAt": "2026-03-10T15:45:01.143Z",
                           "locale": "fr",
                           "file": "oceanatlantique_paquebotiledefrance_sylvie_1_crop_1.webp",
                           "filename": null
@@ -1815,7 +1715,7 @@
       "page": 1,
       "pageSize": 25,
       "pageCount": 1,
-      "total": 3
+      "total": 2
     }
   }
 }

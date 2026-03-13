@@ -43,9 +43,9 @@ export const CONFIG = {
     },
   },
   camera: {
-    fov: 75,
+    fov: 45,
     near: 0.0001,
-    far: 10000,
+    far: 110,
   },
   // Positions des continents
   continents: {
@@ -57,10 +57,10 @@ export const CONFIG = {
       camera: new THREE.Vector3(-100, 5, 50),
       target: new THREE.Vector3(-100, 5, -9.9),
     },
-    océan: {
-      camera: new THREE.Vector3(50, -30, 50),
-      target: new THREE.Vector3(50, -30, -9.9),
-    },
+    // océan: {
+    //   camera: new THREE.Vector3(50, -30, 50),
+    //   target: new THREE.Vector3(50, -30, -9.9),
+    // },
   },
   controls: {
     minDistance: 0,
