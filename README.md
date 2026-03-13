@@ -1,13 +1,31 @@
 
 
-# Dupas & Co.Le grand Art Déco
+# Dupas & Co. Le grand Art Déco
 
 ## C'est quoi ?
 
-Une expérience interactive sur l'écran tactile du MusBA qui a eu lieu lors de l' **Exposition Dupas & Co.Le grand Art Déco.** du 26 juin au 29 novembre 2026. Ell est réalisé par la promotion 2026 du BUT MMI Bordeaux.
+Une expérience interactive sur l'écran tactile du MusBA réalisée lors de l'**Exposition Dupas & Co. Le grand Art Déco** du 26 juin au 29 novembre 2026. Elle est réalisée par la promotion 2026 du BUT MMI Bordeaux.
+
+L'expérience propose une **carte WebGL interactive** permettant d'explorer des œuvres d'art réparties sur deux continents (Europe et Amérique), organisées en villes et musées. Chaque musée donne accès à un détail d'œuvres avec carrousel, textes et images cliquables.
+
+## Stack technique
+
+| Catégorie | Technologie |
+| :--- | :--- |
+| Framework | Vue 3 (Composition API, `<script setup>`) |
+| Build | Vite 7 |
+| 3D / WebGL | Three.js + camera-controls |
+| Animations | GSAP, split-type |
+| État global | Pinia |
+| Routing | Vue Router 4 |
+| Carrousel | Embla Carousel |
+| Styles | SCSS (Sass) |
+| Linting | ESLint + Stylelint |
+| Package manager | pnpm |
 
 ## Accéder à l'expérience
-> [!NOTE] Le site est fait pour un écran 4k de 1m50 x 1m, lisez #Simulation de l'écran tactile du MusBA ci-dessous
+> [!NOTE]
+> Le site est fait pour un écran 4k de 1m50 x 1m, lisez [#Simulation de l'écran tactile du MusBA](#simulation-de-lécran-tactile-du-musba) ci-dessous
 
 Aller sur [ A COMPLETER ]
 
@@ -92,22 +110,75 @@ const handleTouch = (event: TouchEvent) => {
 }
 ```
 
+## Données (Strapi CMS)
+
+Le contenu de la carte (continents, villes, musées, œuvres) est chargé depuis `/public/content/content.json`, exporté depuis un CMS Strapi.
+
+La structure JSON attendue :
+
+```
+data: [
+  {
+    Name: "europe",
+    cities: [
+      {
+        slug: "paris",
+        x: ..., y: ...,
+        museums: [
+          {
+            slug: "musee-dupas",
+            x: ..., y: ...,
+            artworks: [ ... ]
+          }
+        ]
+      }
+    ]
+  },
+  { Name: "amérique", cities: [ ... ] }
+]
+```
+
+## Routes
+
+| URL | Vue |
+| :--- | :--- |
+| `/` | Carte (vue Europe par défaut) |
+| `/:continentSlug` | Carte zoomée sur un continent |
+| `/:continentSlug/:citySlug` | Carte zoomée sur une ville |
+| `/:continentSlug/:citySlug/:museumSlug` | Fiche musée / liste des œuvres |
+| `/:continentSlug/:citySlug/:museumSlug/:artworkSlug` | Détail d'une œuvre |
+| `/all-artworks` | Galerie de toutes les œuvres |
+| `/credits` | Page crédits |
+
+## Architecture des composants principaux
+
+| Composant | Rôle |
+| :--- | :--- |
+| `Map.vue` | Scène Three.js – carte WebGL interactive avec pins et navigation |
+| `Infos.vue` | Fiche d'un musée avec liste des œuvres |
+| `artworkDetails.vue` | Détail d'une œuvre (carrousel, textes, images zoomables) |
+| `ViewAllArtworks.vue` | Galerie complète de toutes les œuvres |
+| `Carousel.vue` | Carrousel générique (Embla) |
+| `ClickImg.vue` | Image interactive avec zoom / plein écran |
+| `Listing.vue` | Liste d'items (œuvres, musées…) |
+| `SmartNavbar.vue` | Barre de navigation contextuelle |
+| `IdleView.vue` | Détection d'inactivité → reset vers l'accueil |
+| `CreditsOverlay.vue` | Overlay crédits |
+
 ## Développement
 
 ```bash
 # 1. Installer pnpm si vous ne l'avez pas, un meilleur package manager que npm
 npm i -g pnpm
 
-# 2. Installer les dépendances (à faire régulièrement car les packages peuvent êtres mis à jour)
-pnpm
+# 2. Cloner le projet
+git clone https://github.com/nuit-musee-musba/experience-2026.git
 
-# 3. Cloner le projet 
-git clone https://github.com/nuit-musee-musba/experience-2025.git
-
-# 4. Ouvrir le projet et installer les dépendances
+# 3. Ouvrir le projet et installer les dépendances
+cd experience-2026
 pnpm i
 
-# 5. Lancer le serveur de dev
+# 4. Lancer le serveur de dev
 pnpm dev
 ```
 
@@ -215,7 +286,7 @@ Les fichiers de config
 ### Sur le build en production
 
 - hébergement distant : aller sur [ A COMPLETER ]
-- hébergement local : récupérer le Aller sur [ A COMPLETER ]
+- hébergement local : récupérer le bundle.zip puis suivre les étapes ci-dessous
 
 ### Sur votre propre build
 
@@ -241,12 +312,4 @@ pnpm bundle:zip
 
 ### Quelques crédits
 
-Ce Readme est (beaucoup) inspiré du readme des projets précédents, tout comme l'architecture de base (npm, vite etc...), merci à eux ! <3
-
-# Vue 3 + Vite
-
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs,
-check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
-
-Learn more about IDE Support for Vue in
-the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+Ce Readme est (beaucoup) inspiré du readme des projets précédents, tout comme l'architecture de base (pnpm, vite, etc.), merci à eux ! <3

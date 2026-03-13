@@ -19,4 +19,4 @@ Une fois que vous avez mis à jour le contenu depuis strapi, vous devez exporter
 4. créer un commit portant le nom `update content`
 5. envoyer sur la branche `main`
 
-**il est important d'avoir continents?sort=id:DESC dans l'url sinon l'Amérique arrive en premier**
+**Il est important d'avoir continents?Sort=id:DESC dans l'url sinon l'Amérique arrive en premier**
