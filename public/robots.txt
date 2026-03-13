@@ -1,0 +1,3 @@
+User-agent: *
+Allow: noindex, nofollow
+Disallow: /
