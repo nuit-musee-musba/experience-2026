@@ -130,7 +130,7 @@ h2,
   font-size: 100px;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
+  line-height: 1.2;
   margin-bottom: unset;
 }
 
@@ -240,11 +240,12 @@ a {
   z-index: 1000;
 }
 .crop-popup-overlay .crop-popup {
-  max-width: 90vw;
-  max-height: 90vh;
   display: flex;
   flex-direction: column;
   gap: 80px;
+  align-items: center;
+  max-width: 80vw;
+  max-height: 90vh;
 }
 .crop-popup-overlay .crop-popup .crop-popup-image {
   flex: 1;
@@ -252,15 +253,19 @@ a {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  width: fit-content;
 }
 .crop-popup-overlay .crop-popup .crop-popup-image img {
-  max-width: 100%;
-  max-height: 70vh;
+  max-width: 70vw;
+  max-height: 85vh;
+  width: auto;
+  height: 80vh;
   object-fit: contain;
 }
 .crop-popup-overlay .crop-popup .crop-popup-content {
   background-color: #FFF;
   position: relative;
+  align-self: stretch;
 }
 .crop-popup-overlay .crop-popup .crop-popup-content .crop-popup-text {
   padding: 80px 56px;
@@ -271,6 +276,7 @@ a {
   line-height: 140%;
   letter-spacing: 0;
   line-height: 1.6;
+  max-width: 80vw;
 }
 .crop-popup-overlay .crop-popup .crop-popup-content .btn {
   position: absolute;
