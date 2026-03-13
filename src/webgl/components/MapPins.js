@@ -14,7 +14,7 @@ const PIN_SVG = `
 `;
 
 export class MapPins {
-  constructor(scene, onClick, requestRender = null) {
+  constructor(scene, data, onClick, requestRender = null) {
     this.scene = scene;
     this.onClick = onClick;
     this.requestRender = requestRender;
@@ -26,106 +26,29 @@ export class MapPins {
     this.dracoLoader = new DRACOLoader();
     this.dracoLoader.setDecoderPath("/draco/");
     this.loader.setDRACOLoader(this.dracoLoader);
+
+    this.create(data);
+  }
+
+  create(data) {
+    //create pins and museums from all data
+    
   }
 
   addPin(item) {
-    const id = item.slug;
     if (item.model3d) {
-      this.loader.load(`/models/${item.model3d}`, (gltf) => {
-        const model = gltf.scene;
-        model.position.set(item.x, item.y, CONFIG.pins.onceClickedZ);
-        model.scale.set(0.05, 0.05, 0.05);
-        model.rotation.set(Math.PI / 2, Math.PI / 2, 0);
-
-        model.traverse((child) => {
-          if (child.isMesh) {
-            child.userData = item;
-          }
-        });
-        model.userData = item;
-        this.group.add(model);
-        if (id) this.pinCache.set(id, model);
-
-        if (this.requestRender) {
-          this.requestRender();
-        }
-      });
+      this.setMuseumObject(item);
     } else {
       if (item.artworks) {
-        const geometry = new THREE.BoxGeometry(
-          CONFIG.pins.artworks.geometrySizes[0],
-          CONFIG.pins.artworks.geometrySizes[1],
-          CONFIG.pins.artworks.geometrySizes[2],
-        );
-        const material = new THREE.MeshBasicMaterial({
-          color: CONFIG.colors.pinGreen,
-        });
-        const pin = new THREE.Mesh(geometry, material);
-        pin.userData = item;
-        pin.position.set(item.x, item.y, CONFIG.pins.defaultZ);
-        pin.name = "pin";
-        this.group.add(pin);
-        if (id) this.pinCache.set(id, pin);
+        this.setDebugObject(item);
       } else {
-        const container = document.createElement("div");
-        container.style.position = "relative";
-        container.style.cursor = "pointer";
-        container.style.pointerEvents = "auto";
-        container.style.display = "flex";
-        container.style.flexDirection = "column";
-        container.style.alignItems = "center";
-
-        if (item.name) {
-          const label = document.createElement("div");
-          label.textContent = item.name;
-          label.style.fontFamily = "baseFont, sans-serif";
-          label.style.fontSize = "36px";
-          label.style.color = "#000";
-          label.style.position = "absolute";
-          label.style.left = "50%";
-          label.style.top = "-65px"; // pin height / 2 + padding
-          label.style.transform = "translate(-50%, -110%)";
-          label.style.whiteSpace = "nowrap";
-          label.style.textAlign = "center";
-          container.appendChild(label);
-        }
-
-        const pinWrapper = document.createElement("div");
-        pinWrapper.innerHTML = PIN_SVG;
-        pinWrapper.style.transform = "translateY(-50%)";
-
-        container.appendChild(pinWrapper);
-
-        container.addEventListener("click", (e) => {
-          e.stopPropagation();
-          if (this.onClick) {
-            this.onClick(item);
-          }
-        });
-
-        container.addEventListener(
-          "touchstart",
-          (e) => {
-            e.stopPropagation();
-            if (this.onClick) {
-              this.onClick(item);
-            }
-          },
-          { passive: false },
-        );
-
-        const css2dObject = new CSS2DObject(container);
-        css2dObject.position.set(item.x, item.y, CONFIG.pins.defaultZ);
-        css2dObject.userData = item;
-
-        this.group.add(css2dObject);
-        if (id) this.pinCache.set(id, css2dObject);
+        this.setPin(item);
       }
     }
   }
 
   renderLevel(dataList) {
-    this.pinCache.forEach((pin) => (pin.visible = false));
+    // this.pinCache.forEach((pin) => (pin.visible = false));
 
     dataList.forEach((item) => {
       const id = item.slug;
@@ -134,6 +57,12 @@ export class MapPins {
       } else {
         this.addPin(item);
       }
+    });
+  }
+
+  show (type) {
+    this.group.children.forEach( object => {
+      object.visible = object.userData.type === type;
     });
   }
 
@@ -164,5 +93,103 @@ export class MapPins {
 
   getPins() {
     return this.group.children;
+  }
+
+  setMuseumObject(item) {
+    this.loader.load(`/models/${item.model3d}`, (gltf) => {
+      const model = gltf.scene;
+      model.position.set(item.x, item.y, CONFIG.pins.onceClickedZ);
+      model.scale.set(0.05, 0.05, 0.05);
+      model.rotation.set(Math.PI / 2, Math.PI / 2, 0);
+      model.traverse((child) => {
+        if (child.isMesh) {
+          child.userData = item;
+        }
+      });
+      model.userData = item;
+      model.userData.type = "museum";
+      this.group.add(model);
+      if (item.slug) this.pinCache.set(item.slug, model);
+
+      if (this.requestRender) {
+        this.requestRender();
+      }
+    });
+  }
+
+  setPin(item) {
+    const container = document.createElement("div");
+    container.style.position = "relative";
+    container.style.cursor = "pointer";
+    container.style.pointerEvents = "auto";
+    container.style.display = "flex";
+    container.style.flexDirection = "column";
+    container.style.alignItems = "center";
+
+    if (item.name) {
+      const label = document.createElement("div");
+      label.textContent = item.name;
+      label.style.fontFamily = "baseFont, sans-serif";
+      label.style.fontSize = "36px";
+      label.style.color = "#000";
+      label.style.position = "absolute";
+      label.style.left = "50%";
+      label.style.top = "-65px"; // pin height / 2 + padding
+      label.style.transform = "translate(-50%, -110%)";
+      label.style.whiteSpace = "nowrap";
+      label.style.textAlign = "center";
+      container.appendChild(label);
+    }
+
+    const pinWrapper = document.createElement("div");
+    pinWrapper.innerHTML = PIN_SVG;
+    pinWrapper.style.transform = "translateY(-50%)";
+
+    container.appendChild(pinWrapper);
+
+    container.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (this.onClick) {
+        this.onClick(item);
+      }
+    });
+
+    container.addEventListener(
+      "touchstart",
+      (e) => {
+        e.stopPropagation();
+        if (this.onClick) {
+          this.onClick(item);
+        }
+      },
+      { passive: false },
+    );
+
+    const css2dObject = new CSS2DObject(container);
+    css2dObject.position.set(item.x, item.y, CONFIG.pins.defaultZ);
+    css2dObject.userData = item;
+    css2dObject.userData.type = "pin";
+
+    this.group.add(css2dObject);
+    if (item.slug) this.pinCache.set(item.slug, css2dObject);
+  }
+
+  setDebugObject(item) {
+    // TODO REMOVE THIS DEBUG
+    const geometry = new THREE.BoxGeometry(
+      CONFIG.pins.artworks.geometrySizes[0],
+      CONFIG.pins.artworks.geometrySizes[1],
+      CONFIG.pins.artworks.geometrySizes[2],
+    );
+    const material = new THREE.MeshBasicMaterial({
+      color: CONFIG.colors.pinGreen,
+    });
+    const debug = new THREE.Mesh(geometry, material);
+    debug.userData = item;
+    debug.userData.type = "museum";
+    debug.position.set(item.x, item.y, CONFIG.pins.defaultZ);
+    debug.name = "pin";
+    this.group.add(debug);
+    if (item.slug) this.pinCache.set(item.slug, debug);
   }
 }

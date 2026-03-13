@@ -64,6 +64,12 @@ watch(
       return;
     }
 
+    if (params.citySlug) {
+      mapPins.show('museum');
+    } else {
+      mapPins.show('pin');
+    }
+
     if (params.citySlug && params.museumSlug) {
       // Niveau 2 : Vue musée
       const city = continent.cities.find((v) => v.slug === params.citySlug);
@@ -87,7 +93,7 @@ watch(
 
         camerasManager.setLookAt(camPos, targetPos, true);
 
-        renderLevel(city.museums);
+        renderLevel(city.museums); // TODO : supprimer tout les appels de renderLevel
 
         currentStep.value = 2;
         applyStepConstraints();
@@ -110,7 +116,8 @@ watch(
 
         camerasManager.setLookAt(camPos, targetPos, true);
 
-        renderLevel(city.museums);
+        renderLevel(city.museums); // TODO : supprimer tout les appels de renderLevel
+
         currentStep.value = 1;
         activeCitySlug.value = city.slug;
         applyStepConstraints();
@@ -124,7 +131,8 @@ watch(
 
       camerasManager.setLookAt(continentPos.camera, continentPos.target, true);
 
-      renderLevel(continent.cities);
+      renderLevel(continent.cities); // TODO : supprimer tout les appels de renderLevel
+
       currentStep.value = 0;
       applyStepConstraints();
     } else {
@@ -138,7 +146,7 @@ watch(
         (c) => c.Name.toLowerCase() === "europe",
       );
       if (europeContinent) {
-        renderLevel(europeContinent.cities);
+        renderLevel(europeContinent.cities);// TODO : supprimer tout les appels de renderLevel
       }
 
       currentStep.value = 0;
@@ -205,7 +213,7 @@ const initThree = () => {
   };
 
   mapPlane = new MapPlane(scene, requestRender);
-  mapPins = new MapPins(scene, handlePinClick, requestRender);
+  mapPins = new MapPins(scene, allData, handlePinClick, requestRender);
 
   scene.add(
     new THREE.AmbientLight(
@@ -335,7 +343,7 @@ const applyStepConstraints = () => {
   }
 };
 
-const renderLevel = (dataList) => {
+const renderLevel = (dataList) => { // TODO : supprimer cette méthode
   if (mapPins && dataList) {
     mapPins.renderLevel(dataList);
     needsRender = true;
