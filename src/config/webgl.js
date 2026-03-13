@@ -57,10 +57,6 @@ export const CONFIG = {
       camera: new THREE.Vector3(-100, 5, 50),
       target: new THREE.Vector3(-100, 5, -9.9),
     },
-    // océan: {
-    //   camera: new THREE.Vector3(50, -30, 50),
-    //   target: new THREE.Vector3(50, -30, -9.9),
-    // },
   },
   controls: {
     minDistance: 0,
@@ -94,7 +90,7 @@ export const CONFIG = {
     orbit: {},
   },
   lights: {
-    ambientIntensity: 0.5,
+    ambientIntensity: 2,
     directionalIntensity: 1,
     directionalPosition: new THREE.Vector3(5, 5, 5),
   },
