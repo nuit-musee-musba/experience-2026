@@ -16,7 +16,7 @@
     </div>
 
     <div class="nav-buttons" v-if="currentList.length > 1">
-      <Button :color="contextColor" icon-primary :text-content="prevLabel" @click="navigate(-1)">
+      <Button :color="contextColor" icon-primary :text-content="prevLabel" @click="navigate(-1)" v-if="currentList.length > 2">
         <template #icon-primary>
           <IconArrowLeft />
         </template>
