@@ -88,7 +88,7 @@ export const CONFIG = {
         maxAzimuthAngle: Math.PI / 8,
       },
     },
-    orbit: {},
+    // orbit: {},
   },
   lights: {
     ambientIntensity: 2,

@@ -110,13 +110,16 @@ watch(
 
         camerasManager.setLookAt(camPos, targetPos, true);
 
-        renderLevel(city.museums);
+        continent.cities.forEach((city) => {
+          renderLevel(city.museums);
+        });
+
         currentStep.value = 1;
         activeCitySlug.value = city.slug;
         applyStepConstraints();
       }
     } else if (params.continentSlug) {
-      // Niveau 0 : Vue villes du continent
+      // Niveau 0 : Vue continent
       if (camera) camera.clearViewOffset();
 
       const continentPos =
@@ -125,6 +128,7 @@ watch(
       camerasManager.setLookAt(continentPos.camera, continentPos.target, true);
 
       renderLevel(continent.cities);
+
       currentStep.value = 0;
       applyStepConstraints();
     } else {
@@ -309,7 +313,7 @@ const applyStepConstraints = () => {
         boundary: boundary,
       });
     } else {
-      // Vue continent : limiter l'angle (vue de dessus/baisée)
+      // Vue continent : limiter l'angle (vue de dessus/baissée)
       const targetY =
         continentPositions[activeContinentSlug.value]?.target.y ||
         continentPositions.europe.target.y;
