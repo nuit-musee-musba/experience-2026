@@ -29,7 +29,6 @@ export class MapPins {
     this.dracoLoader = new DRACOLoader();
     this.dracoLoader.setDecoderPath("/draco/");
     this.loader.setDRACOLoader(this.dracoLoader);
-
   }
 
   loadPin(item, itemZ, cache) {
@@ -76,11 +75,9 @@ export class MapPins {
 
     this.group.add(css2dObject);
     if (id) cache.set(id, css2dObject);
-
   }
 
   loadModels(item) {
-
     const id = item.slug;
 
     if (item.model3d) {
@@ -89,7 +86,7 @@ export class MapPins {
         model.position.set(item.x, item.y, CONFIG.pins.onceClickedZ);
         model.scale.set(2, 2, 2);
         model.rotation.set(Math.PI / 2, Math.PI / 2, 0);
-        model.renderOrder = 2
+        model.renderOrder = 2;
 
         model.traverse((child) => {
           if (child.isMesh) {
@@ -136,34 +133,29 @@ export class MapPins {
     }
   }
 
-
-
   showGlobalPin(item) {
     if (!item.museums) {
-      return
+      return;
     }
 
-    this.loadPin(item, CONFIG.pins.defaultZ, this.citiesPinCache)
+    this.loadPin(item, CONFIG.pins.defaultZ, this.citiesPinCache);
   }
 
   renderLevel(items) {
-
     this.citiesPinCache.forEach((pin) => (pin.visible = false));
     this.PoiPincache.forEach((pin) => (pin.visible = false));
     this.modelCache.forEach((model) => (model.visible = false));
-    
-    
-    items.forEach(item => {
-      const id = item.slug;      
-      
-      
+
+    items.forEach((item) => {
+      const id = item.slug;
+
       if (this.citiesPinCache.has(id)) {
         this.citiesPinCache.get(id).visible = true;
       } else {
         this.showGlobalPin(item);
       }
       if (this.PoiPincache.has(id)) {
-        this.PoiPincache.get(id).visible = true;
+        this.PoiPincache.forEach((pin) => (pin.visible = true));
       }
       if (this.modelCache.has(id)) {
         this.modelCache.forEach((model) => (model.visible = true));

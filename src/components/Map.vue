@@ -148,9 +148,7 @@ watch(
         (c) => c.Name.toLowerCase() === "europe",
       );
       if (europeContinent) {
-        europeContinent.cities.forEach((city) => {
-          renderLevel(city);
-        });
+      renderLevel(europeContinent.cities);
       }
 
       currentStep.value = 0;
