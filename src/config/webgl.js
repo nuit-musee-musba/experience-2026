@@ -91,8 +91,8 @@ export const CONFIG = {
     // orbit: {},
   },
   lights: {
-    ambientIntensity: 2,
-    directionalIntensity: 1,
+    ambientIntensity: 2.0,
+    directionalIntensity: 1.0,
     directionalPosition: new THREE.Vector3(5, 5, 5),
   },
   axesHelperSize: 500,

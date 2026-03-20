@@ -64,58 +64,60 @@ watch(
       return;
     }
 
-    if (params.citySlug && params.museumSlug) {
-      // Niveau 2 : Vue musée
+    if (params.citySlug) {
+      // Niveau 1 : vue ville
       const city = continent.cities.find((v) => v.slug === params.citySlug);
       const museum = city?.museums.find((m) => m.slug === params.museumSlug);
 
-      if (museum) {
-        const width = containerRef.value.clientWidth;
-        const height = containerRef.value.clientHeight;
-        camera.setViewOffset(width, height, -width * 0.25, 0, width, height);
+      if (camera) camera.clearViewOffset();
 
-        const distance = CONFIG.controls.map.museum.defaultDistance;
-        // const diveAngle = Math.PI / 3;
+      const distance = CONFIG.controls.map.city.minDistance;
 
-        const targetPos = new THREE.Vector3(museum.x, museum.y, -9.9);
-        const camPos = new THREE.Vector3(
-          museum.x,
-          museum.y -
-            distance * Math.sin(CONFIG.controls.map.museum.maxPolarAngle),
-          -9.9 + distance * Math.cos(CONFIG.controls.map.museum.maxPolarAngle),
-        );
+      const targetPos = new THREE.Vector3(city.x, city.y, -9.9);
 
-        camerasManager.setLookAt(camPos, targetPos, true);
+      const camPos = new THREE.Vector3(
+        city.x,
+        city.y - distance * Math.sin(CONFIG.controls.map.city.maxPolarAngle),
+        -9.9 + distance * Math.cos(CONFIG.controls.map.city.maxPolarAngle),
+      );
 
-        renderLevel(city.museums);
+      camerasManager.setLookAt(camPos, targetPos, true);
+
+      continent.cities.forEach((city) => {
+        // city.museums.forEach((museum) => {
+        //   renderLevel(museum);
+        // });
+        renderLevel(city.museums)
+      });
+
+      currentStep.value = 1;
+      activeCitySlug.value = city.slug;
+
+      applyStepConstraints();
+
+      if (params.museumSlug) {
+        // Niveau 2 : vue POI
+
+        if (museum) {
+          const width = containerRef.value.clientWidth;
+          const height = containerRef.value.clientHeight;
+          camera.setViewOffset(width, height, -width * 0.25, 0, width, height);
+
+          const distance = CONFIG.controls.map.museum.defaultDistance;
+
+          const targetPos = new THREE.Vector3(museum.x, museum.y, -9.9);
+          const camPos = new THREE.Vector3(
+            museum.x,
+            museum.y -
+              distance * Math.sin(CONFIG.controls.map.museum.maxPolarAngle),
+            -9.9 +
+              distance * Math.cos(CONFIG.controls.map.museum.maxPolarAngle),
+          );
+
+          camerasManager.setLookAt(camPos, targetPos, true);
+        }
 
         currentStep.value = 2;
-        applyStepConstraints();
-      }
-    } else if (params.citySlug) {
-      // Niveau 1 : Vue ville
-      const city = continent.cities.find((v) => v.slug === params.citySlug);
-      if (city) {
-        if (camera) camera.clearViewOffset();
-
-        const distance = CONFIG.controls.map.city.minDistance;
-
-        const targetPos = new THREE.Vector3(city.x, city.y, -9.9);
-
-        const camPos = new THREE.Vector3(
-          city.x,
-          city.y - distance * Math.sin(CONFIG.controls.map.city.maxPolarAngle),
-          -9.9 + distance * Math.cos(CONFIG.controls.map.city.maxPolarAngle),
-        );
-
-        camerasManager.setLookAt(camPos, targetPos, true);
-
-        continent.cities.forEach((city) => {
-          renderLevel(city.museums);
-        });
-
-        currentStep.value = 1;
-        activeCitySlug.value = city.slug;
         applyStepConstraints();
       }
     } else if (params.continentSlug) {
@@ -126,6 +128,10 @@ watch(
         continentPositions[continentSlug] || continentPositions.europe;
 
       camerasManager.setLookAt(continentPos.camera, continentPos.target, true);
+
+      // continent.cities.forEach((city) => {
+      //   renderLevel(city);
+      // });
 
       renderLevel(continent.cities);
 
@@ -142,7 +148,9 @@ watch(
         (c) => c.Name.toLowerCase() === "europe",
       );
       if (europeContinent) {
-        renderLevel(europeContinent.cities);
+        europeContinent.cities.forEach((city) => {
+          renderLevel(city);
+        });
       }
 
       currentStep.value = 0;
@@ -339,9 +347,9 @@ const applyStepConstraints = () => {
   }
 };
 
-const renderLevel = (dataList) => {
-  if (mapPins && dataList) {
-    mapPins.renderLevel(dataList);
+const renderLevel = (item) => {
+  if (mapPins && item) {
+    mapPins.renderLevel(item);
     needsRender = true;
   }
 };
@@ -406,7 +414,7 @@ onMounted(async () => {
     (c) => c.Name.toLowerCase() === "europe",
   );
   if (europeContinent) {
-    renderLevel(europeContinent.cities);
+      renderLevel(europeContinent.cities);
   }
 
   if (containerRef.value) {

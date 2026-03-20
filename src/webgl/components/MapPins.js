@@ -80,13 +80,14 @@ export class MapPins {
   }
 
   loadModels(item) {
+
     const id = item.slug;
 
     if (item.model3d) {
       this.loader.load(`/models/${item.model3d}`, (gltf) => {
         const model = gltf.scene;
         model.position.set(item.x, item.y, CONFIG.pins.onceClickedZ);
-        model.scale.set(0.1, 0.1, 0.1);
+        model.scale.set(2, 2, 2);
         model.rotation.set(Math.PI / 2, Math.PI / 2, 0);
         model.renderOrder = 2
 
@@ -145,13 +146,16 @@ export class MapPins {
     this.loadPin(item, CONFIG.pins.defaultZ, this.citiesPinCache)
   }
 
-  renderLevel(dataList) {
+  renderLevel(items) {
+
     this.citiesPinCache.forEach((pin) => (pin.visible = false));
     this.PoiPincache.forEach((pin) => (pin.visible = false));
     this.modelCache.forEach((model) => (model.visible = false));
     
-    dataList.forEach((item) => {
-      const id = item.slug;
+    
+    items.forEach(item => {
+      const id = item.slug;      
+      
       
       if (this.citiesPinCache.has(id)) {
         this.citiesPinCache.get(id).visible = true;
@@ -162,8 +166,8 @@ export class MapPins {
         this.PoiPincache.get(id).visible = true;
       }
       if (this.modelCache.has(id)) {
-        this.modelCache.get(id).visible = true;
-      } else{
+        this.modelCache.forEach((model) => (model.visible = true));
+      } else {
         this.loadModels(item);
       }
     });
