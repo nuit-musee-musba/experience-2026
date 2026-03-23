@@ -84,9 +84,7 @@ watch(
       camerasManager.setLookAt(camPos, targetPos, true);
 
       continent.cities.forEach((city) => {
-        // city.museums.forEach((museum) => {
-        //   renderLevel(museum);
-        // });
+        
         renderLevel(city.museums)
       });
 
@@ -129,9 +127,6 @@ watch(
 
       camerasManager.setLookAt(continentPos.camera, continentPos.target, true);
 
-      // continent.cities.forEach((city) => {
-      //   renderLevel(city);
-      // });
 
       renderLevel(continent.cities);
 
