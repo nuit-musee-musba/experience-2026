@@ -30,7 +30,6 @@ export class MapPins {
     this.dracoLoader.setDecoderPath("/draco/");
     this.loader.setDRACOLoader(this.dracoLoader);
 
-    this.clickCooldown = false;
   }
 
   loadPin(item, itemZ, cache) {
@@ -54,9 +53,7 @@ export class MapPins {
 
     container.addEventListener("mousedown", (e) => {
       e.stopPropagation();
-      if (this.clickCooldown) return;
-      this.clickCooldown = true;
-      setTimeout(() => { this.clickCooldown = false; }, 500);
+
       if (this.onClick) {
         this.onClick(item);
       }
@@ -65,9 +62,6 @@ export class MapPins {
 
     container.addEventListener("touchstart", (e) => {
       e.stopPropagation();
-      if (this.clickCooldown) return;
-      this.clickCooldown = true;
-      setTimeout(() => { this.clickCooldown = false; }, 500);
       if (this.onClick) {
         this.onClick(item);
       }

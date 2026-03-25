@@ -31,7 +31,7 @@ const currentStep = ref(-1);
 const activeCitySlug = ref(null);
 const activeContinentSlug = ref("europe");
 
-let pinJustClicked = false;
+let clickCooldown = false;
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 
@@ -153,6 +153,12 @@ watch(
 );
 
 const handlePinClick = (item) => {
+  if (clickCooldown) return;
+  clickCooldown = true;
+  setTimeout(() => {
+    clickCooldown = false;
+  }, 300);
+
   const continent = route.params.continentSlug || activeContinentSlug.value;
 
   if (item.museums) {
@@ -160,6 +166,8 @@ const handlePinClick = (item) => {
   } else if (item.artworks) {
     const city = item.model3d.split("_")[0];
     if (city) {
+      console.log(item.slug);
+
       router.push(`/${continent}/${city}/${item.slug}`);
     }
   }
@@ -199,6 +207,7 @@ const initThree = () => {
   labelRenderer.domElement.style.position = "absolute";
   labelRenderer.domElement.style.top = "0px";
   labelRenderer.domElement.style.pointerEvents = "none";
+  labelRenderer.domElement.style.zIndex = "0";
   containerRef.value.appendChild(labelRenderer.domElement);
 
   stats = new Stats(containerRef.value);
@@ -345,6 +354,14 @@ const renderLevel = (item) => {
 
 const onMapClick = (event) => {
   event.stopPropagation();
+  
+
+  if (clickCooldown) return;
+  clickCooldown = true;
+  setTimeout(() => {
+    clickCooldown = false;
+  }, 300);
+
   let clientX, clientY;
   if (window.TouchEvent && event instanceof TouchEvent) {
     const finger = firstFingerOfEvent(event);
@@ -378,14 +395,15 @@ const onMapClick = (event) => {
         clickedObject.userData.model3d.split("_")[0] !== activeCitySlug.value
       ) {
         const city = clickedObject.userData.model3d.split("_")[0];
+        console.log(clickedObject.userData.model3d);
         router.push(
           `/${activeContinentSlug.value}/${city}/${clickedObject.userData.slug}`,
         );
-        return;
+      } else {
+        router.push(
+          `/${activeContinentSlug.value}/${activeCitySlug.value}/${clickedObject.userData.slug}`,
+        );
       }
-      router.push(
-        `/${activeContinentSlug.value}/${activeCitySlug.value}/${clickedObject.userData.slug}`,
-      );
     }
   }
 };

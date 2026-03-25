@@ -1,9 +1,9 @@
 <script setup>
 import { useRoute } from "vue-router";
-import { allData } from '@/store.js';
-import { computed, ref, watch } from 'vue';
-import { useElementVisibility } from '@vueuse/core';
-import { useSplitText } from '../composables/useSplitText.js';
+import { allData } from "@/store.js";
+import { computed, nextTick, ref, watch } from "vue";
+import { useElementVisibility } from "@vueuse/core";
+import { useSplitText } from "../composables/useSplitText.js";
 import BaseFrame from "@/components/layouts/BaseFrame.vue";
 import SmartNavbar from "@/components/layouts/SmartNavbar.vue";
 
@@ -12,21 +12,21 @@ const route = useRoute();
 // Trouver le continent actuel
 const continent = computed(() => {
   if (!allData.value) return null;
-  return allData.value.find(c =>
-    c.Name.toLowerCase() === route.params.continentSlug
+  return allData.value.find(
+    (c) => c.Name.toLowerCase() === route.params.continentSlug,
   );
 });
 
 // Trouver la ville dans le continent
 const city = computed(() => {
   if (!continent.value) return null;
-  return continent.value.cities.find(v => v.slug === route.params.citySlug);
+  return continent.value.cities.find((v) => v.slug === route.params.citySlug);
 });
 
 // Trouver le musée dans la ville
 const museum = computed(() => {
   if (!city.value) return null;
-  return city.value.museums.find(m => m.slug === route.params.museumSlug);
+  return city.value.museums.find((m) => m.slug === route.params.museumSlug);
 });
 
 // Animations
@@ -38,22 +38,26 @@ const descriptionVisible = useElementVisibility(descriptionRef);
 
 const { split } = useSplitText(descriptionRef);
 
-watch(() => museum.value, async () => {
-  await nextTick();
-  
-  // Si déjà visible, on doit forcer la ré-animation
-  if (titleAndLocationVisible.value) titleAndLocationRef.value?.classList.add('visible');
-  if (descriptionVisible.value && descriptionRef.value) {
-    split();
-    requestAnimationFrame(() => {
-      descriptionRef.value?.classList.add('visible');
-    });
-  }
-});
+watch(
+  () => museum.value,
+  async () => {
+    if (nextTick()) await nextTick();
+
+    // Si déjà visible, on doit forcer la ré-animation
+    if (titleAndLocationVisible.value)
+      titleAndLocationRef.value?.classList.add("visible");
+    if (descriptionVisible.value && descriptionRef.value) {
+      split();
+      requestAnimationFrame(() => {
+        descriptionRef.value?.classList.add("visible");
+      });
+    }
+  },
+);
 
 watch(titleAndLocationVisible, (visible) => {
   if (visible && titleAndLocationRef.value) {
-    titleAndLocationRef.value.classList.add('visible');
+    titleAndLocationRef.value.classList.add("visible");
   }
 });
 
@@ -62,7 +66,7 @@ watch(descriptionVisible, (visible) => {
     // S'assurer que le split est fait avant d'ajouter la classe visible
     split();
     requestAnimationFrame(() => {
-      descriptionRef.value?.classList.add('visible');
+      descriptionRef.value?.classList.add("visible");
     });
   }
 });
@@ -85,24 +89,32 @@ watch(descriptionVisible, (visible) => {
           </div>
           <div class="scroll-content">
             <div class="location-main-image">
-              <img v-if="museum.images?.length" :src="`/images/${encodeURI(museum.images[0].file)}`"
-                :alt="museum.name" />
+              <img
+                v-if="museum.images?.length"
+                :src="`/images/${encodeURI(museum.images[0].file)}`"
+                :alt="museum.name"
+              />
             </div>
             <div class="scroll-content-box">
-              <p
-                ref="descriptionRef"
-                class="description"
-                :key="museum.slug"
-              >
+              <p ref="descriptionRef" class="description" :key="museum.slug">
                 {{ museum.description }}
               </p>
-              <h3 class="locations-artworks-section-title">Découvrez les œuvres de ce lieu</h3>
+              <h3 class="locations-artworks-section-title">
+                Découvrez les œuvres de ce lieu
+              </h3>
               <div class="location-artworks-listing">
-                <RouterLink class="artworks-item" v-for="artwork in museum.artworks" :key="artwork.slug"
-                  :to="`/${route.params.continentSlug}/${route.params.citySlug}/${museum.slug}/${artwork.slug}`">
+                <RouterLink
+                  class="artworks-item"
+                  v-for="artwork in museum.artworks"
+                  :key="artwork.slug"
+                  :to="`/${route.params.continentSlug}/${route.params.citySlug}/${museum.slug}/${artwork.slug}`"
+                >
                   <div class="artworks-item-image">
-                    <img v-if="artwork.images?.length" :src="`/images/${encodeURI(artwork.images[0].file)}`"
-                      :alt="artwork.name" />
+                    <img
+                      v-if="artwork.images?.length"
+                      :src="`/images/${encodeURI(artwork.images[0].file)}`"
+                      :alt="artwork.name"
+                    />
                   </div>
                   <p>{{ artwork.name }}</p>
                 </RouterLink>
@@ -180,7 +192,6 @@ watch(descriptionVisible, (visible) => {
     &::-webkit-scrollbar-thumb {
       background-color: $black;
     }
-
   }
 
   .scroll-content-box {
@@ -193,7 +204,8 @@ watch(descriptionVisible, (visible) => {
       :deep(.line) {
         opacity: 0;
         transform: translateY(20px);
-        transition: opacity 1s calc(var(--line-index) * 0.05s) $ease-out-quint,
+        transition:
+          opacity 1s calc(var(--line-index) * 0.05s) $ease-out-quint,
           transform 1s calc(var(--line-index) * 0.05s) $ease-out-quint;
         display: block;
       }
@@ -216,15 +228,16 @@ watch(descriptionVisible, (visible) => {
   padding: $spacing-48 $spacing-96;
   min-height: 0;
 
-  >* {
+  > * {
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 1s calc(var(--anim-index) * 0.1s) $ease-out-quint,
+    transition:
+      opacity 1s calc(var(--anim-index) * 0.1s) $ease-out-quint,
       transform 1s calc(var(--anim-index) * 0.1s) $ease-out-quint;
   }
 
   &.visible {
-    >* {
+    > * {
       opacity: 1;
       transform: translateY(0);
     }
