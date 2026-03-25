@@ -166,8 +166,6 @@ const handlePinClick = (item) => {
   } else if (item.artworks) {
     const city = item.model3d.split("_")[0];
     if (city) {
-      console.log(item.slug);
-
       router.push(`/${continent}/${city}/${item.slug}`);
     }
   }
@@ -354,7 +352,6 @@ const renderLevel = (item) => {
 
 const onMapClick = (event) => {
   event.stopPropagation();
-  
 
   if (clickCooldown) return;
   clickCooldown = true;
@@ -395,7 +392,6 @@ const onMapClick = (event) => {
         clickedObject.userData.model3d.split("_")[0] !== activeCitySlug.value
       ) {
         const city = clickedObject.userData.model3d.split("_")[0];
-        console.log(clickedObject.userData.model3d);
         router.push(
           `/${activeContinentSlug.value}/${city}/${clickedObject.userData.slug}`,
         );
