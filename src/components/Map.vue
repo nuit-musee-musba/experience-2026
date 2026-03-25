@@ -31,6 +31,7 @@ const currentStep = ref(-1);
 const activeCitySlug = ref(null);
 const activeContinentSlug = ref("europe");
 
+let pinJustClicked = false;
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 
@@ -84,8 +85,7 @@ watch(
       camerasManager.setLookAt(camPos, targetPos, true);
 
       continent.cities.forEach((city) => {
-        
-        renderLevel(city.museums)
+        renderLevel(city.museums);
       });
 
       currentStep.value = 1;
@@ -127,7 +127,6 @@ watch(
 
       camerasManager.setLookAt(continentPos.camera, continentPos.target, true);
 
-
       renderLevel(continent.cities);
 
       currentStep.value = 0;
@@ -143,7 +142,7 @@ watch(
         (c) => c.Name.toLowerCase() === "europe",
       );
       if (europeContinent) {
-      renderLevel(europeContinent.cities);
+        renderLevel(europeContinent.cities);
       }
 
       currentStep.value = 0;
@@ -155,11 +154,11 @@ watch(
 
 const handlePinClick = (item) => {
   const continent = route.params.continentSlug || activeContinentSlug.value;
-  const city = route.params.citySlug || activeCitySlug.value;
 
   if (item.museums) {
     router.push(`/${continent}/${item.slug}`);
   } else if (item.artworks) {
+    const city = item.model3d.split("_")[0];
     if (city) {
       router.push(`/${continent}/${city}/${item.slug}`);
     }
@@ -203,7 +202,6 @@ const initThree = () => {
   containerRef.value.appendChild(labelRenderer.domElement);
 
   stats = new Stats(containerRef.value);
-  stats = new Stats(containerRef.value);
 
   const requestRender = () => {
     needsRender = true;
@@ -238,8 +236,6 @@ const initThree = () => {
 
 const animate = () => {
   animationId = requestAnimationFrame(animate);
-
-  // camerasManager.update();
 
   if (isArtworkActive.value) {
     return;
@@ -348,6 +344,7 @@ const renderLevel = (item) => {
 };
 
 const onMapClick = (event) => {
+  event.stopPropagation();
   let clientX, clientY;
   if (window.TouchEvent && event instanceof TouchEvent) {
     const finger = firstFingerOfEvent(event);
@@ -363,23 +360,32 @@ const onMapClick = (event) => {
   pointer.y = -(clientY / window.innerHeight) * 2 + 1;
   raycaster.setFromCamera(pointer, camera);
 
-  const interactables = [...mapPins.getPins()];
+  const interactables = [...mapPins.getObjects()].filter((obj) => obj.visible);
+
   const intersects = raycaster.intersectObjects(interactables, true);
 
   if (intersects.length > 0) {
-    // Si on clique sur un pin, on laisse faire
     if (event.cancelable) event.preventDefault();
+
     const clickedObject = intersects[0].object;
+
     const continent = route.params.continentSlug || activeContinentSlug.value;
 
     if (clickedObject.userData.museums) {
       router.push(`/${continent}/${clickedObject.userData.slug}`);
     } else if (clickedObject.userData.artworks) {
+      if (
+        clickedObject.userData.model3d.split("_")[0] !== activeCitySlug.value
+      ) {
+        const city = clickedObject.userData.model3d.split("_")[0];
+        router.push(
+          `/${activeContinentSlug.value}/${city}/${clickedObject.userData.slug}`,
+        );
+        return;
+      }
       router.push(
         `/${activeContinentSlug.value}/${activeCitySlug.value}/${clickedObject.userData.slug}`,
       );
-    } else if (clickedObject.userData.type === "city") {
-      router.push(`/${continent}/${clickedObject.userData.slug}`);
     }
   }
 };
@@ -407,11 +413,11 @@ onMounted(async () => {
     (c) => c.Name.toLowerCase() === "europe",
   );
   if (europeContinent) {
-      renderLevel(europeContinent.cities);
+    renderLevel(europeContinent.cities);
   }
 
   if (containerRef.value) {
-    containerRef.value.addEventListener("click", onMapClick);
+    containerRef.value.addEventListener("mousedown", onMapClick);
     containerRef.value.addEventListener("touchstart", onMapClick, {
       passive: false,
     });
@@ -422,7 +428,7 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   window.removeEventListener("resize", handleResize);
   if (containerRef.value) {
-    containerRef.value.removeEventListener("click", onMapClick);
+    containerRef.value.removeEventListener("mousedown", onMapClick);
     containerRef.value.removeEventListener("touchstart", onMapClick);
   }
   cancelAnimationFrame(animationId);

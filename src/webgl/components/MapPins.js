@@ -29,6 +29,8 @@ export class MapPins {
     this.dracoLoader = new DRACOLoader();
     this.dracoLoader.setDecoderPath("/draco/");
     this.loader.setDRACOLoader(this.dracoLoader);
+
+    this.clickCooldown = false;
   }
 
   loadPin(item, itemZ, cache) {
@@ -50,21 +52,26 @@ export class MapPins {
 
     container.appendChild(pinWrapper);
 
-    container.addEventListener("click", (e) => {
+    container.addEventListener("mousedown", (e) => {
       e.stopPropagation();
+      if (this.clickCooldown) return;
+      this.clickCooldown = true;
+      setTimeout(() => { this.clickCooldown = false; }, 500);
       if (this.onClick) {
         this.onClick(item);
       }
     });
 
-    container.addEventListener(
-      "touchstart",
-      (e) => {
-        e.stopPropagation();
-        if (this.onClick) {
-          this.onClick(item);
-        }
-      },
+
+    container.addEventListener("touchstart", (e) => {
+      e.stopPropagation();
+      if (this.clickCooldown) return;
+      this.clickCooldown = true;
+      setTimeout(() => { this.clickCooldown = false; }, 500);
+      if (this.onClick) {
+        this.onClick(item);
+      }
+    },
       { passive: false },
     );
 
@@ -74,6 +81,7 @@ export class MapPins {
     css2dObject.name = id;
 
     this.group.add(css2dObject);
+
     if (id) cache.set(id, css2dObject);
   }
 
@@ -190,7 +198,7 @@ export class MapPins {
     }
   }
 
-  getPins() {
+  getObjects() {
     return this.group.children;
   }
 }
