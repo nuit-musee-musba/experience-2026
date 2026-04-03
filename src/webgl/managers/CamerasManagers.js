@@ -24,7 +24,12 @@ export class CamerasManager {
 
     // Default config
     this.controls.minDistance = CONFIG.controls.minDistance;
-    this.controls.maxDistance = CONFIG.controls.map.continent.maxDistance;
+    this.controls.maxDistance = CONFIG.controls.map.maxDistance;
+
+    // Lock Zoom
+    this.controls.zoom = CONFIG.controls.zoom
+    this.controls.minZoom = CONFIG.controls.minZoom
+    this.controls.maxZoom = CONFIG.controls.maxZoom
 
     this.controls.smoothTime = 0.25;
     this.controls.draggingSmoothTime = 0.35;

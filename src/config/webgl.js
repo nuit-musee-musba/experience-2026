@@ -45,7 +45,7 @@ export const CONFIG = {
   camera: {
     fov: 45,
     near: 0.0001,
-    far: 110,
+    far: 150,
   },
   // Positions des continents
   continents: {
@@ -59,19 +59,23 @@ export const CONFIG = {
     },
   },
   controls: {
-    minDistance: 0,
+    minDistance: 100,
+    maxDistance: 110,
+    zoom: 1,
+    minZoom: 1,
+    maxZoom: 1,
     map: {
       continent: {
-        maxDistance: 65,
-        minDistance: 50,
+        minDistance: 100,
+        maxDistance: 110,
         minPolarAngle: 0,
         maxPolarAngle: 0,
         minAzimuthAngle: 0,
         maxAzimuthAngle: 0,
       },
       city: {
-        maxDistance: 6.7,
         minDistance: 5.7,
+        maxDistance: 6.7,
         defaultDistance: 6.2,
         minPolarAngle: (Math.PI / 3) * 0.9,
         maxPolarAngle: (Math.PI / 3) * 1.1,
@@ -79,8 +83,8 @@ export const CONFIG = {
         maxAzimuthAngle: 0.05,
       },
       museum: {
-        maxDistance: 1.8,
         minDistance: 1,
+        maxDistance: 1.8,
         defaultDistance: 1.4,
         minPolarAngle: (Math.PI / 4) * 1.2,
         maxPolarAngle: (Math.PI / 4) * 1.6,
@@ -88,7 +92,6 @@ export const CONFIG = {
         maxAzimuthAngle: Math.PI / 8,
       },
     },
-    // orbit: {},
   },
   lights: {
     ambientIntensity: 2.0,

@@ -38,7 +38,7 @@ const pointer = new THREE.Vector2();
 // Positions de caméra pour chaque continent
 const continentPositions = {
   europe: {
-    camera: new THREE.Vector3(-5, 8, 80),
+    camera: new THREE.Vector3(-5, 8, 100),
     target: new THREE.Vector3(-5, 8, -9.9),
   },
   amérique: {
@@ -339,6 +339,7 @@ const applyStepConstraints = () => {
         maxDistance: CONFIG.controls.map.continent.maxDistance,
         boundary: boundary,
       });
+
     }
   }
 };
