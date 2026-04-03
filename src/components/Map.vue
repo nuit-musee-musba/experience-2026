@@ -162,11 +162,11 @@ const handlePinClick = (item) => {
   const continent = route.params.continentSlug || activeContinentSlug.value;
 
   if (item.museums) {
-    router.push(`/${continent}/${item.slug}`);
+    router.push(`${item.path}`);
   } else if (item.artworks) {
     const city = item.model3d.split("_")[0];
     if (city) {
-      router.push(`/${continent}/${city}/${item.slug}`);
+      router.push(`${item.path}`);
     }
   }
 };
@@ -384,23 +384,8 @@ const onMapClick = (event) => {
 
     const clickedObject = intersects[0].object;
 
-    const continent = route.params.continentSlug || activeContinentSlug.value;
-
-    if (clickedObject.userData.museums) {
-      router.push(`/${continent}/${clickedObject.userData.slug}`);
-    } else if (clickedObject.userData.artworks) {
-      if (
-        clickedObject.userData.model3d.split("_")[0] !== activeCitySlug.value
-      ) {
-        const city = clickedObject.userData.model3d.split("_")[0];
-        router.push(
-          `/${activeContinentSlug.value}/${city}/${clickedObject.userData.slug}`,
-        );
-      } else {
-        router.push(
-          `/${activeContinentSlug.value}/${activeCitySlug.value}/${clickedObject.userData.slug}`,
-        );
-      }
+    if (clickedObject.userData.path) {
+      router.push(`${clickedObject.userData.path}`);
     }
   }
 };
@@ -422,8 +407,7 @@ onMounted(async () => {
   initThree();
   const response = await fetch("/content/content.json");
   allPins = await response.json();
-  allData.value = allPins.data;
-
+  allData.value = createPathInData(allPins.data);
   const europeContinent = allPins.data.find(
     (c) => c.Name.toLowerCase() === "europe",
   );
@@ -439,6 +423,19 @@ onMounted(async () => {
   }
   window.addEventListener("resize", handleResize);
 });
+
+function createPathInData(data) {
+  data.forEach(continent => {
+    continent.path = '/' + continent.Name.toLowerCase();
+    continent.cities.forEach(city => {
+      city.path = continent.path + '/' + city.slug;
+      city.museums.forEach(musuem => {
+        musuem.path = city.path + '/' + musuem.slug;
+      });
+    });
+  });
+  return data;
+}
 
 onBeforeUnmount(() => {
   window.removeEventListener("resize", handleResize);

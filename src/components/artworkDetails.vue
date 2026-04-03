@@ -242,14 +242,23 @@ watch(
     <div v-if="artwork" class="artwork-detail-box">
       <section class="image-section">
         <div class="image-container">
-          <img
+          <figure
             v-for="(img, index) in artwork.images"
             :key="img.id"
-            :src="`/images/${encodeURI(img.file)}`"
-            :alt="img.description || artwork.name"
             class="artwork-image"
             :class="{ visible: index === activeImageIndex }"
-          />
+          >
+            <picture>
+              <img
+                :src="`/images/${encodeURI(img.file)}`"
+                :alt="img.description || artwork.name"
+              />
+              <div class="infos-containers">
+                <span class="figcaption">{{ currentImage?.copyright }}</span>
+                <span class="figcaption">{{ currentImage?.description }}</span>
+              </div>
+            </picture>
+          </figure>
           <div
             v-for="crop in cropsWithLocation"
             :key="crop.id"
@@ -262,10 +271,7 @@ watch(
             @click="openCropPopup(crop)"
           />
         </div>
-        <div class="infos-containers">
-          <span class="figcaption">{{ currentImage?.copyright }}</span>
-          <span class="figcaption">{{ currentImage?.description }}</span>
-        </div>
+        
 
         <div
           class="thumbnails-container"
@@ -449,6 +455,9 @@ watch(
 
     .fullscreen {
       text-align: right;
+      position: absolute;
+      bottom: 324px;
+      right: $spacing-136;
     }
 
     &::before {
@@ -488,15 +497,26 @@ watch(
         transform: translate(-50%, -50%);
         max-width: 100%;
         max-height: 100%;
+        width: 100%;
         object-fit: contain;
         opacity: 0;
         transition: opacity 0.5s ease;
         pointer-events: none;
-
+        display: flex;
+        justify-content: center;
+        picture {
+          display: flex;
+          flex-direction: column;
+          gap: $spacing-32;
+        }
+        img {
+          align-self: center;
+        }
         &.visible {
           opacity: 1;
           pointer-events: auto;
         }
+
       }
 
       .crop-hotspot {
@@ -558,17 +578,18 @@ watch(
 
     .infos-containers {
       display: flex;
+      flex-direction: column;
       justify-content: center;
-      gap: $spacing-32;
+      align-self: center;
+      gap: $spacing-10;
+      max-width: 75%;
     }
 
     .figcaption {
       font-size: $spacing-24;
       line-height: 1.3;
-      margin-top: $spacing-10;
       text-align: left;
       font-weight: bold;
-      max-width: 50%;
     }
 
     .thumbnails-container {
