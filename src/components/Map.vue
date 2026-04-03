@@ -107,12 +107,14 @@ watch(
           const camPos = new THREE.Vector3(
             museum.x,
             museum.y -
-            distance * Math.sin(CONFIG.controls.map.museum.maxPolarAngle),
+              distance * Math.sin(CONFIG.controls.map.museum.maxPolarAngle),
             -9.9 +
-            distance * Math.cos(CONFIG.controls.map.museum.maxPolarAngle),
+              distance * Math.cos(CONFIG.controls.map.museum.maxPolarAngle),
           );
 
           camerasManager.setLookAt(camPos, targetPos, true);
+
+          hidePoiPin();
         }
 
         currentStep.value = 2;
@@ -159,8 +161,6 @@ const handlePinClick = (item) => {
     clickCooldown = false;
   }, 300);
 
-  const continent = route.params.continentSlug || activeContinentSlug.value;
-
   if (item.museums) {
     router.push(`${item.path}`);
   } else if (item.artworks) {
@@ -189,7 +189,10 @@ const initThree = () => {
   );
   camera.up.set(0, 0, 1);
 
-  renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
+  renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    logarithmicDepthBuffer: true,
+  });
   renderer.setSize(
     containerRef.value.clientWidth,
     containerRef.value.clientHeight,
@@ -339,7 +342,6 @@ const applyStepConstraints = () => {
         maxDistance: CONFIG.controls.map.continent.maxDistance,
         boundary: boundary,
       });
-
     }
   }
 };
@@ -347,6 +349,13 @@ const applyStepConstraints = () => {
 const renderLevel = (item) => {
   if (mapPins && item) {
     mapPins.renderLevel(item);
+    needsRender = true;
+  }
+};
+
+const hidePoiPin = () => {
+  if (mapPins) {
+    mapPins.hidePoiPin();
     needsRender = true;
   }
 };
@@ -456,14 +465,26 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="containerRef" class="scene-container" :class="{ 'map-frozen': isArtworkActive }"></div>
+  <div
+    ref="containerRef"
+    class="scene-container"
+    :class="{ 'map-frozen': isArtworkActive }"
+  ></div>
 
-  <button @click="navigateToContinent('europe')" class="continent-btn continent-btn-europe"
-    :class="{ active: activeContinentSlug === 'europe' }" v-if="currentStep === 0">
+  <button
+    @click="navigateToContinent('europe')"
+    class="continent-btn continent-btn-europe"
+    :class="{ active: activeContinentSlug === 'europe' }"
+    v-if="currentStep === 0"
+  >
     <IconArrowRight />
   </button>
-  <button @click="navigateToContinent('amérique')" class="continent-btn continent-btn-america"
-    :class="{ active: activeContinentSlug === 'amérique' }" v-if="currentStep === 0">
+  <button
+    @click="navigateToContinent('amérique')"
+    class="continent-btn continent-btn-america"
+    :class="{ active: activeContinentSlug === 'amérique' }"
+    v-if="currentStep === 0"
+  >
     <IconArrowLeft />
   </button>
 

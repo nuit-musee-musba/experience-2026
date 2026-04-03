@@ -168,6 +168,10 @@ export class MapPins {
     });
   }
 
+  hidePoiPin(){
+    this.PoiPincache.forEach((pin) => (pin.visible = false));
+  }
+
   clear() {
     while (this.group.children.length > 0) {
       const object = this.group.children[0];
