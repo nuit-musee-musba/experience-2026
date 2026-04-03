@@ -78,9 +78,12 @@ export class MapPlane {
           color: 0x000000,
           side: THREE.DoubleSide,
           transparent: true,
+          depthWrite: false,
         });
         const strokeMesh = new THREE.Mesh(mergedStrokeGeometry, strokeMaterial);
-        strokeMesh.position.z = 1;
+        strokeMesh.position.z = -0.3;
+        strokeMesh.renderOrder = 0;
+        strokeMesh.name = "mapStroke";
         group.add(strokeMesh);
       }
 

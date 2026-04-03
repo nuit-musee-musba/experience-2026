@@ -206,6 +206,9 @@ const museum = computed(() => {
   padding: $spacing-48 $spacing-96;
   border-bottom: 8px solid $black;
   width: 100vw;
+  position: sticky;
+  top: 0;
+  background: white;
 
   @include title-h1;
 }
