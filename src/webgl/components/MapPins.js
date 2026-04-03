@@ -32,7 +32,7 @@ export class MapPins {
 
   }
 
-  loadPin(item, itemZ, cache) {
+  loadPin(item, itemZ, cache, isNameVisible = true) {
     const id = item.slug;
 
     const container = document.createElement("div");
@@ -41,7 +41,7 @@ export class MapPins {
     if (item.name) {
       const label = document.createElement("div");
       label.classList.add("pin");
-      label.textContent = item.name;
+      if (isNameVisible) label.textContent = item.name;
       container.appendChild(label);
     }
 
@@ -103,7 +103,7 @@ export class MapPins {
         // Load Models Pins
         const museumPinZ = item.model3d.includes("paquebot") ? model.position.z + 1.5 : model.position.z + 0.5
 
-        this.loadPin(item, museumPinZ, this.PoiPincache);
+        this.loadPin(item, museumPinZ, this.PoiPincache, false);
 
         if (this.requestRender) {
           this.requestRender();
@@ -168,7 +168,7 @@ export class MapPins {
     });
   }
 
-  hidePoiPin(){
+  hidePoiPin() {
     this.PoiPincache.forEach((pin) => (pin.visible = false));
   }
 
