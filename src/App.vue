@@ -1,21 +1,19 @@
 <template>
   <IdleView @idle="resetApplication">
     <div class="app-container">
-      
       <CreditsOverlay @close="showCredits = false" />
       <router-view />
 
-      <transition name="fade">
+      <!-- <transition name="fade">
         <HomeOverlay v-if="showHome" @start="startExperience" />
-      </transition>
-
+      </transition> -->
     </div>
   </IdleView>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 import IdleView from "@/components/IdleView.vue";
 import HomeOverlay from "@/components/HomeOverlay.vue";
 import CreditsOverlay from "@/components/CreditsOverlay.vue";
@@ -29,8 +27,8 @@ const startExperience = () => {
 
 const resetApplication = () => {
   showHome.value = true;
-  if (router.currentRoute.value.path !== '/') {
-    router.push('/');
+  if (router.currentRoute.value.path !== "/") {
+    router.push("/");
   }
 };
 
