@@ -107,12 +107,14 @@ watch(
           const camPos = new THREE.Vector3(
             museum.x,
             museum.y -
-            distance * Math.sin(CONFIG.controls.map.museum.maxPolarAngle),
+              distance * Math.sin(CONFIG.controls.map.museum.maxPolarAngle),
             -9.9 +
-            distance * Math.cos(CONFIG.controls.map.museum.maxPolarAngle),
+              distance * Math.cos(CONFIG.controls.map.museum.maxPolarAngle),
           );
 
           camerasManager.setLookAt(camPos, targetPos, true);
+
+          hidePoiPin();
         }
 
         currentStep.value = 2;
@@ -189,7 +191,10 @@ const initThree = () => {
   );
   camera.up.set(0, 0, 1);
 
-  renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
+  renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    logarithmicDepthBuffer: true,
+  });
   renderer.setSize(
     containerRef.value.clientWidth,
     containerRef.value.clientHeight,
@@ -339,7 +344,6 @@ const applyStepConstraints = () => {
         maxDistance: CONFIG.controls.map.continent.maxDistance,
         boundary: boundary,
       });
-
     }
   }
 };
@@ -347,6 +351,13 @@ const applyStepConstraints = () => {
 const renderLevel = (item) => {
   if (mapPins && item) {
     mapPins.renderLevel(item);
+    needsRender = true;
+  }
+};
+
+const hidePoiPin = () => {
+  if (mapPins) {
+    mapPins.hidePoiPin();
     needsRender = true;
   }
 };
@@ -389,18 +400,21 @@ const onMapClick = (event) => {
     if (clickedObject.userData.museums) {
       router.push(`/${continent}/${clickedObject.userData.slug}`);
     } else if (clickedObject.userData.artworks) {
-      if (
-        clickedObject.userData.model3d.split("_")[0] !== activeCitySlug.value
-      ) {
+      if ( clickedObject.userData.model3d.split("_")[0] !== activeCitySlug.value ) {
+        if (clickedObject.userData.model3d.split("_")[0] === "paquebot") {
+          router.push(
+            `/${activeContinentSlug.value}/${clickedObject.userData.slug}-lv/${clickedObject.userData.slug}`,
+          );
+        }
         const city = clickedObject.userData.model3d.split("_")[0];
         router.push(
           `/${activeContinentSlug.value}/${city}/${clickedObject.userData.slug}`,
         );
-      } else {
-        router.push(
-          `/${activeContinentSlug.value}/${activeCitySlug.value}/${clickedObject.userData.slug}`,
-        );
       }
+    } else {
+      router.push(
+        `/${activeContinentSlug.value}/${activeCitySlug.value}/${clickedObject.userData.slug}`,
+      );
     }
   }
 };
@@ -459,14 +473,26 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="containerRef" class="scene-container" :class="{ 'map-frozen': isArtworkActive }"></div>
+  <div
+    ref="containerRef"
+    class="scene-container"
+    :class="{ 'map-frozen': isArtworkActive }"
+  ></div>
 
-  <button @click="navigateToContinent('europe')" class="continent-btn continent-btn-europe"
-    :class="{ active: activeContinentSlug === 'europe' }" v-if="currentStep === 0">
+  <button
+    @click="navigateToContinent('europe')"
+    class="continent-btn continent-btn-europe"
+    :class="{ active: activeContinentSlug === 'europe' }"
+    v-if="currentStep === 0"
+  >
     <IconArrowRight />
   </button>
-  <button @click="navigateToContinent('amérique')" class="continent-btn continent-btn-america"
-    :class="{ active: activeContinentSlug === 'amérique' }" v-if="currentStep === 0">
+  <button
+    @click="navigateToContinent('amérique')"
+    class="continent-btn continent-btn-america"
+    :class="{ active: activeContinentSlug === 'amérique' }"
+    v-if="currentStep === 0"
+  >
     <IconArrowLeft />
   </button>
 
