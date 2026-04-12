@@ -51,11 +51,15 @@ const router = createRouter({
     },
     {
       path: "/robots.txt",
-      component: () => import('/robots.txt'),
+      component: () => import("/robots.txt"),
     },
     {
       path: "/all-artworks",
       component: AllArtwork,
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      redirect: "/",
     },
   ],
 });

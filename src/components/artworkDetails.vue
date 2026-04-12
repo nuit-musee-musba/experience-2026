@@ -8,6 +8,7 @@ import ArtworkVueFrame from "@/components/layouts/ArtworkVueFrame.vue";
 
 import Button from "@/components/buttons/Button.vue";
 
+import IconPin from "@/components/icons/IconPin.vue";
 import IconLeave from "@/components/icons/IconLeave.vue";
 import IconArrowLeft from "@/components/icons/IconArrowLeft.vue";
 import IconArrowRight from "@/components/icons/IconArrowRight.vue";
@@ -241,25 +242,35 @@ watch(
     <div v-if="artwork" class="artwork-detail-box">
       <section class="image-section">
         <div class="image-container">
-          <figure v-for="(img, index) in artwork.images" :key="img.id" class="artwork-image"
-            :class="{ visible: index === activeImageIndex }">
-            <picture>
-              <img :src="`/images/${encodeURI(img.file)}`" :alt="img.description || artwork.name" />
-              <div class="infos-containers">
-                <span class="figcaption">{{ currentImage?.copyright }}</span>
-                <span class="figcaption">{{ currentImage?.description }}</span>
-              </div>
-            </picture>
-          </figure>
-          <div v-for="crop in cropsWithLocation" :key="crop.id" class="crop-hotspot"
-            :class="{ visible: currentImage?.crops?.includes(crop) }" :style="{
+          <img
+            v-for="(img, index) in artwork.images"
+            :key="img.id"
+            :src="`/images/${encodeURI(img.file)}`"
+            :alt="img.description || artwork.name"
+            class="artwork-image"
+            :class="{ visible: index === activeImageIndex }"
+          />
+          <div
+            v-for="crop in cropsWithLocation"
+            :key="crop.id"
+            class="crop-hotspot"
+            :class="{ visible: currentImage?.crops?.includes(crop) }"
+            :style="{
               left: crop.artwork_location_x + '%',
               top: crop.artwork_location_y + '%',
-            }" @click="openCropPopup(crop)" />
+            }"
+            @click="openCropPopup(crop)"
+          />
+        </div>
+        <div class="infos-containers">
+          <span class="figcaption">{{ currentImage?.copyright }}</span>
+          <span class="figcaption">{{ currentImage?.description }}</span>
         </div>
 
-
-        <div class="thumbnails-container" v-if="artwork.images && artwork.images.length > 1">
+        <div
+          class="thumbnails-container"
+          v-if="artwork.images && artwork.images.length > 1"
+        >
           <Button class="nav-arrow" icon-only icon-primary @click="scrollPrev">
             <template #icon-primary>
               <IconArrowLeft />
@@ -268,11 +279,19 @@ watch(
 
           <div class="thumbnails-list">
             <div class="thumbnails-track">
-              <div v-for="(img, index) in artwork.images" :key="img.id" class="thumbnail"
-                :class="{ 'is-active': index === activeImageIndex }" @click="selectImage(index)">
+              <div
+                v-for="(img, index) in artwork.images"
+                :key="img.id"
+                class="thumbnail"
+                :class="{ 'is-active': index === activeImageIndex }"
+                @click="selectImage(index)"
+              >
                 <div class="img-container">
                   <div class="thumbnail-overlay"></div>
-                  <img :src="`/images/${encodeURI(img.file)}`" :alt="img.description || artwork.name" />
+                  <img
+                    :src="`/images/${encodeURI(img.file)}`"
+                    :alt="img.description || artwork.name"
+                  />
                 </div>
               </div>
             </div>
@@ -286,7 +305,13 @@ watch(
         </div>
 
         <div class="fullscreen">
-          <Button class="button" color="secondary" icon-primary @click="openFullScreen" :text-content="'Plein écran'">
+          <Button
+            class="button"
+            color="secondary"
+            icon-primary
+            @click="openFullScreen"
+            :text-content="'Plein écran'"
+          >
             <template #icon-primary>
               <IconFullscreen />
             </template>
@@ -295,22 +320,40 @@ watch(
       </section>
       <Teleport to="body">
         <Transition name="fade">
-          <div v-show="showPopup" class="crop-popup-overlay" @click.self="closePopup">
+          <div
+            v-show="showPopup"
+            class="crop-popup-overlay"
+            @click.self="closePopup"
+          >
             <div class="crop-popup">
               <div class="crop-popup-image">
-                <img v-if="isFullScreenImage && activeCrop" :src="`/images/${encodeURI(activeCrop.file)}`"
-                  :alt="activeCrop.description" />
+                <img
+                  v-if="isFullScreenImage && activeCrop"
+                  :src="`/images/${encodeURI(activeCrop.file)}`"
+                  :alt="activeCrop.description"
+                />
                 <template v-else>
-                  <img v-for="crop in allCrops" :key="crop.id" :src="`/images/${encodeURI(crop.file)}`"
-                    :alt="crop.description" v-show="activeCrop && activeCrop.id === crop.id" />
+                  <img
+                    v-for="crop in allCrops"
+                    :key="crop.id"
+                    :src="`/images/${encodeURI(crop.file)}`"
+                    :alt="crop.description"
+                    v-show="activeCrop && activeCrop.id === crop.id"
+                  />
                 </template>
               </div>
               <div class="crop-popup-content">
                 <p class="crop-popup-text" v-if="activeCrop?.description">
                   {{ activeCrop?.description }}
                 </p>
-                <Button color="primary" class="bouton" :class="{ 'no-description': !activeCrop?.description }"
-                  icon-primary @click="closePopup" :text-content="'Fermer'">
+                <Button
+                  color="primary"
+                  class="bouton"
+                  :class="{ 'no-description': !activeCrop?.description }"
+                  icon-primary
+                  @click="closePopup"
+                  :text-content="'Fermer'"
+                >
                   <template #icon-primary>
                     <IconLeave />
                   </template>
@@ -323,26 +366,50 @@ watch(
 
       <section class="content-section">
         <div class="artwork-container artwork-infos">
-          <div class="title-and-name" ref="titleAndNameRef" :key="artwork.slug">
+          <div
+            class="title-and-name"
+            ref="titleAndNameRef"
+            :key="artwork.slug"
+          >
             <h2 class="title" style="--anim-index: 0">{{ artwork.name }}</h2>
             <p style="--anim-index: 1">Jean Dupas</p>
           </div>
         </div>
-        <div class="artwork-container artwork-description-container" :class="{ 'is-scroll-end': isScrollEnd }">
-          <div class="scroll-content" ref="scrollContent" @scroll="handleScroll">
+        <div
+          class="artwork-container artwork-description-container"
+          :class="{ 'is-scroll-end': isScrollEnd }"
+        >
+          <div
+            class="scroll-content"
+            ref="scrollContent"
+            @scroll="handleScroll"
+          >
             <div class="header">
-              <p class="enumeration" ref="enumerationRef" :key="artwork.slug">
+              <p
+                class="enumeration"
+                ref="enumerationRef"
+                :key="artwork.slug"
+              >
                 <!--<span style="--enum-index: 0">{{ artwork.name }}</span>-->
                 <span style="--enum-index: 1">{{ artwork.year }}</span>
                 <span style="--enum-index: 2">{{ artwork.technique }}</span>
                 <!-- <span style="--enum-index: 3">{{ currentMuseum?.adress }}</span> -->
               </p>
-              <div class="artwork-place" ref="placeRef" :key="artwork.slug">
+              <div
+                class="artwork-place"
+                ref="placeRef"
+                :key="artwork.slug"
+              >
 
                 <span style="--anim-index: 1">{{ currentMuseum?.adress }}</span>
               </div>
             </div>
-            <p ref="descriptionRef" class="description" :key="artwork.slug">
+            <p
+              ref="descriptionRef"
+              class="description"
+              :key="artwork.slug"
+
+            >
               {{ artwork.description }}
             </p>
           </div>
@@ -373,7 +440,8 @@ watch(
   .image-section {
     width: 75%;
     height: 100%;
-    padding: calc($spacing-96 - $border-width) $spacing-136 293px calc($spacing-96 - $border-width);
+    padding: calc($spacing-96 - $border-width) $spacing-136 293px
+      calc($spacing-96 - $border-width);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -381,9 +449,6 @@ watch(
 
     .fullscreen {
       text-align: right;
-      position: absolute;
-      bottom: 324px;
-      right: $spacing-136;
     }
 
     &::before {
@@ -423,29 +488,15 @@ watch(
         transform: translate(-50%, -50%);
         max-width: 100%;
         max-height: 100%;
-        width: 100%;
         object-fit: contain;
         opacity: 0;
         transition: opacity 0.5s ease;
         pointer-events: none;
-        display: flex;
-        justify-content: center;
-
-        picture {
-          display: flex;
-          flex-direction: column;
-          gap: $spacing-32;
-        }
-
-        img {
-          align-self: center;
-        }
 
         &.visible {
           opacity: 1;
           pointer-events: auto;
         }
-
       }
 
       .crop-hotspot {
@@ -456,7 +507,7 @@ watch(
         background: transparent;
         border: 2.91px solid rgba(#fff, 0.5);
         cursor: pointer;
-        transform: translate3d(-50%, -50%, 0);
+        transform: translate(-50%, -50%);
         transition:
           opacity 0.5s ease,
           box-shadow 0.3s ease,
@@ -471,7 +522,6 @@ watch(
           pointer-events: auto;
           animation: pulse-glow 3s infinite ease-in-out;
           will-change: transform, box-shadow;
-
         }
 
         &:active {
@@ -508,18 +558,17 @@ watch(
 
     .infos-containers {
       display: flex;
-      flex-direction: column;
       justify-content: center;
-      align-self: center;
-      gap: $spacing-10;
-      max-width: 75%;
+      gap: $spacing-32;
     }
 
     .figcaption {
       font-size: $spacing-24;
       line-height: 1.3;
+      margin-top: $spacing-10;
       text-align: left;
       font-weight: bold;
+      max-width: 50%;
     }
 
     .thumbnails-container {
@@ -547,8 +596,8 @@ watch(
         z-index: 10;
 
         :deep(svg) {
-          width: $spacing-74 !important;
-          height: $spacing-74 !important;
+          width: $spacing-40 !important;
+          height: $spacing-40 !important;
         }
       }
 
@@ -625,7 +674,7 @@ watch(
         flex-direction: column;
         gap: $spacing-16;
 
-        >* {
+        > * {
           opacity: 0;
           transform: translateY(20px);
           transition:
@@ -634,7 +683,7 @@ watch(
         }
 
         &.visible {
-          >* {
+          > * {
             opacity: 1;
             transform: translateY(0);
           }
@@ -682,7 +731,9 @@ watch(
       position: absolute;
       bottom: 0;
       left: $border-width;
-      width: calc(100% - (#{$spacing-24} + #{$spacing-10})); // 5px margins left - 29px scrollbar
+      width: calc(
+        100% - (#{$spacing-24} + #{$spacing-10})
+      ); // 5px margins left - 29px scrollbar
       height: 30%;
       background: linear-gradient(to top, $white 10%, transparent);
       z-index: 1;
@@ -745,7 +796,7 @@ watch(
         align-items: center;
         gap: $spacing-4;
 
-        >span,
+        > span,
         :deep(.top) {
           opacity: 0;
           transform: translateY(20px);
@@ -756,8 +807,7 @@ watch(
         }
 
         &.visible {
-
-          >span,
+          > span,
           :deep(.top) {
             opacity: 1;
             transform: translateY(0);
