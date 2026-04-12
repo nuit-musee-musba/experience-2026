@@ -205,7 +205,7 @@ const nextLabel = computed(() => {
 const backLabel = computed(() => {
   if (isArtwork.value) return `Retour à ${currentMuseum.value?.name}`;
   if (isMuseum.value) return `Retour à ${currentCity.value?.name}`;
-  if (isCity.value) return `Retour vers l' ${currentContinent.value?.Name}`;
+  if (isCity.value) return `Retour vers l'${currentContinent.value?.Name}`;
   if (isContinent.value) return `Retour à la carte`;
 });
 
@@ -260,6 +260,7 @@ const goGallery = () => {
 .nav {
   z-index: 1;
   display: flex;
+  gap: $spacing-40;
   padding: $spacing-32;
   border-top: $spacing-8 solid $black;
   background: white;

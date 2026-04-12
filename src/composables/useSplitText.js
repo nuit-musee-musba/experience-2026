@@ -1,5 +1,5 @@
 import SplitType from "split-type";
-import { watch, nextTick, onUnmounted } from "vue";
+import { watch, onUnmounted } from "vue";
 
 export function useSplitText(element) {
   let instance = null;

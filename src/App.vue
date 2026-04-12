@@ -4,9 +4,9 @@
       <CreditsOverlay @close="showCredits = false" />
       <router-view />
 
-      <!-- <transition name="fade">
+      <transition name="fade">
         <HomeOverlay v-if="showHome" @start="startExperience" />
-      </transition> -->
+      </transition>
     </div>
   </IdleView>
 </template>
@@ -45,7 +45,7 @@ const showCredits = ref(false);
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.8s ease;
+  transition: opacity 0.3s ease;
 }
 .fade-enter-from,
 .fade-leave-to {

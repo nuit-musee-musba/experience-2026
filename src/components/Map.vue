@@ -10,7 +10,6 @@ import { CamerasManager } from "@/webgl/managers/CamerasManagers.js";
 
 import { useRouter, useRoute } from "vue-router";
 import { allData } from "@/store.js";
-import { Stats } from "@/webgl/utils/Stats.js";
 import { firstFingerOfEvent } from "@/utils/touch/touch";
 import IconArrowLeft from "@/components/icons/IconArrowLeft.vue";
 import IconArrowRight from "@/components/icons/IconArrowRight.vue";
@@ -21,7 +20,7 @@ const isArtworkActive = computed(() => route.name === "artwork-detail");
 
 const containerRef = ref(null);
 
-let scene, camera, renderer, labelRenderer, camerasManager, animationId, stats;
+let scene, camera, renderer, labelRenderer, camerasManager, animationId;
 let mapPins;
 let allPins = null;
 let mapPlane = null;
@@ -46,6 +45,8 @@ const continentPositions = {
     target: new THREE.Vector3(-220, -16, -9.9),
   },
 };
+
+defineProps(['path']);
 
 watch(
   [() => route.params, allData],
@@ -211,8 +212,6 @@ const initThree = () => {
   labelRenderer.domElement.style.zIndex = "0";
   containerRef.value.appendChild(labelRenderer.domElement);
 
-  stats = new Stats(containerRef.value);
-
   const requestRender = () => {
     needsRender = true;
   };
@@ -251,8 +250,6 @@ const animate = () => {
     return;
   }
 
-  stats.begin();
-
   const delta = clock.getDelta();
   const hasUpdated = camerasManager.update(delta);
 
@@ -261,8 +258,6 @@ const animate = () => {
     labelRenderer.render(scene, camera);
     needsRender = false;
   }
-
-  stats.end();
 };
 
 const applyStepConstraints = () => {

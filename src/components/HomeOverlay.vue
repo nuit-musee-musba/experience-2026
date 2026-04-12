@@ -44,8 +44,11 @@ import intro2 from '@/assets/img/intro/intro2.webp';
 import intro3 from '@/assets/img/intro/intro3.webp';
 import intro4 from '@/assets/img/intro/intro4.webp';
 import intro5 from '@/assets/img/intro/intro5.webp';
+import intro6 from '@/assets/img/intro/intro6.webp';
+import intro7 from '@/assets/img/intro/intro7.webp';
+import intro8 from '@/assets/img/intro/intro8.webp';
 
-const introImages = [intro1, intro2, intro3, intro4, intro5];
+const introImages = [intro1, intro2, intro3, intro4, intro5, intro6, intro7, intro8];
 const descriptionRef = ref(null);
 const startAnim = ref(false);
 
@@ -105,40 +108,60 @@ onMounted(() => {
   }
 
   .bg-img-0 {
-    width: 1510px;
-    bottom: 0;
+    width: 500px;
+    bottom: -50px;
     left: 0;
     z-index: 6;
   }
 
   .bg-img-1 {
-    width: 1300px;
-    bottom: 0;
-    left: 200px;
+    width: 400px;
+    bottom: 700px;
+    left: 250px;
     z-index: 9;
   }
 
-  .bg-img-3 {
-    width: 1500px;
-    bottom: 0;
-    right: 400px;
-    left: 2210px;
+  .bg-img-2 {
+    width: 600px;
+    bottom: -150px;
+    left: 400px;
     z-index: 8;
+  }
+
+  .bg-img-3 {
+    width: 2040px;
+    bottom: -450px;
+    right: 0px;
+    left: 792.6px;
+    z-index: 11;
   }
 
   .bg-img-4 {
-    width: 1100px;
+    width: 900px;
     bottom: 0;
-    right: 0;
-    z-index: 3;
+    right: 300px;
+    z-index: 10;
   }
 
-  .bg-img-2 {
-    width: 2000px;
-    bottom: 0;
-    right: 400px;
-    left: 900px;
-    z-index: 8;
+  .bg-img-5 {
+    width: 1100px;
+    bottom: -200px;
+    right: -100px;
+    z-index: 10;
+  }
+
+  .bg-img-6 {
+    width: 610px;
+    bottom: -100px;
+    right: -100px;
+    z-index: 2;
+  }
+
+  .bg-img-7 {
+    width: 300px;
+    bottom: 600px;
+    right: -100px;
+    z-index: 2;
   }
 }
 

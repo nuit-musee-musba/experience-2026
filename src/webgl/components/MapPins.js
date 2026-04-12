@@ -101,7 +101,7 @@ export class MapPins {
         if (id) this.modelCache.set(id, model);
 
         // Load Models Pins
-        const museumPinZ = item.model3d.includes("paquebot") ? model.position.z + 1.5 : model.position.z + 0.5
+        const museumPinZ = item.model3d.includes("paquebot") ? model.position.z + 0.5 : model.position.z + 0.5
 
         this.loadPin(item, museumPinZ, this.PoiPincache, false);
 

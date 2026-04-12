@@ -9,7 +9,7 @@
     </span>
 
     <span v-if="!iconOnly && textContent" class="btn__label">
-      {{ textContent }}
+      {{ textContent.length > 40 ? textContent.slice(0, 40) + "..." : textContent }}
     </span>
 
     <span v-if="iconSecondary" class="btn__icon btn__icon--secondary">
@@ -191,6 +191,7 @@ const handleTouch = (event) => {
     background-color: $blue-300;
     color: $white;
     border-color: $blue-300;
+
     &:active:not(:disabled) {
       opacity: 0.8;
     }
