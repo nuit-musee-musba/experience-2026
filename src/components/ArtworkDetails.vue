@@ -68,6 +68,14 @@ const currentMuseum = computed(() => {
 
 const activeImageIndex = ref(0);
 
+// Œuvre réellement affichée : ne change qu'une fois le fondu sortant terminé,
+// pour éviter de voir la nouvelle image apparaître pendant la disparition.
+const displayedArtwork = ref(null);
+
+// Refs DOM utilisés pour piloter l'animation de transition entre œuvres.
+const imageContainerRef = ref(null);
+const contentSectionRef = ref(null);
+
 const scrollContent = ref(null);
 const isScrollEnd = ref(false);
 
@@ -78,22 +86,46 @@ const handleScroll = () => {
   }
 };
 
+// Éléments à animer pendant le changement d'œuvre.
+const fadeEls = () =>
+  [imageContainerRef.value, contentSectionRef.value].filter(Boolean);
+
 watch(
   () => artwork.value,
-  async () => {
+  async (newVal, oldVal) => {
+    const isSwitch = oldVal != null && newVal != null;
+
+    if (isSwitch) {
+      // 1. Fondu sortant : on force un reflow pour figer l'état de départ
+      //    (opacité 1) avant d'ajouter la classe, sinon la transition
+      //    ne se déclenche pas et l'image disparaît instantanément.
+      fadeEls().forEach((el) => {
+        el.classList.remove("is-transitioning");
+        void el.offsetHeight;
+        el.classList.add("is-transitioning");
+      });
+      await new Promise((r) => setTimeout(r, 400));
+    }
+
+    // 2. On swappe le contenu pendant que tout est invisible
+    displayedArtwork.value = newVal;
     activeImageIndex.value = 0;
 
     await nextTick();
+
+    if (isSwitch) {
+      // 3. Fondu entrant de la nouvelle œuvre
+      fadeEls().forEach((el) => el.classList.remove("is-transitioning"));
+      await nextTick();
+    }
 
     if (titleAndNameVisible.value) titleAndNameRef.value?.classList.add("visible");
     if (placeVisible.value) placeRef.value?.classList.add("visible");
     if (enumerationVisible.value) enumerationRef.value?.classList.add("visible");
 
     if (descriptionRef.value) {
-      // S’assurer que les .line existent avant la classe
       split();
       requestAnimationFrame(() => {
-        // Reset + reflow pour garantir la relance de la transition
         descriptionRef.value.classList.remove('visible');
         void descriptionRef.value.offsetHeight;
         descriptionRef.value.classList.add('visible');
@@ -105,11 +137,12 @@ watch(
       handleScroll();
     }
   },
+  { immediate: true },
 );
 
 const currentImage = computed(() => {
-  if (artwork.value?.images?.length) {
-    return artwork.value.images[activeImageIndex.value];
+  if (displayedArtwork.value?.images?.length) {
+    return displayedArtwork.value.images[activeImageIndex.value];
   }
   return null;
 });
@@ -122,12 +155,12 @@ const scrollPrev = () => {
   if (activeImageIndex.value > 0) {
     activeImageIndex.value--;
   } else {
-    activeImageIndex.value = artwork.value.images.length - 1;
+    activeImageIndex.value = displayedArtwork.value.images.length - 1;
   }
 };
 
 const scrollNext = () => {
-  if (activeImageIndex.value < artwork.value.images.length - 1) {
+  if (activeImageIndex.value < displayedArtwork.value.images.length - 1) {
     activeImageIndex.value++;
   } else {
     activeImageIndex.value = 0;
@@ -146,8 +179,8 @@ const cropsWithLocation = computed(() => {
 });
 
 const allCrops = computed(() => {
-  if (artwork.value?.images) {
-    return artwork.value.images
+  if (displayedArtwork.value?.images) {
+    return displayedArtwork.value.images
       .flatMap((img) => img.crops || [])
       .filter(
         (crop) =>
@@ -239,14 +272,14 @@ watch(
 </script>
 <template>
   <ArtworkVueFrame>
-    <div v-if="artwork" class="artwork-detail-box">
+    <div v-if="displayedArtwork" class="artwork-detail-box">
       <section class="image-section">
-        <div class="image-container">
+        <div class="image-container" ref="imageContainerRef">
           <img
-            v-for="(img, index) in artwork.images"
+            v-for="(img, index) in displayedArtwork.images"
             :key="img.id"
             :src="`/images/${encodeURI(img.file)}`"
-            :alt="img.description || artwork.name"
+            :alt="img.description || displayedArtwork.name"
             class="artwork-image"
             :class="{ visible: index === activeImageIndex }"
           />
@@ -269,7 +302,7 @@ watch(
 
         <div
           class="thumbnails-container"
-          v-if="artwork.images && artwork.images.length > 1"
+          v-if="displayedArtwork.images && displayedArtwork.images.length > 1"
         >
           <Button class="nav-arrow" icon-only icon-primary @click="scrollPrev">
             <template #icon-primary>
@@ -280,7 +313,7 @@ watch(
           <div class="thumbnails-list">
             <div class="thumbnails-track">
               <div
-                v-for="(img, index) in artwork.images"
+                v-for="(img, index) in displayedArtwork.images"
                 :key="img.id"
                 class="thumbnail"
                 :class="{ 'is-active': index === activeImageIndex }"
@@ -290,7 +323,7 @@ watch(
                   <div class="thumbnail-overlay"></div>
                   <img
                     :src="`/images/${encodeURI(img.file)}`"
-                    :alt="img.description || artwork.name"
+                    :alt="img.description || displayedArtwork.name"
                   />
                 </div>
               </div>
@@ -364,14 +397,14 @@ watch(
         </Transition>
       </Teleport>
 
-      <section class="content-section">
+      <section class="content-section" ref="contentSectionRef">
         <div class="artwork-container artwork-infos">
           <div
             class="title-and-name"
             ref="titleAndNameRef"
-            :key="artwork.slug"
+            :key="displayedArtwork.slug"
           >
-            <h2 class="title" style="--anim-index: 0">{{ artwork.name }}</h2>
+            <h2 class="title" style="--anim-index: 0">{{ displayedArtwork.name }}</h2>
             <p style="--anim-index: 1">Jean Dupas</p>
           </div>
         </div>
@@ -388,17 +421,17 @@ watch(
               <p
                 class="enumeration"
                 ref="enumerationRef"
-                :key="artwork.slug"
+                :key="displayedArtwork.slug"
               >
-                <!--<span style="--enum-index: 0">{{ artwork.name }}</span>-->
-                <span style="--enum-index: 1">{{ artwork.year }}</span>
-                <span style="--enum-index: 2">{{ artwork.technique }}</span>
+                <!--<span style="--enum-index: 0">{{ displayedArtwork.name }}</span>-->
+                <span style="--enum-index: 1">{{ displayedArtwork.year }}</span>
+                <span style="--enum-index: 2">{{ displayedArtwork.technique }}</span>
                 <!-- <span style="--enum-index: 3">{{ currentMuseum?.adress }}</span> -->
               </p>
               <div
                 class="artwork-place"
                 ref="placeRef"
-                :key="artwork.slug"
+                :key="displayedArtwork.slug"
               >
 
                 <span style="--anim-index: 1">{{ currentMuseum?.adress }}</span>
@@ -407,10 +440,10 @@ watch(
             <p
               ref="descriptionRef"
               class="description"
-              :key="artwork.slug"
+              :key="displayedArtwork.slug"
 
             >
-              {{ artwork.description }}
+              {{ displayedArtwork.description }}
             </p>
           </div>
         </div>
@@ -459,7 +492,7 @@ watch(
       right: 0px;
       width: calc($spacing-56 - $border-width);
       height: 100%;
-      background-color: $blue-300;
+      background-color: $blue-100;
     }
 
     &::after {
@@ -480,6 +513,12 @@ watch(
       align-items: center;
       overflow: hidden;
       position: relative;
+      transition: opacity 0.4s $ease-out-quint, transform 0.4s $ease-out-quint;
+
+      &.is-transitioning {
+        opacity: 0;
+        transform: scale(0.95);
+      }
 
       .artwork-image {
         position: absolute;
@@ -662,6 +701,12 @@ watch(
     flex-direction: column;
     overflow: hidden;
     position: relative;
+    transition: opacity 0.4s $ease-out-quint, transform 0.4s $ease-out-quint;
+
+    &.is-transitioning {
+      opacity: 0;
+      transform: translateY(20px);
+    }
 
     .artwork-container {
       box-sizing: border-box;
