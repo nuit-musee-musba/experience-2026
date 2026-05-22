@@ -107,6 +107,7 @@ export class MapPlane {
   }
 
   delete() {
+    this.scene.remove(this.group);
     this.group.clear();
     this.group = new THREE.Group();
     this.scene.add(this.group);

@@ -12,7 +12,7 @@ const props = defineProps({
 
 
 const options = { loop: true, align: 'center' }
-const emblaApi = CarouselVue(options, [WheelGesturesPlugin()])
+const [emblaRef, emblaApi] = CarouselVue(options, [WheelGesturesPlugin()])
 
 const scrollPrev = () => emblaApi.value && emblaApi.value.scrollPrev()
 const scrollNext = () => emblaApi.value && emblaApi.value.scrollNext()

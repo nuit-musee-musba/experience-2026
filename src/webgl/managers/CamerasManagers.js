@@ -24,7 +24,7 @@ export class CamerasManager {
 
     // Default config
     this.controls.minDistance = CONFIG.controls.minDistance;
-    this.controls.maxDistance = CONFIG.controls.map.maxDistance;
+    this.controls.maxDistance = CONFIG.controls.maxDistance;
 
     // Lock Zoom
     this.controls.zoom = CONFIG.controls.zoom

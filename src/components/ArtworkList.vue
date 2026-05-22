@@ -10,17 +10,19 @@ const router = useRouter();
 
 const museum = computed(() => {
   if (allData.value) {
-    const laVille = allData.value.find(ville => ville.slug === route.params.citySlug);
-    if (laVille) {
-      const leMusee = laVille.museums.find(m => m.slug === route.params.museumSlug);
-      return leMusee;
+    const leContinent = allData.value.find(c => c.Name.toLowerCase() === route.params.continentSlug);
+    if (leContinent) {
+      const laVille = leContinent.cities.find(ville => ville.slug === route.params.citySlug);
+      if (laVille) {
+        return laVille.museums.find(m => m.slug === route.params.museumSlug);
+      }
     }
   }
   return null;
 })
 
 const goBack = () => {
-  router.push(`/${route.params.citySlug}`);
+  router.push(`/${route.params.continentSlug}/${route.params.citySlug}/${route.params.museumSlug}`);
 }
 
 const thumbHeight = ref(0);
@@ -77,7 +79,7 @@ onUnmounted(() => {
       <div class="content-container" ref="scrollContainer">
         <div class="artwork-grid">
           <RouterLink v-for="artwork in museum.artworks" :key="artwork.slug"
-            :to="`/${route.params.citySlug}/${museum.slug}/${artwork.slug}`" class="artwork-item">
+            :to="`/${route.params.continentSlug}/${route.params.citySlug}/${museum.slug}/${artwork.slug}`" class="artwork-item">
             <div class="artwork-image">
               <img v-if="artwork.images && artwork.images.length > 0"
                 :src="`/images/${encodeURI(artwork.images[0].file)}`" :alt="artwork.name">

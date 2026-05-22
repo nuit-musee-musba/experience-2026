@@ -97,7 +97,6 @@ const close = () => {
   openPopup.value = false;
 };
 
-defineEmits(['close']);
 </script>
 
 <style scoped lang="scss">

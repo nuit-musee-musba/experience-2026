@@ -155,6 +155,15 @@ watch(
   { immediate: true },
 );
 
+// Résout la destination d'un pin/objet cliqué : quand une ville ne contient
+// qu'un seul musée, on saute la vue ville et on va directement au musée.
+const resolvePinTarget = (item) => {
+  if (item.museums && item.museums.length === 1) {
+    return item.museums[0].path;
+  }
+  return item.path;
+};
+
 const handlePinClick = (item) => {
   if (clickCooldown) return;
   clickCooldown = true;
@@ -163,11 +172,11 @@ const handlePinClick = (item) => {
   }, 300);
 
   if (item.museums) {
-    router.push(`${item.path}`);
+    router.push(resolvePinTarget(item));
   } else if (item.artworks) {
     const city = item.model3d.split("_")[0];
     if (city) {
-      router.push(`${item.path}`);
+      router.push(resolvePinTarget(item));
     }
   }
 };
@@ -389,7 +398,7 @@ const onMapClick = (event) => {
     const clickedObject = intersects[0].object;
 
     if (clickedObject.userData.path) {
-      router.push(`${clickedObject.userData.path}`);
+      router.push(resolvePinTarget(clickedObject.userData));
     }
   }
 };

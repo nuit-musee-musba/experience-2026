@@ -1,7 +1,7 @@
 <template>
   <IdleView @idle="resetApplication">
     <div class="app-container">
-      <CreditsOverlay @close="showCredits = false" />
+      <CreditsOverlay />
       <router-view />
 
       <transition name="fade">
@@ -32,7 +32,6 @@ const resetApplication = () => {
   }
 };
 
-const showCredits = ref(false);
 </script>
 
 <style scoped>

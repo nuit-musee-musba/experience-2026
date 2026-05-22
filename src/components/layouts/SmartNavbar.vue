@@ -76,7 +76,7 @@ const router = useRouter();
 
 const isArtwork = computed(() => !!route.params.artworkSlug); //si j'ai bien l'URL au complet continent/ville/musée/œuvre
 const isMuseum = computed(() => !!route.params.museumSlug && !isArtwork.value); // Si j'ai bien continent/ville/musée, mais pas l'œuvre après
-const isCity = computed(() => !!route.params.citySlug && !isMuseum.value); // Si j'ai bien continent/ville, mais pas le musée après
+const isCity = computed(() => !!route.params.citySlug && !isMuseum.value && !isArtwork.value); // Si j'ai bien continent/ville, mais pas le musée après
 const isContinent = computed(() => !!route.params.continentSlug && !route.params.citySlug); // Si j'ai bien un continent d'ans l'URL, mais pas la ville après
 
 const showSelectionButtons = computed(() => {
@@ -104,15 +104,19 @@ const currentMuseum = computed(() => {
   return currentCity.value.museums.find(m => m.slug === route.params.museumSlug);
 });
 
+// Une ville qui n'a qu'un seul musée : la vue ville est sautée à l'aller,
+// donc le retour doit la sauter aussi pour éviter un rezoom inutile sur la ville.
+const cityHasSingleMuseum = computed(() => currentCity.value?.museums?.length === 1);
+
 const allCities = computed(() => {
   let cities = [];
   allData.value?.forEach(continent => {
-    // This is an ugly way to re-create path
-    // Each object should have a path attribute instead of re-creating it every times
-    continent.cities.forEach( city => {
-      city.path = (`/${continent.Name}/${city.slug}`).toLowerCase();
+    continent.cities.forEach(city => {
+      cities.push({
+        ...city,
+        path: (`/${continent.Name}/${city.slug}`).toLowerCase(),
+      });
     });
-    cities = [...continent.cities, ...cities];
   });
   return cities;
 });
@@ -204,7 +208,11 @@ const nextLabel = computed(() => {
 
 const backLabel = computed(() => {
   if (isArtwork.value) return `Retour à ${currentMuseum.value?.name}`;
-  if (isMuseum.value) return `Retour à ${currentCity.value?.name}`;
+  if (isMuseum.value) {
+    // Ville à un seul musée : on retourne directement au continent.
+    if (cityHasSingleMuseum.value) return `Retour vers l'${currentContinent.value?.Name}`;
+    return `Retour à ${currentCity.value?.name}`;
+  }
   if (isCity.value) return `Retour vers l'${currentContinent.value?.Name}`;
   if (isContinent.value) return `Retour à la carte`;
 });
@@ -215,6 +223,10 @@ const backTarget = computed(() => {
   if (isArtwork.value) {
     return `/${route.params.continentSlug}/${route.params.citySlug}/${route.params.museumSlug}`;
   } if (isMuseum.value) {
+    // Ville à un seul musée : on saute la vue ville au retour.
+    if (cityHasSingleMuseum.value) {
+      return `/${route.params.continentSlug}`;
+    }
     return `/${route.params.continentSlug}/${route.params.citySlug}`;
   } if (isCity.value) {
     return `/${route.params.continentSlug}`;
@@ -258,7 +270,6 @@ const goGallery = () => {
 
 <style lang="scss" scoped>
 .nav {
-  z-index: 1;
   display: flex;
   gap: $spacing-40;
   padding: $spacing-32;

@@ -1,3 +1,3 @@
 export const APP_CONFIG = {
-  idleTime: 90000,
+  idleTime: 300000,
 };

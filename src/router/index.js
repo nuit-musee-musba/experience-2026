@@ -50,10 +50,6 @@ const router = createRouter({
       component: Credit,
     },
     {
-      path: "/robots.txt",
-      component: () => import("/robots.txt"),
-    },
-    {
       path: "/all-artworks",
       component: AllArtwork,
     },

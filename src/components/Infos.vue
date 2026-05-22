@@ -41,7 +41,7 @@ const { split } = useSplitText(descriptionRef);
 watch(
   () => museum.value,
   async () => {
-    if (nextTick()) await nextTick();
+    await nextTick();
 
     // Si déjà visible, on doit forcer la ré-animation
     if (titleAndLocationVisible.value)
@@ -160,7 +160,7 @@ watch(descriptionVisible, (visible) => {
   width: 50%;
   max-width: 1744px;
   height: 100%;
-  border-right: 44px solid $green-300;
+  border-right: 44px solid $pink-100;
 }
 
 .content-section {
