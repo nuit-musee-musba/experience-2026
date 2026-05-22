@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "mcp__Claude_in_Chrome__browser_batch",
-      "mcp__Claude_in_Chrome__navigate",
-      "mcp__Claude_in_Chrome__javascript_tool"
-    ]
-  }
-}
