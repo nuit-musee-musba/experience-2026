@@ -71,13 +71,14 @@ const handleTouch = (event) => {
   align-items: center;
   justify-content: center;
   color: $black;
+  gap: 8px;
 
-  padding: $spacing-16 $spacing-32;
+  padding: 10px 18px;
   border: 1px solid transparent;
   border-radius: 0;
 
   font-family: $font-family-sans-serif;
-  font-size: 40px;
+  font-size: clamp(13px, 1.1vw, 16px);
   font-weight: 400;
   line-height: 1;
 
@@ -134,7 +135,7 @@ const handleTouch = (event) => {
   &--secondary {
     background-color: $white;
     color: $black;
-    border: $black 4px solid;
+    border: $black 2px solid;
 
     &:active:not(:disabled) {
       background-color: $gray-200;
@@ -148,7 +149,7 @@ const handleTouch = (event) => {
   &--city {
     background-color: transparent;
     color: black;
-    border: black 4px solid;
+    border: black 2px solid;
 
     &:active:not(:disabled) {
       opacity: 0.9;
@@ -162,7 +163,7 @@ const handleTouch = (event) => {
   &--continent {
     background-color: transparent;
     color: black;
-    border: black 4px solid;
+    border: black 2px solid;
 
     &:active:not(:disabled) {
       opacity: 0.9;
@@ -210,14 +211,15 @@ const handleTouch = (event) => {
   }
 
   &__icon {
-    font-size: 32px;
+    font-size: 14px;
     line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     color: currentColor;
 
-    &--primary {
+    &--primary,
+    &--secondary {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -225,8 +227,8 @@ const handleTouch = (event) => {
 
     :deep(svg) {
       fill: currentColor;
-      width: 90px;
-      height: 90px;
+      width: 18px;
+      height: 18px;
     }
   }
 

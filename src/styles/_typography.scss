@@ -1,20 +1,23 @@
 @use "variables" as *;
 @use "colors" as *;
 
+// Typo en `clamp(min, fluid, max)` pour un dimensionnement fluide
+// entre mobile et desktop.
+
 h1,
 .h1 {
   font-family: $font-family-headings, sans-serif;
-  font-size: 128px;
+  font-size: clamp(32px, 4.5vw, 56px);
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
+  line-height: 1.1;
   margin-bottom: unset;
 }
 
 h2,
 .h2 {
   font-family: $font-family-headings, sans-serif;
-  font-size: 100px;
+  font-size: clamp(24px, 3.2vw, 40px);
   font-style: normal;
   font-weight: 400;
   line-height: 1.2;
@@ -23,48 +26,45 @@ h2,
 
 a {
   font-family: $font-family-sans-serif, sans-serif;
-  font-size: 32px;
+  font-size: clamp(13px, 1.1vw, 16px);
   font-style: normal;
   font-weight: 400;
   line-height: normal;
   text-decoration-line: underline;
   text-decoration-style: solid;
-  text-decoration-skip-ink: auto;
-  text-decoration-thickness: auto;
-  text-underline-offset: auto;
-  text-underline-position: from-font;
+  text-underline-offset: 2px;
   margin-bottom: unset;
 }
 
-
 @mixin title-h1 {
   font-family: $font-family-headings, sans-serif;
-  font-size: 109px;
+  font-size: clamp(32px, 4vw, 52px);
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
+  line-height: 1.1;
   margin-bottom: unset;
 }
 
 @mixin title-h2 {
   font-family: $font-family-headings, sans-serif;
-  font-size: 128px;
+  font-size: clamp(28px, 3.5vw, 44px);
   font-weight: 400;
-  line-height: 100%;
+  line-height: 1.05;
   letter-spacing: 0;
 }
 
 @mixin text-body {
   font-family: $font-family-sans-serif, sans-serif;
-  font-size: 48px; 
+  font-size: clamp(14px, 1.1vw, 18px);
   font-weight: 400;
-  line-height: 140%;
+  line-height: 1.5;
   letter-spacing: 0;
 }
 
 @mixin text-link {
   font-family: $font-family-sans-serif, sans-serif;
-  font-size: 100px;
+  font-size: clamp(20px, 2vw, 32px);
   text-decoration: underline;
   cursor: pointer;
 }
+

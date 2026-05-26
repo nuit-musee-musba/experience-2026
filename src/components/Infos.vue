@@ -125,9 +125,7 @@ watch(descriptionVisible, (visible) => {
       </div>
       <router-view />
 
-      <template #nav>
-        <SmartNavbar v-if="!route.params.artworkSlug" />
-      </template>
+      <!-- SmartNavbar déjà rendu par Map.vue, on ne le duplique pas ici. -->
     </BaseFrame>
   </Transition>
 </template>
@@ -157,10 +155,10 @@ watch(descriptionVisible, (visible) => {
   top: 0;
   z-index: -1;
   background: white;
-  width: 50%;
-  max-width: 1744px;
+  width: 45%;
+  max-width: 640px;
   height: 100%;
-  border-right: 44px solid $pink-100;
+  border-right: 16px solid $pink-100;
 }
 
 .content-section {
@@ -172,18 +170,19 @@ watch(descriptionVisible, (visible) => {
   @include text-body;
 
   .location-infos {
-    border-bottom: 8px solid $black;
+    border-bottom: 2px solid $black;
 
     .title {
       font-family: $font-family-headings;
-      line-height: 100%;
+      font-size: clamp(20px, 2.2vw, 28px);
+      line-height: 1;
     }
   }
 
   .scroll-content {
     height: 100%;
-    overflow-y: scroll;
-    padding-bottom: 200px;
+    overflow-y: auto;
+    padding-bottom: 80px;
 
     &::-webkit-scrollbar {
       width: $spacing-24;
@@ -195,10 +194,10 @@ watch(descriptionVisible, (visible) => {
   }
 
   .scroll-content-box {
-    padding: $spacing-80 $spacing-96;
+    padding: 18px 24px;
     display: flex;
     flex-direction: column;
-    gap: $spacing-80;
+    gap: 16px;
 
     .description {
       :deep(.line) {
@@ -223,10 +222,11 @@ watch(descriptionVisible, (visible) => {
 .title-and-location {
   display: flex;
   flex-direction: column;
-  gap: $spacing-16;
+  gap: 4px;
   box-sizing: border-box;
-  padding: $spacing-48 $spacing-96;
+  padding: 14px 24px;
   min-height: 0;
+  font-size: 13px;
 
   > * {
     opacity: 0;
@@ -246,7 +246,7 @@ watch(descriptionVisible, (visible) => {
 
 .location-main-image {
   width: 100%;
-  height: 800px;
+  height: 280px;
   overflow: hidden;
 
   img {
@@ -259,25 +259,26 @@ watch(descriptionVisible, (visible) => {
 }
 
 .locations-artworks-section-title {
-  font-size: 56px;
+  font-size: clamp(16px, 1.6vw, 22px);
 }
 
 .location-artworks-listing {
   display: flex;
   flex-wrap: wrap;
-  gap: 44px;
+  gap: 16px;
 
   .artworks-item {
     text-decoration: none;
     color: inherit;
-    width: 480px;
-    gap: 35px;
+    width: 160px;
+    gap: 10px;
     display: flex;
     flex-direction: column;
+    font-size: 13px;
 
     .artworks-item-image {
-      width: 480px;
-      height: 418px;
+      width: 160px;
+      height: 140px;
       overflow: hidden;
 
       img {

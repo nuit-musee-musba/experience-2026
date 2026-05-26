@@ -9,10 +9,10 @@
 
 .pin {
     font-family: baseFont, sans-serif;
-    font-size: 40px;
+    font-size: 14px;
     position: absolute;
     left: 50%;
-    top: -65px;
+    top: -22px;
     transform: translate(-50%, -110%);
     white-space: nowrap;
     text-align: center;

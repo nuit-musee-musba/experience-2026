@@ -9,6 +9,8 @@
       </transition>
     </div>
   </IdleView>
+
+  <RotateDevice />
 </template>
 
 <script setup>
@@ -17,6 +19,7 @@ import { useRouter } from "vue-router";
 import IdleView from "@/components/IdleView.vue";
 import HomeOverlay from "@/components/HomeOverlay.vue";
 import CreditsOverlay from "@/components/CreditsOverlay.vue";
+import RotateDevice from "@/components/RotateDevice.vue";
 
 const router = useRouter();
 const showHome = ref(true);
@@ -37,8 +40,8 @@ const resetApplication = () => {
 <style scoped>
 .app-container {
   position: relative;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
 }
 

@@ -71,8 +71,6 @@ onMounted(() => {
 .home-overlay {
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
   z-index: 5000;
   display: flex;
   align-items: center;
@@ -81,17 +79,17 @@ onMounted(() => {
   background-color: rgba(#DCDCDC, 0.8);
 }
 
+// ─── Images de fond ───────────────────────────────────────────────────────
+// Tailles relatives au viewport (vw) pour rester proportionnelles à
+// n'importe quelle taille d'écran. Les positions sont également en vw/vh.
 .background-layer {
   .bg-img {
     position: fixed;
     bottom: 0;
-    width: 100%;
     height: auto;
-
     display: block;
     object-fit: cover;
     object-position: bottom;
-
     z-index: 0;
     user-select: none;
     pointer-events: none;
@@ -107,62 +105,20 @@ onMounted(() => {
     }
   }
 
-  .bg-img-0 {
-    width: 500px;
-    bottom: -50px;
-    left: 0;
-    z-index: 6;
-  }
+  // ─ Personnages au sol (bas de la page) ─────────────────────────────────
+  // On les espace pour qu'ils couvrent toute la largeur sans gros trou.
+  .bg-img-0 { width: 12vw; bottom: -2vh; left: 0;       z-index: 6; }
+  .bg-img-2 { width: 20vw; bottom: -5vh; left: 9vw;     z-index: 8; }
+  .bg-img-3 { width: 44vw; bottom: -12vh; left: 22vw;   z-index: 11; }
+  .bg-img-4 { width: 18vw; bottom: 0;    right: 18vw;   z-index: 10; }
+  .bg-img-5 { width: 22vw; bottom: -8vh; right: 2vw;    z-index: 10; }
+  .bg-img-6 { width: 14vw; bottom: -5vh; right: -2vw;   z-index: 2; }
 
-  .bg-img-1 {
-    width: 400px;
-    bottom: 700px;
-    left: 250px;
-    z-index: 9;
-  }
-
-  .bg-img-2 {
-    width: 600px;
-    bottom: -150px;
-    left: 400px;
-    z-index: 8;
-  }
-
-  .bg-img-3 {
-    width: 2040px;
-    bottom: -450px;
-    right: 0px;
-    left: 792.6px;
-    z-index: 11;
-  }
-
-  .bg-img-4 {
-    width: 900px;
-    bottom: 0;
-    right: 300px;
-    z-index: 10;
-  }
-
-  .bg-img-5 {
-    width: 1100px;
-    bottom: -200px;
-    right: -100px;
-    z-index: 10;
-  }
-
-  .bg-img-6 {
-    width: 610px;
-    bottom: -100px;
-    right: -100px;
-    z-index: 2;
-  }
-
-  .bg-img-7 {
-    width: 300px;
-    bottom: 600px;
-    right: -100px;
-    z-index: 2;
-  }
+  // ─ Oiseaux qui volent (haut, dans les zones de ciel) ───────────────────
+  // Repositionnés au-dessus / loin des figures pour éviter qu'ils ne
+  // chevauchent les gens.
+  .bg-img-1 { width: 7vw;  top: 6vh;     left: 3vw;     bottom: auto; z-index: 9; }
+  .bg-img-7 { width: 5vw;  top: 8vh;     right: 6vw;    bottom: auto; z-index: 9; }
 }
 
 .intro-card {
@@ -174,14 +130,8 @@ onMounted(() => {
 
   @include border-5;
 
-  width: 57.29vw;
-  max-width: 2200px;
-  padding: $spacing-144;
-
-  @media (max-width: 1024px) {
-    width: 85vw;
-    padding: $spacing-40;
-  }
+  width: min(640px, 92vw);
+  padding: clamp(24px, 4vw, 56px);
 }
 
 .card-content {
@@ -197,7 +147,7 @@ onMounted(() => {
   margin: 0;
   word-break: normal;
   line-height: 1.2;
-  font-size: 128px;
+  font-size: clamp(28px, 3.6vw, 48px);
   letter-spacing: 0;
 
   opacity: 0;

@@ -1,24 +1,38 @@
-$spacing-4: 4px;
-$spacing-8: 8px;
-$spacing-10: 10px;
-$spacing-16: 16px;
-$spacing-24: 24px;
-$spacing-32: 32px;
-$spacing-40: 40px;
-$spacing-48: 48px;
-$spacing-56: 56px;
-$spacing-74: 74px;
-$spacing-80: 80px;
-$spacing-96: 96px;
-$spacing-136: 136px;
-$spacing-144: 144px;
+// ─── Design tokens — version web ───────────────────────────────────────────
+// L'app d'origine est dessinée pour un écran kiosque 3840 px de large.
+// Ici on cible des écrans classiques (desktop ~1280-1920, mobile paysage).
+// Les valeurs sont divisées par ~3 par rapport à la version kiosque.
+// Les noms de variables sont conservés pour ne pas avoir à refactorer
+// l'ensemble des composants, même si la valeur ne correspond plus au nom.
 
-$border-width: 5px;
+$spacing-4: 2px;
+$spacing-8: 4px;
+$spacing-10: 4px;
+$spacing-16: 6px;
+$spacing-24: 8px;
+$spacing-32: 12px;
+$spacing-40: 14px;
+$spacing-48: 16px;
+$spacing-56: 20px;
+$spacing-74: 24px;
+$spacing-80: 28px;
+$spacing-96: 32px;
+$spacing-136: 48px;
+$spacing-144: 56px;
+
+$border-width: 2px;
 
 $font-family-headings: "MusBA";
 $font-family-sans-serif: "baseFont";
 
-$grid-width: 3840px;
-$grid-columns: 6;
-$grid-margin: 144px;
-$grid-gutter: 144px;
+$grid-width: 1280px;
+$grid-columns: 12;
+$grid-margin: 56px;
+$grid-gutter: 24px;
+
+// Breakpoints responsives
+$bp-mobile: 568px;   // mobile portrait → en dessous : message « tourner »
+$bp-tablet: 768px;
+$bp-desktop: 1024px;
+$bp-large: 1440px;
+

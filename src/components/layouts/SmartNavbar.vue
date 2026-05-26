@@ -271,9 +271,9 @@ const goGallery = () => {
 <style lang="scss" scoped>
 .nav {
   display: flex;
-  gap: $spacing-40;
-  padding: $spacing-32;
-  border-top: $spacing-8 solid $black;
+  gap: 12px;
+  padding: 8px 14px;
+  border-top: 2px solid $black;
   background: white;
   z-index: 1000;
   width: 100%;
@@ -283,7 +283,7 @@ const goGallery = () => {
 
 .nav-buttons {
   display: flex;
-  gap: $spacing-40;
+  gap: 8px;
 
   &:first-child {
     margin-right: auto;
@@ -291,6 +291,6 @@ const goGallery = () => {
 }
 
 .galery-button {
-  margin-left: 40px;
+  margin-left: 12px;
 }
 </style>

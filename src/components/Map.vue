@@ -508,13 +508,13 @@ defineExpose({
   }
 }
 
-.continent-btn-europe {
+.continent-btn-europe,
+.continent-btn-america {
   position: fixed;
-  right: 80px;
   top: 0;
   bottom: 0;
-  height: 115px;
-  width: 150px;
+  height: 48px;
+  width: 56px;
   background-color: black;
   color: white;
   display: flex;
@@ -524,8 +524,6 @@ defineExpose({
   z-index: 100;
   cursor: pointer;
   border: none;
-  font-size: 18px;
-  font-weight: bold;
 
   &:hover {
     background-color: #333;
@@ -534,40 +532,20 @@ defineExpose({
   &.active {
     display: none;
   }
+}
+
+.continent-btn-europe {
+  right: 24px;
+}
+
+.continent-btn-america {
+  left: 24px;
 }
 
 .continent-btn {
   svg {
-    width: 85px;
-    height: 85px;
-  }
-}
-
-.continent-btn-america {
-  position: fixed;
-  left: 80px;
-  top: 0;
-  bottom: 0;
-  height: 115px;
-  width: 150px;
-  background-color: black;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-block: auto;
-  z-index: 100;
-  cursor: pointer;
-  border: none;
-  font-size: 18px;
-  font-weight: bold;
-
-  &:hover {
-    background-color: #333;
-  }
-
-  &.active {
-    display: none;
+    width: 24px;
+    height: 24px;
   }
 }
 </style>

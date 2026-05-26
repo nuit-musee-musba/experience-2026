@@ -4,6 +4,12 @@ import svgLoader from "vite-svg-loader";
 import path from "path";
 
 export default defineConfig({
+  // Port distinct du projet kiosque pour pouvoir faire tourner les deux
+  // en parallèle.
+  server: {
+    port: 5180,
+    strictPort: false,
+  },
   plugins: [vue(), svgLoader()],
   resolve: {
     alias: {

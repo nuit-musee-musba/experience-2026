@@ -351,51 +351,49 @@ watch(
           </Button>
         </div>
       </section>
-      <Teleport to="body">
-        <Transition name="fade">
-          <div
-            v-show="showPopup"
-            class="crop-popup-overlay"
-            @click.self="closePopup"
-          >
-            <div class="crop-popup">
-              <div class="crop-popup-image">
+      <Transition name="fade">
+        <div
+          v-show="showPopup"
+          class="crop-popup-overlay"
+          @click.self="closePopup"
+        >
+          <div class="crop-popup">
+            <div class="crop-popup-image">
+              <img
+                v-if="isFullScreenImage && activeCrop"
+                :src="`/images/${encodeURI(activeCrop.file)}`"
+                :alt="activeCrop.description"
+              />
+              <template v-else>
                 <img
-                  v-if="isFullScreenImage && activeCrop"
-                  :src="`/images/${encodeURI(activeCrop.file)}`"
-                  :alt="activeCrop.description"
+                  v-for="crop in allCrops"
+                  :key="crop.id"
+                  :src="`/images/${encodeURI(crop.file)}`"
+                  :alt="crop.description"
+                  v-show="activeCrop && activeCrop.id === crop.id"
                 />
-                <template v-else>
-                  <img
-                    v-for="crop in allCrops"
-                    :key="crop.id"
-                    :src="`/images/${encodeURI(crop.file)}`"
-                    :alt="crop.description"
-                    v-show="activeCrop && activeCrop.id === crop.id"
-                  />
+              </template>
+            </div>
+            <div class="crop-popup-content">
+              <p class="crop-popup-text" v-if="activeCrop?.description">
+                {{ activeCrop?.description }}
+              </p>
+              <Button
+                color="primary"
+                class="bouton"
+                :class="{ 'no-description': !activeCrop?.description }"
+                icon-primary
+                @click="closePopup"
+                :text-content="'Fermer'"
+              >
+                <template #icon-primary>
+                  <IconLeave />
                 </template>
-              </div>
-              <div class="crop-popup-content">
-                <p class="crop-popup-text" v-if="activeCrop?.description">
-                  {{ activeCrop?.description }}
-                </p>
-                <Button
-                  color="primary"
-                  class="bouton"
-                  :class="{ 'no-description': !activeCrop?.description }"
-                  icon-primary
-                  @click="closePopup"
-                  :text-content="'Fermer'"
-                >
-                  <template #icon-primary>
-                    <IconLeave />
-                  </template>
-                </Button>
-              </div>
+              </Button>
             </div>
           </div>
-        </Transition>
-      </Teleport>
+        </div>
+      </Transition>
 
       <section class="content-section" ref="contentSectionRef">
         <div class="artwork-container artwork-infos">
@@ -473,8 +471,9 @@ watch(
   .image-section {
     width: 75%;
     height: 100%;
-    padding: calc($spacing-96 - $border-width) $spacing-136 293px
-      calc($spacing-96 - $border-width);
+    // Padding bas réduit pour rapprocher le bouton « Plein écran » de
+    // la barre de navigation sans qu'il la touche.
+    padding: $spacing-48 $spacing-56 60px $spacing-48;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -482,6 +481,10 @@ watch(
 
     .fullscreen {
       text-align: right;
+      // Remonte le bouton « Plein écran » pour qu'il ne touche pas la
+      // barre de navigation en bas.
+      margin-top: -8px;
+      margin-bottom: 16px;
     }
 
     &::before {
@@ -540,8 +543,8 @@ watch(
 
       .crop-hotspot {
         position: absolute;
-        width: 500px;
-        height: 500px;
+        width: 96px;
+        height: 96px;
         border-radius: 50%;
         background: transparent;
         border: 2.91px solid rgba(#fff, 0.5);
@@ -617,15 +620,15 @@ watch(
       justify-content: center;
       gap: $spacing-16;
       width: 100%;
-      height: 194px;
-      min-height: 194px;
-      padding: 0 10%;
+      height: 80px;
+      min-height: 80px;
+      padding: 0 6%;
 
       .nav-arrow {
         background-color: $white;
-        border: 4px solid $black;
+        border: 2px solid $black;
         cursor: pointer;
-        padding: $spacing-16;
+        padding: 6px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -635,8 +638,8 @@ watch(
         z-index: 10;
 
         :deep(svg) {
-          width: $spacing-40 !important;
-          height: $spacing-40 !important;
+          width: 16px !important;
+          height: 16px !important;
         }
       }
 
@@ -659,11 +662,11 @@ watch(
         }
 
         .thumbnail {
-          flex: 0 0 100px;
+          flex: 0 0 56px;
           height: 100%;
           cursor: pointer;
           position: relative;
-          border: 7px solid transparent;
+          border: 3px solid transparent;
           transition: all 0.3s;
           opacity: 0.5;
           aspect-ratio: 1;
@@ -711,7 +714,7 @@ watch(
     .artwork-container {
       box-sizing: border-box;
       padding: $spacing-56 $spacing-96;
-      padding-top: 107px;
+      padding-top: 32px;
       min-height: 0;
 
       .title-and-name {
@@ -793,7 +796,7 @@ watch(
     .scroll-content {
       height: 100%;
       overflow-y: auto;
-      padding: 80px 96px 260px 96px;
+      padding: 24px 32px 80px 32px;
       display: flex;
       flex-direction: column;
       gap: $spacing-40;
@@ -912,11 +915,13 @@ watch(
     z-index: 1000;
 
     .crop-popup {
-      max-width: 90vw;
-      max-height: 90vh;
+      // Limite la popup à 80 % de la fenêtre pour laisser de la marge
+      // autour (et que le bouton « Fermer » reste dans la zone visible).
+      max-width: 80vw;
+      max-height: 85vh;
       display: flex;
       flex-direction: column;
-      gap: $spacing-80;
+      gap: 16px;
       align-items: center;
 
       .crop-popup-image {
@@ -925,11 +930,15 @@ watch(
         align-items: center;
         justify-content: center;
         overflow: hidden;
+        // L'image ne doit jamais dépasser ce qui reste après la boîte de
+        // texte (qui peut faire ~200 px) + la marge.
+        max-height: 55vh;
 
         img {
           max-width: 100%;
-          max-height: 70vh;
+          max-height: 55vh;
           object-fit: contain;
+          display: block;
         }
       }
 
@@ -937,25 +946,30 @@ watch(
         background-color: $white;
         position: relative;
         width: fit-content;
+        max-width: 90%;
+        // Décalage pour laisser de la place au bouton Fermer qui se
+        // positionne en bas à droite, hors de la boîte.
+        margin-right: 18px;
+        margin-bottom: 18px;
 
         .crop-popup-text {
-          padding: $spacing-80 $spacing-56;
+          padding: 18px 24px;
           font-family: $font-family-sans-serif;
           @include text-body;
-          line-height: 1.6;
-          max-width: 1600px;
+          line-height: 1.5;
+          max-width: 60vw;
         }
 
         .bouton {
           position: absolute;
-          right: calc(-1 * $spacing-56);
-          bottom: calc(-1 * $spacing-56);
+          right: -18px;
+          bottom: -18px;
           height: fit-content;
 
           &.no-description {
             right: 0;
             bottom: 0;
-            transform: translate(50%, $spacing-56);
+            transform: translate(50%, 18px);
           }
         }
       }

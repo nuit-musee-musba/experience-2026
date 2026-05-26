@@ -6,8 +6,17 @@ import router from "./router"
 
 const pinia = createPinia();
 
-createApp(App)
+const app = createApp(App)
     .use(pinia)
-    .use(router)
-    .mount("#app")
+    .use(router);
+
+// Au rechargement, on ramène toujours à l'accueil pour éviter les
+// animations d'entrée qui se déclenchent à mi-parcours.
+router.isReady().then(() => {
+    if (router.currentRoute.value.path !== "/") {
+        router.replace("/");
+    }
+});
+
+app.mount("#app");
 
