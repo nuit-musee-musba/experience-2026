@@ -16,7 +16,7 @@
     </div>
 
     <div class="nav-buttons" v-if="currentList.length > 1">
-      <Button 
+      <Button
         :color="contextColor"
         icon-primary
         :text-content="prevLabel"
@@ -210,7 +210,15 @@ const backLabel = computed(() => {
   if (isArtwork.value) return `Retour à ${currentMuseum.value?.name}`;
   if (isMuseum.value) {
     // Ville à un seul musée : on retourne directement au continent.
-    if (cityHasSingleMuseum.value) return `Retour vers l'${currentContinent.value?.Name}`;
+    if (cityHasSingleMuseum.value) {
+  const continent = currentContinent.value?.Name;
+
+  if (continent === 'Amérique') {
+    return 'Retour vers les États-Unis';
+  }
+
+  return `Retour vers l’${continent}`;
+}
     return `Retour à ${currentCity.value?.name}`;
   }
   if (isCity.value) return `Retour vers l'${currentContinent.value?.Name}`;

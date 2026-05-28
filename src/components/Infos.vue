@@ -85,6 +85,14 @@ watch(descriptionVisible, (visible) => {
             >
               <p style="--anim-index: 0">{{ city?.name }}</p>
               <h2 class="title" style="--anim-index: 1">{{ museum.name }}</h2>
+              <p
+                v-if="museum.is_destroy"
+                class="destroyed-mention"
+                style="--anim-index: 2"
+              >
+                Bâtiment disparu
+              </p>
+              <p class="location-state" v-else>Bâtiment conservé</p>
             </div>
           </div>
           <div class="scroll-content">
@@ -287,5 +295,10 @@ watch(descriptionVisible, (visible) => {
       }
     }
   }
+}
+
+.location-state {
+  font-size: 48px;
+  color: rgb(60, 60, 60);
 }
 </style>

@@ -18,14 +18,12 @@ const route = useRoute();
 
 const artwork = computed(() => {
   if (allData.value) {
-    // Trouver le continent
     const leContinent = allData.value.find(
       (continent) =>
         continent.Name.toLowerCase() === route.params.continentSlug,
     );
 
     if (leContinent) {
-      // Trouver la ville dans le continent
       const laVille = leContinent.cities.find(
         (ville) => ville.slug === route.params.citySlug,
       );
@@ -48,7 +46,6 @@ const artwork = computed(() => {
 
 const currentMuseum = computed(() => {
   if (allData.value) {
-    // Trouver le continent
     const leContinent = allData.value.find(
       (continent) =>
         continent.Name.toLowerCase() === route.params.continentSlug,
@@ -68,11 +65,8 @@ const currentMuseum = computed(() => {
 
 const activeImageIndex = ref(0);
 
-// Œuvre réellement affichée : ne change qu'une fois le fondu sortant terminé,
-// pour éviter de voir la nouvelle image apparaître pendant la disparition.
 const displayedArtwork = ref(null);
 
-// Refs DOM utilisés pour piloter l'animation de transition entre œuvres.
 const imageContainerRef = ref(null);
 const contentSectionRef = ref(null);
 
@@ -86,7 +80,6 @@ const handleScroll = () => {
   }
 };
 
-// Éléments à animer pendant le changement d'œuvre.
 const fadeEls = () =>
   [imageContainerRef.value, contentSectionRef.value].filter(Boolean);
 
@@ -96,9 +89,6 @@ watch(
     const isSwitch = oldVal != null && newVal != null;
 
     if (isSwitch) {
-      // 1. Fondu sortant : on force un reflow pour figer l'état de départ
-      //    (opacité 1) avant d'ajouter la classe, sinon la transition
-      //    ne se déclenche pas et l'image disparaît instantanément.
       fadeEls().forEach((el) => {
         el.classList.remove("is-transitioning");
         void el.offsetHeight;
@@ -107,14 +97,12 @@ watch(
       await new Promise((r) => setTimeout(r, 400));
     }
 
-    // 2. On swappe le contenu pendant que tout est invisible
     displayedArtwork.value = newVal;
     activeImageIndex.value = 0;
 
     await nextTick();
 
     if (isSwitch) {
-      // 3. Fondu entrant de la nouvelle œuvre
       fadeEls().forEach((el) => el.classList.remove("is-transitioning"));
       await nextTick();
     }
@@ -135,6 +123,14 @@ watch(
     if (scrollContent.value) {
       scrollContent.value.scrollTop = 0;
       handleScroll();
+    }
+
+    if (newVal?.on_musba) {
+      showMusbaPopup.value = true;
+    }
+
+    if (newVal?.on_aquitaine) {
+      showAquitainePopup.value = true;
     }
   },
   { immediate: true },
@@ -167,7 +163,6 @@ const scrollNext = () => {
   }
 };
 
-// Crops avec coordonnées définies
 const cropsWithLocation = computed(() => {
   if (currentImage.value?.crops) {
     return currentImage.value.crops.filter(
@@ -190,7 +185,6 @@ const allCrops = computed(() => {
   return [];
 });
 
-// Gestion de la popup
 const showPopup = ref(false);
 const activeCrop = ref(null);
 const isFullScreenImage = ref(false);
@@ -213,7 +207,6 @@ const closePopup = () => {
   isFullScreenImage.value = false;
 };
 
-// Animations
 const enumerationRef = ref(null);
 const descriptionRef = ref(null);
 
@@ -240,14 +233,12 @@ watch(
 watch(descriptionVisible, (visible) => {
   if (!descriptionRef.value) return;
   if (visible) {
-    // S’assurer que le split est fait avant d’ajouter la classe visible
     split();
 
     requestAnimationFrame(() => {
       descriptionRef.value?.classList.add('visible');
     });
   } else {
-    // En option: retirer la classe quand ça redevient invisible
     descriptionRef.value.classList.remove('visible');
   }
 });
@@ -269,6 +260,22 @@ watch(
     }
   },
 );
+
+const showMusbaPopup = ref(false);
+
+const openMusbaPopup = () => {
+  showMusbaPopup.value = true;
+};
+
+const closeMusbaPopup = () => {
+  showMusbaPopup.value = false;
+};
+
+const showAquitainePopup = ref(false);
+
+const closeAquitainePopup = () => {
+  showAquitainePopup.value = false;
+};
 </script>
 <template>
   <ArtworkVueFrame>
@@ -397,6 +404,64 @@ watch(
         </Transition>
       </Teleport>
 
+      <Teleport to="body">
+        <Transition name="fade">
+          <div
+            v-show="showMusbaPopup"
+            class="crop-popup-overlay"
+            @click.self="closeMusbaPopup"
+          >
+            <div class="crop-popup musba-popup">
+              <div class="crop-popup-content">
+                <p class="crop-popup-text">
+                  Cette œuvre est actuellement disponible et exposée au MUSBA.
+                </p>
+                <Button
+                  color="primary"
+                  class="bouton no-description"
+                  icon-primary
+                  @click="closeMusbaPopup"
+                  :text-content="'Fermer'"
+                >
+                  <template #icon-primary>
+                    <IconLeave />
+                  </template>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Transition>
+      </Teleport>
+
+      <Teleport to="body">
+        <Transition name="fade">
+          <div
+            v-show="showAquitainePopup"
+            class="crop-popup-overlay"
+            @click.self="closeAquitainePopup"
+          >
+            <div class="crop-popup">
+              <div class="crop-popup-content">
+                <p class="crop-popup-text">
+                  Cette œuvre est actuellement disponible et exposée au Musée d'Aquitaine.
+                </p>
+                <Button
+                  color="primary"
+                  class="bouton no-description"
+                  icon-primary
+                  @click="closeAquitainePopup"
+                  :text-content="'Fermer'"
+                >
+                  <template #icon-primary>
+                    <IconLeave />
+                  </template>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Transition>
+      </Teleport>
+
       <section class="content-section" ref="contentSectionRef">
         <div class="artwork-container artwork-infos">
           <div
@@ -423,25 +488,22 @@ watch(
                 ref="enumerationRef"
                 :key="displayedArtwork.slug"
               >
-                <!--<span style="--enum-index: 0">{{ displayedArtwork.name }}</span>-->
                 <span style="--enum-index: 1">{{ displayedArtwork.year }}</span>
                 <span style="--enum-index: 2">{{ displayedArtwork.technique }}</span>
-                <!-- <span style="--enum-index: 3">{{ currentMuseum?.adress }}</span> -->
               </p>
               <div
                 class="artwork-place"
                 ref="placeRef"
                 :key="displayedArtwork.slug"
               >
-
                 <span style="--anim-index: 1">{{ currentMuseum?.adress }}</span>
               </div>
+
             </div>
             <p
               ref="descriptionRef"
               class="description"
               :key="displayedArtwork.slug"
-
             >
               {{ displayedArtwork.description }}
             </p>
@@ -778,7 +840,7 @@ watch(
       left: $border-width;
       width: calc(
         100% - (#{$spacing-24} + #{$spacing-10})
-      ); // 5px margins left - 29px scrollbar
+      );
       height: 30%;
       background: linear-gradient(to top, $white 10%, transparent);
       z-index: 1;
@@ -874,7 +936,6 @@ watch(
             transform 1s calc(var(--line-index) * 0.05s) $ease-out-quint;
           display: block;
         }
-
 
         &.visible {
           :deep(.line) {
