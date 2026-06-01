@@ -125,13 +125,6 @@ watch(
       handleScroll();
     }
 
-    if (newVal?.on_musba) {
-      showMusbaPopup.value = true;
-    }
-
-    if (newVal?.on_aquitaine) {
-      showAquitainePopup.value = true;
-    }
   },
   { immediate: true },
 );
@@ -471,6 +464,7 @@ const closeAquitainePopup = () => {
           >
             <h2 class="title" style="--anim-index: 0">{{ displayedArtwork.name }}</h2>
             <p style="--anim-index: 1">Jean Dupas</p>
+            <p class="dispeared-mention" v-if="displayedArtwork.is_disappeared">Oeuvre disparue</p>
           </div>
         </div>
         <div
@@ -497,6 +491,30 @@ const closeAquitainePopup = () => {
                 :key="displayedArtwork.slug"
               >
                 <span style="--anim-index: 1">{{ currentMuseum?.adress }}</span>
+              </div>
+              <div class="museum-buttons">
+                <Button
+                  v-if="displayedArtwork.on_musba"
+                  color="secondary"
+                  icon-primary
+                  @click="openMusbaPopup"
+                  :text-content="'Où voir l\'œuvre ?'"
+                >
+                  <template #icon-primary>
+                    <IconPin />
+                  </template>
+                </Button>
+                <Button
+                  v-if="displayedArtwork.on_aquitaine"
+                  color="secondary"
+                  icon-primary
+                  @click="showAquitainePopup = true"
+                  :text-content="'Où voir l\'œuvre ?'"
+                >
+                  <template #icon-primary>
+                    <IconPin />
+                  </template>
+                </Button>
               </div>
 
             </div>
@@ -1022,5 +1040,14 @@ const closeAquitainePopup = () => {
       }
     }
   }
+}
+
+.dispeared-mention {
+  font-size: 42px;
+  margin-top: 10px;
+}
+
+.museum-buttons button {
+  margin-block: 32px;
 }
 </style>

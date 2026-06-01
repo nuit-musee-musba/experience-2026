@@ -107,6 +107,18 @@
                       "legend": null,
                       "crops": [],
                       "localizations": []
+                    },
+                                        {
+                      "id": 161,
+                      "documentId": "adhjkjhgh3bhossa6xqbp6ip7dcee",
+                      "file": "newyork_pavillonfrancais_lagloiredelarepublique_3.webp",
+                      "createdAt": "2026-01-14T15:34:16.941Z",
+                      "updatedAt": "2026-01-16T09:22:42.277Z",
+                      "publishedAt": "2026-01-16T09:22:42.608Z",
+                      "locale": "fr",
+                      "legend": null,
+                      "crops": [],
+                      "localizations": []
                     }
                   ]
                 }
@@ -698,21 +710,8 @@
                   "updatedAt": "2026-01-15T13:50:38.895Z",
                   "publishedAt": "2026-01-15T13:50:39.141Z",
                   "locale": "fr",
+                  "is_disappeared": true,
                   "images": [
-                    {
-                      "id": 178,
-                      "documentId": "zbnv8zc7ml154m4oyzf5czjn",
-                      "file": "bordeaux_hotelfruges_femmealara_2.webp",
-                      "description": "Ancien emplacement de La Femme à l'Ara de Jean Dupas, aujourd'hui non localisée.",
-                      "copyright": "© Photo : M. Dubau, Le Festin",
-                      "createdAt": "2026-01-14T13:42:32.064Z",
-                      "updatedAt": "2026-01-16T10:25:44.453Z",
-                      "publishedAt": "2026-01-16T10:25:44.796Z",
-                      "locale": "fr",
-                      "legend": "Ancien emplacement de La Femme à l'Ara de Jean Dupas, aujourd'hui non localisée.",
-                      "crops": [],
-                      "localizations": []
-                    },
                     {
                       "id": 177,
                       "documentId": "am3hqn06sehqdxk49qks8uur",
@@ -724,6 +723,20 @@
                       "publishedAt": "2026-01-16T10:25:27.553Z",
                       "locale": "fr",
                       "legend": "Photographie ancienne avec La Femme à l'Ara.",
+                      "crops": [],
+                      "localizations": []
+                    },
+                    {
+                      "id": 178,
+                      "documentId": "zbnv8zc7ml154m4oyzf5czjn",
+                      "file": "bordeaux_hotelfruges_femmealara_2.webp",
+                      "description": "Ancien emplacement de La Femme à l'Ara de Jean Dupas, aujourd'hui non localisée.",
+                      "copyright": "© Photo : M. Dubau, Le Festin",
+                      "createdAt": "2026-01-14T13:42:32.064Z",
+                      "updatedAt": "2026-01-16T10:25:44.453Z",
+                      "publishedAt": "2026-01-16T10:25:44.796Z",
+                      "locale": "fr",
+                      "legend": "Ancien emplacement de La Femme à l'Ara de Jean Dupas, aujourd'hui non localisée.",
                       "crops": [],
                       "localizations": []
                     }
@@ -861,16 +874,16 @@
                       "localizations": []
                     },
                     {
-                      "id": 183,
-                      "documentId": "wvw9nx8a1mak2j39d619har3",
-                      "file": "bordeaux_boursedutravail_lagloiredebordeaux_1.webp",
+                      "id": 218,
+                      "documentId": "rs6bx3y577zk7gk4ypabbpb4",
+                      "file": "bordeaux_boursedutravail_11.webp",
                       "description": null,
                       "copyright": "© ADAGP Paris, 2026, photo : Frédéric Deval, mairie de Bordeaux",
-                      "createdAt": "2026-01-15T16:12:25.533Z",
-                      "updatedAt": "2026-01-16T10:32:35.827Z",
-                      "publishedAt": "2026-01-16T10:32:36.149Z",
+                      "createdAt": "2026-01-16T10:54:49.425Z",
+                      "updatedAt": "2026-01-16T10:54:49.425Z",
+                      "publishedAt": "2026-01-16T10:54:49.691Z",
                       "locale": "fr",
-                      "legend": "Jean Dupas, Panneau vertical représentant un faisceau de licteurs (officiers au service des Magistrats) surmonté d'un bonnet phrygien cocardé, 1937-1942, fresque, Bordeaux, Bourse du Travail, Salle des conférences (détail). ",
+                      "legend": "Jean Dupas, Fresque en grisaille dédiée aux Illustres, 1942, Bordeaux, Bourse du Travail, Salle des Conférences (mur nord). ",
                       "crops": [],
                       "localizations": []
                     },
@@ -889,16 +902,16 @@
                       "localizations": []
                     },
                     {
-                      "id": 186,
-                      "documentId": "g6o3itehw67zgywge5w58rai",
-                      "file": "bordeaux_boursedutravail_lagloiredebordeaux_9.webp",
+                      "id": 183,
+                      "documentId": "wvw9nx8a1mak2j39d619har3",
+                      "file": "bordeaux_boursedutravail_lagloiredebordeaux_1.webp",
                       "description": null,
-                      "copyright": "© ADAGP Paris, 2026, Photo :  collection particulière Dominique Dussol",
-                      "createdAt": "2026-01-15T16:29:45.670Z",
-                      "updatedAt": "2026-01-16T10:34:14.930Z",
-                      "publishedAt": "2026-01-16T10:34:15.251Z",
+                      "copyright": "© ADAGP Paris, 2026, photo : Frédéric Deval, mairie de Bordeaux",
+                      "createdAt": "2026-01-15T16:12:25.533Z",
+                      "updatedAt": "2026-01-16T10:32:35.827Z",
+                      "publishedAt": "2026-01-16T10:32:36.149Z",
                       "locale": "fr",
-                      "legend": "Jean Dupas devant la fresque La Gloire de Bordeaux, vers 1939, photographie, collection particulière. ",
+                      "legend": "Jean Dupas, Panneau vertical représentant un faisceau de licteurs (officiers au service des Magistrats) surmonté d'un bonnet phrygien cocardé, 1937-1942, fresque, Bordeaux, Bourse du Travail, Salle des conférences (détail). ",
                       "crops": [],
                       "localizations": []
                     },
@@ -913,20 +926,6 @@
                       "publishedAt": "2026-01-16T10:53:58.881Z",
                       "locale": "fr",
                       "legend": "Jean Dupas, Panneau vertical représentant un faisceau de licteurs (officiers au service des Magistrats) surmonté d'un bonnet phrygien cocardé, 1937-1942, fresque, Bordeaux, Bourse du Travail, Salle des conférences (détail). ",
-                      "crops": [],
-                      "localizations": []
-                    },
-                    {
-                      "id": 218,
-                      "documentId": "rs6bx3y577zk7gk4ypabbpb4",
-                      "file": "bordeaux_boursedutravail_11.webp",
-                      "description": null,
-                      "copyright": "© ADAGP Paris, 2026, photo : Frédéric Deval, mairie de Bordeaux",
-                      "createdAt": "2026-01-16T10:54:49.425Z",
-                      "updatedAt": "2026-01-16T10:54:49.425Z",
-                      "publishedAt": "2026-01-16T10:54:49.691Z",
-                      "locale": "fr",
-                      "legend": "Jean Dupas, Fresque en grisaille dédiée aux Illustres, 1942, Bordeaux, Bourse du Travail, Salle des Conférences (mur nord). ",
                       "crops": [],
                       "localizations": []
                     }
