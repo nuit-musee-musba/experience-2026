@@ -34,7 +34,6 @@ let clickCooldown = false;
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 
-// Positions de caméra pour chaque continent
 const continentPositions = {
   europe: {
     camera: new THREE.Vector3(-5, 8, 100),
@@ -62,12 +61,9 @@ watch(
 
     const continent = data.find((c) => c.Name.toLowerCase() === continentSlug);
 
-    if (!continent) {
-      return;
-    }
+    if (!continent) return;
 
     if (params.citySlug) {
-      // Niveau 1 : vue ville
       const city = continent.cities.find((v) => v.slug === params.citySlug);
       const museum = city?.museums.find((m) => m.slug === params.museumSlug);
 
@@ -76,7 +72,6 @@ watch(
       const distance = CONFIG.controls.map.city.minDistance;
 
       const targetPos = new THREE.Vector3(city.x, city.y, -9.9);
-
       const camPos = new THREE.Vector3(
         city.x,
         city.y - distance * Math.sin(CONFIG.controls.map.city.maxPolarAngle),
@@ -85,9 +80,7 @@ watch(
 
       camerasManager.setLookAt(camPos, targetPos, true);
 
-      continent.cities.forEach((city) => {
-        renderLevel(city.museums);
-      });
+      renderLevel(city.museums);
 
       currentStep.value = 1;
       activeCitySlug.value = city.slug;
@@ -95,8 +88,6 @@ watch(
       applyStepConstraints();
 
       if (params.museumSlug) {
-        // Niveau 2 : vue POI
-
         if (museum) {
           const width = containerRef.value.clientWidth;
           const height = containerRef.value.clientHeight;
@@ -107,10 +98,8 @@ watch(
           const targetPos = new THREE.Vector3(museum.x, museum.y, -9.9);
           const camPos = new THREE.Vector3(
             museum.x,
-            museum.y -
-              distance * Math.sin(CONFIG.controls.map.museum.maxPolarAngle),
-            -9.9 +
-              distance * Math.cos(CONFIG.controls.map.museum.maxPolarAngle),
+            museum.y - distance * Math.sin(CONFIG.controls.map.museum.maxPolarAngle),
+            -9.9 + distance * Math.cos(CONFIG.controls.map.museum.maxPolarAngle),
           );
 
           camerasManager.setLookAt(camPos, targetPos, true);
@@ -122,12 +111,9 @@ watch(
         applyStepConstraints();
       }
     } else if (params.continentSlug) {
-      // Niveau 0 : Vue continent
       if (camera) camera.clearViewOffset();
 
-      const continentPos =
-        continentPositions[continentSlug] || continentPositions.europe;
-
+      const continentPos = continentPositions[continentSlug] || continentPositions.europe;
       camerasManager.setLookAt(continentPos.camera, continentPos.target, true);
 
       renderLevel(continent.cities);
@@ -135,15 +121,12 @@ watch(
       currentStep.value = 0;
       applyStepConstraints();
     } else {
-      // Vue par défaut sur Europe
       if (camera) camera.clearViewOffset();
 
       const continentPos = continentPositions.europe;
       camerasManager.setLookAt(continentPos.camera, continentPos.target, true);
 
-      const europeContinent = data.find(
-        (c) => c.Name.toLowerCase() === "europe",
-      );
+      const europeContinent = data.find((c) => c.Name.toLowerCase() === "europe");
       if (europeContinent) {
         renderLevel(europeContinent.cities);
       }
@@ -155,8 +138,6 @@ watch(
   { immediate: true },
 );
 
-// Résout la destination d'un pin/objet cliqué : quand une ville ne contient
-// qu'un seul musée, on saute la vue ville et on va directement au musée.
 const resolvePinTarget = (item) => {
   if (item.museums && item.museums.length === 1) {
     return item.museums[0].path;
@@ -167,9 +148,7 @@ const resolvePinTarget = (item) => {
 const handlePinClick = (item) => {
   if (clickCooldown) return;
   clickCooldown = true;
-  setTimeout(() => {
-    clickCooldown = false;
-  }, 300);
+  setTimeout(() => { clickCooldown = false; }, 300);
 
   if (item.museums) {
     router.push(resolvePinTarget(item));
@@ -199,65 +178,42 @@ const initThree = () => {
   );
   camera.up.set(0, 0, 1);
 
-  renderer = new THREE.WebGLRenderer({
-    antialias: true,
-    logarithmicDepthBuffer: true,
-  });
-  renderer.setSize(
-    containerRef.value.clientWidth,
-    containerRef.value.clientHeight,
-  );
+  renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
+  renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight);
   renderer.setPixelRatio(1);
   containerRef.value.appendChild(renderer.domElement);
 
   labelRenderer = new CSS2DRenderer();
-  labelRenderer.setSize(
-    containerRef.value.clientWidth,
-    containerRef.value.clientHeight,
-  );
+  labelRenderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight);
   labelRenderer.domElement.style.position = "absolute";
   labelRenderer.domElement.style.top = "0px";
   labelRenderer.domElement.style.pointerEvents = "none";
   labelRenderer.domElement.style.zIndex = "0";
   containerRef.value.appendChild(labelRenderer.domElement);
 
-  const requestRender = () => {
-    needsRender = true;
-  };
+  const requestRender = () => { needsRender = true; };
 
   mapPlane = new MapPlane(scene, requestRender);
   mapPins = new MapPins(scene, handlePinClick, requestRender);
 
-  scene.add(
-    new THREE.AmbientLight(
-      CONFIG.colors.ambientLight,
-      CONFIG.lights.ambientIntensity,
-    ),
-  );
-  const dirLight = new THREE.DirectionalLight(
-    CONFIG.colors.directionalLight,
-    CONFIG.lights.directionalIntensity,
-  );
+  scene.add(new THREE.AmbientLight(CONFIG.colors.ambientLight, CONFIG.lights.ambientIntensity));
+  const dirLight = new THREE.DirectionalLight(CONFIG.colors.directionalLight, CONFIG.lights.directionalIntensity);
   dirLight.position.copy(CONFIG.lights.directionalPosition);
   scene.add(dirLight);
 
   camerasManager = new CamerasManager(camera, renderer.domElement);
 
   const europePos = continentPositions.europe;
-  // Initialize position immediately without transition
   camerasManager.setLookAt(europePos.camera, europePos.target, true);
 
   applyStepConstraints();
-
   animate();
 };
 
 const animate = () => {
   animationId = requestAnimationFrame(animate);
 
-  if (isArtworkActive.value) {
-    return;
-  }
+  if (isArtworkActive.value) return;
 
   const delta = clock.getDelta();
   const hasUpdated = camerasManager.update(delta);
@@ -273,18 +229,15 @@ const applyStepConstraints = () => {
   if (!camerasManager) return;
 
   if (currentStep.value === 2) {
-    const targetY =
-      allData.value
-        .find((c) => c.Name.toLowerCase() === activeContinentSlug.value)
-        ?.cities.find((v) => v.slug === activeCitySlug.value)
-        ?.museums.find((m) => m.slug === route.params.museumSlug)?.y || 0;
+    const targetY = allData.value
+      .find((c) => c.Name.toLowerCase() === activeContinentSlug.value)
+      ?.cities.find((v) => v.slug === activeCitySlug.value)
+      ?.museums.find((m) => m.slug === route.params.museumSlug)?.y || 0;
 
-    const targetX =
-      // Vue musée : permettre rotation libre mais contrainte
-      allData.value
-        .find((c) => c.Name.toLowerCase() === activeContinentSlug.value)
-        ?.cities.find((v) => v.slug === activeCitySlug.value)
-        ?.museums.find((m) => m.slug === route.params.museumSlug)?.x || 0;
+    const targetX = allData.value
+      .find((c) => c.Name.toLowerCase() === activeContinentSlug.value)
+      ?.cities.find((v) => v.slug === activeCitySlug.value)
+      ?.museums.find((m) => m.slug === route.params.museumSlug)?.x || 0;
 
     const boundary = new THREE.Box3();
     boundary.min.set(targetX - 0.05, targetY - 0.05, -50);
@@ -296,57 +249,46 @@ const applyStepConstraints = () => {
       maxAzimuthAngle: CONFIG.controls.map.museum.maxAzimuthAngle,
       minDistance: CONFIG.controls.map.museum.minDistance,
       maxDistance: CONFIG.controls.map.museum.maxDistance,
-      boundary: boundary,
+      boundary,
+    });
+  } else if (currentStep.value === 1) {
+    const targetY = allData.value
+      .find((c) => c.Name.toLowerCase() === activeContinentSlug.value)
+      ?.cities.find((v) => v.slug === activeCitySlug.value)?.y || 0;
+
+    const targetX = allData.value
+      .find((c) => c.Name.toLowerCase() === activeContinentSlug.value)
+      ?.cities.find((v) => v.slug === activeCitySlug.value)?.x || 0;
+
+    const boundary = new THREE.Box3();
+    boundary.min.set(targetX - 0.1, targetY - 0.1, -50);
+    boundary.max.set(targetX + 0.1, targetY + 0.1, 50);
+    camerasManager.setConstraints({
+      minPolarAngle: CONFIG.controls.map.city.minPolarAngle,
+      maxPolarAngle: CONFIG.controls.map.city.maxPolarAngle,
+      minAzimuthAngle: CONFIG.controls.map.city.minAzimuthAngle,
+      maxAzimuthAngle: CONFIG.controls.map.city.maxAzimuthAngle,
+      minDistance: CONFIG.controls.map.city.minDistance,
+      maxDistance: CONFIG.controls.map.city.maxDistance,
+      boundary,
     });
   } else {
-    if (currentStep.value === 1) {
-      // Vue ville
-      const targetY =
-        allData.value
-          .find((c) => c.Name.toLowerCase() === activeContinentSlug.value)
-          ?.cities.find((v) => v.slug === activeCitySlug.value)?.y || 0;
+    const targetY = continentPositions[activeContinentSlug.value]?.target.y || continentPositions.europe.target.y;
+    const targetX = continentPositions[activeContinentSlug.value]?.target.x || continentPositions.europe.target.x;
 
-      const targetX =
-        allData.value
-          .find((c) => c.Name.toLowerCase() === activeContinentSlug.value)
-          ?.cities.find((v) => v.slug === activeCitySlug.value)?.x || 0;
+    const boundary = new THREE.Box3();
+    boundary.min.set(targetX - 1, targetY - 1, -50);
+    boundary.max.set(targetX + 1, targetY + 1, 50);
 
-      const boundary = new THREE.Box3();
-      boundary.min.set(targetX - 0.1, targetY - 0.1, -50);
-      boundary.max.set(targetX + 0.1, targetY + 0.1, 50);
-      camerasManager.setConstraints({
-        minPolarAngle: CONFIG.controls.map.city.minPolarAngle,
-        maxPolarAngle: CONFIG.controls.map.city.maxPolarAngle,
-        minAzimuthAngle: CONFIG.controls.map.city.minAzimuthAngle,
-        maxAzimuthAngle: CONFIG.controls.map.city.maxAzimuthAngle,
-        minDistance: CONFIG.controls.map.city.minDistance,
-        maxDistance: CONFIG.controls.map.city.maxDistance,
-        boundary: boundary,
-      });
-    } else {
-      // Vue continent : limiter l'angle (vue de dessus/baissée)
-      const targetY =
-        continentPositions[activeContinentSlug.value]?.target.y ||
-        continentPositions.europe.target.y;
-
-      const targetX =
-        continentPositions[activeContinentSlug.value]?.target.x ||
-        continentPositions.europe.target.x;
-
-      const boundary = new THREE.Box3();
-      boundary.min.set(targetX - 1, targetY - 1, -50);
-      boundary.max.set(targetX + 1, targetY + 1, 50);
-
-      camerasManager.setConstraints({
-        minPolarAngle: CONFIG.controls.map.continent.minPolarAngle,
-        maxPolarAngle: CONFIG.controls.map.continent.maxPolarAngle,
-        minAzimuthAngle: CONFIG.controls.map.continent.minAzimuthAngle,
-        maxAzimuthAngle: CONFIG.controls.map.continent.maxAzimuthAngle,
-        minDistance: CONFIG.controls.map.continent.minDistance,
-        maxDistance: CONFIG.controls.map.continent.maxDistance,
-        boundary: boundary,
-      });
-    }
+    camerasManager.setConstraints({
+      minPolarAngle: CONFIG.controls.map.continent.minPolarAngle,
+      maxPolarAngle: CONFIG.controls.map.continent.maxPolarAngle,
+      minAzimuthAngle: CONFIG.controls.map.continent.minAzimuthAngle,
+      maxAzimuthAngle: CONFIG.controls.map.continent.maxAzimuthAngle,
+      minDistance: CONFIG.controls.map.continent.minDistance,
+      maxDistance: CONFIG.controls.map.continent.maxDistance,
+      boundary,
+    });
   }
 };
 
@@ -369,9 +311,7 @@ const onMapClick = (event) => {
 
   if (clickCooldown) return;
   clickCooldown = true;
-  setTimeout(() => {
-    clickCooldown = false;
-  }, 300);
+  setTimeout(() => { clickCooldown = false; }, 300);
 
   let clientX, clientY;
   if (window.TouchEvent && event instanceof TouchEvent) {
@@ -389,14 +329,11 @@ const onMapClick = (event) => {
   raycaster.setFromCamera(pointer, camera);
 
   const interactables = [...mapPins.getObjects()].filter((obj) => obj.visible);
-
   const intersects = raycaster.intersectObjects(interactables, true);
 
   if (intersects.length > 0) {
     if (event.cancelable) event.preventDefault();
-
     const clickedObject = intersects[0].object;
-
     if (clickedObject.userData.path) {
       router.push(resolvePinTarget(clickedObject.userData));
     }
@@ -421,18 +358,14 @@ onMounted(async () => {
   const response = await fetch("/content/content.json");
   allPins = await response.json();
   allData.value = createPathInData(allPins.data);
-  const europeContinent = allPins.data.find(
-    (c) => c.Name.toLowerCase() === "europe",
-  );
+  const europeContinent = allPins.data.find((c) => c.Name.toLowerCase() === "europe");
   if (europeContinent) {
     renderLevel(europeContinent.cities);
   }
 
   if (containerRef.value) {
     containerRef.value.addEventListener("mousedown", onMapClick);
-    containerRef.value.addEventListener("touchstart", onMapClick, {
-      passive: false,
-    });
+    containerRef.value.addEventListener("touchstart", onMapClick, { passive: false });
   }
   window.addEventListener("resize", handleResize);
 });
@@ -442,8 +375,8 @@ function createPathInData(data) {
     continent.path = '/' + continent.Name.toLowerCase();
     continent.cities.forEach(city => {
       city.path = continent.path + '/' + city.slug;
-      city.museums.forEach(musuem => {
-        musuem.path = city.path + '/' + musuem.slug;
+      city.museums.forEach(museum => {
+        museum.path = city.path + '/' + museum.slug;
       });
     });
   });
@@ -458,14 +391,11 @@ onBeforeUnmount(() => {
   }
   cancelAnimationFrame(animationId);
   if (renderer) renderer.dispose();
-  if (labelRenderer && labelRenderer.domElement)
-    labelRenderer.domElement.remove();
+  if (labelRenderer?.domElement) labelRenderer.domElement.remove();
   if (camerasManager) camerasManager.dispose();
 });
 
-defineExpose({
-  navigateToContinent,
-});
+defineExpose({ navigateToContinent });
 </script>
 
 <template>
@@ -527,13 +457,8 @@ defineExpose({
   font-size: 18px;
   font-weight: bold;
 
-  &:hover {
-    background-color: #333;
-  }
-
-  &.active {
-    display: none;
-  }
+  &:hover { background-color: #333; }
+  &.active { display: none; }
 }
 
 .continent-btn {
@@ -562,12 +487,7 @@ defineExpose({
   font-size: 18px;
   font-weight: bold;
 
-  &:hover {
-    background-color: #333;
-  }
-
-  &.active {
-    display: none;
-  }
+  &:hover { background-color: #333; }
+  &.active { display: none; }
 }
 </style>
