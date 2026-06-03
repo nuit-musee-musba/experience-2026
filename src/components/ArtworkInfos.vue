@@ -86,7 +86,7 @@ const fadeEls = () =>
 watch(
   () => artwork.value,
   async (newVal, oldVal) => {
-    const isSwitch = oldVal != null && newVal != null;
+    const isSwitch = oldVal !== null && newVal !== null;
 
     if (isSwitch) {
       fadeEls().forEach((el) => {

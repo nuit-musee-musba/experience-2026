@@ -1,5 +1,3 @@
-
-
 # Dupas & Co. Le grand Art Déco
 
 ## C'est quoi ?
@@ -10,26 +8,25 @@ L'expérience propose une **carte WebGL interactive** permettant d'explorer des 
 
 ## Stack technique
 
-| Catégorie | Technologie |
-| :--- | :--- |
-| Framework | Vue 3 (Composition API, `<script setup>`) |
-| Build | Vite 7 |
-| 3D / WebGL | Three.js + camera-controls |
-| Animations | GSAP, split-type |
-| État global | Pinia |
-| Routing | Vue Router 4 |
-| Carrousel | Embla Carousel |
-| Styles | SCSS (Sass) |
-| Linting | ESLint + Stylelint |
-| Package manager | pnpm |
+| Catégorie       | Technologie                               |
+| :-------------- | :---------------------------------------- |
+| Framework       | Vue 3 (Composition API, `<script setup>`) |
+| Build           | Vite 7                                    |
+| 3D / WebGL      | Three.js + camera-controls                |
+| Animations      | GSAP, split-type                          |
+| État global     | Pinia                                     |
+| Routing         | Vue Router 4                              |
+| Carrousel       | Embla Carousel                            |
+| Styles          | SCSS (Sass)                               |
+| Linting         | ESLint + Stylelint                        |
+| Package manager | pnpm                                      |
 
 ## Accéder à l'expérience
+
 > [!NOTE]
 > Le site est fait pour un écran 4k de 1m50 x 1m, lisez [#Simulation de l'écran tactile du MusBA](#simulation-de-lécran-tactile-du-musba) ci-dessous
 
 Aller sur [ A COMPLETER ]
-
-
 
 ## Simulation de l'écran tactile du MusBA
 
@@ -55,23 +52,25 @@ Le filtrage repose sur deux critères mathématiques stricts situés dans `src/u
 
 **Critère A : Le Rayon (Radius)**
 Vérifie la taille physique de la zone de contact.
+
 - **Zone Valide** : Entre 10px et 50px.
 - **Rejeté** :
-    - Trop petit (< 10px) : Pointe de stylo, ongle.
-    - Trop grand (> 50px) : Paume, bras, objet large.
+  - Trop petit (< 10px) : Pointe de stylo, ongle.
+  - Trop grand (> 50px) : Paume, bras, objet large.
 
 **Critère B : Le Ratio (Forme)**
 Vérifie la proportion largeur/hauteur de l'empreinte.
+
 - **Forme Valide** : Ronde ou légèrement ovale.
 - **Rejeté** : Formes trop allongées (Ratio > 1.7 ou < 0.5).
 
 ### 3. Architecture des Fichiers ("Le Cerveau")
 
-| Fichier | Rôle |
-| :--- | :--- |
-| `src/utils/touch/touch.ts` | Point d'entrée. Contient `firstFingerOfEvent`. Trie les points de contact et renvoie le premier qui est valide. |
-| `src/utils/touch/fingerTouchRecognition/byRadius.ts` | Calculs. Contient la logique mathématique pour valider le rayon et le ratio. |
-| `src/utils/touch/fingerTouchRecognition/byPression.ts` | Optionnel. Permet de filtrer par la force de pression (si le hardware le supporte). |
+| Fichier                                                | Rôle                                                                                                            |
+| :----------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
+| `src/utils/touch/touch.ts`                             | Point d'entrée. Contient `firstFingerOfEvent`. Trie les points de contact et renvoie le premier qui est valide. |
+| `src/utils/touch/fingerTouchRecognition/byRadius.ts`   | Calculs. Contient la logique mathématique pour valider le rayon et le ratio.                                    |
+| `src/utils/touch/fingerTouchRecognition/byPression.ts` | Optionnel. Permet de filtrer par la force de pression (si le hardware le supporte).                             |
 
 ### 4. Composants Impactés
 
@@ -83,10 +82,10 @@ La sécurité a été déployée sur l'ensemble des interactions critiques :
 
 ### 5. Guide d'Implémentation (Best Practices)
 
- **Règle d'or pour l'équipe**
+**Règle d'or pour l'équipe**
 Pour toute nouvelle interaction tactile :
- Évitez `v-on:click` ou `@click` (souvent simulé et instable sur infrarouge).
- Utilisez `@touchstart` couplé à la fonction utilitaire.
+Évitez `v-on:click` ou `@click` (souvent simulé et instable sur infrarouge).
+Utilisez `@touchstart` couplé à la fonction utilitaire.
 
 **Exemple de code standard**
 Voici le pattern à utiliser dans vos composants :
@@ -107,7 +106,7 @@ const handleTouch = (event: TouchEvent) => {
 
   // 3. Sécurité : Empêcher les comportements natifs (zoom, scroll, double tap)
   if (event.cancelable) event.preventDefault();
-}
+};
 ```
 
 ## Données (Strapi CMS)
@@ -140,30 +139,30 @@ data: [
 
 ## Routes
 
-| URL | Vue |
-| :--- | :--- |
-| `/` | Carte (vue Europe par défaut) |
-| `/:continentSlug` | Carte zoomée sur un continent |
-| `/:continentSlug/:citySlug` | Carte zoomée sur une ville |
-| `/:continentSlug/:citySlug/:museumSlug` | Fiche musée / liste des œuvres |
-| `/:continentSlug/:citySlug/:museumSlug/:artworkSlug` | Détail d'une œuvre |
-| `/all-artworks` | Galerie de toutes les œuvres |
-| `/credits` | Page crédits |
+| URL                                                  | Vue                            |
+| :--------------------------------------------------- | :----------------------------- |
+| `/`                                                  | Carte (vue Europe par défaut)  |
+| `/:continentSlug`                                    | Carte zoomée sur un continent  |
+| `/:continentSlug/:citySlug`                          | Carte zoomée sur une ville     |
+| `/:continentSlug/:citySlug/:museumSlug`              | Fiche musée / liste des œuvres |
+| `/:continentSlug/:citySlug/:museumSlug/:artworkSlug` | Détail d'une œuvre             |
+| `/all-artworks`                                      | Galerie de toutes les œuvres   |
+| `/credits`                                           | Page crédits                   |
 
 ## Architecture des composants principaux
 
-| Composant | Rôle |
-| :--- | :--- |
-| `Map.vue` | Scène Three.js – carte WebGL interactive avec pins et navigation |
-| `Infos.vue` | Fiche d'un musée avec liste des œuvres |
-| `artworkDetails.vue` | Détail d'une œuvre (carrousel, textes, images zoomables) |
-| `ViewAllArtworks.vue` | Galerie complète de toutes les œuvres |
-| `Carousel.vue` | Carrousel générique (Embla) |
-| `ClickImg.vue` | Image interactive avec zoom / plein écran |
-| `Listing.vue` | Liste d'items (œuvres, musées…) |
-| `SmartNavbar.vue` | Barre de navigation contextuelle |
-| `IdleView.vue` | Détection d'inactivité → reset vers l'accueil |
-| `CreditsOverlay.vue` | Overlay crédits |
+| Composant             | Rôle                                                             |
+| :-------------------- | :--------------------------------------------------------------- |
+| `Map.vue`             | Scène Three.js – carte WebGL interactive avec pins et navigation |
+| `Infos.vue`           | Fiche d'un musée avec liste des œuvres                           |
+| `ArtworkInfos.vue`    | Détail d'une œuvre (carrousel, textes, images zoomables)         |
+| `ViewAllArtworks.vue` | Galerie complète de toutes les œuvres                            |
+| `Carousel.vue`        | Carrousel générique (Embla)                                      |
+| `ClickImg.vue`        | Image interactive avec zoom / plein écran                        |
+| `Listing.vue`         | Liste d'items (œuvres, musées…)                                  |
+| `SmartNavbar.vue`     | Barre de navigation contextuelle                                 |
+| `IdleView.vue`        | Détection d'inactivité → reset vers l'accueil                    |
+| `CreditsOverlay.vue`  | Overlay crédits                                                  |
 
 ## Développement
 
@@ -193,11 +192,12 @@ pnpm dev
 
 - Pour review une PR, vous avez juste à cliquer sur une d'entre elle, regarder le code ajouté ou supprimer et laisser des commentaires si besoin (oubli, erreur...)
 - Si rien ne vous semble problématique, vous pouvez lancer le merge vers develop
-- Si vous avez laissé des commentaires, c'est à l'auteur de la PR de les corriger 
+- Si vous avez laissé des commentaires, c'est à l'auteur de la PR de les corriger
 
 ### Corriger une pull request
+
 - Vous avez reçu des commentaires sur votre PR, si ils sont pertinents, corriger votre code et faites un nouveau commit sur la branche concernée
-- Si vous avez une remarque à apporter, laisser une réponse dans la conversation 
+- Si vous avez une remarque à apporter, laisser une réponse dans la conversation
 
 ## Mettre en production
 
@@ -214,8 +214,7 @@ Une fois mergé, la CI lancera automatiquement :
 
 ### Nommage
 
-[g-"numéro du groupe"]/`feature/*` (fonctionnalité) ou `fix/*` (correction de bug)/ expliquatif 
-
+[g-"numéro du groupe"]/`feature/*` (fonctionnalité) ou `fix/*` (correction de bug)/ expliquatif
 
 exemple : g-1/feature/dragAndDrop
 
@@ -228,9 +227,6 @@ exemple : g-1/feature/dragAndDrop
 exemple : git checkout -b g1/feature/dragAndDrop
 
 vous pouvez vérifier que vous êtes bien sur la bonne branch en regardant en bas à gauche de VsCode ou en faisant un `git branch`
-
-
-
 
 ### Pourquoi travailler sur develop puis merger sur main ?
 
@@ -279,7 +275,6 @@ Chaque groupe à son dossier, libre à vous de créer des sous dossiers `/public
 ### À la racine `/`
 
 Les fichiers de config
-
 
 ## Tester les builds
 

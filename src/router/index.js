@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouterView } from "vue-router";
 import Map from "@/components/Map.vue";
 import Infos from "@/components/Infos.vue";
-import ArtworkDetails from "@/components/ArtworkDetails.vue";
+import ArtworkInfos from "@/components/ArtworkInfos.vue";
 import AllArtwork from "@/components/ViewAllArtworks.vue";
 import Credit from "@/components/CreditsOverlay.vue";
 
@@ -35,7 +35,7 @@ const router = createRouter({
                     {
                       path: ":artworkSlug",
                       name: "artwork-detail",
-                      component: ArtworkDetails,
+                      component: ArtworkInfos,
                     },
                   ],
                 },
