@@ -107,16 +107,18 @@ watch(
       await nextTick();
     }
 
-    if (titleAndNameVisible.value) titleAndNameRef.value?.classList.add("visible");
+    if (titleAndNameVisible.value)
+      titleAndNameRef.value?.classList.add("visible");
     if (placeVisible.value) placeRef.value?.classList.add("visible");
-    if (enumerationVisible.value) enumerationRef.value?.classList.add("visible");
+    if (enumerationVisible.value)
+      enumerationRef.value?.classList.add("visible");
 
     if (descriptionRef.value) {
       split();
       requestAnimationFrame(() => {
-        descriptionRef.value.classList.remove('visible');
+        descriptionRef.value.classList.remove("visible");
         void descriptionRef.value.offsetHeight;
-        descriptionRef.value.classList.add('visible');
+        descriptionRef.value.classList.add("visible");
       });
     }
 
@@ -124,7 +126,6 @@ watch(
       scrollContent.value.scrollTop = 0;
       handleScroll();
     }
-
   },
   { immediate: true },
 );
@@ -214,14 +215,11 @@ const placeVisible = useElementVisibility(placeRef);
 
 const { split } = useSplitText(descriptionRef);
 
-watch(
-  enumerationVisible,
-  (visible) => {
-    if (visible && enumerationRef.value) {
-      enumerationRef.value.classList.add("visible");
-    }
-  },
-);
+watch(enumerationVisible, (visible) => {
+  if (visible && enumerationRef.value) {
+    enumerationRef.value.classList.add("visible");
+  }
+});
 
 watch(descriptionVisible, (visible) => {
   if (!descriptionRef.value) return;
@@ -229,30 +227,24 @@ watch(descriptionVisible, (visible) => {
     split();
 
     requestAnimationFrame(() => {
-      descriptionRef.value?.classList.add('visible');
+      descriptionRef.value?.classList.add("visible");
     });
   } else {
-    descriptionRef.value.classList.remove('visible');
+    descriptionRef.value.classList.remove("visible");
   }
 });
 
-watch(
-  titleAndNameVisible,
-  (visible) => {
-    if (visible && titleAndNameRef.value) {
-      titleAndNameRef.value.classList.add("visible");
-    }
-  },
-);
+watch(titleAndNameVisible, (visible) => {
+  if (visible && titleAndNameRef.value) {
+    titleAndNameRef.value.classList.add("visible");
+  }
+});
 
-watch(
-  placeVisible,
-  (visible) => {
-    if (visible && placeRef.value) {
-      placeRef.value.classList.add("visible");
-    }
-  },
-);
+watch(placeVisible, (visible) => {
+  if (visible && placeRef.value) {
+    placeRef.value.classList.add("visible");
+  }
+});
 
 const showMusbaPopup = ref(false);
 
@@ -436,7 +428,8 @@ const closeAquitainePopup = () => {
             <div class="crop-popup">
               <div class="crop-popup-content">
                 <p class="crop-popup-text">
-                  Cette œuvre est actuellement disponible et exposée au Musée d'Aquitaine.
+                  Cette œuvre est actuellement disponible et exposée au Musée
+                  d'Aquitaine.
                 </p>
                 <Button
                   color="primary"
@@ -462,9 +455,13 @@ const closeAquitainePopup = () => {
             ref="titleAndNameRef"
             :key="displayedArtwork.slug"
           >
-            <h2 class="title" style="--anim-index: 0">{{ displayedArtwork.name }}</h2>
+            <h2 class="title" style="--anim-index: 0">
+              {{ displayedArtwork.name }}
+            </h2>
             <p style="--anim-index: 1">Jean Dupas</p>
-            <p class="dispeared-mention" v-if="displayedArtwork.is_disappeared">Oeuvre disparue</p>
+            <p class="dispeared-mention" v-if="displayedArtwork.is_disappeared">
+              Oeuvre disparue
+            </p>
           </div>
         </div>
         <div
@@ -483,7 +480,9 @@ const closeAquitainePopup = () => {
                 :key="displayedArtwork.slug"
               >
                 <span style="--enum-index: 1">{{ displayedArtwork.year }}</span>
-                <span style="--enum-index: 2">{{ displayedArtwork.technique }}</span>
+                <span style="--enum-index: 2">{{
+                  displayedArtwork.technique
+                }}</span>
               </p>
               <div
                 class="artwork-place"
@@ -516,7 +515,6 @@ const closeAquitainePopup = () => {
                   </template>
                 </Button>
               </div>
-
             </div>
             <p
               ref="descriptionRef"
@@ -593,7 +591,9 @@ const closeAquitainePopup = () => {
       align-items: center;
       overflow: hidden;
       position: relative;
-      transition: opacity 0.4s $ease-out-quint, transform 0.4s $ease-out-quint;
+      transition:
+        opacity 0.4s $ease-out-quint,
+        transform 0.4s $ease-out-quint;
 
       &.is-transitioning {
         opacity: 0;
@@ -781,7 +781,9 @@ const closeAquitainePopup = () => {
     flex-direction: column;
     overflow: hidden;
     position: relative;
-    transition: opacity 0.4s $ease-out-quint, transform 0.4s $ease-out-quint;
+    transition:
+      opacity 0.4s $ease-out-quint,
+      transform 0.4s $ease-out-quint;
 
     &.is-transitioning {
       opacity: 0;
@@ -856,9 +858,7 @@ const closeAquitainePopup = () => {
       position: absolute;
       bottom: 0;
       left: $border-width;
-      width: calc(
-        100% - (#{$spacing-24} + #{$spacing-10})
-      );
+      width: calc(100% - (#{$spacing-24} + #{$spacing-10}));
       height: 30%;
       background: linear-gradient(to top, $white 10%, transparent);
       z-index: 1;
