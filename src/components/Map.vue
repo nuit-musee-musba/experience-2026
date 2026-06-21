@@ -80,6 +80,8 @@ watch(
 
       camerasManager.setLookAt(camPos, targetPos, true);
 
+      // ✅ On affiche uniquement les musées de cette ville,
+      // les pins des autres villes sont ainsi effacés
       renderLevel(city.museums);
 
       currentStep.value = 1;
@@ -116,6 +118,7 @@ watch(
       const continentPos = continentPositions[continentSlug] || continentPositions.europe;
       camerasManager.setLookAt(continentPos.camera, continentPos.target, true);
 
+      // ✅ Retour au niveau continent : on réaffiche toutes les villes
       renderLevel(continent.cities);
 
       currentStep.value = 0;
@@ -292,9 +295,9 @@ const applyStepConstraints = () => {
   }
 };
 
-const renderLevel = (item) => {
-  if (mapPins && item) {
-    mapPins.renderLevel(item);
+const renderLevel = (items) => {
+  if (mapPins && items) {
+    mapPins.renderLevel(items);
     needsRender = true;
   }
 };

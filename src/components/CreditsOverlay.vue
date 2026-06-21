@@ -14,21 +14,24 @@
 
         <main class="overlay-body">
           <p>
-            Ce projet a été réalisé par la promotion
-            <strong>MMI26</strong> de l’IUT Bordeaux Montaigne.
+            Cet outil a été conçu dans le cadre de l’exposition JEAN DUPAS & CO. LE GRAND ART DÉCO.
           </p>
 
           <p>
-            Merci au Musée des Beaux-Arts de Bordeaux, à Sarah Choux, Margaux
-            Wymbs, Karine Marchadour et Laurence Pauliac.
+            Rédaction et gestion du projet : Sarah Choux, médiatrice culturelle, Margaux Wymbs,
+            conservatrice des collections 19 e -20 e s. et commissaire de l’exposition et Alexandra Favre,
+            iconographe.
             <br />
-            Merci pour l’intervention d’Alexis Benoit, Gaetan Jestin, Bastien
-            Cornier, Anthony Ferretti.
+            <br>
+            Conception et réalisation du dispositif : les étudiants MMI (Métiers du Multimédia et de
+            l’Internet) 2026 de l’IUT Bordeaux Montaigne.
             <br />
-            Merci aux élèves de la promotion MMI26 de l’IUT Bordeaux Montaigne.
+            <br>
+            Le musée souhaite remercier l'équipe pédagogique, Laurence Pauliac, Alexis Benoit, Gaëtan
+            Jestin, Bastien Cornier et Anthony Ferretti pour leur accompagnement et leur expertise.
           </p>
-          <div class="logo">
-            <svg id="Calque_2" data-name="Calque 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 336 137">
+          <div class="logos-credits">
+            <svg class="logo" id="Calque_2" data-name="Calque 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 336 137">
               <g id="Calque_1-2" data-name="Calque 1">
                 <g>
                   <path
@@ -71,6 +74,8 @@
                 </g>
               </g>
             </svg>
+            <img src="/svg/logo-bordeaux.svg">
+            <img src="/svg/logo-musba.svg">
           </div>
         </main>
         <footer class="overlay-footer">
@@ -193,6 +198,12 @@ const close = () => {
 .overlay-fade-enter-active,
 .overlay-fade-leave-active {
   transition: opacity 0.6s $ease-out-quint;
+}
+
+.logos-credits {
+  display: flex;
+  flex-direction: row;
+  gap: 230px;
 }
 
 .overlay-fade-enter-active .overlay-content,
