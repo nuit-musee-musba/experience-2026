@@ -224,10 +224,13 @@ watch(enumerationVisible, (visible) => {
 watch(descriptionVisible, (visible) => {
   if (!descriptionRef.value) return;
   if (visible) {
+    descriptionRef.value.classList.remove("visible");
     split();
 
     requestAnimationFrame(() => {
-      descriptionRef.value?.classList.add("visible");
+      requestAnimationFrame(() => {
+        descriptionRef.value?.classList.add("visible");
+      });
     });
   } else {
     descriptionRef.value.classList.remove("visible");
@@ -246,22 +249,21 @@ watch(placeVisible, (visible) => {
   }
 });
 
-const showMusbaPopup = ref(false);
+// ✅ Popup générique administrable depuis le JSON
+const showLocationPopup = ref(false);
+const activeLocationText = ref("");
 
-const openMusbaPopup = () => {
-  showMusbaPopup.value = true;
+const openLocationPopup = (text) => {
+  activeLocationText.value = text;
+  showLocationPopup.value = true;
 };
 
-const closeMusbaPopup = () => {
-  showMusbaPopup.value = false;
-};
-
-const showAquitainePopup = ref(false);
-
-const closeAquitainePopup = () => {
-  showAquitainePopup.value = false;
+const closeLocationPopup = () => {
+  showLocationPopup.value = false;
+  activeLocationText.value = "";
 };
 </script>
+
 <template>
   <ArtworkVueFrame>
     <div v-if="displayedArtwork" class="artwork-detail-box">
@@ -288,8 +290,8 @@ const closeAquitainePopup = () => {
           />
         </div>
         <div class="infos-containers">
-          <span class="figcaption">{{ currentImage?.copyright }}</span>
-          <span class="figcaption">{{ currentImage?.description }}</span>
+          <span class="figcaption" v-html="currentImage?.copyright"></span>
+          <span class="figcaption" v-html="currentImage?.description"></span>
         </div>
 
         <div
@@ -335,7 +337,7 @@ const closeAquitainePopup = () => {
             color="secondary"
             icon-primary
             @click="openFullScreen"
-            :text-content="'Plein écran'"
+            :text-content="'Zoom'"
           >
             <template #icon-primary>
               <IconFullscreen />
@@ -343,6 +345,8 @@ const closeAquitainePopup = () => {
           </Button>
         </div>
       </section>
+
+      <!-- ✅ Popup crop / fullscreen (inchangée) -->
       <Teleport to="body">
         <Transition name="fade">
           <div
@@ -368,9 +372,7 @@ const closeAquitainePopup = () => {
                 </template>
               </div>
               <div class="crop-popup-content">
-                <p class="crop-popup-text" v-if="activeCrop?.description">
-                  {{ activeCrop?.description }}
-                </p>
+                <p class="crop-popup-text" v-if="activeCrop?.description" v-html="activeCrop?.description"></p>
                 <Button
                   color="primary"
                   class="bouton"
@@ -389,53 +391,22 @@ const closeAquitainePopup = () => {
         </Transition>
       </Teleport>
 
+      <!-- ✅ Popup localisation unique, texte venant du JSON -->
       <Teleport to="body">
         <Transition name="fade">
           <div
-            v-show="showMusbaPopup"
+            v-show="showLocationPopup"
             class="crop-popup-overlay"
-            @click.self="closeMusbaPopup"
+            @click.self="closeLocationPopup"
           >
             <div class="crop-popup musba-popup">
               <div class="crop-popup-content">
-                <p class="crop-popup-text">
-                  Cette œuvre est actuellement disponible et exposée au MUSBA.
-                </p>
+                <p class="crop-popup-text" v-html="activeLocationText"></p>
                 <Button
                   color="primary"
                   class="bouton no-description"
                   icon-primary
-                  @click="closeMusbaPopup"
-                  :text-content="'Fermer'"
-                >
-                  <template #icon-primary>
-                    <IconLeave />
-                  </template>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Transition>
-      </Teleport>
-
-      <Teleport to="body">
-        <Transition name="fade">
-          <div
-            v-show="showAquitainePopup"
-            class="crop-popup-overlay"
-            @click.self="closeAquitainePopup"
-          >
-            <div class="crop-popup">
-              <div class="crop-popup-content">
-                <p class="crop-popup-text">
-                  Cette œuvre est actuellement disponible et exposée au Musée
-                  d'Aquitaine.
-                </p>
-                <Button
-                  color="primary"
-                  class="bouton no-description"
-                  icon-primary
-                  @click="closeAquitainePopup"
+                  @click="closeLocationPopup"
                   :text-content="'Fermer'"
                 >
                   <template #icon-primary>
@@ -460,7 +431,7 @@ const closeAquitainePopup = () => {
             </h2>
             <p style="--anim-index: 1">Jean Dupas</p>
             <p class="dispeared-mention" v-if="displayedArtwork.is_disappeared">
-              Oeuvre disparue
+              Œuvre disparue
             </p>
           </div>
         </div>
@@ -491,37 +462,55 @@ const closeAquitainePopup = () => {
               >
                 <span style="--anim-index: 1">{{ currentMuseum?.adress }}</span>
               </div>
+
+              <!-- ✅ Boutons "Où voir l'œuvre ?" générés depuis le JSON -->
               <div class="museum-buttons">
                 <Button
-                  v-if="displayedArtwork.on_musba"
+                  v-for="(location, index) in (displayedArtwork.locations || [])"
+                  :key="index"
                   color="secondary"
                   icon-primary
-                  @click="openMusbaPopup"
-                  :text-content="'Où voir l\'œuvre ?'"
+                  @click="openLocationPopup(location.popup_text)"
+                  :text-content="location.button_label || 'Où voir l\'œuvre ?'"
                 >
                   <template #icon-primary>
                     <IconPin />
                   </template>
                 </Button>
-                <Button
-                  v-if="displayedArtwork.on_aquitaine"
-                  color="secondary"
-                  icon-primary
-                  @click="showAquitainePopup = true"
-                  :text-content="'Où voir l\'œuvre ?'"
-                >
-                  <template #icon-primary>
-                    <IconPin />
-                  </template>
-                </Button>
+
+                <!-- ✅ Rétrocompatibilité : anciens champs on_musba / on_aquitaine -->
+                <template v-if="!displayedArtwork.locations">
+                  <Button
+                    v-if="displayedArtwork.on_musba && displayedArtwork.musba_text"
+                    color="secondary"
+                    icon-primary
+                    @click="openLocationPopup(displayedArtwork.musba_text)"
+                    :text-content="'Où voir l\'œuvre ?'"
+                  >
+                    <template #icon-primary>
+                      <IconPin />
+                    </template>
+                  </Button>
+                  <Button
+                    v-if="displayedArtwork.on_aquitaine && displayedArtwork.aquitaine_text"
+                    color="secondary"
+                    icon-primary
+                    @click="openLocationPopup(displayedArtwork.aquitaine_text)"
+                    :text-content="'Où voir l\'œuvre ?'"
+                  >
+                    <template #icon-primary>
+                      <IconPin />
+                    </template>
+                  </Button>
+                </template>
               </div>
             </div>
             <p
               ref="descriptionRef"
               class="description"
               :key="displayedArtwork.slug"
+              v-html="displayedArtwork.description"
             >
-              {{ displayedArtwork.description }}
             </p>
           </div>
         </div>
@@ -539,6 +528,34 @@ const closeAquitainePopup = () => {
 :global(.fade-enter-from),
 :global(.fade-leave-to) {
   opacity: 0;
+}
+
+.crop-popup-text {
+  :deep(em), :deep(i) { font-style: italic; }
+  :deep(strong), :deep(b) { font-weight: bold; }
+}
+
+.figcaption {
+  :deep(em), :deep(i) { font-style: italic; }
+  :deep(strong), :deep(b) { font-weight: bold; }
+}
+
+.description {
+  :deep(.line) {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 1s calc(var(--line-index) * 0.05s) $ease-out-quint,
+      transform 1s calc(var(--line-index) * 0.05s) $ease-out-quint;
+    display: block;
+  }
+
+  &.visible {
+    :deep(.line) {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 .artwork-detail-box {

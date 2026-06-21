@@ -104,9 +104,7 @@ watch(descriptionVisible, (visible) => {
               />
             </div>
             <div class="scroll-content-box">
-              <p ref="descriptionRef" class="description" :key="museum.slug">
-                {{ museum.description }}
-              </p>
+              <p ref="descriptionRef" class="description" :key="museum.slug" v-html="museum.description"></p>
               <h3 class="locations-artworks-section-title">
                 Découvrez les œuvres de ce lieu
               </h3>
@@ -300,5 +298,9 @@ watch(descriptionVisible, (visible) => {
 .location-state {
   font-size: 48px;
   color: rgb(60, 60, 60);
+}
+
+br{
+  margin-bottom: 20px;
 }
 </style>

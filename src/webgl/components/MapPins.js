@@ -25,11 +25,13 @@ export class MapPins {
     this.modelCache = new Map();
     this.scene.add(this.group);
 
+    // Garde en mémoire les slugs du niveau actuellement affiché
+    this._currentLevelSlugs = new Set();
+
     this.loader = new GLTFLoader();
     this.dracoLoader = new DRACOLoader();
     this.dracoLoader.setDecoderPath("/draco/");
     this.loader.setDRACOLoader(this.dracoLoader);
-
   }
 
   loadPin(item, itemZ, cache, isNameVisible = true) {
@@ -53,12 +55,10 @@ export class MapPins {
 
     container.addEventListener("mousedown", (e) => {
       e.stopPropagation();
-
       if (this.onClick) {
         this.onClick(item);
       }
     });
-
 
     container.addEventListener("touchstart", (e) => {
       e.stopPropagation();
@@ -84,11 +84,15 @@ export class MapPins {
 
     if (item.model3d) {
       this.loader.load(`/models/${item.model3d}`, (gltf) => {
+        // ✅ Si ce slug n'est plus dans le niveau courant, on n'affiche pas le modèle
+        const shouldBeVisible = this._currentLevelSlugs.has(id);
+
         const model = gltf.scene;
         model.position.set(item.x, item.y, CONFIG.pins.onceClickedZ);
         model.scale.set(2, 2, 2);
         model.rotation.set(Math.PI / 2, Math.PI / 2, 0);
         model.renderOrder = 2;
+        model.visible = shouldBeVisible;
 
         model.traverse((child) => {
           if (child.isMesh) {
@@ -105,10 +109,15 @@ export class MapPins {
         if (item.model3d && item.model3d.includes("paquebot")) {
           pinHeightOffset = 0.2;
         }
-        
+
         const museumPinZ = model.position.z + pinHeightOffset;
 
         this.loadPin(item, museumPinZ, this.PoiPincache, false);
+
+        // ✅ Masque le pin POI si le slug n'est pas dans le niveau courant
+        if (!shouldBeVisible && this.PoiPincache.has(id)) {
+          this.PoiPincache.get(id).visible = false;
+        }
 
         if (this.requestRender) {
           this.requestRender();
@@ -150,6 +159,10 @@ export class MapPins {
   }
 
   renderLevel(items) {
+    // ✅ Mémorise les slugs du niveau à afficher
+    this._currentLevelSlugs = new Set(items.map((item) => item.slug));
+
+    // Masque tout
     this.citiesPinCache.forEach((pin) => (pin.visible = false));
     this.PoiPincache.forEach((pin) => (pin.visible = false));
     this.modelCache.forEach((model) => (model.visible = false));
@@ -157,16 +170,21 @@ export class MapPins {
     items.forEach((item) => {
       const id = item.slug;
 
+      // --- Pins de villes (niveau continent) ---
       if (this.citiesPinCache.has(id)) {
         this.citiesPinCache.get(id).visible = true;
       } else {
         this.showGlobalPin(item);
       }
+
+      // --- Pins POI (niveau musée) ---
       if (this.PoiPincache.has(id)) {
-        this.PoiPincache.forEach((pin) => (pin.visible = true));
+        this.PoiPincache.get(id).visible = true;
       }
+
+      // --- Modèles 3D (niveau musée) ---
       if (this.modelCache.has(id)) {
-        this.modelCache.forEach((model) => (model.visible = true));
+        this.modelCache.get(id).visible = true;
       } else {
         this.loadModels(item);
       }
