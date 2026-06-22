@@ -1,54 +1,77 @@
 <template>
   <div class="home-overlay">
-
     <div class="background-layer">
-      <img v-for="(image, index) in introImages" :key="index" :src="image" alt="Fresque Jean Dupas" class="bg-img"
-        :class="[`bg-img-${index}`, { 'visible': startAnim }]" :style="{ '--anim-index': index }" />
+      <img
+        v-for="(image, index) in introImages"
+        :key="index"
+        :src="image"
+        alt="Fresque Jean Dupas"
+        class="bg-img"
+        :class="[`bg-img-${index}`, { visible: startAnim }]"
+        :style="{ '--anim-index': index }"
+      />
     </div>
 
     <div class="intro-card">
       <div class="card-content">
-
-        <h1 class="main-title" :class="{ 'visible': startAnim }">
+        <h1 class="main-title" :class="{ visible: startAnim }">
           Les grands décors de Jean Dupas
         </h1>
 
-        <p class="description-text" ref="descriptionRef" :class="{ 'visible': startAnim }">
-          La contribution de Jean Dupas au domaine artistique est plus vaste que
-          ce que présente l'exposition. Découvrez davantage de son œuvre et de
-          ses collaborations à travers cette carte interactive.
+        <p
+          class="description-text"
+          ref="descriptionRef"
+          :class="{ visible: startAnim }"
+        >
+          Cette expérience immersive vous invite à explorer les grands décors de
+          <span class="artist-name" style="word-break: keep-all;">Jean Dupas</span> à travers le monde. Aujourd'hui, certaines de ses œuvres
+          ont disparu ou sont inaccessibles. Cette application est l'occasion de
+          les découvrir.
         </p>
 
-        <div class="cta-container" :class="{ 'visible': startAnim }">
-          <Button class="start-btn" color="place" text-content="Commencer" icon-secondary @click="$emit('start')">
+        <div class="cta-container" :class="{ visible: startAnim }">
+          <Button
+            class="start-btn"
+            color="place"
+            text-content="Commencer"
+            icon-secondary
+            @click="$emit('start')"
+          >
             <template #icon-secondary>
               <IconArrowRight />
             </template>
           </Button>
         </div>
-
       </div>
     </div>
-
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import Button from '@/components/buttons/Button.vue';
-import IconArrowRight from '@/components/icons/IconArrowRight.vue';
-import { useSplitText } from '../composables/useSplitText.js';
+import { ref, onMounted } from "vue";
+import Button from "@/components/buttons/Button.vue";
+import IconArrowRight from "@/components/icons/IconArrowRight.vue";
+import { useSplitText } from "../composables/useSplitText.js";
 
-import intro1 from '@/assets/img/intro/intro1.webp';
-import intro2 from '@/assets/img/intro/intro2.webp';
-import intro3 from '@/assets/img/intro/intro3.webp';
-import intro4 from '@/assets/img/intro/intro4.webp';
-import intro5 from '@/assets/img/intro/intro5.webp';
-import intro6 from '@/assets/img/intro/intro6.webp';
-import intro7 from '@/assets/img/intro/intro7.webp';
-import intro8 from '@/assets/img/intro/intro8.webp';
+import intro1 from "@/assets/img/intro/intro1.webp";
+import intro2 from "@/assets/img/intro/intro2.webp";
+import intro3 from "@/assets/img/intro/intro3.webp";
+import intro4 from "@/assets/img/intro/intro4.webp";
+import intro5 from "@/assets/img/intro/intro5.webp";
+import intro6 from "@/assets/img/intro/intro6.webp";
+import intro7 from "@/assets/img/intro/intro7.webp";
+import intro8 from "@/assets/img/intro/intro8.webp";
 
-const introImages = [intro1, intro2, intro3, intro4, intro5, intro6, intro7, intro8];
+const introImages = [
+  intro1,
+  intro2,
+  intro3,
+  intro4,
+  intro5,
+  intro6,
+  intro7,
+  intro8,
+];
 const descriptionRef = ref(null);
 const startAnim = ref(false);
 
@@ -78,7 +101,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background-color: rgba(#DCDCDC, 0.8);
+  background-color: rgba(#dcdcdc, 0.8);
 }
 
 .background-layer {
@@ -98,7 +121,8 @@ onMounted(() => {
 
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 1s calc(var(--anim-index) * 0.08s) $ease-out-quint,
+    transition:
+      opacity 1s calc(var(--anim-index) * 0.08s) $ease-out-quint,
       transform 1s calc(var(--anim-index) * 0.08s) $ease-out-quint;
 
     &.visible {
@@ -220,7 +244,8 @@ onMounted(() => {
   :deep(.line) {
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 1s calc(0.4s + var(--line-index) * 0.05s) $ease-out-quint,
+    transition:
+      opacity 1s calc(0.4s + var(--line-index) * 0.05s) $ease-out-quint,
       transform 1s calc(0.4s + var(--line-index) * 0.05s) $ease-out-quint;
     display: block;
   }

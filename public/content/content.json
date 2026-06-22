@@ -201,6 +201,8 @@
                   "updatedAt": "2026-01-16T10:57:26.630Z",
                   "publishedAt": "2026-01-16T10:57:26.943Z",
                   "locale": "fr",
+                  "on_musba": true,
+                  "musba_text": "Retrouvez le dessin préparatoire de cette oeuvre au rez-de-chaussée de l'exposition.",
                   "images": [
                     {
                       "id": 216,
