@@ -10,13 +10,13 @@
       <div class="card-content">
 
         <h1 class="main-title" :class="{ 'visible': startAnim }">
-          Les grands décors<br>de Jean Dupas
+          Les grands décors de Jean Dupas
         </h1>
 
         <p class="description-text" ref="descriptionRef" :class="{ 'visible': startAnim }">
           La contribution de Jean Dupas au domaine artistique est plus vaste que
           ce que présente l'exposition. Découvrez davantage de son œuvre et de
-          ses collaborations à travers notre carte interactive.
+          ses collaborations à travers cette carte interactive.
         </p>
 
         <div class="cta-container" :class="{ 'visible': startAnim }">
