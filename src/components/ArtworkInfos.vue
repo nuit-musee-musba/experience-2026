@@ -430,8 +430,19 @@ const closeLocationPopup = () => {
               {{ displayedArtwork.name }}
             </h2>
             <p style="--anim-index: 1">Jean Dupas</p>
-            <p class="dispeared-mention" v-if="displayedArtwork.is_disappeared">
-              Œuvre disparue
+            <p
+              v-if="displayedArtwork.is_disappeared"
+              class="dispeared-mention"
+              style="--anim-index: 2"
+            >
+              {{ displayedArtwork.conservation || 'Œuvre disparue' }}
+            </p>
+            <p
+              v-else
+              class="artwork-state"
+              style="--anim-index: 2"
+            >
+              {{ displayedArtwork.conservation || 'Œuvre conservée' }}
             </p>
           </div>
         </div>
@@ -1060,6 +1071,12 @@ const closeLocationPopup = () => {
 }
 
 .dispeared-mention {
+  font-size: 42px;
+  margin-top: 10px;
+}
+
+.artwork-state {
+  color: #3c3c3c;
   font-size: 42px;
   margin-top: 10px;
 }
